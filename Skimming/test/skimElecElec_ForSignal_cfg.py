@@ -1,6 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 
-process = cms.Process("TauTauSkim")
+process = cms.Process("eESkim")
 
 process.load("FWCore/MessageService/MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
@@ -28,35 +28,27 @@ process.load("HighMassAnalysis.Skimming.FILESTOREAD")
 #  )
 #)
 
-process.PFTauProducerSequence = cms.Sequence(
-    process.ic5PFJetTracksAssociatorAtVertex
- *  process.pfRecoTauTagInfoProducer
- *  process.produceAndDiscriminateFixedConeHighEffPFTaus
-)
-
 # Generator cuts
 process.load("HighMassAnalysis.Skimming.genLevelSequence_cff")
+# Skim sequence
+process.load("HighMassAnalysis.Skimming.leptonLeptonSkimSequence_cff")
 
-#tau-tau Skim sequence & selection
-process.load("HighMassAnalysis.Skimming.TauTauSkimSequence_cff")
-
-process.TauTauSkimPath = cms.Path(
-    process.genLevelTauTauSequence *
-    process.PFTauProducerSequence
- *  process.TauTauSkimSequence
+process.elecElecSkimPath = cms.Path(
+    process.genLevelElecElecSequence * 
+    process.elecElecSkimSequence
 )
 
-TauTauEventSelection = cms.untracked.PSet(
+elecElecEventSelection = cms.untracked.PSet(
   SelectEvents = cms.untracked.PSet(
-    SelectEvents = cms.vstring('TauTauSkimPath')
+    SelectEvents = cms.vstring('elecElecSkimPath')
   )
 )
 
-process.TauTauSkimOutputModule = cms.OutputModule("PoolOutputModule",                                 
+process.elecElecSkimOutputModule = cms.OutputModule("PoolOutputModule",                                 
   skimEventContent,                                               
-  TauTauEventSelection,
+  elecElecEventSelection,
   fileName = cms.untracked.string("outputFILENAME")
 )
 
-process.o = cms.EndPath( process.TauTauSkimOutputModule )
+process.o = cms.EndPath( process.elecElecSkimOutputModule )
 

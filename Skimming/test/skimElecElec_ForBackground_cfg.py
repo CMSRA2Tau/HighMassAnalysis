@@ -1,6 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 
-process = cms.Process("TauTauSkim")
+process = cms.Process("eESkim")
 
 process.load("FWCore/MessageService/MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
@@ -20,43 +20,35 @@ process.GlobalTag.globaltag = 'START3X_V16::All'
 process.maxEvents = cms.untracked.PSet(
   input = cms.untracked.int32(-1)
 )
-process.load("HighMassAnalysis.Skimming.FILESTOREAD")
+#process.load("HighMassAnalysis.Skimming.FILESTOREAD")
 
-#process.source = cms.Source("PoolSource",
-#  fileNames = cms.untracked.vstring(
-#        'dcache:/pnfs/cms/WAX/resilient/luiggi/Zprime/GEN-SIM-RECO/ZprimeTauTau500_GEN-SIM-RECO_0.root',
-#  )
-#)
-
-process.PFTauProducerSequence = cms.Sequence(
-    process.ic5PFJetTracksAssociatorAtVertex
- *  process.pfRecoTauTagInfoProducer
- *  process.produceAndDiscriminateFixedConeHighEffPFTaus
+process.source = cms.Source("PoolSource",
+  fileNames = cms.untracked.vstring(
+        'dcache:/pnfs/cms/WAX/resilient/luiggi/Zprime/GEN-SIM-RECO/ZprimeTauTau500_GEN-SIM-RECO_0.root',
+  )
 )
 
 # Generator cuts
 process.load("HighMassAnalysis.Skimming.genLevelSequence_cff")
+# Skim sequence
+process.load("HighMassAnalysis.Skimming.leptonLeptonSkimSequence_cff")
 
-#tau-tau Skim sequence & selection
-process.load("HighMassAnalysis.Skimming.TauTauSkimSequence_cff")
-
-process.TauTauSkimPath = cms.Path(
-    process.genLevelTauTauSequence *
-    process.PFTauProducerSequence
- *  process.TauTauSkimSequence
+process.elecElecSkimPath = cms.Path(
+#    process.genLevelElecElecSequence * 
+    process.elecElecSkimSequence
 )
 
-TauTauEventSelection = cms.untracked.PSet(
+elecElecEventSelection = cms.untracked.PSet(
   SelectEvents = cms.untracked.PSet(
-    SelectEvents = cms.vstring('TauTauSkimPath')
+    SelectEvents = cms.vstring('elecElecSkimPath')
   )
 )
 
-process.TauTauSkimOutputModule = cms.OutputModule("PoolOutputModule",                                 
+process.elecElecSkimOutputModule = cms.OutputModule("PoolOutputModule",                                 
   skimEventContent,                                               
-  TauTauEventSelection,
-  fileName = cms.untracked.string("outputFILENAME")
+  elecElecEventSelection,
+  fileName = cms.untracked.string("eESkim.root")
 )
 
-process.o = cms.EndPath( process.TauTauSkimOutputModule )
+process.o = cms.EndPath( process.elecElecSkimOutputModule )
 
