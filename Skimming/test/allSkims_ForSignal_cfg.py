@@ -7,13 +7,13 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 100
 process.MessageLogger.cerr.threshold = 'INFO'
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
-from HiMassTauAnalyzer.Skimming.EventContent_cff import *
+from HighMassAnalysis.Skimming.EventContent_cff import *
 
 process.load("Configuration.StandardSequences.Geometry_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
-process.GlobalTag.globaltag = 'START3X_V16::All'  # for 341 signal
-#process.GlobalTag.globaltag = 'MC_31X_V3::All'
+#process.GlobalTag.globaltag = 'START3X_V16::All'  # for 341 signal
+process.GlobalTag.globaltag = 'MC_31X_V3::All'
 process.load("Geometry.CaloEventSetup.CaloTopology_cfi")
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 
@@ -21,17 +21,18 @@ process.maxEvents = cms.untracked.PSet(
   input = cms.untracked.int32(-1)
 )
 
-process.load("HiMassTauAnalyzer.Skimming.FILESTOREAD")
+#process.load("HighMassAnalysis.Skimming.FILESTOREAD")
 
-#process.source = cms.Source("PoolSource",
-#  fileNames = cms.untracked.vstring(
-#	#'/store/mc/Summer08/WJets-madgraph/GEN-SIM-RECO/IDEAL_V11_redigi_v1/0016/FECF78F2-BBE9-DD11-8EAA-003048D15DCA.root'
-#	#'/store/user/eluiggi/mcOut/recoFiles/ZprimeTauTau500_GEN-SIM-RECO_0.root'
-#	'/store/user/lpctau/HighMassTau/ZprimeTauTau400_7TeV_341_GEN-SIM-RECO/zprimeTauTau400_7TeV_341_GEN-SIM-RECO_0.root',
-#	'/store/user/lpctau/HighMassTau/ZprimeTauTau400_7TeV_341_GEN-SIM-RECO/zprimeTauTau400_7TeV_341_GEN-SIM-RECO_1.root'
-#  ),
-#  duplicateCheckMode = cms.untracked.string("noDuplicateCheck")
-#)
+process.source = cms.Source("PoolSource",
+ duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
+  fileNames = cms.untracked.vstring(
+       #'/store/mc/Summer08/WJets-madgraph/GEN-SIM-RECO/IDEAL_V11_redigi_v1/0016/FECF78F2-BBE9-DD11-8EAA-003048D15DCA.root'
+       #'/store/user/eluiggi/mcOut/recoFiles/ZprimeTauTau500_GEN-SIM-RECO_0.root'
+       #'/store/mc/Summer09/Ztautau/GEN-SIM-RECO/MC_31X_V3_7TeV-v1/0013/FA162037-EE9B-DE11-A028-001E0B5A645A.root'
+	'/store/user/lpctau/HighMassTau/ZprimeTauTau400_7TeV_341_GEN-SIM-RECO/zprimeTauTau400_7TeV_341_GEN-SIM-RECO_0.root',
+	'/store/user/lpctau/HighMassTau/ZprimeTauTau400_7TeV_341_GEN-SIM-RECO/zprimeTauTau400_7TeV_341_GEN-SIM-RECO_1.root'
+  )
+)
 
 process.PFTauProducerSequence = cms.Sequence(
     process.ic5PFJetTracksAssociatorAtVertex
@@ -40,10 +41,10 @@ process.PFTauProducerSequence = cms.Sequence(
 )
 
 # Generator cuts
-process.load("HiMassTauAnalyzer.Skimming.genLevelSequence_cff")
+process.load("HighMassAnalysis.Skimming.genLevelSequence_cff")
 
 #mu-tau Skim sequence & selection
-process.load("HiMassTauAnalyzer.Skimming.muTauSkimSequence_cff")
+process.load("HighMassAnalysis.Skimming.muTauSkimSequence_cff")
 process.muTauSkimPath = cms.Path(
     process.genLevelMuTauSequence *
     process.PFTauProducerSequence
@@ -59,13 +60,13 @@ muTauEventSelection = cms.untracked.PSet(
 process.muTauSkimOutputModule = cms.OutputModule("PoolOutputModule",                                 
   skimEventContent,                                               
   muTauEventSelection,
-  #fileName = cms.untracked.string("zprimeMuTauSkim.root")
-  fileName = cms.untracked.string("muTau_outputFILENAME")
+  fileName = cms.untracked.string("zprimeMuTauSkim.root")
+  #fileName = cms.untracked.string("muTau_outputFILENAME")
 )
 
 
 # e-tau Skim sequence & selection
-process.load("HiMassTauAnalyzer.Skimming.elecTauSkimSequence_cff")
+process.load("HighMassAnalysis.Skimming.elecTauSkimSequence_cff")
 process.elecTauSkimPath = cms.Path(
     process.genLevelElecTauSequence *
     process.PFTauProducerSequence
@@ -82,12 +83,12 @@ elecTauEventSelection = cms.untracked.PSet(
 process.elecTauSkimOutputModule = cms.OutputModule("PoolOutputModule",                                 
   skimEventContent,                                               
   elecTauEventSelection,
-  #fileName = cms.untracked.string("zprimeETauSkim.root")
-  fileName = cms.untracked.string("eTau_outputFILENAME")
+  fileName = cms.untracked.string("zprimeETauSkim.root")
+  #fileName = cms.untracked.string("eTau_outputFILENAME")
 )
 
 #tau-tau Skim sequence & selection
-process.load("HiMassTauAnalyzer.Skimming.TauTauSkimSequence_cff")
+process.load("HighMassAnalysis.Skimming.TauTauSkimSequence_cff")
 process.TauTauSkimPath = cms.Path(
     process.genLevelTauTauSequence *
     process.PFTauProducerSequence
@@ -103,12 +104,12 @@ TauTauEventSelection = cms.untracked.PSet(
 process.TauTauSkimOutputModule = cms.OutputModule("PoolOutputModule",                                 
   skimEventContent,                                               
   TauTauEventSelection,
-  #fileName = cms.untracked.string("zprimeTauTauSkim.root")
-  fileName = cms.untracked.string("tauTau_outputFILENAME")
+  fileName = cms.untracked.string("zprimeTauTauSkim.root")
+  #fileName = cms.untracked.string("tauTau_outputFILENAME")
 )
 
 # lepton-lepton skim sequence & selection
-process.load("HiMassTauAnalyzer.Skimming.leptonLeptonSkimSequence_cff")
+process.load("HighMassAnalysis.Skimming.leptonLeptonSkimSequence_cff")
 
 #e-mu Skim sequence & selection
 
@@ -126,8 +127,8 @@ eMuEventSelection = cms.untracked.PSet(
 process.elecMuSkimOutputModule = cms.OutputModule("PoolOutputModule",                                 
   skimEventContent,                                               
   eMuEventSelection,
-  #fileName = cms.untracked.string("zprimeEMuSkim.root")
-  fileName = cms.untracked.string("eMu_outputFILENAME")
+  fileName = cms.untracked.string("zprimeEMuSkim.root")
+  #fileName = cms.untracked.string("eMu_outputFILENAME")
 )
 
 #mu-mu Skim sequence & selection
@@ -146,8 +147,8 @@ muMuEventSelection = cms.untracked.PSet(
 process.muMuSkimOutputModule = cms.OutputModule("PoolOutputModule",                                 
   skimEventContent,                                               
   muMuEventSelection,
-  #fileName = cms.untracked.string("zprimeMuMuSkim.root")
-  fileName = cms.untracked.string("muMu_outputFILENAME")
+  fileName = cms.untracked.string("zprimeMuMuSkim.root")
+  #fileName = cms.untracked.string("muMu_outputFILENAME")
 )
 
 #e-e Skim sequence & selection
@@ -166,8 +167,8 @@ elecElecEventSelection = cms.untracked.PSet(
 process.elecElecSkimOutputModule = cms.OutputModule("PoolOutputModule",                                 
   skimEventContent,                                               
   elecElecEventSelection,
-  #fileName = cms.untracked.string("zprimeEESkim.root")
-  fileName = cms.untracked.string("eE_outputFILENAME")
+  fileName = cms.untracked.string("zprimeEESkim.root")
+  #fileName = cms.untracked.string("eE_outputFILENAME")
 )
 
 
