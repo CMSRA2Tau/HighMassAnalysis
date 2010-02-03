@@ -28,6 +28,7 @@ patTupleEventContent.outputCommands.extend(
     [
     'keep recoPFCandidate*_particleFlow__*',
     'keep recoTracks_generalTracks_*_*',
+    'keep recoTrackExtras_generalTracks_*_*',
     'keep recoMuons_muons_*_*',
     'keep *_muonMETValueMapProducer_*_*',
     'keep *_selectedLayer1CaloTaus_*_*',
