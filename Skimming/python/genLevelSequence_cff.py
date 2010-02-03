@@ -36,17 +36,21 @@ genLevelElecMuSequence = cms.Sequence(
 genLevelMuMuSequence = cms.Sequence(
     tauGenJets
  *  genTauDecaysToMuonCands
+ *  TwoGenTauDecaysToMuonCandsFilter
  *  selectedGenTauDecaysToMuonEta
+ *  TwoGenTauDecaysToMuonCandsEtaFilter
  *  selectedGenTauDecaysToMuonPt
- *  selectedGenTauMuonPairs
+ *  TwoGenTauDecaysToMuonCandsPtFilter
 )
 
 genLevelElecElecSequence = cms.Sequence(
     tauGenJets
  *  genTauDecaysToElectronCands
+ *  TwoGenTauDecaysToElectronCandsFilter
  *  selectedGenTauDecaysToElectronEta
+ *  TwoGenTauDecaysToElectronCandsEtaFilter
  *  selectedGenTauDecaysToElectronPt
- *  selectedGenTauElectronPairs
+ *  TwoGenTauDecaysToElectronCandsPtFilter
 )
 
 genLevelTauTauSequence = cms.Sequence(
