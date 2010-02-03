@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 from PhysicsTools.JetMCAlgos.TauGenJets_cfi import * 
-from HiMassTauAnalyzer.Skimming.genTauJetSelector_cfi import *  
+from HighMassAnalysis.Skimming.genTauJetSelector_cfi import *  
 
 genLevelElecTauSequence = cms.Sequence(
     tauGenJets    
