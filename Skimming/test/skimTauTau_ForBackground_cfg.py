@@ -14,7 +14,8 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 process.load("Geometry.CaloEventSetup.CaloTopology_cfi")
-process.GlobalTag.globaltag = 'STARTUP3XY_V9::All'
+#process.GlobalTag.globaltag = 'STARTUP3XY_V9::All'
+process.GlobalTag.globaltag = 'START3X_V16::All'
 
 process.maxEvents = cms.untracked.PSet(
   input = cms.untracked.int32(-1)
