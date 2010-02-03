@@ -17,7 +17,7 @@ TwoGenTauDecaysToElectronCandsFilter = cms.EDFilter("CandViewCountFilter",
 )
 
 # require generator level electron produced in tau-decay to be within muon acceptance
-selectedGenTauDecaysToElectronEta = cms.EDFilter("TauGenJetSelector",
+selectedGenTauDecaysToElectronEta = cms.EDFilter("GenJetSelector",
      src = cms.InputTag("genTauDecaysToElectronCands"),
      cut = cms.string('abs(eta) < 2.5'),
      filter = cms.bool(True)
@@ -29,7 +29,7 @@ TwoGenTauDecaysToElectronCandsEtaFilter = cms.EDFilter("CandViewCountFilter",
 )
 
 # require generator level electron produced in tau-decay to have transverse momentum above threshold
-selectedGenTauDecaysToElectronPt = cms.EDFilter("TauGenJetSelector",
+selectedGenTauDecaysToElectronPt = cms.EDFilter("GenJetSelector",
      src = cms.InputTag("selectedGenTauDecaysToElectronEta"),
      cut = cms.string('pt > 8.'),
      filter = cms.bool(True)
@@ -57,7 +57,7 @@ TwoGenTauDecaysToMuonCandsFilter = cms.EDFilter("CandViewCountFilter",
 )
 
 # require generator level muon produced in tau-decay to be within muon acceptance
-selectedGenTauDecaysToMuonEta = cms.EDFilter("TauGenJetSelector",
+selectedGenTauDecaysToMuonEta = cms.EDFilter("GenJetSelector",
      src = cms.InputTag("genTauDecaysToMuonCands"),
      cut = cms.string('abs(eta) < 2.5'),
      filter = cms.bool(True)
@@ -69,7 +69,7 @@ TwoGenTauDecaysToMuonCandsEtaFilter = cms.EDFilter("CandViewCountFilter",
 )
 
 # require generator level muon produced in tau-decay to have transverse momentum above threshold
-selectedGenTauDecaysToMuonPt = cms.EDFilter("TauGenJetSelector",
+selectedGenTauDecaysToMuonPt = cms.EDFilter("GenJetSelector",
      src = cms.InputTag("selectedGenTauDecaysToMuonEta"),
      cut = cms.string('pt > 8.'),
      filter = cms.bool(True)
@@ -98,7 +98,7 @@ TwoGenTauDecaysToHadronsCandsFilter = cms.EDFilter("CandViewCountFilter",
 )
 
 # require generator level hadrons produced in tau-decay to be within muon acceptance
-selectedGenTauDecaysToHadronsEta = cms.EDFilter("TauGenJetSelector",
+selectedGenTauDecaysToHadronsEta = cms.EDFilter("GenJetSelector",
      src = cms.InputTag("genTauDecaysToHadronsCands"),
      cut = cms.string('abs(eta) < 2.5'),
      filter = cms.bool(True)
@@ -110,7 +110,7 @@ TwoGenTauDecaysToHadronsEtaFilter = cms.EDFilter("CandViewCountFilter",
 )
 
 # require generator level hadrons produced in tau-decay to have transverse momentum above threshold
-selectedGenTauDecaysToHadronsPt = cms.EDFilter("TauGenJetSelector",
+selectedGenTauDecaysToHadronsPt = cms.EDFilter("GenJetSelector",
      src = cms.InputTag("selectedGenTauDecaysToHadronsEta"),
      cut = cms.string('pt > 8.'),
      filter = cms.bool(True)
