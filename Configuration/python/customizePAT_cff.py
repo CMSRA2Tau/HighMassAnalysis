@@ -51,16 +51,16 @@ from PhysicsTools.PatAlgos.producersLayer1.electronProducer_cfi import *
 from PhysicsTools.PatAlgos.cleaningLayer1.electronCleaner_cfi import *
 #patTrigMatchElectron = cms.Sequence( electronTrigMatchHLT1Electron )
 #patTrigMatch._seq = patTrigMatch._seq * patHLT1Electron * patTrigMatchElectron
-allLayer1Electrons.userIsolation.tracker.src = cms.InputTag("eleIsoDepositTk")
-allLayer1Electrons.userIsolation.tracker.deltaR = cms.double(0.6)
-allLayer1Electrons.userIsolation.tracker.vetos = cms.vstring(
+allLayer1Electrons.isolation.tracker.src = cms.InputTag("eleIsoDepositTk")
+allLayer1Electrons.isolation.tracker.deltaR = cms.double(0.6)
+allLayer1Electrons.isolation.tracker.vetos = cms.vstring(
     '0.015',         # inner radius veto cone (was 0.015)
     'Threshold(1.0)' # threshold on individual track pt
 )
-allLayer1Electrons.userIsolation.tracker.skipDefaultVeto = cms.bool(True)
-allLayer1Electrons.userIsolation.ecal.src = cms.InputTag("eleIsoDepositEcalFromHits")
-allLayer1Electrons.userIsolation.ecal.deltaR = cms.double(0.6)
-allLayer1Electrons.userIsolation.ecal.vetos = cms.vstring(
+allLayer1Electrons.isolation.tracker.skipDefaultVeto = cms.bool(True)
+allLayer1Electrons.isolation.ecal.src = cms.InputTag("eleIsoDepositEcalFromHits")
+allLayer1Electrons.isolation.ecal.deltaR = cms.double(0.6)
+allLayer1Electrons.isolation.ecal.vetos = cms.vstring(
     'EcalBarrel:0.045', 
     'EcalBarrel:RectangularEtaPhiVeto(-0.02,0.02,-0.5,0.5)',
     'EcalEndcaps:0.07',                         #0.07
@@ -68,13 +68,13 @@ allLayer1Electrons.userIsolation.ecal.vetos = cms.vstring(
     'EcalBarrel:ThresholdFromTransverse(0.12)', # default is 3*sigmaBarrel; sigmaBarrel = 0.04
     'EcalEndcaps:ThresholdFromTransverse(0.45)' # default is 3*sigmaEndCap; sigmaEndCap = 0.15
 )
-allLayer1Electrons.userIsolation.ecal.skipDefaultVeto = cms.bool(True)
-allLayer1Electrons.userIsolation.hcal.src = cms.InputTag("eleIsoDepositHcalFromTowers")
-allLayer1Electrons.userIsolation.hcal.deltaR = cms.double(0.6)
+allLayer1Electrons.isolation.ecal.skipDefaultVeto = cms.bool(True)
+allLayer1Electrons.isolation.hcal.src = cms.InputTag("eleIsoDepositHcalFromTowers")
+allLayer1Electrons.isolation.hcal.deltaR = cms.double(0.6)
 allLayer1Electrons.isoDeposits = cms.PSet(
-   tracker         = allLayer1Electrons.userIsolation.tracker.src,
-   ecal            = allLayer1Electrons.userIsolation.ecal.src,
-   hcal            = allLayer1Electrons.userIsolation.hcal.src,
+   tracker         = allLayer1Electrons.isolation.tracker.src,
+   ecal            = allLayer1Electrons.isolation.ecal.src,
+   hcal            = allLayer1Electrons.isolation.hcal.src,
 )
 allLayer1Electrons.addElectronID = cms.bool(True)
 allLayer1Electrons.electronIDSources = cms.PSet(
@@ -97,14 +97,14 @@ cleanLayer1Electrons.checkOverlaps = cms.PSet()
 from PhysicsTools.PatAlgos.producersLayer1.muonProducer_cfi import *
 from PhysicsTools.PatAlgos.cleaningLayer1.muonCleaner_cfi import *
 #patTrigMatch._seq = patTrigMatch._seq * patTrigMatchHLT1MuonIso
-allLayer1Muons.userIsolation.tracker.deltaR = cms.double(0.6)
-allLayer1Muons.userIsolation.ecal.deltaR = cms.double(0.6)
-allLayer1Muons.userIsolation.hcal.deltaR = cms.double(0.6)
-allLayer1Muons.userIsolation.user.deltaR = cms.double(0.6)
+allLayer1Muons.isolation.tracker.deltaR = cms.double(0.6)
+allLayer1Muons.isolation.ecal.deltaR = cms.double(0.6)
+allLayer1Muons.isolation.hcal.deltaR = cms.double(0.6)
+allLayer1Muons.isolation.user.deltaR = cms.double(0.6)
 allLayer1Muons.isoDeposits = cms.PSet(
-   tracker         = allLayer1Muons.userIsolation.tracker.src,
-   ecal            = allLayer1Muons.userIsolation.ecal.src,
-   hcal            = allLayer1Muons.userIsolation.hcal.src,
+   tracker         = allLayer1Muons.isolation.tracker.src,
+   ecal            = allLayer1Muons.isolation.ecal.src,
+   hcal            = allLayer1Muons.isolation.hcal.src,
 )
 #allLayer1Muons.addTrigMatch = cms.bool(True)
 #allLayer1Muons.trigPrimMatch = cms.VInputTag(

@@ -125,29 +125,28 @@ from RecoTauTag.RecoTau.PFRecoTauDiscriminationByIsolationUsingLeadingPion_cfi  
 from RecoTauTag.RecoTau.PFRecoTauDiscriminationByLeadingPionPtCut_cfi               import *
 from RecoTauTag.RecoTau.PFRecoTauDiscriminationByTrackIsolationUsingLeadingPion_cfi import *
 from RecoTauTag.RecoTau.PFRecoTauDiscriminationByECALIsolationUsingLeadingPion_cfi  import *
-from RecoTauTag.RecoTau.TauDiscriminatorTools import *
 shrinkingTightConePFTauDiscriminationByLeadingTrackFinding                          = copy.deepcopy(pfRecoTauDiscriminationByLeadingTrackFinding)
-setTauSource(shrinkingTightConePFTauDiscriminationByLeadingTrackFinding, 'shrinkingTightConePFTauProducer')
+shrinkingTightConePFTauDiscriminationByLeadingTrackFinding.PFTauProducer            = 'shrinkingTightConePFTauProducer'
 shrinkingTightConePFTauDiscriminationByLeadingTrackPtCut                            = copy.deepcopy(pfRecoTauDiscriminationByLeadingTrackPtCut)
-setTauSource(shrinkingTightConePFTauDiscriminationByLeadingTrackPtCut, 'shrinkingTightConePFTauProducer')
+shrinkingTightConePFTauDiscriminationByLeadingTrackPtCut.PFTauProducer              = 'shrinkingTightConePFTauProducer'
 shrinkingTightConePFTauDiscriminationByLeadingPionPtCut                             = copy.deepcopy(pfRecoTauDiscriminationByLeadingPionPtCut)
-setTauSource(shrinkingTightConePFTauDiscriminationByLeadingPionPtCut, 'shrinkingTightConePFTauProducer')
+shrinkingTightConePFTauDiscriminationByLeadingPionPtCut.PFTauProducer               = 'shrinkingTightConePFTauProducer'
 shrinkingTightConePFTauDiscriminationByIsolation                                    = copy.deepcopy(pfRecoTauDiscriminationByIsolation)
-setTauSource(shrinkingTightConePFTauDiscriminationByIsolation, 'shrinkingTightConePFTauProducer')
+shrinkingTightConePFTauDiscriminationByIsolation.PFTauProducer                      = 'shrinkingTightConePFTauProducer'
 shrinkingTightConePFTauDiscriminationByTrackIsolation                               = copy.deepcopy(pfRecoTauDiscriminationByTrackIsolation)
-setTauSource(shrinkingTightConePFTauDiscriminationByTrackIsolation, 'shrinkingTightConePFTauProducer')
+shrinkingTightConePFTauDiscriminationByTrackIsolation.PFTauProducer                 = 'shrinkingTightConePFTauProducer'
 shrinkingTightConePFTauDiscriminationByECALIsolation                                = copy.deepcopy(pfRecoTauDiscriminationByECALIsolation)
-setTauSource(shrinkingTightConePFTauDiscriminationByECALIsolation, 'shrinkingTightConePFTauProducer')
+shrinkingTightConePFTauDiscriminationByECALIsolation.PFTauProducer                  = 'shrinkingTightConePFTauProducer'
 shrinkingTightConePFTauDiscriminationByIsolationUsingLeadingPion                    = copy.deepcopy(pfRecoTauDiscriminationByIsolationUsingLeadingPion)
-setTauSource(shrinkingTightConePFTauDiscriminationByIsolationUsingLeadingPion, 'shrinkingTightConePFTauProducer')
+shrinkingTightConePFTauDiscriminationByIsolationUsingLeadingPion.PFTauProducer      = 'shrinkingTightConePFTauProducer'
 shrinkingTightConePFTauDiscriminationByTrackIsolationUsingLeadingPion               = copy.deepcopy(pfRecoTauDiscriminationByTrackIsolationUsingLeadingPion)
-setTauSource(shrinkingTightConePFTauDiscriminationByTrackIsolationUsingLeadingPion, 'shrinkingTightConePFTauProducer')
+shrinkingTightConePFTauDiscriminationByTrackIsolationUsingLeadingPion.PFTauProducer = 'shrinkingTightConePFTauProducer'
 shrinkingTightConePFTauDiscriminationByECALIsolationUsingLeadingPion                = copy.deepcopy(pfRecoTauDiscriminationByECALIsolationUsingLeadingPion)
-setTauSource(shrinkingTightConePFTauDiscriminationByECALIsolationUsingLeadingPion, 'shrinkingTightConePFTauProducer')
+shrinkingTightConePFTauDiscriminationByECALIsolationUsingLeadingPion.PFTauProducer  = 'shrinkingTightConePFTauProducer'
 shrinkingTightConePFTauDiscriminationAgainstElectron                                = copy.deepcopy(pfRecoTauDiscriminationAgainstElectron)
-setTauSource(shrinkingTightConePFTauDiscriminationAgainstElectron, 'shrinkingTightConePFTauProducer')
+shrinkingTightConePFTauDiscriminationAgainstElectron.PFTauProducer                  = 'shrinkingTightConePFTauProducer'
 shrinkingTightConePFTauDiscriminationAgainstMuon                                    = copy.deepcopy(pfRecoTauDiscriminationAgainstMuon)
-setTauSource(shrinkingTightConePFTauDiscriminationAgainstMuon, 'shrinkingTightConePFTauProducer')
+shrinkingTightConePFTauDiscriminationAgainstMuon.PFTauProducer                      = 'shrinkingTightConePFTauProducer'
 
 # gen met
 from RecoMET.Configuration.GenMETParticles_cff import *
