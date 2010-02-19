@@ -17,7 +17,7 @@ process.load('Configuration/StandardSequences/GeometryIdeal_cff')
 process.load('Configuration/StandardSequences/MagneticField_cff')
 process.load('Configuration/StandardSequences/Reconstruction_cff')
 process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
-process.GlobalTag.globaltag = 'START3X_V16::All'
+process.GlobalTag.globaltag = 'MC_31X_V3::All'
 #process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_noesprefer_cff')
 #process.GlobalTag.globaltag = 'STARTUP3XY_V9::All'
 
@@ -38,17 +38,17 @@ process.savePatTuple = cms.OutputModule("PoolOutputModule",
 )
 
 process.maxEvents = cms.untracked.PSet(            
-    input = cms.untracked.int32( -1 )
+    input = cms.untracked.int32( 100 )
 )
-process.load("HighMassAnalysis.Configuration.FILESTOREAD")
+#process.load("HighMassAnalysis.Configuration.FILESTOREAD")
 
-#process.source = cms.Source("PoolSource",
-#    skipEvents = cms.untracked.uint32(0),
-#    fileNames = cms.untracked.vstring(
-#       'dcache:/pnfs/cms/WAX/11/store/user/lpctau/HighMassTau/ZprimeMuTauSkim7TeV/muTau_zprimeLeptonTauSkim7TeV_0.root',
-#    )
-#    #skipBadFiles = cms.untracked.bool(True) 
-#)
+process.source = cms.Source("PoolSource",
+    skipEvents = cms.untracked.uint32(0),
+    fileNames = cms.untracked.vstring(
+       'dcache:/pnfs/cms/WAX/11/store/user/lpctau/HighMassTau/eluiggi/Ztautau/ZtautauSummer09MC31X7TeVZprimeTauTau_ETauSkim/96f5ca8867b4fcbe08570bd10fd38500/zttETauSkim_1.root',
+    )
+    #skipBadFiles = cms.untracked.bool(True) 
+)
 
 # import utility function for switching pat::Tau input to different reco::Tau collection stored on AOD
 from PhysicsTools.PatAlgos.tools.tauTools import * 
@@ -228,7 +228,7 @@ addJetCollection(process, cms.InputTag('iterativeCone5PFJets'),  'PF',
                  doL1Cleaning = False,                 
                  doL1Counters = False,
                  genJetCollection=cms.InputTag("iterativeCone5GenJets"),
-                 doJetID          = False
+#                 doJetID          = False
                  )
 
 # modify default pat sequence to include the matching sequences for the additional tau collections

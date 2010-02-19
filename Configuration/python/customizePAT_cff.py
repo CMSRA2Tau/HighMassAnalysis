@@ -127,23 +127,23 @@ cleanLayer1Jets.checkOverlaps = cms.PSet()
 
 # --------------------Modifications for met--------------------
 
-from PhysicsTools.PatAlgos.recoLayer0.jetMETCorrections_cff import *
-from PhysicsTools.PatAlgos.producersLayer1.metProducer_cff import *
-metJESCorIC5CaloJetMuons = corMetGlobalMuons.clone(uncorMETInputTag = cms.InputTag('metJESCorIC5CaloJet'))
-# apply tau-jet specific corrections
-from JetMETCorrections.Type1MET.TauMetCorrections_cff import * 
-tauMetCorr.InputTausLabel = cms.string('fixedConePFTauProducer')
-tauMetCorr.InputCaloJetsLabel = metJESCorIC5CaloJet.inputUncorJetsLabel
-tauMetCorr.jetPTthreshold = metJESCorIC5CaloJet.jetPTthreshold
-tauMetCorr.jetEMfracLimit = metJESCorIC5CaloJet.jetEMfracLimit
-tauMetCorr.correctorLabel = metJESCorIC5CaloJet.corrector
-tauMetCorr.InputMETLabel = cms.string('metJESCorIC5CaloJetMuons')
-tauMetCorr.seedTrackPt = cms.double(5.0)
-#patMETCorrections._seq = patMETCorrections._seq * MetTauCorrections
-# change input for pat::MET production
-layer1METs.metSource  = cms.InputTag("tauMetCorr")
-#layer1METs.addTrigMatch  = cms.bool(False)
-makeLayer1METs.replace( patMETCorrections, metJESCorIC5CaloJet * metJESCorIC5CaloJetMuons * MetTauCorrections )
+#from PhysicsTools.PatAlgos.recoLayer0.jetMETCorrections_cff import *
+#from PhysicsTools.PatAlgos.producersLayer1.metProducer_cff import *
+#metJESCorIC5CaloJetMuons = corMetGlobalMuons.clone(uncorMETInputTag = cms.InputTag('metJESCorIC5CaloJet'))
+## apply tau-jet specific corrections
+#from JetMETCorrections.Type1MET.TauMetCorrections_cff import * 
+#tauMetCorr.InputTausLabel = cms.string('fixedConePFTauProducer')
+#tauMetCorr.InputCaloJetsLabel = metJESCorIC5CaloJet.inputUncorJetsLabel
+#tauMetCorr.jetPTthreshold = metJESCorIC5CaloJet.jetPTthreshold
+#tauMetCorr.jetEMfracLimit = metJESCorIC5CaloJet.jetEMfracLimit
+#tauMetCorr.correctorLabel = metJESCorIC5CaloJet.corrector
+#tauMetCorr.InputMETLabel = cms.string('metJESCorIC5CaloJetMuons')
+#tauMetCorr.seedTrackPt = cms.double(5.0)
+##patMETCorrections._seq = patMETCorrections._seq * MetTauCorrections
+## change input for pat::MET production
+#layer1METs.metSource  = cms.InputTag("tauMetCorr")
+##layer1METs.addTrigMatch  = cms.bool(False)
+#makeLayer1METs.replace( patMETCorrections, metJESCorIC5CaloJet * metJESCorIC5CaloJetMuons * MetTauCorrections )
 
 # --------------------MC matching------------------------------
 
