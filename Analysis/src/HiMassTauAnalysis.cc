@@ -969,7 +969,7 @@ bool HiMassTauAnalysis::passRecoMuonCuts(const pat::Muon& patMuon,bool smear,rec
   }
 /*
   if (_DoRecoMuonDiscrByTrackIsolation) {
-    if ( (patMuon.trackerIsoDeposit()->depositAndCountWithin(_RecoMuonTrackIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonTrackIsoTrkThreshold).first >= _RecoMuonTrackIsoSumPtCutValue) ) {return false;}
+    if ( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuonTrackIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonTrackIsoTrkThreshold).first >= _RecoMuonTrackIsoSumPtCutValue) ) {return false;}
   }
   if (_DoRecoMuonDiscrByEcalIsolation) {
     if ( (patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuonEcalIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonEcalIsoRecHitThreshold).first >= _RecoMuonEcalIsoSumPtCutValue) ) {return false;}
@@ -977,10 +977,10 @@ bool HiMassTauAnalysis::passRecoMuonCuts(const pat::Muon& patMuon,bool smear,rec
 */
   // ----Isolation requirement
   if (_DoRecoMuonDiscrByIsolation) {
-    if( (patMuon.trackerIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonTrackIsoTrkThreshold).first +
+    if( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonTrackIsoTrkThreshold).first +
          patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonEcalIsoRecHitThreshold).first) 
          >= _RecoMuonIsoSumPtMaxCutValue) {return false;}
-    if( (patMuon.trackerIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonTrackIsoTrkThreshold).first +
+    if( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonTrackIsoTrkThreshold).first +
          patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonEcalIsoRecHitThreshold).first) 
          < _RecoMuonIsoSumPtMinCutValue) {return false;}
 /*
@@ -1015,7 +1015,7 @@ bool HiMassTauAnalysis::passRecoElectronCuts(const pat::Electron& patElectron,bo
   }
   // ----Isolation requirement
   if (_DoRecoElectronDiscrByTrackIsolation) {
-//    if ( (patElectron.trackerIsoDeposit()->depositAndCountWithin(_RecoElectronTrackIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoElectronTrackIsoTrkThreshold).first >= _RecoElectronTrackIsoSumPtCutValue) ) {return false;}
+//    if ( (patElectron.trackIsoDeposit()->depositAndCountWithin(_RecoElectronTrackIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoElectronTrackIsoTrkThreshold).first >= _RecoElectronTrackIsoSumPtCutValue) ) {return false;}
     if(patElectron.trackIso() > _RecoElectronTrackIsoSumPtCutValue) {return false;}
   }
   if (_DoRecoElectronDiscrByEcalIsolation) {
@@ -1965,9 +1965,9 @@ void HiMassTauAnalysis::fillHistograms() {
           _hMuonGenMuonDeltaPt->Fill((patMuon->pt() - matchToGen(*patMuon).second.pt()) / matchToGen(*patMuon).second.pt());
         }
       }
-      _hMuonTrackIso->Fill(patMuon->trackerIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonTrackIsoTrkThreshold).first);
+      _hMuonTrackIso->Fill(patMuon->trackIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonTrackIsoTrkThreshold).first);
       _hMuonEcalIso->Fill(patMuon->ecalIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonEcalIsoRecHitThreshold).first);
-      _hMuonIso->Fill(patMuon->trackerIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonTrackIsoTrkThreshold).first +
+      _hMuonIso->Fill(patMuon->trackIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonTrackIsoTrkThreshold).first +
                       patMuon->ecalIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonEcalIsoRecHitThreshold).first);
 /*
       _hMuonTrackIso->Fill(patMuon->trackIso());
@@ -2018,7 +2018,7 @@ void HiMassTauAnalysis::fillHistograms() {
       _hElectronTrackIso->Fill(patElectron->trackIso());
       _hElectronEcalIso->Fill(patElectron->ecalIso());
 /*
-      _hElectronTrackIso->Fill(patElectron->trackerIsoDeposit()->depositAndCountWithin(_RecoElectronTrackIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoElectronTrackIsoTrkThreshold).first);
+      _hElectronTrackIso->Fill(patElectron->trackIsoDeposit()->depositAndCountWithin(_RecoElectronTrackIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoElectronTrackIsoTrkThreshold).first);
       _hElectronEcalIso->Fill(patElectron->ecalIsoDeposit()->depositAndCountWithin(_RecoElectronEcalIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoElectronEcalIsoRecHitThreshold).first);
 */
       const reco::Vertex& thePrimaryEventVertex = (*(_primaryEventVertexCollection)->begin());
