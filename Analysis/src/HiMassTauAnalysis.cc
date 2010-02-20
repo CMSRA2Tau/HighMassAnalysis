@@ -514,19 +514,48 @@ void HiMassTauAnalysis::analyze(const Event& iEvent, const EventSetup& iSetup) {
   }
 
   //------Grab the handle to the relevant collections
+//  std::cout << "getting collections ..." << std::endl;
   getCollections(iEvent,iSetup);
 
   //-----Smearing light lepton (e/mu) momentum and position for systematic uncertanties
+//  std::cout << "smearing muon ..." << std::endl;
   smearedMuonMomentumVector.clear();
+/*
   if(((_AnalyzeMuonForLeg1) || (_AnalyzeMuonForLeg2)) && (_SmearTheMuon)) {
     for(pat::MuonCollection::const_iterator patMuon = _patMuons->begin();patMuon != _patMuons->end();++patMuon) {
       smearedMuonMomentumVector.push_back(SmearLightLepton(*patMuon));
     }
   }
+*/
+  if(((_AnalyzeMuonForLeg1) || (_AnalyzeMuonForLeg2))) {
+    if(_SmearTheMuon) {
+      for(pat::MuonCollection::const_iterator patMuon = _patMuons->begin();patMuon != _patMuons->end();++patMuon) {
+        smearedMuonMomentumVector.push_back(SmearLightLepton(*patMuon));
+      }
+    } else {
+      for(pat::MuonCollection::const_iterator patMuon = _patMuons->begin();patMuon != _patMuons->end();++patMuon) {
+        smearedMuonMomentumVector.push_back(patMuon->p4());
+      }
+    }
+  }
+//  std::cout << "smearing electron ..." << std::endl;
   smearedElectronMomentumVector.clear();
+/*
   if(((_AnalyzeElectronForLeg1) || (_AnalyzeElectronForLeg2)) && (_SmearTheElectron)) {
     for(pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin();patElectron != _patElectrons->end();++patElectron) {
       smearedElectronMomentumVector.push_back(SmearLightLepton(*patElectron));
+    }
+  }
+*/
+  if(((_AnalyzeElectronForLeg1) || (_AnalyzeElectronForLeg2))) {
+    if(_SmearTheElectron) {
+      for(pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin();patElectron != _patElectrons->end();++patElectron) {
+        smearedElectronMomentumVector.push_back(SmearLightLepton(*patElectron));
+      }
+    } else {
+      for(pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin();patElectron != _patElectrons->end();++patElectron) {
+        smearedElectronMomentumVector.push_back(patElectron->p4());
+      }
     }
   }
 
@@ -617,11 +646,13 @@ void HiMassTauAnalysis::getEventFlags() {
   if(nLeg2 == 0) {std::cerr << "### HiMassTauAnalysis - CONFIGURATION ERROR:  ZERO objects for leg2!!!! " << std::endl;exit(1);}
 
   // ------Does the event pass trigger requirements?
+//  std::cout << "trigger selections ..." << std::endl;
   int nTriggersSatisfied = 0;
   if(passRecoTriggerCuts()) {nTriggersSatisfied++;}
   if (nTriggersSatisfied>=_RecoTriggersNmin) _EventFlag[_mapSelectionAlgoID["RecoTriggersNmin"]] = true;
 
   // ------Number of Good Vertices
+//  std::cout << "vertex selections ..." << std::endl;
   int nGoodVertices = 0;
   for ( reco::VertexCollection::const_iterator primaryVertex = _primaryEventVertexCollection->begin();
         primaryVertex != _primaryEventVertexCollection->end(); ++primaryVertex ) {
@@ -632,6 +663,7 @@ void HiMassTauAnalysis::getEventFlags() {
   if (nGoodVertices<=_RecoVertexNmax) _EventFlag[_mapSelectionAlgoID["RecoVertexNmax"]] = true;
 
   //------Number of Good Candidates for leg1
+//  std::cout << "leg1 selections ..." << std::endl;
   int nGoodCandidatesLeg1 = 0;
   if(_AnalyzeMuonForLeg1) {
     int theNumberOfMuons = 0;
@@ -662,6 +694,7 @@ void HiMassTauAnalysis::getEventFlags() {
   if (nGoodCandidatesLeg1<=_RecoLeg1Nmax) _EventFlag[_mapSelectionAlgoID["RecoLeg1Nmax"]] = true;
 
   //------Number of Good Candidates for leg2
+//  std::cout << "leg2 selections ..." << std::endl;
   int nGoodCandidatesLeg2 = 0;
   if(_AnalyzeMuonForLeg2) {
     int theNumberOfMuons = 0;
@@ -692,6 +725,7 @@ void HiMassTauAnalysis::getEventFlags() {
   if (nGoodCandidatesLeg2<=_RecoLeg2Nmax) _EventFlag[_mapSelectionAlgoID["RecoLeg2Nmax"]] = true;
 
   // ------Number of Good Jets   
+//  std::cout << "jet selections ..." << std::endl;
   int nGoodJets = 0;
   for ( pat::JetCollection::const_iterator patJet = _patJets->begin(); 
 	patJet != _patJets->end(); ++patJet ) {
@@ -702,6 +736,7 @@ void HiMassTauAnalysis::getEventFlags() {
   if (nGoodJets<=_RecoJetNmax) _EventFlag[_mapSelectionAlgoID["RecoJetNmax"]] = true;  
 
   // ------Number of Good Combinations (leg1+leg2+met combinations)
+//  std::cout << "ditau selections ..." << std::endl;
   int nGoodCombinations = 0;
   if( ((_AnalyzeMuonForLeg1) && (_AnalyzeTauForLeg2)) || ((_AnalyzeMuonForLeg2) && (_AnalyzeTauForLeg1)) ) {
     int theNumberOfMuons = 0;
