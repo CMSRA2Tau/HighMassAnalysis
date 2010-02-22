@@ -17,9 +17,8 @@ process.load('Configuration/StandardSequences/GeometryIdeal_cff')
 process.load('Configuration/StandardSequences/MagneticField_cff')
 process.load('Configuration/StandardSequences/Reconstruction_cff')
 process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
-process.GlobalTag.globaltag = 'MC_31X_V3::All'
 #process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_noesprefer_cff')
-#process.GlobalTag.globaltag = 'STARTUP3XY_V9::All'
+process.GlobalTag.globaltag = 'MC_31X_V3::All'
 
 # import particle data table - needed for print-out of generator level information
 process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
@@ -33,8 +32,6 @@ from HighMassAnalysis.Configuration.patTupleEventContentForHiMassTau_cff import 
 process.savePatTuple = cms.OutputModule("PoolOutputModule",
     patTupleEventContent,                                               
     fileName = cms.untracked.string('test.root')
-    #fileName = cms.untracked.string('CONDOR_OUTFILE')
-    #fileName = cms.untracked.string("outputFILENAME")
 )
 
 process.maxEvents = cms.untracked.PSet(            
@@ -45,7 +42,7 @@ process.maxEvents = cms.untracked.PSet(
 process.source = cms.Source("PoolSource",
     skipEvents = cms.untracked.uint32(0),
     fileNames = cms.untracked.vstring(
-       'dcache:/pnfs/cms/WAX/11/store/user/lpctau/HighMassTau/eluiggi/Ztautau/ZtautauSummer09MC31X7TeVZprimeTauTau_ETauSkim/96f5ca8867b4fcbe08570bd10fd38500/zttETauSkim_1.root',
+       '/store/user/lpctau/HighMassTau/eluiggi/TTbar/TTbarSummer09MC31X7TeVZprimeTauTau_ETauSkim/96f5ca8867b4fcbe08570bd10fd38500/ttbarETauSkim_1.root'
     )
     #skipBadFiles = cms.untracked.bool(True) 
 )
@@ -91,6 +88,7 @@ process.selectedLayer1FixedConeHighEffPFTaus = process.allLayer1Taus.clone(
     tauIDSources = cms.PSet(  # all these are already present in 2.2.X AODSIM
         leadingTrackFinding = cms.InputTag("fixedConeHighEffPFTauDiscriminationByLeadingTrackFinding"),
         leadingTrackPtCut = cms.InputTag("fixedConeHighEffPFTauDiscriminationByLeadingTrackPtCut"),
+	leadingPionPtCut = cms.InputTag("fixedConeHighEffPFTauDiscriminationByLeadingPionPtCut"),
         trackIsolation = cms.InputTag("fixedConeHighEffPFTauDiscriminationByTrackIsolation"),
         ecalIsolation = cms.InputTag("fixedConeHighEffPFTauDiscriminationByECALIsolation"),
         byIsolation = cms.InputTag("fixedConeHighEffPFTauDiscriminationByIsolation"),
@@ -113,6 +111,7 @@ process.selectedLayer1FixedConePFTaus = process.allLayer1Taus.clone(
     tauIDSources = cms.PSet(  # all these are already present in 2.2.X AODSIM
         leadingTrackFinding = cms.InputTag("fixedConePFTauDiscriminationByLeadingTrackFinding"),
         leadingTrackPtCut = cms.InputTag("fixedConePFTauDiscriminationByLeadingTrackPtCut"),
+	leadingPionPtCut = cms.InputTag("fixedConePFTauDiscriminationByLeadingPionPtCut"),
         trackIsolation = cms.InputTag("fixedConePFTauDiscriminationByTrackIsolation"),
         ecalIsolation = cms.InputTag("fixedConePFTauDiscriminationByECALIsolation"),
         byIsolation = cms.InputTag("fixedConePFTauDiscriminationByIsolation"),
@@ -135,11 +134,16 @@ process.selectedLayer1ShrinkingConeHighEffPFTaus = process.allLayer1Taus.clone(
     tauIDSources = cms.PSet(  # all these are already present in 2.2.X AODSIM
         leadingTrackFinding = cms.InputTag("shrinkingConePFTauDiscriminationByLeadingTrackFinding"),
         leadingTrackPtCut = cms.InputTag("shrinkingConePFTauDiscriminationByLeadingTrackPtCut"),
+	leadingPionPtCut = cms.InputTag("shrinkingConePFTauDiscriminationByLeadingPionPtCut"),
         trackIsolation = cms.InputTag("shrinkingConePFTauDiscriminationByTrackIsolation"),
         ecalIsolation = cms.InputTag("shrinkingConePFTauDiscriminationByECALIsolation"),
         byIsolation = cms.InputTag("shrinkingConePFTauDiscriminationByIsolation"),
         againstElectron = cms.InputTag("shrinkingConePFTauDiscriminationAgainstElectron"),
-        againstMuon = cms.InputTag("shrinkingConePFTauDiscriminationAgainstMuon")
+        againstMuon = cms.InputTag("shrinkingConePFTauDiscriminationAgainstMuon"),
+	byTaNCfrOnePercent = cms.InputTag("shrinkingConePFTauDiscriminationByTaNCfrOnePercent"),
+	byTaNCfrHalfPercent = cms.InputTag("shrinkingConePFTauDiscriminationByTaNCfrHalfPercent"),
+	byTaNCfrQuarterPercent = cms.InputTag("shrinkingConePFTauDiscriminationByTaNCfrQuarterPercent"),
+	byTaNCfrTenthPercent = cms.InputTag("shrinkingConePFTauDiscriminationByTaNCfrTenthPercent")
     )
 )
 
@@ -157,11 +161,13 @@ process.selectedLayer1ShrinkingConePFTaus = process.allLayer1Taus.clone(
     tauIDSources = cms.PSet(  # all these are already present in 2.2.X AODSIM
         leadingTrackFinding = cms.InputTag("shrinkingTightConePFTauDiscriminationByLeadingTrackFinding"),
         leadingTrackPtCut = cms.InputTag("shrinkingTightConePFTauDiscriminationByLeadingTrackPtCut"),
+	leadingPionPtCut = cms.InputTag("shrinkingTightConePFTauDiscriminationByLeadingPionPtCut"),
         trackIsolation = cms.InputTag("shrinkingTightConePFTauDiscriminationByTrackIsolation"),
         ecalIsolation = cms.InputTag("shrinkingTightConePFTauDiscriminationByECALIsolation"),
         byIsolation = cms.InputTag("shrinkingTightConePFTauDiscriminationByIsolation"),
         againstElectron = cms.InputTag("shrinkingTightConePFTauDiscriminationAgainstElectron"),
-        againstMuon = cms.InputTag("shrinkingTightConePFTauDiscriminationAgainstMuon")
+        againstMuon = cms.InputTag("shrinkingTightConePFTauDiscriminationAgainstMuon"),
+	#byTaNCfrOnePercent = cms.InputTag("shrinkingTightConePFTauDiscriminationByTaNCfrOnePercent")
     )
 )
 

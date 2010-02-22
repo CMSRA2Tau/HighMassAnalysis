@@ -164,6 +164,7 @@ producePatTuple = cms.Sequence(
     ic5PFJetTracksAssociatorAtVertex *
     pfRecoTauTagInfoProducer *
     produceAndDiscriminateShrinkingConePFTaus *
+    produceShrinkingConeDiscriminationByTauNeuralClassifier *
     produceAndDiscriminateFixedConeHighEffPFTaus * 
     produceAndDiscriminateFixedConePFTaus *
     shrinkingTightConePFTauProducer*
@@ -186,4 +187,6 @@ producePatTuple = cms.Sequence(
     genMetCalo *
     genMetTrue
     )
+
+
 
