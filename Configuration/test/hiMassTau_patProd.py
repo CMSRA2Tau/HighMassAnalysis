@@ -10,15 +10,16 @@ process.load('Configuration/StandardSequences/Services_cff')
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
 process.MessageLogger.cerr.threshold = 'INFO'
-process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(False) )
+process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
 # standard sequences
 process.load('Configuration/StandardSequences/GeometryIdeal_cff')
 process.load('Configuration/StandardSequences/MagneticField_cff')
 process.load('Configuration/StandardSequences/Reconstruction_cff')
 process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
+process.GlobalTag.globaltag = 'START36_V10::All'
 #process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_noesprefer_cff')
-process.GlobalTag.globaltag = 'MC_31X_V3::All'
+#process.GlobalTag.globaltag = 'STARTUP3XY_V9::All'
 
 # import particle data table - needed for print-out of generator level information
 process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
@@ -31,247 +32,70 @@ from HighMassAnalysis.Configuration.patTupleEventContentForHiMassTau_cff import 
 
 process.savePatTuple = cms.OutputModule("PoolOutputModule",
     patTupleEventContent,                                               
-    fileName = cms.untracked.string('test.root')
+    fileName = cms.untracked.string('wJetsElecTauSkimPat.root')
 )
 
 process.maxEvents = cms.untracked.PSet(            
-    input = cms.untracked.int32( 100 )
+    input = cms.untracked.int32( -1 )
 )
-#process.load("HighMassAnalysis.Configuration.FILESTOREAD")
 
 process.source = cms.Source("PoolSource",
     skipEvents = cms.untracked.uint32(0),
     fileNames = cms.untracked.vstring(
-       '/store/user/lpctau/HighMassTau/eluiggi/TTbar/TTbarSummer09MC31X7TeVZprimeTauTau_ETauSkim/96f5ca8867b4fcbe08570bd10fd38500/ttbarETauSkim_1.root'
+       '/store/user/lpctau/HighMassTau/eluiggi/zprimeTauTau1000_7TeV_STARTUP31X_V4_GEN-SIM-RAW/ZprimeTauTau1000_7TeV_START36_V10_GEN-SIM-RECO_RERECO/3642c883d04c18dde8255af9b6e3785e/zprimeReReco_1_1_JKq.root'
     )
     #skipBadFiles = cms.untracked.bool(True) 
 )
-
-# import utility function for switching pat::Tau input to different reco::Tau collection stored on AOD
-from PhysicsTools.PatAlgos.tools.tauTools import * 
-
-# comment-out to take reco::CaloTaus instead of reco::PFTaus as input for pat::Tau production
-#switchToCaloTau(process)
-
-# comment-out to take shrinking dR = 5.0/Et(PFTau) signal cone instead of fixed dR = 0.07 signal cone reco::PFTaus
-#switchToPFTauShrinkingCone(process)
-switchToPFTauFixedCone(process)
-
-# Use this to add the CaloTau side-by-side to the PAT PFTau (it will be called 'selectedLayer1CaloTaus')
-# This doesn't take care of the trigger matching.  No iso deposits available yet
-process.selectedLayer1CaloTaus = process.allLayer1Taus.clone(
-    tauSource = cms.InputTag("caloRecoTauProducer"),
-    addGenMatch = cms.bool(False),
-    addGenJetMatch = cms.bool(False),
-    #addTrigMatch = cms.bool(False),
-    userIsolation    = cms.PSet(), # there is no path for calo tau isolation available at the moment
-    isoDeposits  = cms.PSet(), # there is no path for calo tau isolation available at the moment
-    tauIDSources = cms.PSet(  # all these are already present in 2.2.X AODSIM
-            leadingTrackFinding = cms.InputTag("caloRecoTauDiscriminationByLeadingTrackFinding"),
-            leadingTrackPtCut   = cms.InputTag("caloRecoTauDiscriminationByLeadingTrackPtCut"),
-            byIsolation         = cms.InputTag("caloRecoTauDiscriminationByIsolation"),
-            againstElectron     = cms.InputTag("caloRecoTauDiscriminationAgainstElectron"),  
-    )
+process.source.inputCommands = cms.untracked.vstring(
+	"keep *", 
+	"drop *_MEtoEDMConverter_*_*", 
+	"drop L1GlobalTriggerObjectMapRecord_hltL1GtObjectMap__HLT"
 )
 
-# Use this to add the tau collections with fixed signal cone of dR=0.15
-process.selectedLayer1FixedConeHighEffPFTaus = process.allLayer1Taus.clone(
-    tauSource = cms.InputTag("fixedConeHighEffPFTauProducer"),
-    addGenMatch = cms.bool(True),
-    genParticleMatch = cms.InputTag("tauMatchFixedConeHighEff"),
-    addGenJetMatch = cms.bool(True),
-    genJetMatch = cms.InputTag("tauGenJetMatchFixedConeHighEff"),
-    #addTrigMatch = cms.bool(True),
-    #trigPrimMatch = cms.VInputTag(cms.InputTag("tauTrigMatchHLT1TauFixedConeHighEff")),
-    userIsolation    = cms.PSet(), # will not use
-    isoDeposits  = cms.PSet(), # will not use
-    tauIDSources = cms.PSet(  # all these are already present in 2.2.X AODSIM
-        leadingTrackFinding = cms.InputTag("fixedConeHighEffPFTauDiscriminationByLeadingTrackFinding"),
-        leadingTrackPtCut = cms.InputTag("fixedConeHighEffPFTauDiscriminationByLeadingTrackPtCut"),
-	leadingPionPtCut = cms.InputTag("fixedConeHighEffPFTauDiscriminationByLeadingPionPtCut"),
-        trackIsolation = cms.InputTag("fixedConeHighEffPFTauDiscriminationByTrackIsolation"),
-        ecalIsolation = cms.InputTag("fixedConeHighEffPFTauDiscriminationByECALIsolation"),
-        byIsolation = cms.InputTag("fixedConeHighEffPFTauDiscriminationByIsolation"),
-        againstElectron = cms.InputTag("fixedConeHighEffPFTauDiscriminationAgainstElectron"),
-        againstMuon = cms.InputTag("fixedConeHighEffPFTauDiscriminationAgainstMuon")
-    )
-)
+# Skimming step
+process.load("HighMassAnalysis.Skimming.genLevelSequence_cff")
+# Skim sequence
+process.load("HighMassAnalysis.Skimming.elecTauSkimSequence_cff")
 
-# Use this to add the tau collections with fixed signal cone of dR=0.07
-process.selectedLayer1FixedConePFTaus = process.allLayer1Taus.clone(
-    tauSource = cms.InputTag("fixedConePFTauProducer"),
-    addGenMatch = cms.bool(True),
-    genParticleMatch = cms.InputTag("tauMatchFixedCone"),
-    addGenJetMatch = cms.bool(True),
-    genJetMatch = cms.InputTag("tauGenJetMatchFixedCone"),
-    #addTrigMatch = cms.bool(True),
-    #trigPrimMatch = cms.VInputTag(cms.InputTag("tauTrigMatchHLT1TauFixedCone")),
-    userIsolation    = cms.PSet(), # will not use
-    isoDeposits  = cms.PSet(), # will not use
-    tauIDSources = cms.PSet(  # all these are already present in 2.2.X AODSIM
-        leadingTrackFinding = cms.InputTag("fixedConePFTauDiscriminationByLeadingTrackFinding"),
-        leadingTrackPtCut = cms.InputTag("fixedConePFTauDiscriminationByLeadingTrackPtCut"),
-	leadingPionPtCut = cms.InputTag("fixedConePFTauDiscriminationByLeadingPionPtCut"),
-        trackIsolation = cms.InputTag("fixedConePFTauDiscriminationByTrackIsolation"),
-        ecalIsolation = cms.InputTag("fixedConePFTauDiscriminationByECALIsolation"),
-        byIsolation = cms.InputTag("fixedConePFTauDiscriminationByIsolation"),
-        againstElectron = cms.InputTag("fixedConePFTauDiscriminationAgainstElectron"),
-        againstMuon = cms.InputTag("fixedConePFTauDiscriminationAgainstMuon")
-    )
-)
+#process.elecTauSkimPath = cms.Path(
+#    process.genLevelElecTauSequence *
+#    process.elecTauSkimSequence
+#)
 
-# Use this to add the tau collections with shrinking signal cone of dR=5/ET
-process.selectedLayer1ShrinkingConeHighEffPFTaus = process.allLayer1Taus.clone(
-    tauSource = cms.InputTag("shrinkingConePFTauProducer"),
-    addGenMatch = cms.bool(True),
-    genParticleMatch = cms.InputTag("tauMatchShrinkingCone"),
-    addGenJetMatch = cms.bool(True),
-    genJetMatch = cms.InputTag("tauGenJetMatchShrinkingCone"),
-    #addTrigMatch = cms.bool(True),
-    #trigPrimMatch = cms.VInputTag(cms.InputTag("tauTrigMatchHLT1TauShrinkingCone")),
-    userIsolation    = cms.PSet(), # will not use
-    isoDeposits  = cms.PSet(), # will not use
-    tauIDSources = cms.PSet(  # all these are already present in 2.2.X AODSIM
-        leadingTrackFinding = cms.InputTag("shrinkingConePFTauDiscriminationByLeadingTrackFinding"),
-        leadingTrackPtCut = cms.InputTag("shrinkingConePFTauDiscriminationByLeadingTrackPtCut"),
-	leadingPionPtCut = cms.InputTag("shrinkingConePFTauDiscriminationByLeadingPionPtCut"),
-        trackIsolation = cms.InputTag("shrinkingConePFTauDiscriminationByTrackIsolation"),
-        ecalIsolation = cms.InputTag("shrinkingConePFTauDiscriminationByECALIsolation"),
-        byIsolation = cms.InputTag("shrinkingConePFTauDiscriminationByIsolation"),
-        againstElectron = cms.InputTag("shrinkingConePFTauDiscriminationAgainstElectron"),
-        againstMuon = cms.InputTag("shrinkingConePFTauDiscriminationAgainstMuon"),
-	byTaNCfrOnePercent = cms.InputTag("shrinkingConePFTauDiscriminationByTaNCfrOnePercent"),
-	byTaNCfrHalfPercent = cms.InputTag("shrinkingConePFTauDiscriminationByTaNCfrHalfPercent"),
-	byTaNCfrQuarterPercent = cms.InputTag("shrinkingConePFTauDiscriminationByTaNCfrQuarterPercent"),
-	byTaNCfrTenthPercent = cms.InputTag("shrinkingConePFTauDiscriminationByTaNCfrTenthPercent")
-    )
-)
+#elecTauEventSelection = cms.untracked.PSet(
+#  SelectEvents = cms.untracked.PSet(
+#    SelectEvents = cms.vstring('elecTauSkimPath')
+#  )
+#)
 
-# Use this to add the tau collections with shrinking signal cone of dR=3/ET
-process.selectedLayer1ShrinkingConePFTaus = process.allLayer1Taus.clone(
-    tauSource = cms.InputTag("shrinkingTightConePFTauProducer"),
-    addGenMatch = cms.bool(True),
-    genParticleMatch = cms.InputTag("tauMatchShrinkingTightCone"),
-    addGenJetMatch = cms.bool(True),
-    genJetMatch = cms.InputTag("tauGenJetMatchShrinkingTightCone"),
-    #addTrigMatch = cms.bool(True),
-    #trigPrimMatch = cms.VInputTag(cms.InputTag("tauTrigMatchHLT1TauShrinkingTightCone")),
-    userIsolation    = cms.PSet(), # will not use
-    isoDeposits  = cms.PSet(), # will not use
-    tauIDSources = cms.PSet(  # all these are already present in 2.2.X AODSIM
-        leadingTrackFinding = cms.InputTag("shrinkingTightConePFTauDiscriminationByLeadingTrackFinding"),
-        leadingTrackPtCut = cms.InputTag("shrinkingTightConePFTauDiscriminationByLeadingTrackPtCut"),
-	leadingPionPtCut = cms.InputTag("shrinkingTightConePFTauDiscriminationByLeadingPionPtCut"),
-        trackIsolation = cms.InputTag("shrinkingTightConePFTauDiscriminationByTrackIsolation"),
-        ecalIsolation = cms.InputTag("shrinkingTightConePFTauDiscriminationByECALIsolation"),
-        byIsolation = cms.InputTag("shrinkingTightConePFTauDiscriminationByIsolation"),
-        againstElectron = cms.InputTag("shrinkingTightConePFTauDiscriminationAgainstElectron"),
-        againstMuon = cms.InputTag("shrinkingTightConePFTauDiscriminationAgainstMuon"),
-	#byTaNCfrOnePercent = cms.InputTag("shrinkingTightConePFTauDiscriminationByTaNCfrOnePercent")
-    )
-)
-
-# change the default pat sequence for taus - add creation of additional tau collections
-process.allLayer1Objects.replace( process.allLayer1Taus, process.allLayer1Taus
-                                                       + process.selectedLayer1CaloTaus
-                                                       + process.selectedLayer1FixedConeHighEffPFTaus
-                                                       + process.selectedLayer1FixedConePFTaus
-                                                       + process.selectedLayer1ShrinkingConeHighEffPFTaus
-                                                       + process.selectedLayer1ShrinkingConePFTaus
-)
-
-# change the default pat sequence for taus - add creation of additional tau collections
-process.allLayer1Objects.replace( process.tauMatch, process.tauMatch
-                                                       + process.tauMatchFixedConeHighEff
-						       + process.tauMatchFixedCone
-						       + process.tauMatchShrinkingCone
-						       + process.tauMatchShrinkingTightCone
-)
-
-# change the default pat sequence for taus - add creation of additional tau collections
-process.allLayer1Objects.replace( process.tauGenJetMatch, process.tauGenJetMatch
-                                                       + process.tauGenJetMatchFixedConeHighEff
-						       + process.tauGenJetMatchFixedCone
-						       + process.tauGenJetMatchShrinkingCone
-						       + process.tauGenJetMatchShrinkingTightCone
-)
-
-# import utility function for managing pat::METs
-#from HighMassAnalysis.Configuration.metTools import *
-# comment-out the addPFMet() function to add pfMET
-#  - first Boolean switch on production of genMET with mu's 
-#  - second Boolean switch on type-1 corrections
-#addPFMet(process,False,False)
-# comment-out to replace caloMET by pfMET in all di-tau objects
-#replaceMETforDiTaus(process,
-#                    cms.InputTag('layer1METs'),
-#                    cms.InputTag('layer1PFMETs'))
-## comment-out to add genMET with mu's to layer1MET (caloMET)  
-#process.layer1METs.genMETSource = cms.InputTag('genMETWithMu')
-## note: above line works when the first Boolean in the addPFMET is True, 
-## otherwise you need comment-out the following:
-### addGenMetWithMu(process) # comment-out only when the first Boolean in the addPFMET is False
-
-# Modifications for 3X
+# include particle flow based MET
 from PhysicsTools.PatAlgos.tools.metTools import *
 addPfMET(process, 'PF')
 
-# add a pf jet collection
-#from PhysicsTools.PatAlgos.tools.jetTools import *
-#addJetCollection(process, cms.InputTag('iterativeCone5PFJets'),  'PF',
-#        doJTA=True,
-#        doBTagging=False,
-#        jetCorrLabel=None, # You may want to apply jet energy corrections
-#        doType1MET=False)  # You don't want CaloMET with PFJets, do you?
-
-# Modifications for 3X
+# include particle flow based jets
 from PhysicsTools.PatAlgos.tools.jetTools import *
-addJetCollection(process, cms.InputTag('iterativeCone5PFJets'),  'PF',
+addJetCollection(process,cms.InputTag('ak5PFJets'),
+                  'AK5', 'PF',
                  doJTA        = True,
                  doBTagging   = True,
-                 jetCorrLabel = None,
+                 jetCorrLabel = ('AK5','PF'),
                  doType1MET   = False,
                  doL1Cleaning = False,                 
                  doL1Counters = False,
-                 genJetCollection=cms.InputTag("iterativeCone5GenJets"),
-#                 doJetID          = False
+                 genJetCollection=cms.InputTag("ak5GenJets"),
+                 doJetID          = False
                  )
 
-# modify default pat sequence to include the matching sequences for the additional tau collections
-#process.beforeLayer1Objects.replace( process.patTrigMatch, process.patTrigMatch
-#                                                         + process.tauTrigMatchHLT1TauFixedConeHighEff
-#                                                         + process.tauTrigMatchHLT1TauFixedCone
-#                                                         + process.tauTrigMatchHLT1TauShrinkingCone
-#                                                         + process.tauTrigMatchHLT1TauShrinkingTightCone)
-#process.beforeLayer1Objects.replace( process.patMCTruth, process.patMCTruth
-#                                                         + process.tauMatchFixedConeHighEff
-#                                                         + process.tauGenJetMatchFixedConeHighEff
-#                                                         + process.tauMatchFixedCone
-#                                                         + process.tauGenJetMatchFixedCone
-#                                                         + process.tauMatchShrinkingCone
-#                                                         + process.tauGenJetMatchShrinkingCone
-#                                                         + process.tauMatchShrinkingTightCone
-#                                                         + process.tauGenJetMatchShrinkingTightCone)
+from PhysicsTools.PatAlgos.tools.electronTools import *
+addElectronUserIsolation(process,["Tracker"])
+addElectronUserIsolation(process,["Ecal"])
+addElectronUserIsolation(process,["Hcal"])
 
-#process.cteq65PdfWeights = cms.EDProducer("EwkPdfWeightProducer",
-#      PdfInfoTag = cms.untracked.InputTag("genEventPdfInfo"),
-#      PdfSetName = cms.untracked.string("cteq65.LHgrid")
-#)
-#process.MRST2006nnloPdfWeights = cms.EDProducer("EwkPdfWeightProducer",
-#      PdfInfoTag = cms.untracked.InputTag("genEventPdfInfo"),
-#      PdfSetName = cms.untracked.string("MRST2006nnlo.LHgrid")
-#)
-#process.MRST2007lomodPdfWeights = cms.EDProducer("EwkPdfWeightProducer",
-#      PdfInfoTag = cms.untracked.InputTag("genEventPdfInfo"),
-#      PdfSetName = cms.untracked.string("MRST2007lomod.LHgrid")
-#)
+from PhysicsTools.PatAlgos.tools.muonTools import *
+addMuonUserIsolation(process)
 
-process.p = cms.Path( process.producePatTuple
-#                    + process.cteq65PdfWeights
-#                    + process.MRST2006nnloPdfWeights
-#                    + process.MRST2007lomodPdfWeights
+process.p = cms.Path( 
+		      process.elecTauSkimSequence
+		    + process.producePatTuple
                     + process.savePatTuple )
-
-# print-out all python configuration parameter information
-#print process.dumpPython()
 

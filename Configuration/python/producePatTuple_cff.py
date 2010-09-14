@@ -13,17 +13,12 @@ ic5PFJetTracksAssociatorAtVertex.j2tParametersVX = cms.PSet(
     coneSize = cms.double(1.0)
 )
 
-#--- tracker isolation
-fixedConeHighEffPFTauProducer.TrackerIsolConeSizeFormula   = cms.string('1.00') ## **
-fixedConeHighEffPFTauProducer.TrackerIsolConeSize_max = cms.double(1.1)
-#--- ecal isolation
-fixedConeHighEffPFTauProducer.ECALIsolConeSizeFormula      = cms.string('1.00') ## **
-fixedConeHighEffPFTauProducer.ECALIsolConeSize_max = cms.double(1.1)
-#--- hcal isolation
-fixedConeHighEffPFTauProducer.HCALIsolConeSizeFormula      = cms.string('1.00') ## **
-fixedConeHighEffPFTauProducer.HCALIsolConeSize_max = cms.double(1.1)
+# tau collection w/ shrinking cone of 3/ET
+fixedConeHighEffPFTauProducer = copy.deepcopy(pfRecoTauProducer)
+fixedConeHighEffPFTauProducer.LeadPFCand_minPt      = cms.double(5.0)
 #--- tracker signal
-fixedConeHighEffPFTauProducer.TrackerSignalConeSize_min = cms.double(0.00)
+fixedConeHighEffPFTauProducer.TrackerSignalConeSizeFormula = cms.string('0.15') ## **
+fixedConeHighEffPFTauProducer.TrackerSignalConeSize_min = cms.double(0.07)
 fixedConeHighEffPFTauProducer.TrackerSignalConeSize_max = cms.double(0.15)
 #--- ecal signal
 fixedConeHighEffPFTauProducer.ECALSignalConeSizeFormula    = cms.string('0.15') ## **
@@ -33,7 +28,60 @@ fixedConeHighEffPFTauProducer.ECALSignalConeSize_max    = cms.double(0.15)
 fixedConeHighEffPFTauProducer.HCALSignalConeSizeFormula    = cms.string('0.15') ## **
 fixedConeHighEffPFTauProducer.HCALSignalConeSize_min    = cms.double(0.00)
 fixedConeHighEffPFTauProducer.HCALSignalConeSize_max    = cms.double(0.15)
+#--- tracker isolation
+fixedConeHighEffPFTauProducer.TrackerIsolConeSizeFormula   = cms.string('1.00') ## **
+fixedConeHighEffPFTauProducer.TrackerIsolConeSize_min   = cms.double(0.0)
+fixedConeHighEffPFTauProducer.TrackerIsolConeSize_max   = cms.double(1.1)
+#--- ecal isolation
+fixedConeHighEffPFTauProducer.ECALIsolConeSizeFormula      = cms.string('1.00') ## **
+fixedConeHighEffPFTauProducer.ECALIsolConeSize_min      = cms.double(0.0)
+fixedConeHighEffPFTauProducer.ECALIsolConeSize_max      = cms.double(1.1)
+#--- hcal isolation
+fixedConeHighEffPFTauProducer.HCALIsolConeSizeFormula      = cms.string('1.00') ## **
+fixedConeHighEffPFTauProducer.HCALIsolConeSize_min      = cms.double(0.0)
+fixedConeHighEffPFTauProducer.HCALIsolConeSize_max      = cms.double(1.1)
 
+from RecoTauTag.RecoTau.PFRecoTauDecayModeDeterminator_cfi                          import *
+fixedConeHighEffPFTauDecayModeProducer               = copy.deepcopy(pfTauDecayMode)
+fixedConeHighEffPFTauDecayModeProducer.PFTauProducer = 'fixedConeHighEffPFTauProducer'
+from RecoTauTag.RecoTau.PFRecoTauDecayModeIndexProducer_cfi                             import *
+fixedConeHighEffPFTauDecayModeIndexProducer                        = copy.deepcopy(pfTauDecayModeIndexProducer)
+fixedConeHighEffPFTauDecayModeIndexProducer.PFTauProducer          = cms.InputTag("fixedConeHighEffPFTauProducer")
+fixedConeHighEffPFTauDecayModeIndexProducer.PFTauDecayModeProducer = cms.InputTag("fixedConeHighEffPFTauDecayModeProducer")
+from RecoTauTag.RecoTau.PFRecoTauDiscriminationByIsolation_cfi                      import *
+from RecoTauTag.RecoTau.PFRecoTauDiscriminationByLeadingTrackFinding_cfi            import *
+from RecoTauTag.RecoTau.PFRecoTauDiscriminationByLeadingTrackPtCut_cfi              import *
+from RecoTauTag.RecoTau.PFRecoTauDiscriminationByTrackIsolation_cfi                 import *
+from RecoTauTag.RecoTau.PFRecoTauDiscriminationByECALIsolation_cfi                  import *
+from RecoTauTag.RecoTau.PFRecoTauDiscriminationAgainstElectron_cfi                  import *
+from RecoTauTag.RecoTau.PFRecoTauDiscriminationAgainstMuon_cfi                      import *
+from RecoTauTag.RecoTau.PFRecoTauDiscriminationByIsolationUsingLeadingPion_cfi      import *
+from RecoTauTag.RecoTau.PFRecoTauDiscriminationByLeadingPionPtCut_cfi               import *
+from RecoTauTag.RecoTau.PFRecoTauDiscriminationByTrackIsolationUsingLeadingPion_cfi import *
+from RecoTauTag.RecoTau.PFRecoTauDiscriminationByECALIsolationUsingLeadingPion_cfi  import *
+from RecoTauTag.RecoTau.TauDiscriminatorTools import *
+fixedConeHighEffPFTauDiscriminationByLeadingTrackFinding                          = copy.deepcopy(pfRecoTauDiscriminationByLeadingTrackFinding)
+setTauSource(fixedConeHighEffPFTauDiscriminationByLeadingTrackFinding, 'fixedConeHighEffPFTauProducer')
+fixedConeHighEffPFTauDiscriminationByLeadingTrackPtCut                            = copy.deepcopy(pfRecoTauDiscriminationByLeadingTrackPtCut)
+setTauSource(fixedConeHighEffPFTauDiscriminationByLeadingTrackPtCut, 'fixedConeHighEffPFTauProducer')
+fixedConeHighEffPFTauDiscriminationByLeadingPionPtCut                             = copy.deepcopy(pfRecoTauDiscriminationByLeadingPionPtCut)
+setTauSource(fixedConeHighEffPFTauDiscriminationByLeadingPionPtCut, 'fixedConeHighEffPFTauProducer')
+fixedConeHighEffPFTauDiscriminationByIsolation                                    = copy.deepcopy(pfRecoTauDiscriminationByIsolation)
+setTauSource(fixedConeHighEffPFTauDiscriminationByIsolation, 'fixedConeHighEffPFTauProducer')
+fixedConeHighEffPFTauDiscriminationByTrackIsolation                               = copy.deepcopy(pfRecoTauDiscriminationByTrackIsolation)
+setTauSource(fixedConeHighEffPFTauDiscriminationByTrackIsolation, 'fixedConeHighEffPFTauProducer')
+fixedConeHighEffPFTauDiscriminationByECALIsolation                                = copy.deepcopy(pfRecoTauDiscriminationByECALIsolation)
+setTauSource(fixedConeHighEffPFTauDiscriminationByECALIsolation, 'fixedConeHighEffPFTauProducer')
+fixedConeHighEffPFTauDiscriminationByIsolationUsingLeadingPion                    = copy.deepcopy(pfRecoTauDiscriminationByIsolationUsingLeadingPion)
+setTauSource(fixedConeHighEffPFTauDiscriminationByIsolationUsingLeadingPion, 'fixedConeHighEffPFTauProducer')
+fixedConeHighEffPFTauDiscriminationByTrackIsolationUsingLeadingPion               = copy.deepcopy(pfRecoTauDiscriminationByTrackIsolationUsingLeadingPion)
+setTauSource(fixedConeHighEffPFTauDiscriminationByTrackIsolationUsingLeadingPion, 'fixedConeHighEffPFTauProducer')
+fixedConeHighEffPFTauDiscriminationByECALIsolationUsingLeadingPion                = copy.deepcopy(pfRecoTauDiscriminationByECALIsolationUsingLeadingPion)
+setTauSource(fixedConeHighEffPFTauDiscriminationByECALIsolationUsingLeadingPion, 'fixedConeHighEffPFTauProducer')
+fixedConeHighEffPFTauDiscriminationAgainstElectron                                = copy.deepcopy(pfRecoTauDiscriminationAgainstElectron)
+setTauSource(fixedConeHighEffPFTauDiscriminationAgainstElectron, 'fixedConeHighEffPFTauProducer')
+fixedConeHighEffPFTauDiscriminationAgainstMuon                                    = copy.deepcopy(pfRecoTauDiscriminationAgainstMuon)
+setTauSource(fixedConeHighEffPFTauDiscriminationAgainstMuon, 'fixedConeHighEffPFTauProducer')
 
 #--- tracker isolation
 fixedConePFTauProducer.TrackerIsolConeSizeFormula   = cms.string('1.00') ## **
@@ -125,28 +173,29 @@ from RecoTauTag.RecoTau.PFRecoTauDiscriminationByIsolationUsingLeadingPion_cfi  
 from RecoTauTag.RecoTau.PFRecoTauDiscriminationByLeadingPionPtCut_cfi               import *
 from RecoTauTag.RecoTau.PFRecoTauDiscriminationByTrackIsolationUsingLeadingPion_cfi import *
 from RecoTauTag.RecoTau.PFRecoTauDiscriminationByECALIsolationUsingLeadingPion_cfi  import *
+from RecoTauTag.RecoTau.TauDiscriminatorTools import *
 shrinkingTightConePFTauDiscriminationByLeadingTrackFinding                          = copy.deepcopy(pfRecoTauDiscriminationByLeadingTrackFinding)
-shrinkingTightConePFTauDiscriminationByLeadingTrackFinding.PFTauProducer            = 'shrinkingTightConePFTauProducer'
+setTauSource(shrinkingTightConePFTauDiscriminationByLeadingTrackFinding, 'shrinkingTightConePFTauProducer')
 shrinkingTightConePFTauDiscriminationByLeadingTrackPtCut                            = copy.deepcopy(pfRecoTauDiscriminationByLeadingTrackPtCut)
-shrinkingTightConePFTauDiscriminationByLeadingTrackPtCut.PFTauProducer              = 'shrinkingTightConePFTauProducer'
+setTauSource(shrinkingTightConePFTauDiscriminationByLeadingTrackPtCut, 'shrinkingTightConePFTauProducer')
 shrinkingTightConePFTauDiscriminationByLeadingPionPtCut                             = copy.deepcopy(pfRecoTauDiscriminationByLeadingPionPtCut)
-shrinkingTightConePFTauDiscriminationByLeadingPionPtCut.PFTauProducer               = 'shrinkingTightConePFTauProducer'
+setTauSource(shrinkingTightConePFTauDiscriminationByLeadingPionPtCut, 'shrinkingTightConePFTauProducer')
 shrinkingTightConePFTauDiscriminationByIsolation                                    = copy.deepcopy(pfRecoTauDiscriminationByIsolation)
-shrinkingTightConePFTauDiscriminationByIsolation.PFTauProducer                      = 'shrinkingTightConePFTauProducer'
+setTauSource(shrinkingTightConePFTauDiscriminationByIsolation, 'shrinkingTightConePFTauProducer')
 shrinkingTightConePFTauDiscriminationByTrackIsolation                               = copy.deepcopy(pfRecoTauDiscriminationByTrackIsolation)
-shrinkingTightConePFTauDiscriminationByTrackIsolation.PFTauProducer                 = 'shrinkingTightConePFTauProducer'
+setTauSource(shrinkingTightConePFTauDiscriminationByTrackIsolation, 'shrinkingTightConePFTauProducer')
 shrinkingTightConePFTauDiscriminationByECALIsolation                                = copy.deepcopy(pfRecoTauDiscriminationByECALIsolation)
-shrinkingTightConePFTauDiscriminationByECALIsolation.PFTauProducer                  = 'shrinkingTightConePFTauProducer'
+setTauSource(shrinkingTightConePFTauDiscriminationByECALIsolation, 'shrinkingTightConePFTauProducer')
 shrinkingTightConePFTauDiscriminationByIsolationUsingLeadingPion                    = copy.deepcopy(pfRecoTauDiscriminationByIsolationUsingLeadingPion)
-shrinkingTightConePFTauDiscriminationByIsolationUsingLeadingPion.PFTauProducer      = 'shrinkingTightConePFTauProducer'
+setTauSource(shrinkingTightConePFTauDiscriminationByIsolationUsingLeadingPion, 'shrinkingTightConePFTauProducer')
 shrinkingTightConePFTauDiscriminationByTrackIsolationUsingLeadingPion               = copy.deepcopy(pfRecoTauDiscriminationByTrackIsolationUsingLeadingPion)
-shrinkingTightConePFTauDiscriminationByTrackIsolationUsingLeadingPion.PFTauProducer = 'shrinkingTightConePFTauProducer'
+setTauSource(shrinkingTightConePFTauDiscriminationByTrackIsolationUsingLeadingPion, 'shrinkingTightConePFTauProducer')
 shrinkingTightConePFTauDiscriminationByECALIsolationUsingLeadingPion                = copy.deepcopy(pfRecoTauDiscriminationByECALIsolationUsingLeadingPion)
-shrinkingTightConePFTauDiscriminationByECALIsolationUsingLeadingPion.PFTauProducer  = 'shrinkingTightConePFTauProducer'
+setTauSource(shrinkingTightConePFTauDiscriminationByECALIsolationUsingLeadingPion, 'shrinkingTightConePFTauProducer')
 shrinkingTightConePFTauDiscriminationAgainstElectron                                = copy.deepcopy(pfRecoTauDiscriminationAgainstElectron)
-shrinkingTightConePFTauDiscriminationAgainstElectron.PFTauProducer                  = 'shrinkingTightConePFTauProducer'
+setTauSource(shrinkingTightConePFTauDiscriminationAgainstElectron, 'shrinkingTightConePFTauProducer')
 shrinkingTightConePFTauDiscriminationAgainstMuon                                    = copy.deepcopy(pfRecoTauDiscriminationAgainstMuon)
-shrinkingTightConePFTauDiscriminationAgainstMuon.PFTauProducer                      = 'shrinkingTightConePFTauProducer'
+setTauSource(shrinkingTightConePFTauDiscriminationAgainstMuon, 'shrinkingTightConePFTauProducer')
 
 # gen met
 from RecoMET.Configuration.GenMETParticles_cff import *
@@ -158,14 +207,26 @@ from RecoMET.METProducers.genMetCalo_cfi import *
 from PhysicsTools.JetMCAlgos.TauGenJets_cfi import *
 
 producePatTuple = cms.Sequence(
-    tauGenJets *
     electronIdCutBased *
     recoElectronIsolation *
     ic5PFJetTracksAssociatorAtVertex *
     pfRecoTauTagInfoProducer *
     produceAndDiscriminateShrinkingConePFTaus *
     produceShrinkingConeDiscriminationByTauNeuralClassifier *
-    produceAndDiscriminateFixedConeHighEffPFTaus * 
+    fixedConeHighEffPFTauProducer*
+    fixedConeHighEffPFTauDecayModeProducer*
+    fixedConeHighEffPFTauDecayModeIndexProducer*
+    fixedConeHighEffPFTauDiscriminationByLeadingTrackFinding*
+    fixedConeHighEffPFTauDiscriminationByLeadingTrackPtCut*
+    fixedConeHighEffPFTauDiscriminationByLeadingPionPtCut*
+    fixedConeHighEffPFTauDiscriminationByIsolation*
+    fixedConeHighEffPFTauDiscriminationByTrackIsolation*
+    fixedConeHighEffPFTauDiscriminationByECALIsolation*
+    fixedConeHighEffPFTauDiscriminationByIsolationUsingLeadingPion*
+    fixedConeHighEffPFTauDiscriminationByTrackIsolationUsingLeadingPion*
+    fixedConeHighEffPFTauDiscriminationByECALIsolationUsingLeadingPion*
+    fixedConeHighEffPFTauDiscriminationAgainstElectron*
+    fixedConeHighEffPFTauDiscriminationAgainstMuon *    
     produceAndDiscriminateFixedConePFTaus *
     shrinkingTightConePFTauProducer*
     shrinkingTightConePFTauDecayModeProducer*
@@ -181,12 +242,10 @@ producePatTuple = cms.Sequence(
     shrinkingTightConePFTauDiscriminationByECALIsolationUsingLeadingPion*
     shrinkingTightConePFTauDiscriminationAgainstElectron*
     shrinkingTightConePFTauDiscriminationAgainstMuon *
-    patDefaultSequence *
+    patCustomizedCandidates *
+    selectedPatCustomizedCandidates *
     genMETParticles *
-#    #genMet *
     genMetCalo *
     genMetTrue
     )
-
-
 
