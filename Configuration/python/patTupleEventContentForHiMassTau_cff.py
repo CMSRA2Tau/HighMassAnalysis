@@ -14,11 +14,9 @@ patTupleEventContent = cms.PSet(
 # keep PAT layer 1 objects
 #--------------------------------------------------------------------------------
 
-#patTupleEventContent.outputCommands.extend(patEventContent)
-patTupleEventContent.outputCommands.extend(patEventContentNoLayer1Cleaning)
+patTupleEventContent.outputCommands.extend(patEventContentNoCleaning)
 patTupleEventContent.outputCommands.extend(patExtraAodEventContent)
 patTupleEventContent.outputCommands.extend(patTriggerEventContent)
-
 
 #--------------------------------------------------------------------------------
 # keep collections of additional collections
@@ -36,15 +34,13 @@ patTupleEventContent.outputCommands.extend(
     'keep *_selectedLayer1FixedConePFTaus_*_*',
     'keep *_selectedLayer1ShrinkingConeHighEffPFTaus_*_*',
     'keep *_selectedLayer1ShrinkingConePFTaus_*_*',
-    'keep *_allLayer1JetsPF_*_*',
+    'keep patJets_patJetsAK5PF_*_*',
     'keep *_layer1PFMETs_*_*',
     'keep *_layer1METsPF_*_*',
     'keep *_genMetCalo__hiMassTau',
     'keep *_genMetTrue__hiMassTau',
-#    'keep *_cteq65PdfWeights_*_*',
-#    'keep *_MRST2006nnloPdfWeights_*_*',
-#    'keep *_MRST2007lomodPdfWeights_*_*',
     'keep *_generator_*_*',
+    'keep DcsStatuss_scalersRawToDigi_*_*',
     ]
 )
 
@@ -53,10 +49,11 @@ patTupleEventContent.outputCommands.extend(
 #--------------------------------------------------------------------------------
 
 patTupleEventContent.outputCommands.extend(
-    [ 'keep *_selectedLayer1Electrons_*_*',
-      'keep *_selectedLayer1Muons_*_*',
-#      'keep *_selectedLayer1Taus_*_*',
-      'keep *_selectedLayer1Jets_*_*' ]
+    [ 'keep *_selectedPatElectrons_*_*',
+      'keep recoGsfElectronCores_*_*_*',
+      'keep recoSuperClusters_*_*_*',
+      'keep *_selectedPatMuons_*_*',
+      'keep *_selectedPatJets_*_*' ]
 )
 
 #--------------------------------------------------------------------------------
@@ -76,4 +73,3 @@ patTupleEventContent.outputCommands.extend(
       'drop patPhotons_*_*_*',
       'drop *_selectedLayer1Taus_*_*' ]
 )
-
