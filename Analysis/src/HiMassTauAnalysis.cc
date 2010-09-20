@@ -138,7 +138,6 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
   _TriggerRequirements = iConfig.getParameter<std::vector<std::string> >("TriggerRequirements");
 
   //-----Topology Inputs
-  _RecoDiTauSource = iConfig.getParameter<InputTag>("RecoDiTauSource");
   _RecoMetSource = iConfig.getParameter<InputTag>("RecoMetSource");
   _DoDiscrByMet = iConfig.getParameter<bool>("DoDiscrByMet");
   _RecoMetCut = iConfig.getParameter<double>("RecoMetCut");
@@ -261,23 +260,24 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
 }
 
 // ------------ method called once each job just before starting event loop  ------------
-void  HiMassTauAnalysis::beginJob(const EventSetup&) {
+void  HiMassTauAnalysis::beginJob() {
   _totalEvents = 0;  
   _totalEventsPassingCuts = 0;  
   if(_CalculatePdfSystematicUncertanties) {InitializeInfoForPDFSystematicUncertaintites();}
   setMapSelectionAlgoIDs();
   initMapSelectionCounters();
   //  bookHistograms();  
-  if (_DoProduceNtuple) {
-    initializeVectors();
-    setupBranches();
-  }
+  //if (_DoProduceNtuple) {
+    //initializeVectors();
+    //setupBranches();
+  //}
 }
 // Set branches for the ntuple
 void  HiMassTauAnalysis::setupBranches() {
    // For the taus
   _HMTTree = new TTree(_NtupleTreeName.c_str(), "HiMassDiTau Tree");
   _HMTTree->Branch("tauPdgId",&_tauPdgId);
+  _HMTTree->Branch("tauMatched",&_tauMatched);
   _HMTTree->Branch("tauMotherPdgId",&_tauMotherPdgId);
   _HMTTree->Branch("tauE",&_tauE);
   _HMTTree->Branch("tauEt",&_tauEt);
@@ -310,7 +310,6 @@ void  HiMassTauAnalysis::setupBranches() {
   _HMTTree->Branch("tauLTCharge",&_tauLTCharge);
   _HMTTree->Branch("tauLTSignedIp",&_tauLTSignedIp);
   _HMTTree->Branch("tauIsInTheCraks",&_tauIsInTheCraks);
-
 
   _HMTTree->Branch("eventIsZee",&_eventIsZee);
   _HMTTree->Branch("zeeMass",&_zeeMass);
@@ -384,15 +383,6 @@ void  HiMassTauAnalysis::setupBranches() {
   _HMTTree->Branch("isEBEtaGap",&_isEBPhiGap) ; 
   _HMTTree->Branch("isEBEtaGap",&_isEEDeeGap) ; 
   _HMTTree->Branch("isEBEtaGap",&_isEERingGap) ;
-
-  //---Smear
-  _HMTTree->Branch("smearElectronPt",    &_smearElectronPtv);
-  _HMTTree->Branch("smearElectronEta",   &_smearElectronEtav);
-  _HMTTree->Branch("smearElectronPhi",   &_smearElectronPhiv);
-  _HMTTree->Branch("smearTauPt",         &_smearTauPtv);
-  _HMTTree->Branch("smearTauEta",        &_smearTauEtav);
-  _HMTTree->Branch("smearTauPhi",        &_smearTauPhiv);
-  _HMTTree->Branch("eTauSmeredMass",     &_eTauSmeredMassv);
 
   _HMTTree->Branch("eEcalDriven",        &_eEcalDrivenv);
   _HMTTree->Branch("eTrkDriven",         &_eTrkDrivenv);
@@ -527,14 +517,6 @@ void HiMassTauAnalysis::initializeVectors(){
   _isEEDeeGap   = NULL; 
   _isEERingGap  = NULL;
 
-  _smearElectronPtv    = NULL;
-  _smearElectronEtav   = NULL;
-  _smearElectronPhiv   = NULL;
-  _smearTauPtv         = NULL;
-  _smearTauEtav        = NULL;
-  _smearTauPhiv        = NULL;
-  _eTauSmeredMassv     = NULL;
-
   _eEcalDrivenv        = NULL;
   _eTrkDrivenv         = NULL;
   _PDF_weightsv        = NULL;
@@ -668,14 +650,6 @@ void HiMassTauAnalysis::clearVectors(){
   _isEEDeeGap->clear();
   _isEERingGap->clear();
 
-  _smearElectronPtv    ->clear();
-  _smearElectronEtav   ->clear();
-  _smearElectronPhiv   ->clear();
-  _smearTauPtv    ->clear();
-  _smearTauEtav   ->clear();
-  _smearTauPhiv   ->clear();
-  _eTauSmeredMassv->clear();
-  
   _eEcalDrivenv->clear();
   _eTrkDrivenv ->clear();
   _PDF_weightsv->clear();
@@ -699,6 +673,8 @@ void HiMassTauAnalysis::analyze(const Event& iEvent, const EventSetup& iSetup) {
 
   //------Number of events analyzed (denominator)
   _totalEvents++;
+
+//  std::cout << "before pdf" << std::endl;
 
   //-----Get weights for the calculation of pdf systematic uncertainties for the denominator
   pdfWeightVector.clear();
@@ -942,7 +918,13 @@ void HiMassTauAnalysis::analyze(const Event& iEvent, const EventSetup& iSetup) {
     }
   }
 
-  if(_totalEvents == 1) {bookHistograms();}
+  if(_totalEvents == 1) {
+    bookHistograms();
+    if (_DoProduceNtuple) {
+      initializeVectors();
+      setupBranches();
+    }
+  }
 
   //------Number of events analyzed (denominator)
   for(unsigned int NpdfID = 0; NpdfID < pdfWeightVector.size();  NpdfID++){ 
@@ -1494,8 +1476,8 @@ bool HiMassTauAnalysis::passRecoElectronCuts(const pat::Electron& patElectron,bo
   if (_DoRecoElectronDiscrBySigmaEtaEta) {}
   if (_DoRecoElectronDiscrBySigmaIEtaIEta) {}
   if (_DoRecoElectronDiscrBySCE5by5) {}
-  if (_DoRecoElectronDiscrByEcalDrivenSeed) { if(!(patElectron.ecalDrivenSeed())) {return false;} }
-  if (_DoRecoElectronDiscrByTrackerDrivenSeed) { if(!(patElectron.trackerDrivenSeed())) {return false;} }
+//  if (_DoRecoElectronDiscrByEcalDrivenSeed) { if(!(patElectron.ecalDrivenSeed())) {return false;} }
+//  if (_DoRecoElectronDiscrByTrackerDrivenSeed) { if(!(patElectron.trackerDrivenSeed())) {return false;} }
   return true;
 }
 
@@ -2566,7 +2548,7 @@ void HiMassTauAnalysis::fillNtuple() {
         _jetPhi->push_back(smearedJetMomentumVector.at(theNumberOfJets).phi());
         _jetEmFraction->push_back(patJet->correctedJet("raw", "").emEnergyFraction());
       } else {
-        _jetPt->push_back(patJet->correctedJet("raw","").pt());
+        _jetPt->push_back((float)patJet->correctedJet("raw","").pt());
         _jetEt->push_back(patJet->correctedJet("raw","").et());
         _jetE->push_back(patJet->correctedJet("raw","").energy());
         _jetEta->push_back(patJet->correctedJet("raw","").eta()); 
@@ -2609,17 +2591,12 @@ void HiMassTauAnalysis::fillNtuple() {
           reco::Candidate::LorentzVector LorentzGenElectron(genElectronLorentzVector.px(), genElectronLorentzVector.py(), genElectronLorentzVector.pz(), genElectronLorentzVector.energy());
           // store the recalculated 4-momentum (will be used below)	  
           Electron = LorentzGenElectron;
-          //----Smearing
-          _smearElectronPtv->push_back (genElectronPt) ;
-          _smearElectronEtav->push_back(genElectronEta) ;
-          _smearElectronPhiv->push_back(genElectronPhi) ;
-	  
         }
       }else{
         // if smearing is set to false, use default patElectron 4-momentum
 	Electron = patElectron->p4();
       }
-      
+
       // determine whether ntuple information will be filled based on systematics (smearing of resolution and scale for taus or electrons) 
       if(_SmearTheTau){
         // only apply tau based smearing if the patTau is matched to a "true" generator level tau
@@ -2646,10 +2623,6 @@ void HiMassTauAnalysis::fillNtuple() {
 
           // store the recalculated 4-momentum (will be used below)	  	  
           Tau = LorentzGenTau;
-          //------Smearing
-          _smearTauPtv->push_back(genTauPt)   ;
-          _smearTauEtav->push_back(genTauEta) ;
-          _smearTauPhiv->push_back(genTauPhi) ;
         }
       }else{
         // if smearing is set to false, use default patElectron 4-momentum
@@ -2671,11 +2644,11 @@ void HiMassTauAnalysis::fillNtuple() {
       MET = LorentzVectorMET;
 
       //----eEcalDriven? eTrkDriven?
-      const bool eEcalDriven = patElectron->ecalDrivenSeed();
-      const bool eTrkDriven  = patElectron->trackerDrivenSeed();
+//      const bool eEcalDriven = patElectron->ecalDrivenSeed();
+//      const bool eTrkDriven  = patElectron->trackerDrivenSeed();
       
-      _eEcalDrivenv->push_back(eEcalDriven);
-      _eTrkDrivenv->push_back(eTrkDriven);
+//      _eEcalDrivenv->push_back(eEcalDriven);
+//      _eTrkDrivenv->push_back(eTrkDriven);
       
       // Get generator level information for pt,eta,phi and energy, matching the reco and gen objects using EDAnalyzer matching function 
       _taugenPt->push_back(matchToGen(*patTau).second.pt());
@@ -2686,7 +2659,7 @@ void HiMassTauAnalysis::fillNtuple() {
       _egenE->push_back(matchToGen(*patElectron).second.energy());
       _egenEta->push_back(matchToGen(*patElectron).second.eta());
       _egenPhi->push_back(matchToGen(*patElectron).second.phi());
-      
+
       //  Get basic infomration of the tau candidate 
       _tauE->push_back(Tau.energy());    
       _tauEt->push_back((Tau.energy())*sin(Tau.theta()));									       
@@ -2759,10 +2732,10 @@ void HiMassTauAnalysis::fillNtuple() {
         _tauDiscAgainstElec->push_back(patTau->tauID(_RecoTauDiscrAgainstElectron.data()));
 	_tauIsInTheCraks->push_back(isInTheCracks(patTau->eta()));
       }
-      
+
       // fill bool variable to determing if the tau candidate passed matching or not. 
       _tauMatched->push_back(int(matchToGen(*patTau).first));
- 
+
       // Get tauIso using different cone sizes and/or thresholds 
       _tauIsoTrackPtSum->push_back(CalculateTauTrackIsolation(*patTau, 0.5, 1.0).second);
       _tauIsoTrkPtSumDR1_0MinPt1_0->push_back(CalculateTauTrackIsolation(*patTau, 1.0, 1.0).second);
@@ -2790,7 +2763,7 @@ void HiMassTauAnalysis::fillNtuple() {
 
       // fill bool variable to determing if the electron candidate passed matching or not.
       _eMatched->push_back(int(matchToGen(*patElectron).first));
-      
+
       // Is the electron comming from the barrel or the endcap?
       _isEEv->push_back(patElectron->isEE());
       _isEBv->push_back(patElectron->isEB());
@@ -2804,7 +2777,7 @@ void HiMassTauAnalysis::fillNtuple() {
       _isEEDeeGap  ->push_back(patElectron->isEEDeeGap());
       // true if particle is in EE, and inside the gaps between rings
       _isEERingGap ->push_back(patElectron->isEERingGap());
-     
+
       // get Electron pdg Id 
       _ePdgId->push_back(getMatchedPdgId(patElectron->pt(), patElectron->eta(), patElectron->phi(), patElectron->charge()).first);
       _eMotherPdgId->push_back(getMatchedPdgId(patElectron->pt(), patElectron->eta(), patElectron->phi(), patElectron->charge()).second);
@@ -2830,8 +2803,8 @@ void HiMassTauAnalysis::fillNtuple() {
       _eUserEcalIso->push_back(patElectron->userIsolation(pat::EcalIso));
       _eUserHcalIso->push_back(patElectron->userIsolation(pat::HcalIso));										     
       _eUserTrkIso->push_back(patElectron->userIsolation(pat::TrackIso));
-
       _eIsoPat->push_back(patElectron->caloIso());
+
       _eSCE1x5->push_back(patElectron->scE1x5());								       
       _eSCE2x5->push_back(patElectron->scE2x5Max());		       
       _eSCE5x5->push_back(patElectron->scE5x5()); 
@@ -2854,6 +2827,7 @@ void HiMassTauAnalysis::fillNtuple() {
         _eIpError_ctf->push_back(-100.);
         _eIp_ctf->push_back(-100.); 
       }
+
       // Electron classification, is the electron classified as showering? narrow? big brem? golden? is in the cracks region? 
       _eClass->push_back(patElectron->classification());
 
@@ -2903,7 +2877,6 @@ void HiMassTauAnalysis::fillNtuple() {
     
     }										  
   }
-  //}
   _HMTTree->Fill();
 
 
@@ -3298,8 +3271,8 @@ void HiMassTauAnalysis::fillHistograms() {
 	_hElectronEoverP[NpdfID]->Fill(patElectron->eSuperClusterOverP(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hElectronHoverEm[NpdfID]->Fill(patElectron->hadronicOverEm(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hElectronClassification[NpdfID]->Fill(patElectron->classification(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	_hElectronEcalDriven[NpdfID]->Fill(patElectron->ecalDrivenSeed(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	_hElectronTrackerDriven[NpdfID]->Fill(patElectron->trackerDrivenSeed(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	//_hElectronEcalDriven[NpdfID]->Fill(patElectron->ecalDrivenSeed(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	//_hElectronTrackerDriven[NpdfID]->Fill(patElectron->trackerDrivenSeed(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	nElectrons++;
       }
       _hNElectron[NpdfID]->Fill(nElectrons,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
@@ -3725,7 +3698,7 @@ pair<const pat::Tau*, const pat::Electron*> HiMassTauAnalysis::getPATComponents(
 
 // ---------------
 void HiMassTauAnalysis::getCollections(const Event& iEvent, const EventSetup& iSetup) {
-  if (_DoProduceNtuple) { iEvent.getByLabel(_RecoDiTauSource, _patDiTaus); }
+//  if (_DoProduceNtuple) { iEvent.getByLabel(_RecoDiTauSource, _patDiTaus); }
   iEvent.getByLabel(_RecoTauSource, _patTaus);
   iEvent.getByLabel(_RecoMuonSource, _patMuons);
   if(_GenParticleSource.label() != "") { iEvent.getByLabel(_GenParticleSource, _genParticles); }

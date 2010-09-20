@@ -13,215 +13,15 @@ process.maxEvents = cms.untracked.PSet(
 process.source = cms.Source("PoolSource",
     skipEvents = cms.untracked.uint32(0),
     fileNames = cms.untracked.vstring(
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_99.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_98.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_97.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_96.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_95.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_94.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_93.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_92.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_91.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_90.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_9.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_89.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_88.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_87.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_86.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_85.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_84.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_83.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_82.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_81.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_80.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_8.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_79.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_78.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_77.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_76.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_75.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_74.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_73.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_72.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_71.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_70.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_7.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_69.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_68.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_67.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_66.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_65.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_64.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_63.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_62.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_61.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_60.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_6.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_59.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_58.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_57.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_56.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_55.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_54.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_53.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_52.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_51.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_50.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_5.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_49.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_48.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_47.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_46.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_45.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_44.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_43.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_42.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_41.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_40.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_4.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_39.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_38.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_37.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_36.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_35.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_34.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_33.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_32.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_31.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_30.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_3.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_29.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_28.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_27.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_26.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_25.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_24.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_23.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_22.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_21.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_20.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_2.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_19.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_18.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_17.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_16.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_15.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_14.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_13.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_12.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_11.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_100.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_10.root',
-        
-'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_1.root'    
-) )
+'/store/user/eluiggi/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/ZprimeTauTau500PatSummer10Start36V10/a93249a823fb0dc819ca18ebc3447f9a/zprimeTauTauPat_8_1_RCT.root'
+#'/store/user/florez/Zprime500_PAT_STARTUP_36X/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500_7TeV_PAT_eTau_STARTUP_36X/8b0dd7d13c5c85a732deb529e37114fd/eTauPatTuple_9_1_8vh.root',
 
-process.eTauCandidates = cms.EDProducer("DeltaRMinCandCombiner",
-  decay = cms.string('selectedLayer1FixedConePFTaus@+ selectedLayer1Electrons@-'),
-  checkCharge = cms.bool(False),
-  cut = cms.string(''),
-  name = cms.string('etauCandidates'),
-  deltaRMin = cms.double(0.7),
-  roles = cms.vstring('tau', 'electron')
+    )
+)
+
+process.TFileService = cms.Service("TFileService", 
+#    fileName = cms.string("outputFILENAME")
+    fileName = cms.string("muTauAnalysis.root")
 )
 
 process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
@@ -285,10 +85,10 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     DoRecoTauDiscrByCrackCut = cms.bool(False),						# if true, taus that fall on the cracks will not be considered
     DoRecoTauDiscrAgainstMuon = cms.bool(False),					# if true, muon veto will be applied
     RecoTauDiscrAgainstMuon = cms.untracked.string('againstMuon'),			# name of muon veto discriminator flag
-    SetTANC = cms.bool(True),								# set true if wanting to fill TanC info in the Ntuple
+    SetTANC = cms.bool(False),								# set true if wanting to fill TanC info in the Ntuple
 
     #-----Reco Muon Inputs
-    RecoMuonSource = cms.InputTag('selectedLayer1Muons'),				# muon collection
+    RecoMuonSource = cms.InputTag('selectedPatMuons'),				# muon collection
     RecoMuonEtaCut = cms.double(999.1),							# require muon |eta|<=X
     RecoMuonPtMinCut = cms.double(0.),							# require muon pt>=X
     RecoMuonPtMaxCut = cms.double(9999.),						# require muon pt<=X
@@ -307,7 +107,7 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     RecoMuonAntiPionCut = cms.double(1.0),                                              # pion veto > X
 
     #-----Reco Electron Inputs
-    RecoElectronSource = cms.InputTag('selectedLayer1Electrons'),			# electron collection
+    RecoElectronSource = cms.InputTag('selectedPatElectrons'),			# electron collection
     RecoElectronEtaCut = cms.double(999.1),						# require electron |eta|<=X
     RecoElectronPtMinCut = cms.double(0.),						# require electron pt>=X
     RecoElectronPtMaxCut = cms.double(9999.),						# require electron pt<=X
@@ -336,7 +136,7 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     DoRecoElectronDiscrByTrackerDrivenSeed = cms.bool(False),
 
     #-----Reco Jet Inputs
-    RecoJetSource                       = cms.InputTag('selectedLayer1Jets'),           # jet collection
+    RecoJetSource                       = cms.InputTag('selectedPatJets'),           # jet collection
     RecoJetEtaMinCut                    = cms.double(0.0),                              # require jet |eta|>=X
     RecoJetEtaMaxCut                    = cms.double(999.5),                            # require jet |eta|<=X
     RecoJetPtCut                        = cms.double(0.0),                             # require jet pt>=X
@@ -355,12 +155,11 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     RecoVertexTrackWeight = cms.double(0.5),						# weight used to define "good" tracks used to reconstruct vertex
 
     #-----Trigger Inputs
-    RecoTriggerSource = cms.InputTag("TriggerResults","","HLT"),			# trigger collection
+    RecoTriggerSource = cms.InputTag("TriggerResults","","REDIGI36X"),			# trigger collection
     TriggerRequirements = cms.vstring('HLT_Mu9'),					# trigger path name
 
     #-----Topology Inputs
-    RecoDiTauSource = cms.InputTag('eTauCandidates'),					# ditau collection needed for the filling of the Ntuple
-    RecoMetSource = cms.InputTag('layer1METsPF'),					# met collection
+    RecoMetSource = cms.InputTag('patMETsPF'),					# met collection
 											# particle flow met for 2X	= layer1PFMETs
 											# particle flow met for 3X	= layer1METsPF
 											# standard calo met for 2X & 3X	= layer1METs
@@ -419,7 +218,7 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     TauToGenMatchingDeltaR = cms.double(0.25),						# matching dR:  dR(vis gen tau,reco tau)<X
 
     #-----ntuple Inputs
-    DoProduceNtuple = cms.bool(False),							# if true, Ntuple will be filled
+    DoProduceNtuple = cms.bool(True),							# if true, Ntuple will be filled
     NtupleTreeName = cms.untracked.string('HMTTree'),					# name of the Ntuple tree
 
     #-----Fill Histograms? Histograms are filled for events passing the specified cuts
@@ -504,13 +303,7 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     )
 )
 
-process.TFileService = cms.Service("TFileService", 
-#    fileName = cms.string("outputFILENAME")
-    fileName = cms.string("muTauAnalysis.root")
-)
-
 process.p = cms.Path(
-    process.eTauCandidates*
     process.analyzeHiMassTau
     )
 

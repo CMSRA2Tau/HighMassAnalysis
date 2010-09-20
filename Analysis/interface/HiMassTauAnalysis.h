@@ -61,7 +61,7 @@ public:
 
 
 private:
-  virtual void beginJob(const EventSetup&) ;
+  virtual void beginJob() ;
   virtual void analyze(const Event&, const EventSetup&);
   virtual void endJob() ;
 
@@ -258,7 +258,7 @@ private:
   std::vector<std::string> _TriggerRequirements;
 
   //-----Topology Inputs
-  InputTag _RecoDiTauSource;
+//  InputTag _RecoDiTauSource;
   InputTag _RecoMetSource;
   double _RecoMetCut;
   double _DiTauDeltaRCut;
@@ -506,7 +506,7 @@ private:
   Handle< pat::ElectronCollection > _patElectrons;
   Handle< pat::JetCollection > _patJets;
   Handle< pat::METCollection > _patMETs;
-  Handle< reco::CompositeCandidateCollection > _patDiTaus;
+//  Handle< reco::CompositeCandidateCollection > _patDiTaus;
   Handle< reco::VertexCollection > _primaryEventVertexCollection;
   edm::Handle< edm::TriggerResults > _triggerResults;
 /*
@@ -723,17 +723,6 @@ private:
   vector<int> *_isEEDeeGap ;  // true if particle is in EE, and inside the gaps between dees
   vector<int> *_isEERingGap ; // true if particle is in EE, and inside the gaps between rings
  
-  //---Smearing for Systematics
-  vector<float> *_smearElectronPtv;
-  vector<float> *_smearElectronEtav;
-  vector<float> *_smearElectronPhiv;
-  
-  vector<float> *_smearTauPtv;
-  vector<float> *_smearTauEtav;
-  vector<float> *_smearTauPhiv;
-  vector<float> *_eTauSmeredMassv; 
-  vector<float> *_smear;
-
   vector<bool> *_eEcalDrivenv;
   vector<bool> *_eTrkDrivenv;
 
