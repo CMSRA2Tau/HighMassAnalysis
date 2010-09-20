@@ -2,7 +2,8 @@
 
 #include "HighMassAnalysis/Analysis/interface/HiMassTauAnalysis.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
-#include "PhysicsTools/UtilAlgos/interface/TFileService.h"
+#include "CommonTools/UtilAlgos/interface/TFileService.h"
+#include "DataFormats/TrackReco/interface/HitPattern.h"
 #include <TMath.h>
 #include <iostream>
 #include <iomanip>
@@ -56,6 +57,7 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
   _DoRecoTauDiscrByCrackCut = iConfig.getParameter<bool>("DoRecoTauDiscrByCrackCut");
   _DoRecoTauDiscrAgainstMuon = iConfig.getParameter<bool>("DoRecoTauDiscrAgainstMuon");
   _RecoTauDiscrAgainstMuon = iConfig.getUntrackedParameter<string>("RecoTauDiscrAgainstMuon");
+  _SetTANC = iConfig.getParameter<bool>("SetTANC");
 
   //-----Reco Muon Inputs
   _RecoMuonSource = iConfig.getParameter<InputTag>("RecoMuonSource");
@@ -169,6 +171,10 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
   //-----ntuple Inputs
   _DoProduceNtuple = iConfig.getParameter<bool>("DoProduceNtuple");
   _NtupleTreeName = (iConfig.getUntrackedParameter<std::string>("NtupleTreeName"));
+  _MinRecoPtCut = iConfig.getParameter<double>("minRecoPtForNtuple");
+  _MaxRecoEtaCut = iConfig.getParameter<double>("maxRecoEtaForNtuple");
+  _MinDeltaRCut = iConfig.getParameter<double>("minDeltaRForNtuple");
+  _MinTauDiscValue = iConfig.getParameter<double>("minTauDiscValueForNtuple");
 
   //-----Fill Histograms?
   _FillRecoVertexHists = iConfig.getParameter<bool>("FillRecoVertexHists");
@@ -213,7 +219,7 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
 }
 
 // ------------ method called once each job just before starting event loop  ------------
-void  HiMassTauAnalysis::beginJob(const EventSetup&) {
+void  HiMassTauAnalysis::beginJob() {
   _totalEvents = 0;  
   _totalEventsPassingCuts = 0;  
   if(_CalculatePdfSystematicUncertanties) {InitializeInfoForPDFSystematicUncertaintites();}
@@ -242,8 +248,7 @@ void  HiMassTauAnalysis::setupBranches() {
   _HMTTree->Branch("tauPhi",&_tauPhi);
   _HMTTree->Branch("tauNProngs",&_tauNProngs);
   _HMTTree->Branch("tauLTPt",&_tauLTPt);
-  //_HMTTree->Branch("tauLTChi2",&_tauLTChi2);
-  //_HMTTree->Branch("tauLTRecHitsSize",&_tauLTRecHitsSize);
+  _HMTTree->Branch("tauLTRecHitsSize",&_tauLTRecHitsSize);
   _HMTTree->Branch("tauIsoTrackSumPt",&_tauIsoTrackPtSum);
   _HMTTree->Branch("tauIsoTrackSumPtDR1_0MinPt1_0",&_tauIsoTrkPtSumDR1_0MinPt1_0);
   _HMTTree->Branch("tauIsoTrackSumPtDR1_0MinPt0_5",&_tauIsoTrkPtSumDR1_0MinPt0_5);
@@ -267,7 +272,10 @@ void  HiMassTauAnalysis::setupBranches() {
   _HMTTree->Branch("tauLTCharge",&_tauLTCharge);
   _HMTTree->Branch("tauLTSignedIp",&_tauLTSignedIp);
   _HMTTree->Branch("tauIsInTheCraks",&_tauIsInTheCraks);
- 
+  _HMTTree->Branch("tauTancDiscOnePercent",&_tauTancDiscOnePercent);	      
+  _HMTTree->Branch("tauTancDiscHalfPercent",&_tauTancDiscHalfPercent);	      
+  _HMTTree->Branch("tauTancDiscQuarterPercent",&_tauTancDiscQuarterPercent);  
+  _HMTTree->Branch("tauTancDiscTenthPercent",&_tauTancDiscTenthPercent);      
   _HMTTree->Branch("eventIsZee",&_eventIsZee);
   _HMTTree->Branch("zeeMass",&_zeeMass);
   _HMTTree->Branch("zeePtAsymm",&_zeePtAsymm);
@@ -292,12 +300,24 @@ void  HiMassTauAnalysis::setupBranches() {
   _HMTTree->Branch("eHcalIsoPat", &_eHcalIsoPat);
   _HMTTree->Branch("eTrkIsoPat", &_eTrkIsoPat);
   _HMTTree->Branch("eIsoPat", &_eIsoPat);
+  
+  _HMTTree->Branch("eUserEcalIso", &_eUserEcalIso);
+  _HMTTree->Branch("eUserHcalIso", &_eUserHcalIso);
+  _HMTTree->Branch("eUserTrkIso", &_eUserTrkIso);
 
   _HMTTree->Branch("eSCE1x5", &_eSCE1x5);
   _HMTTree->Branch("eSCE2x5", &_eSCE2x5);
   _HMTTree->Branch("eSCE5x5", &_eSCE5x5);
   _HMTTree->Branch("eIp", &_eIp);
+  _HMTTree->Branch("eIpAtVertex", &_eIpAtVertex);
+  _HMTTree->Branch("eIpAtVertexError", &_eIpAtVertexError);
+  _HMTTree->Branch("eMissingHits", &_eMissingHits);
+  
+  
   _HMTTree->Branch("eClass", &_eClass);
+  _HMTTree->Branch("eInEB", &_eInEB);
+  _HMTTree->Branch("eInEE", &_eInEE);
+  _HMTTree->Branch("eInGap", &_eInGap);
  
   _HMTTree->Branch("mEt", &_mEt);
     
@@ -312,7 +332,16 @@ void  HiMassTauAnalysis::setupBranches() {
 
   _HMTTree->Branch("diTauMass",&_diTauMass);
   _HMTTree->Branch("diTauPt",&_diTauPt);
-  _HMTTree->Branch("diTauEt",&_diTauEt);  
+  _HMTTree->Branch("diTauEt",&_diTauEt);
+
+  _HMTTree->Branch("jetEnergy",&_jetEnergy);
+  _HMTTree->Branch("jetPt",&_jetPt);
+  _HMTTree->Branch("jetEta",&_jetEta);
+  _HMTTree->Branch("jetPhi",&_jetPhi);
+  _HMTTree->Branch("bJetDiscrByTrackCounting",&_bJetDiscrByTrackCounting);
+  _HMTTree->Branch("bJetDiscrBySimpleSecondaryV",&_bJetDiscrBySimpleSecondaryV);
+  _HMTTree->Branch("bJetDiscrByCombinedSecondaryV",&_bJetDiscrByCombinedSecondaryV);
+  _HMTTree->Branch("nJets",&_nJets);
 
 }
 
@@ -330,8 +359,7 @@ void HiMassTauAnalysis::initializeVectors(){
   _tauPhi = 0;
   _tauNProngs = 0;
   _tauLTPt = 0;
-  //_tauLTChi2 = 0;
-  //_tauLTRecHitsSize = 0;
+  _tauLTRecHitsSize = 0;
   _tauIsoTrackPtSum = 0;
   _tauIsoTrkPtSumDR1_0MinPt1_0 = 0;
   _tauIsoTrkPtSumDR1_0MinPt0_5 = 0;
@@ -353,6 +381,11 @@ void HiMassTauAnalysis::initializeVectors(){
   _tauLTCharge = 0;
   _tauLTSignedIp = 0;
   _tauIsInTheCraks = 0;
+  
+  _tauTancDiscOnePercent = 0;
+  _tauTancDiscHalfPercent = 0;
+  _tauTancDiscQuarterPercent = 0;
+  _tauTancDiscTenthPercent = 0;
   
   _eventIsZee = 0;
   _zeeMass = 0;
@@ -379,11 +412,22 @@ void HiMassTauAnalysis::initializeVectors(){
   _eTrkIsoPat = 0;
   _eIsoPat = 0;
   
+  _eUserEcalIso = 0;
+  _eUserTrkIso = 0;
+  _eUserHcalIso = 0;
+  
   _eSCE1x5 = 0;
   _eSCE2x5 = 0;
   _eSCE5x5 = 0;
   _eIp = 0;
+  _eIpAtVertex = 0;
+  _eIpAtVertexError = 0;
+  _eMissingHits = 0;
+
   _eClass = 0;
+  _eInEB = 0;
+  _eInEE = 0;
+  _eInGap = 0;
   
   _mEt =0;
   
@@ -398,7 +442,15 @@ void HiMassTauAnalysis::initializeVectors(){
   _diTauMass = 0;
   _diTauPt = 0;
   _diTauEt = 0;
-
+  
+  _jetEnergy = 0;
+  _jetPt = 0;
+  _jetEta = 0;
+  _jetPhi = 0;
+  _bJetDiscrByTrackCounting = 0;	  
+  _bJetDiscrBySimpleSecondaryV = 0;   
+  _bJetDiscrByCombinedSecondaryV = 0; 
+  _nJets = 0;
 }
 
 void HiMassTauAnalysis::clearVectors(){
@@ -426,8 +478,7 @@ void HiMassTauAnalysis::clearVectors(){
   _tauIsoGammaEtSumDR0_75MinPt1_5->clear();
   _tauIsoGammaEtSumDR0_75MinPt1_0->clear();
   _tauLTPt->clear();
-  //_tauLTChi2->clear();
-  //_tauLTRecHitsSize->clear();
+  _tauLTRecHitsSize->clear();
   _tauEmFraction->clear();
   _tauHcalTotOverPLead->clear();
   _tauHcalMaxOverPLead->clear();
@@ -439,6 +490,10 @@ void HiMassTauAnalysis::clearVectors(){
   _tauLTCharge->clear();
   _tauLTSignedIp->clear();
   _tauIsInTheCraks->clear();
+  _tauTancDiscOnePercent->clear();
+  _tauTancDiscHalfPercent->clear();
+  _tauTancDiscQuarterPercent->clear();
+  _tauTancDiscTenthPercent->clear();
   
   _eventIsZee->clear();
   _zeeMass->clear();
@@ -465,12 +520,23 @@ void HiMassTauAnalysis::clearVectors(){
   _eTrkIsoPat->clear();
   _eIsoPat->clear();
  
+  _eUserEcalIso->clear();
+  _eUserTrkIso->clear();
+  _eUserHcalIso->clear();
+ 
   _eSCE1x5->clear();
   _eSCE2x5->clear();
   _eSCE5x5->clear();
   _eIp->clear();
+  _eIpAtVertex->clear();
+  _eIpAtVertexError->clear();
+  _eMissingHits->clear();
+
   _eClass->clear();
-  
+  _eInEB->clear();
+  _eInEE->clear();
+  _eInGap->clear();
+ 
   _mEt->clear();
     
   _eTauMass->clear();
@@ -484,6 +550,15 @@ void HiMassTauAnalysis::clearVectors(){
   _diTauMass->clear();
   _diTauPt->clear();
   _diTauEt->clear();
+
+  _jetEnergy->clear();
+  _jetPt->clear();
+  _jetEta->clear();
+  _jetPhi->clear();
+  _bJetDiscrByTrackCounting->clear();	  
+  _bJetDiscrBySimpleSecondaryV->clear();   
+  _bJetDiscrByCombinedSecondaryV->clear(); 
+  _nJets->clear();
 
 }
 
@@ -560,7 +635,7 @@ void HiMassTauAnalysis::analyze(const Event& iEvent, const EventSetup& iSetup) {
   }
 
   //------Get the event flags (did the event pass the cuts?)
-  getEventFlags();
+  getEventFlags(iEvent);
   if (_DoProduceNtuple){
     fillNtuple();
     clearVectors();
@@ -626,7 +701,7 @@ void HiMassTauAnalysis::setMapSelectionAlgoIDs() {
   }
 }
 
-void HiMassTauAnalysis::getEventFlags() {
+void HiMassTauAnalysis::getEventFlags(const Event& theEvent) {
 
   //-----init event flags
   _EventFlag.clear();
@@ -648,7 +723,7 @@ void HiMassTauAnalysis::getEventFlags() {
   // ------Does the event pass trigger requirements?
 //  std::cout << "trigger selections ..." << std::endl;
   int nTriggersSatisfied = 0;
-  if(passRecoTriggerCuts()) {nTriggersSatisfied++;}
+  if(passRecoTriggerCuts(theEvent)) {nTriggersSatisfied++;}
   if (nTriggersSatisfied>=_RecoTriggersNmin) _EventFlag[_mapSelectionAlgoID["RecoTriggersNmin"]] = true;
 
   // ------Number of Good Vertices
@@ -839,9 +914,8 @@ bool HiMassTauAnalysis::passEventSelectionSequence() {
 }
 
 // -------------Apply Trigger Requirements
-bool HiMassTauAnalysis::passRecoTriggerCuts() {
-  edm::TriggerNames TheTriggerNames;
-  TheTriggerNames.init(*(_triggerResults));
+bool HiMassTauAnalysis::passRecoTriggerCuts(const edm::Event & theEvent) {
+  const edm::TriggerNames & TheTriggerNames = theEvent.triggerNames(*_triggerResults);
   for(std::vector<std::string>::const_iterator TheTriggerPath = _TriggerRequirements.begin();
       TheTriggerPath != _TriggerRequirements.end(); ++TheTriggerPath ) {
     unsigned int index = TheTriggerNames.triggerIndex(*TheTriggerPath);
@@ -1038,6 +1112,20 @@ bool HiMassTauAnalysis::passRecoElectronCuts(const pat::Electron& patElectron,bo
   if (_DoRecoElectronDiscrBySCE5by5) {}
   return true;
 }
+
+// Get extra jets in the event excluding lepton candidates
+// match candidates with DR < 0.5
+// only jets with Pt > 10
+
+unsigned int HiMassTauAnalysis::numberOfExtraJets(const pat::Electron& thePatElec, const pat::Tau& thePatTau){
+  unsigned int nJets = 0;
+  for ( pat::JetCollection::const_iterator patJet = _patJets->begin(); patJet != _patJets->end(); ++patJet ) {
+    if(patJet->pt() < 10.) continue;
+    if(reco::deltaR(patJet->p4(), thePatElec.p4()) > _JetElectronMatchingDeltaR &&
+      (reco::deltaR(patJet->p4(), thePatTau.p4()) > _JetTauMatchingDeltaR)) nJets++;
+  }
+  return nJets;
+} 
 
 //--------------Apply Jet Cuts
 bool HiMassTauAnalysis::passRecoJetCuts(const pat::Jet& patJet) {
@@ -1669,22 +1757,43 @@ bool HiMassTauAnalysis::passTopologyCuts(const pat::Tau& patTau1, const pat::Tau
 // ---------------Fill Ntuple
 void HiMassTauAnalysis::fillNtuple() {
 
+
   for(CompositeCandidateCollection::const_iterator theCand = _patDiTaus->begin(); theCand != _patDiTaus->end(); ++theCand){
     pair<const pat::Tau*, const pat::Electron*> theCandDaughters = getPATComponents(*theCand);
     const pat::Tau* theTau = theCandDaughters.first;
     const pat::Electron* theElectron = theCandDaughters.second;    
-    if(fabs(theElectron->eta()) > _RecoElectronEtaCut || theElectron->pt() < _RecoElectronPtMinCut) continue;
-    if(fabs(theTau->eta()) > _RecoTauEtaCut || theTau->tauID(_RecoTauDiscrByLeadTrack.data()) < 0.5) continue;
+    if(fabs(theElectron->eta()) > _MaxRecoEtaCut || theElectron->pt() < _MinRecoPtCut) continue;
+    if(fabs(theTau->eta()) > _MaxRecoEtaCut || theTau->tauID(_RecoTauDiscrByLeadTrack.data()) < 0.5) continue;
     _diTauMass->push_back(theCand->mass());
   }
+  
+  // check for extra jets in event
 
+  for ( pat::JetCollection::const_iterator patJet = _patJets->begin(); patJet != _patJets->end(); ++patJet ) {
+    if (!passRecoJetCuts(*patJet)) continue;							       
+    if(_UseCorrectedJet) {									       
+      _jetEnergy->push_back(patJet->energy());							       
+      _jetPt->push_back(patJet->pt());								       
+      _jetEta->push_back(patJet->eta());								       
+      _jetPhi->push_back(patJet->phi());								       
+    } else {											       
+      _jetEnergy->push_back(patJet->correctedJet("raw","").energy());				       
+      _jetPt->push_back(patJet->correctedJet("raw","").pt());					       
+      _jetEta->push_back(patJet->correctedJet("raw","").eta());					       
+      _jetPhi->push_back(patJet->correctedJet("raw","").phi());					       
+    }												       
+    _bJetDiscrByTrackCounting->push_back(patJet->bDiscriminator("trackCountingHighEffBJetTags"));	     
+    _bJetDiscrBySimpleSecondaryV->push_back(patJet->bDiscriminator("simpleSecondaryVertexBJetTags"));	   
+    _bJetDiscrByCombinedSecondaryV->push_back(patJet->bDiscriminator("combinedSecondaryVertexBJetTags"));  
+  }												       
+  
   int theNumberOfElectrons = 0;    
   for(pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin(); patElectron != _patElectrons->end(); ++patElectron) {
     theNumberOfElectrons++;
-    if(fabs(patElectron->eta()) > _RecoElectronEtaCut || patElectron->pt() < _RecoElectronPtMinCut) continue;
+    if(fabs(patElectron->eta()) > _MaxRecoEtaCut || patElectron->pt() < _MinRecoPtCut) continue;
     for(pat::TauCollection::const_iterator patTau = _patTaus->begin(); patTau != _patTaus->end(); ++patTau) {
-      if(reco::deltaR(patTau->p4(), patElectron->p4()) < _DiTauDeltaRCut) continue; 				     
-      if(patTau->tauID(_RecoTauDiscrByLeadTrack.data()) < 0.5) continue;
+      if(reco::deltaR(patTau->p4(), patElectron->p4()) < _MinDeltaRCut) continue; 				     
+      if(patTau->tauID(_RecoTauDiscrByLeadTrack.data()) < _MinTauDiscValue) continue;
             
       const GenParticleRef theGenTauRef = patTau->genParticleRef();
       _tauMatched->push_back(int(matchToGen(*patTau).first));							       
@@ -1705,14 +1814,13 @@ void HiMassTauAnalysis::fillNtuple() {
       if(theLeadTrack.isNonnull()){
          _tauLTPt->push_back(theLeadTrack->pt());
          _tauLTCharge->push_back(theLeadTrack->charge());
-         //_tauLTChi2->push_back(theLeadTrack->chi2());
-         //_tauLTRecHitsSize->push_back(theLeadTrack->recHitsSize());
+         _tauLTRecHitsSize->push_back(theLeadTrack->recHitsSize());
       }
       else {
         _tauLTPt->push_back(-1.);
         _tauLTCharge->push_back(-10);
-        //_tauLTChi2->push_back(100.);
-        //_tauLTRecHitsSize->push_back(0);
+        _tauLTRecHitsSize->push_back(0);
+	//_tauLTSignedIp->push_back(1000.);
       } 									
       
       if (patTau->isCaloTau()){
@@ -1747,7 +1855,6 @@ void HiMassTauAnalysis::fillNtuple() {
         _tauBremsRecoveryEOverPLead->push_back(patTau->bremsRecoveryEOverPLead());						       
         _tauDiscAgainstElec->push_back(patTau->tauID(_RecoTauDiscrAgainstElectron.data()));
 	_tauLTSignedIp->push_back(patTau->leadPFChargedHadrCandsignedSipt());
-	_tauIsInTheCraks->push_back(isInTheCracks(patTau->eta()));
       } 														       
       _tauIsoTrackPtSum->push_back(CalculateTauTrackIsolation(*patTau, 0.5, 1.0).second);
       _tauIsoTrkPtSumDR1_0MinPt1_0->push_back(CalculateTauTrackIsolation(*patTau, 1.0, 1.0).second);
@@ -1759,6 +1866,15 @@ void HiMassTauAnalysis::fillNtuple() {
       _tauIsoGammaEtSumDR1_0MinPt1_0->push_back(CalculateTauEcalIsolation(*patTau, 1.0, 1.0).second);
       _tauIsoGammaEtSumDR0_75MinPt1_5->push_back(CalculateTauEcalIsolation(*patTau, 0.75, 1.5).second);
       _tauIsoGammaEtSumDR0_75MinPt1_0->push_back(CalculateTauEcalIsolation(*patTau, 0.75, 1.0).second);
+      _tauIsInTheCraks->push_back(isInTheCracks(patTau->eta()));
+      
+      if(_SetTANC){
+        _tauTancDiscOnePercent->push_back(patTau->tauID("byTaNCfrOnePercent"));
+        _tauTancDiscHalfPercent->push_back(patTau->tauID("byTaNCfrHalfPercent"));
+        _tauTancDiscQuarterPercent->push_back(patTau->tauID("byTaNCfrQuarterPercent"));
+        _tauTancDiscTenthPercent->push_back(patTau->tauID("byTaNCfrTenthPercent"));
+      }
+      
       _eventIsZee->push_back(int(isZee(*patElectron).first));
       _zeeMass->push_back(isZee(*patElectron).second.first);
       _zeePtAsymm->push_back(isZee(*patElectron).second.second);
@@ -1791,14 +1907,50 @@ void HiMassTauAnalysis::fillNtuple() {
       _eIsoPat->push_back(patElectron->caloIso());											       
       _eTrkIsoPat->push_back(patElectron->trackIso());										       
      
+      _eUserEcalIso->push_back(patElectron->userIsolation(pat::EcalIso));
+      _eUserHcalIso->push_back(patElectron->userIsolation(pat::HcalIso));										     
+      _eUserTrkIso->push_back(patElectron->userIsolation(pat::TrackIso));											       
+      
       _eSCE1x5->push_back(patElectron->scE1x5()); 										       
       _eSCE2x5->push_back(patElectron->scE2x5Max());										       
       _eSCE5x5->push_back(patElectron->scE5x5()); 
+
+/*      
       const reco::Vertex& thePrimaryEventVertex = (*(_primaryEventVertexCollection)->begin());
-      if(patElectron->track().isNonnull()) _eIp->push_back(patElectron->track()->dxy(thePrimaryEventVertex.position()));
-      else _eIp->push_back(-100.);
+      GlobalPoint vert(thePrimaryEventVertex.x(), thePrimaryEventVertex.y(), thePrimaryEventVertex.z());
+      if(patElectron->gsfTrack().isNonnull()){ 
+        _eIp->push_back(patElectron->gsfTrack()->dxy(thePrimaryEventVertex.position()));
+        TransientTrack eTT = (*_theB).build(patElectron->gsfTrack());
+	if(eTT.isValid()){
+          TrajectoryStateClosestToPoint  trajStateCA = eTT.trajectoryStateClosestToPoint(vert);
+	  if(trajStateCA.isValid()){
+            _eIpAtVertex->push_back(trajStateCA.perigeeParameters().transverseImpactParameter());
+            _eIpAtVertexError->push_back(trajStateCA.perigeeError().transverseImpactParameterError());
+          }
+	  else{
+            _eIpAtVertex->push_back(-1000);
+            _eIpAtVertexError->push_back(-1000);
+	  }
+	}
+      }
+      else{
+        _eIp->push_back(-1000.);
+        _eIpAtVertex->push_back(-1000);
+        _eIpAtVertexError->push_back(-1000);
+      }
+*/      
       _eClass->push_back(patElectron->classification());
       
+      const Track* elTrack = (const reco::Track*)(patElectron->gsfTrack().get());
+      // number of expected hits before the first track hit
+      const HitPattern& pInner = elTrack->trackerExpectedHitsInner(); 
+      _eMissingHits->push_back(pInner.numberOfHits());
+      
+      // add electron fiducial variables
+      _eInEB->push_back(patElectron->isEB());
+      _eInEE->push_back(patElectron->isEE());
+      _eInGap->push_back(patElectron->isGap());
+     
       _mEt->push_back((*(_patMETs->begin())).pt());
       								       
       // Di-tau variables												       
@@ -1814,6 +1966,7 @@ void HiMassTauAnalysis::fillNtuple() {
 
       _eTauPZeta->push_back(CalculatePZeta((*patTau),(*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1),(*(_patMETs->begin()))));
       _eTauPZetaVis->push_back(CalculatePZetaVis((*patTau),(*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1),(*(_patMETs->begin()))));
+      _nJets->push_back(numberOfExtraJets((*patElectron),(*patTau)));
     }										  
   }
   //}
@@ -2360,6 +2513,7 @@ void HiMassTauAnalysis::getCollections(const Event& iEvent, const EventSetup& iS
   iEvent.getByLabel(_RecoDiTauSource, _patDiTaus);
   iEvent.getByLabel(_RecoVertexSource, _primaryEventVertexCollection);
   iEvent.getByLabel(_RecoTriggerSource, _triggerResults);
+  iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder",_theB);
 /*
   iEvent.getByLabel("muons", _recoMuonsForMetCorrections);
   iEvent.getByLabel("muonMETValueMapProducer", "muCorrData", vm_muCorrData_h);

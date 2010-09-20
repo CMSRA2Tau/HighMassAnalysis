@@ -30,9 +30,13 @@
 #include "DataFormats/Common/interface/ValueMap.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
-#include "FWCore/Framework/interface/TriggerNames.h"
+#include "FWCore/Common/interface/TriggerNames.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "CLHEP/Random/RandGauss.h"
+#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
+#include "TrackingTools/Records/interface/TransientTrackRecord.h"
+#include "TrackingTools/TrajectoryState/interface/TrajectoryStateClosestToPoint.h"
+#include "DataFormats/GeometryVector/interface/GlobalPoint.h"
 
 #include <TH1.h>
 #include <TH2.h>
@@ -55,17 +59,17 @@ public:
 
 
 private:
-  virtual void beginJob(const EventSetup&) ;
+  virtual void beginJob() ;
   virtual void analyze(const Event&, const EventSetup&);
   virtual void endJob() ;
 
   void getCollections(const Event&, const EventSetup&);
   void fillHistograms();
   void fillNtuple();
-  void getEventFlags();
+  void getEventFlags(const Event&);
   bool passEventSelectionSequence();
   //bool passGenTauCuts(const LorentzVector&);
-  bool passRecoTriggerCuts();
+  bool passRecoTriggerCuts(const Event&);
   bool passRecoVertexCuts(const reco::Vertex&);
   bool passRecoTauCuts(const pat::Tau&);
   bool passRecoMuonCuts(const pat::Muon&,bool,reco::Candidate::LorentzVector);
@@ -110,6 +114,7 @@ private:
   reco::Candidate::LorentzVector SmearLightLepton(const pat::Muon&);
   reco::Candidate::LorentzVector SmearLightLepton(const pat::Electron&);
   std::pair<bool, std::pair<float, float> > isZee(const pat::Electron&);
+  unsigned int numberOfExtraJets(const pat::Electron& , const pat::Tau&);
   void InitializeInfoForPDFSystematicUncertaintites();
   void bookHistograms();
   void setMapSelectionAlgoIDs();
@@ -151,6 +156,7 @@ private:
   double _RecoTauEcalIsoRetaForEllipse;
   int _RecoTauNisoMax;
   int _RecoTauLeadTrackMinHits;
+  bool _SetTANC;
   bool _DoRecoTauDiscrByIsolation;
   bool _UseRecoTauDiscrByIsolationFlag;
   bool _UseRecoTauIsoSumPtInsteadOfNiso;
@@ -285,6 +291,10 @@ private:
   TTree *_HMTTree;
   std::string _NtupleTreeName;
   bool _DoProduceNtuple;
+  double _MinRecoPtCut;
+  double _MaxRecoEtaCut;
+  double _MinDeltaRCut;
+  double _MinTauDiscValue;
 
   //-----Fill Histograms?
   bool _FillRecoVertexHists;
@@ -457,6 +467,7 @@ private:
   Handle< reco::CompositeCandidateCollection > _patDiTaus;
   Handle< reco::VertexCollection > _primaryEventVertexCollection;
   edm::Handle< edm::TriggerResults > _triggerResults;
+  ESHandle<TransientTrackBuilder> _theB;
 /*
   Handle< edm::View<reco::Muon> >   _recoMuonsForMetCorrections;
   Handle< ValueMap<reco::MuonMETCorrectionData > > vm_muCorrData_h;
@@ -552,6 +563,10 @@ private:
   vector<int> *_tauLTCharge;
   vector<float> *_tauLTSignedIp;
   vector<int> *_tauIsInTheCraks;
+  vector<double> *_tauTancDiscOnePercent;
+  vector<double> *_tauTancDiscHalfPercent;
+  vector<double> *_tauTancDiscQuarterPercent;
+  vector<double> *_tauTancDiscTenthPercent;
      
   vector<unsigned int> *_eventIsZee;
   vector<unsigned int> *_eMotherId;
@@ -578,11 +593,22 @@ private:
   vector<float> *_eTrkIsoPat;
   vector<float> *_eIsoPat;
   
+  vector<float> *_eUserEcalIso;
+  vector<float> *_eUserHcalIso;
+  vector<float> *_eUserTrkIso;
+  
   vector<float> *_eSCE1x5;
   vector<float> *_eSCE2x5;
   vector<float> *_eSCE5x5;
   vector<float> *_eIp;
+  vector<float> *_eIpAtVertex;
+  vector<float> *_eIpAtVertexError;
+  vector<unsigned int> *_eMissingHits;
+  
   vector<int> *_eClass;
+  vector<bool> *_eInEB;
+  vector<bool> *_eInEE;
+  vector<bool> *_eInGap;
   
   vector<float> *_mEt;
   
@@ -597,5 +623,14 @@ private:
   vector<float> *_diTauMass;
   vector<float> *_diTauPt;
   vector<float> *_diTauEt;
+  
+  vector<float> *_jetEnergy;
+  vector<float> *_jetPt;
+  vector<float> *_jetEta;
+  vector<float> *_jetPhi;
+  vector<unsigned int> *_nJets;
+  vector<float> *_bJetDiscrByTrackCounting;
+  vector<float> *_bJetDiscrBySimpleSecondaryV;
+  vector<float> *_bJetDiscrByCombinedSecondaryV;
 
 };
