@@ -10,16 +10,210 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 100
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32( -1 )
 )
-
 process.source = cms.Source("PoolSource",
     skipEvents = cms.untracked.uint32(0),
     fileNames = cms.untracked.vstring(
-       'file:test.root'
-    )
-    #skipBadFiles = cms.untracked.bool(True)
-)
-
-#process.load("HiMassTauAnalyzer.Analysis.FILESTOREAD")
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_99.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_98.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_97.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_96.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_95.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_94.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_93.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_92.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_91.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_90.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_9.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_89.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_88.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_87.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_86.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_85.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_84.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_83.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_82.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_81.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_80.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_8.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_79.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_78.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_77.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_76.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_75.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_74.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_73.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_72.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_71.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_70.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_7.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_69.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_68.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_67.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_66.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_65.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_64.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_63.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_62.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_61.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_60.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_6.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_59.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_58.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_57.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_56.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_55.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_54.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_53.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_52.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_51.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_50.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_5.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_49.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_48.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_47.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_46.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_45.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_44.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_43.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_42.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_41.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_40.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_4.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_39.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_38.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_37.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_36.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_35.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_34.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_33.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_32.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_31.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_30.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_3.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_29.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_28.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_27.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_26.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_25.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_24.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_23.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_22.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_21.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_20.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_2.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_19.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_18.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_17.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_16.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_15.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_14.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_13.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_12.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_11.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_100.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_10.root',
+        
+'/store/user/lpctau/HighMassTau/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500MC31X7TeVZprimeTauTau_MuTauPat/936d08a4e1e0f765abf6aa09d189ea23/muTauPatTuple_1.root'    
+) )
 
 process.eTauCandidates = cms.EDProducer("DeltaRMinCandCombiner",
   decay = cms.string('selectedLayer1FixedConePFTaus@+ selectedLayer1Electrons@-'),
@@ -28,7 +222,7 @@ process.eTauCandidates = cms.EDProducer("DeltaRMinCandCombiner",
   name = cms.string('etauCandidates'),
   deltaRMin = cms.double(0.7),
   roles = cms.vstring('tau', 'electron')
-)    
+)
 
 process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
 
@@ -49,14 +243,14 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
 											# selectedLayer1ShrinkingConeHighEffPFTaus
 											# selectedLayer1ShrinkingConePFTaus
     RecoTauEtaCut = cms.double(999.1),							# require tau |eta|<=X
-    RecoTauPtMinCut = cms.double(0.0),							# require tau pt>=X
+    RecoTauPtMinCut = cms.double(0.),							# require tau pt>=X
     RecoTauPtMaxCut = cms.double(9999.),						# require tau pt<=X
     DoRecoTauDiscrByLeadTrack = cms.bool(False),					# if true, tau is required to pass a lead track pt cut
     UseRecoTauDiscrByLeadTrackFlag = cms.bool(True), 					# if true, default seed track discriminator is used
                                                      					# if false, seed track cut will be recalculated using the parameters below
     RecoTauDiscrByLeadTrack = cms.untracked.string('leadingTrackPtCut'),		# name of the lead track discriminator flag
     DoRecoTauDiscrByLeadTrackNhits = cms.bool(False),					# if true, tau leading track is required to have >= X hits
-    RecoTauLeadTrackMinHits = cms.int32(12),						# tau leading track hits >= X
+    RecoTauLeadTrackMinHits = cms.int32(10),						# tau leading track hits >= X
     DoRecoTauDiscrByIsolation = cms.bool(False), 					# if true, isolation will be applied
     UseRecoTauDiscrByIsolationFlag = cms.bool(False), 					# if true, the default isolation discriminator is used
                                                       					# if false, isolation is recalculated using the parameters below
@@ -68,12 +262,19 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     RecoTauEcalIsoRphiForEllipse = cms.double(0.15),					# a:  dphi^2 / a^2 + deta^2 / b^2  (ECAL ellipse)
     RecoTauEcalIsoRetaForEllipse = cms.double(0.07),					# b:  dphi^2 / a^2 + deta^2 / b^2  (ECAL ellipse)
     RecoTauNisoMax = cms.int32(0),							# number of isolation candidates <=X
-    RecoTauIsoSumPtMaxCutValue = cms.double(1.0),					# sum pt of tracks & gammas < X
+    RecoTauIsoSumPtMaxCutValue = cms.double(6.0),					# sum pt of tracks & gammas < X
     RecoTauIsoSumPtMinCutValue = cms.double(0.0),					# sum pt of tracks & gammas >= X
     RecoTauDiscrByProngType = cms.string('NONE'),		 			# if '1or3', taus will be required to have 1 || 3 prongs
 											# if '1', taus will be required to have 1 prongs
 											# if '3', taus will be required to have 3 prongs
 											# if anything else is used, no prong cuts are applied
+    DoRecoTauDiscrBySignalTracksAndGammasMass = cms.bool(False),
+    RecoTauSignal3ProngAndGammasMassMinCutValue = cms.double(0.9),
+    RecoTauSignal3ProngAndGammasMassMaxCutValue = cms.double(999.0),
+    RecoTauSignal1ProngAndGammasMassForPionMinCutValue = cms.double(0.08),
+    RecoTauSignal1ProngAndGammasMassForPionMaxCutValue = cms.double(0.2),
+    RecoTauSignal1ProngAndGammasMassForKaonVetoMinCutValue = cms.double(0.5),
+    RecoTauSignal1ProngAndGammasMassForKaonVetoMaxCutValue = cms.double(999.0),
     RecoTauLeadTrackThreshold = cms.double(5.0), 					# seed track pt > X
     RecoTauSigGamThreshold = cms.double(5.0),						# gamma pt > X
     RecoTauIsoDeltaRCone = cms.double(0.5),	 					# tau outer isolation conesize
@@ -84,21 +285,26 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     DoRecoTauDiscrByCrackCut = cms.bool(False),						# if true, taus that fall on the cracks will not be considered
     DoRecoTauDiscrAgainstMuon = cms.bool(False),					# if true, muon veto will be applied
     RecoTauDiscrAgainstMuon = cms.untracked.string('againstMuon'),			# name of muon veto discriminator flag
+    SetTANC = cms.bool(True),								# set true if wanting to fill TanC info in the Ntuple
 
     #-----Reco Muon Inputs
     RecoMuonSource = cms.InputTag('selectedLayer1Muons'),				# muon collection
-    RecoMuonEtaCut = cms.double(2.1),							# require muon |eta|<=X
-    RecoMuonPtMinCut = cms.double(15.),							# require muon pt>=X
+    RecoMuonEtaCut = cms.double(999.1),							# require muon |eta|<=X
+    RecoMuonPtMinCut = cms.double(0.),							# require muon pt>=X
     RecoMuonPtMaxCut = cms.double(9999.),						# require muon pt<=X
-    DoRecoMuonDiscrByGlobal = cms.bool(True),						# if true, muon will be required to be a 'global muon
+    DoRecoMuonDiscrByGlobal = cms.bool(False),						# if true, muon will be required to be a 'global muon
     DoRecoMuonDiscrByIsolation = cms.bool(False),					# if true, muon isolation will be applied
-    RecoMuonIsoSumPtMaxCutValue = cms.double(3.5),					# sum pt of isolation tracks & ecal rechits < X
+    RecoMuonIsoSumPtMaxCutValue = cms.double(3.0),					# sum pt of isolation tracks & ecal rechits < X
     RecoMuonIsoSumPtMinCutValue = cms.double(0.0),					# sum pt of isolation tracks & ecal rechits >= X
     RecoMuonIsoDeltaRCone = cms.double(0.6),						# outer conesize used for isolation
-    RecoMuonTrackIsoTrkThreshold = cms.double(1.0),					# isolation tracks are required to have pt>X
-    RecoMuonEcalIsoRecHitThreshold = cms.double(1.0),					# isolation rechits are required to have pt>X
+    RecoMuonTrackIsoTrkThreshold = cms.double(0.5),					# isolation tracks are required to have pt>X
+    RecoMuonEcalIsoRecHitThreshold = cms.double(0.3),					# isolation rechits are required to have pt>X
     DoRecoMuonDiscrByIp = cms.bool(False),						# if true, muon will be required to have |d0|<X
     RecoMuonIpCut = cms.double(0.028),							# |d0|<X
+    DoRecoMuonDiscrByPionVeto = cms.bool(False),                                        # if true, muon will be required to pass pion veto cut
+    RecoMuonCaloCompCoefficient = cms.double(0.8),                                      # a -> pion veto: a*caloComp + b*segmComp
+    RecoMuonSegmCompCoefficient = cms.double(1.2),                                      # b -> pion veto: a*caloComp + b*segmComp
+    RecoMuonAntiPionCut = cms.double(1.0),                                              # pion veto > X
 
     #-----Reco Electron Inputs
     RecoElectronSource = cms.InputTag('selectedLayer1Electrons'),			# electron collection
@@ -126,19 +332,21 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     RecoElectronSigmaIEtaIEtaCut = cms.double(0.0),					# at the moment, does nothing
     DoRecoElectronDiscrBySCE5by5 = cms.bool(False),					# at the moment, does nothing
     RecoElectronSCE5by5Cut = cms.double(0.0),						# at the moment, does nothing
+    DoRecoElectronDiscrByEcalDrivenSeed = cms.bool(False),
+    DoRecoElectronDiscrByTrackerDrivenSeed = cms.bool(False),
 
     #-----Reco Jet Inputs
-    RecoJetSource			= cms.InputTag('selectedLayer1Jets'),		# jet collection
-    RecoJetEtaMinCut			= cms.double(0.0),				# require jet |eta|>=X
-    RecoJetEtaMaxCut			= cms.double(999.5),				# require jet |eta|<=X
-    RecoJetPtCut			= cms.double(0.0),				# require jet pt>=X
-    UseCorrectedJet			= cms.bool(False),				# if true, jet corrections are used
-    RemoveJetOverlapWithMuons		= cms.bool(False),				# if true, jets w/ dR(muon,jet)<X will not be considered
-    JetMuonMatchingDeltaR		= cms.double(0.5),				# dR(muon,jet)<X used for removing jets from the "good jet" list
-    RemoveJetOverlapWithElectrons	= cms.bool(False),				# if true, jets w/ dR(electron,jet)<X will not be considered
-    JetElectronMatchingDeltaR		= cms.double(0.5),				# dR(electron,jet)<X used for removing jets from the "good jet" list
-    RemoveJetOverlapWithTaus		= cms.bool(False),				# if true, jets w/ dR(tau,jet)<X will not be considered
-    JetTauMatchingDeltaR		= cms.double(0.25),				# dR(tau,jet)<X used for removing jets from the "good jet" list
+    RecoJetSource                       = cms.InputTag('selectedLayer1Jets'),           # jet collection
+    RecoJetEtaMinCut                    = cms.double(0.0),                              # require jet |eta|>=X
+    RecoJetEtaMaxCut                    = cms.double(999.5),                            # require jet |eta|<=X
+    RecoJetPtCut                        = cms.double(0.0),                             # require jet pt>=X
+    UseCorrectedJet                     = cms.bool(False),                              # if true, jet corrections are used
+    RemoveJetOverlapWithMuons           = cms.bool(False),                               # if true, jets w/ dR(muon,jet)<X will not be considered
+    JetMuonMatchingDeltaR               = cms.double(0.5),                              # dR(muon,jet)<X used for removing jets from the "good jet" list
+    RemoveJetOverlapWithElectrons       = cms.bool(False),                              # if true, jets w/ dR(electron,jet)<X will not be considered
+    JetElectronMatchingDeltaR           = cms.double(0.5),                              # dR(electron,jet)<X used for removing jets from the "good jet" list
+    RemoveJetOverlapWithTaus            = cms.bool(False),                               # if true, jets w/ dR(tau,jet)<X will not be considered
+    JetTauMatchingDeltaR                = cms.double(0.25),                             # dR(tau,jet)<X used for removing jets from the "good jet" list
 
     #-----Vertex Inputs
     RecoVertexSource = cms.InputTag('offlinePrimaryVertices'), 				# vertex collection
@@ -181,7 +389,7 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     PZetaVisCutCoefficient = cms.double(-0.875),					# b -- ( a*pzeta + b*pzetaVis > X )
     CDFzeta2DCutValue = cms.double(-7.00),						# X -- ( a*pzeta + b*pzetaVis > X )
     DoDiTauDiscrByDeltaPtDivSumPt = cms.bool(False),					# if true, apply cut on deltapt(leg2,leg1) / sumpt(leg1,leg2)
-    DiTauDeltaPtDivSumPtMinCutValue = cms.double(0.0),					# ( pt_leg2 - pt_leg1 ) / ( pt_leg2 + pt_leg1 ) >= X
+    DiTauDeltaPtDivSumPtMinCutValue = cms.double(0.1),					# ( pt_leg2 - pt_leg1 ) / ( pt_leg2 + pt_leg1 ) >= X
     DiTauDeltaPtDivSumPtMaxCutValue = cms.double(1.0),					# ( pt_leg2 - pt_leg1 ) / ( pt_leg2 + pt_leg1 ) <= X
     DoDiscrByLeg1MetDphi = cms.bool(False),						# if true, require X <= cosine dphi(leg1,met) <= Y
     Leg1MetDphiMinCut = cms.double(1.30),						# cosine dphi(leg1, met) >= X
@@ -189,17 +397,18 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     DoDiscrByLeg2MetDphi = cms.bool(False),						# if true, require X <= cosine dphi(leg2,met) <= Y
     Leg2MetDphiMinCut = cms.double(1.30),						# cosine dphi(leg2, met) >= X
     Leg2MetDphiMaxCut = cms.double(3.15),						# cosine dphi(leg2, met) <= Y
+    DoTauDiscrByIsZeeCut = cms.bool(False),
 
     #-----do matching to gen?
-    MatchLeptonToGen = cms.bool(False),							# if true, match reco lepton to a gen lepton
-    UseLeptonMotherId = cms.bool(False),						# if true, require the matched lepton to come from a certain 
+    MatchLeptonToGen = cms.bool(True),							# if true, match reco lepton to a gen lepton
+    UseLeptonMotherId = cms.bool(True),							# if true, require the matched lepton to come from a certain 
 											# 'mother' particle
-    UseLeptonGrandMotherId = cms.bool(False),						# if true, require the matched lepton to come from a certain
+    UseLeptonGrandMotherId = cms.bool(True),						# if true, require the matched lepton to come from a certain
 											# 'grandmother' particle
     LeptonMotherId = cms.int32(15),							# pdgId of the 'mother' particle
     LeptonGrandMotherId = cms.int32(32),						# pdgId of the 'grandmother' particle
-    MatchTauToGen = cms.bool(False),							# if true, match reco tau to a gen had tau
-    UseTauMotherId = cms.bool(False),							# if true, require the matched tau to come from a certain
+    MatchTauToGen = cms.bool(True),							# if true, match reco tau to a gen had tau
+    UseTauMotherId = cms.bool(True),							# if true, require the matched tau to come from a certain
 											# 'mother' particle ('mother' here is NOT 15!!!!! Matching
 											# for the had tau leg already requires the vis had tau to come
 											# from a tau lepton)
@@ -207,17 +416,17 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
 											# 'grandmother' particle
     TauMotherId = cms.int32(32),							# pdgId of the 'mother' particle
     TauGrandMotherId = cms.int32(1),							# pdgId of the 'grandmother' particle
-    TauToGenMatchingDeltaR = cms.double(0.2),						# matching dR:  dR(vis gen tau,reco tau)<X
+    TauToGenMatchingDeltaR = cms.double(0.25),						# matching dR:  dR(vis gen tau,reco tau)<X
 
     #-----ntuple Inputs
-    DoProduceNtuple = cms.bool(True),							# if true, Ntuple will be filled
+    DoProduceNtuple = cms.bool(False),							# if true, Ntuple will be filled
     NtupleTreeName = cms.untracked.string('HMTTree'),					# name of the Ntuple tree
 
     #-----Fill Histograms? Histograms are filled for events passing the specified cuts
     FillRecoVertexHists = cms.bool(True),						# if true, fill histograms for vertices
-    FillGenTauHists = cms.bool(False),							# if true, fill histograms for gen had taus
+    FillGenTauHists = cms.bool(True),							# if true, fill histograms for gen had taus
     FillRecoTauHists = cms.bool(True),							# if true, fill histograms for reco taus
-    FillRecoMuonHists = cms.bool(False),						# if true, fill histograms for reco muons
+    FillRecoMuonHists = cms.bool(False),							# if true, fill histograms for reco muons
     FillRecoElectronHists = cms.bool(True),						# if true, fill histograms for reco electrons
     FillRecoJetHists = cms.bool(True),							# if true, fill histograms for reco jets
     FillTopologyHists = cms.bool(True),							# if true, fill topology histograms (e.g. met, mass, ...)
@@ -226,13 +435,13 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     RecoTriggersNmin = cms.int32(0),							# require event to pass >=X trigger paths defined above
     RecoVertexNmin = cms.int32(0),							# require event to have >=X vertices passing specified cuts
     RecoVertexNmax = cms.int32(1000),							# require event to have <=X vertices passing specified cuts
-    RecoLeg1Nmin = cms.int32(1),							# require event to have >=X leg1 objects passing specified cuts
+    RecoLeg1Nmin = cms.int32(0),							# require event to have >=X leg1 objects passing specified cuts
     RecoLeg1Nmax = cms.int32(1000),							# require event to have <=X leg1 objects passing specified cuts
-    RecoLeg2Nmin = cms.int32(1),							# require event to have >=X leg2 objects passing specified cuts
+    RecoLeg2Nmin = cms.int32(0),							# require event to have >=X leg2 objects passing specified cuts
     RecoLeg2Nmax = cms.int32(1000),							# require event to have <=X leg2 objects passing specified cuts
     RecoJetNmin = cms.int32(0),								# require event to have >=X "jets" passing specified cuts
     RecoJetNmax = cms.int32(1000),							# require event to have <=X "jets" passing specified cuts
-    CombinationsNmin = cms.int32(1),							# require event to have >=X leg1+leg2+met combinations 
+    CombinationsNmin = cms.int32(0),							# require event to have >=X leg1+leg2+met combinations 
 											# passing specified cuts
     CombinationsNmax = cms.int32(1000),							# require event to have <=X leg1+leg2+met combinations
 											# passing specified cuts
@@ -244,25 +453,60 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     CalculatePdfSystematicUncertanties = cms.bool(False),				# if true, pdf systematic uncertanties will be calculated
     PdfWeightTags = cms.untracked.VInputTag("cteq65PdfWeights"),			# collection of weights for systematic uncertanties
     #PdfWeightTags = cms.untracked.VInputTag("cteq65PdfWeights", "MRST2006nnloPdfWeights", "MRST2007lomodPdfWeights"),
+    CalculateFSRSystematics = cms.bool(False),
+    CalculateISRGluonSystematics = cms.bool(False),
+    CalculateISRGammaSystematics = cms.bool(False),
     SmearTheMuon = cms.bool(False),
-    RelativeMuonPtOffset = cms.double(0.0),
-    RelativeMuonPtSigma = cms.double(0.0309692),
-    AbsoluteMuonEtaOffset = cms.double(0.0),
-    AbsoluteMuonEtaSigma = cms.double(0.000706872),
-    AbsoluteMuonPhiOffset = cms.double(0.0),
-    AbsoluteMuonPhiSigma = cms.double(0.000406238),
+    MuonPtScaleOffset = cms.double(1.0),
+    MuonPtSigmaOffset = cms.double(1.0),
+    MuonEtaScaleOffset = cms.double(1.0),
+    MuonEtaSigmaOffset = cms.double(1.0),
+    MuonPhiScaleOffset = cms.double(1.0),
+    MuonPhiSigmaOffset = cms.double(1.0),
     SmearTheElectron = cms.bool(False),
-    RelativeElectronPtOffset = cms.double(0.0),
-    RelativeElectronPtSigma = cms.double(0.0),
-    AbsoluteElectronEtaOffset = cms.double(0.0),
-    AbsoluteElectronEtaSigma = cms.double(0.0),
-    AbsoluteElectronPhiOffset = cms.double(0.0),
-    AbsoluteElectronPhiSigma = cms.double(0.0),
+    ElectronPtScaleOffset = cms.double(1.0),
+    ElectronPtSigmaOffset = cms.double(1.0),
+    ElectronEtaScaleOffset = cms.double(1.0),
+    ElectronEtaSigmaOffset = cms.double(1.0),
+    ElectronPhiScaleOffset = cms.double(1.0),
+    ElectronPhiSigmaOffset = cms.double(1.0),
+    SmearTheTau = cms.bool(False),
+    TauPtScaleOffset = cms.double(1.0),
+    TauPtSigmaOffset = cms.double(1.0),
+    TauEtaScaleOffset = cms.double(1.0),
+    TauEtaSigmaOffset = cms.double(1.0),
+    TauPhiScaleOffset = cms.double(1.0),
+    TauPhiSigmaOffset = cms.double(1.0),
+    SmearTheJet = cms.bool(False),
+    JetEnergyScaleOffset = cms.double(1.0),    
+    SmearThePt = cms.bool(False),
+    SmearTheEta = cms.bool(False),
+    SmearThePhi = cms.bool(False),
+    BosonPtBinEdges = cms.untracked.vdouble(
+               0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9.
+            , 10., 11., 12., 13., 14., 15., 16., 17., 18., 19.
+            , 20., 21., 22., 23., 24., 25., 26., 27., 28., 29.
+            , 30., 31., 32., 33., 34., 35., 36., 37., 38., 39.
+            , 40., 41., 42., 43., 44., 45., 46., 47., 48., 49.
+            , 999999.
+    ),
+    PtWeights = cms.untracked.vdouble( 
+              0.800665, 0.822121, 0.851249, 0.868285, 0.878733
+            , 0.953853, 0.928108, 0.982021, 1.00659 , 1.00648
+            , 1.03218 , 1.04924 , 1.03621 , 1.08743 , 1.01951
+            , 1.10519 , 0.984263, 1.04853 , 1.06724 , 1.10183
+            , 1.0503  , 1.13162 , 1.03837 , 1.12936 , 0.999173
+            , 1.01453 , 1.11435 , 1.10545 , 1.07199 , 1.04542
+            , 1.00828 , 1.0822  , 1.09667 , 1.16144 , 1.13906
+            , 1.27974 , 1.14936 , 1.23235 , 1.06667 , 1.06363
+            , 1.14225 , 1.22955 , 1.12674 , 1.03944 , 1.04639
+            , 1.13667 , 1.20493 , 1.09349 , 1.2107  , 1.21073
+    )
 )
 
 process.TFileService = cms.Service("TFileService", 
-    fileName = cms.string("test_analyzer.root")
 #    fileName = cms.string("outputFILENAME")
+    fileName = cms.string("muTauAnalysis.root")
 )
 
 process.p = cms.Path(

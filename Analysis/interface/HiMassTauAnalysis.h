@@ -23,6 +23,7 @@
 #include "DataFormats/Math/interface/deltaR.h"
 #include "DataFormats/Math/interface/normalizedPhi.h"
 #include "DataFormats/TauReco/interface/PFTau.h"
+#include "DataFormats/MuonReco/interface/MuonSelectors.h"
 #include "DataFormats/Common/interface/RefVector.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/Candidate/interface/Candidate.h"
@@ -33,10 +34,8 @@
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "CLHEP/Random/RandGauss.h"
-#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
-#include "TrackingTools/Records/interface/TransientTrackRecord.h"
-#include "TrackingTools/TrajectoryState/interface/TrajectoryStateClosestToPoint.h"
-#include "DataFormats/GeometryVector/interface/GlobalPoint.h"
+#include "CommonTools/CandUtils/interface/Booster.h"
+#include <Math/VectorUtil.h>
 
 #include <TH1.h>
 #include <TH2.h>
@@ -45,12 +44,15 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <sstream>
+#include <stdio.h>
+#include <stdlib.h>
 
 using namespace std;
 using namespace edm;
 
-typedef math::XYZTLorentzVector LorentzVector;
-typedef std::vector< math::XYZTLorentzVector > LVCollection;
+typedef reco::Candidate::LorentzVector LorentzVector;
+typedef std::vector< reco::Candidate::LorentzVector > LVCollection;
 
 class HiMassTauAnalysis : public EDAnalyzer {
 public:
@@ -59,7 +61,7 @@ public:
 
 
 private:
-  virtual void beginJob() ;
+  virtual void beginJob(const EventSetup&) ;
   virtual void analyze(const Event&, const EventSetup&);
   virtual void endJob() ;
 
@@ -71,50 +73,53 @@ private:
   //bool passGenTauCuts(const LorentzVector&);
   bool passRecoTriggerCuts(const Event&);
   bool passRecoVertexCuts(const reco::Vertex&);
-  bool passRecoTauCuts(const pat::Tau&);
+  bool passRecoTauCuts(const pat::Tau&,bool,reco::Candidate::LorentzVector);
   bool passRecoMuonCuts(const pat::Muon&,bool,reco::Candidate::LorentzVector);
   bool passRecoElectronCuts(const pat::Electron&,bool,reco::Candidate::LorentzVector);
-  bool passRecoJetCuts(const pat::Jet&);
-  bool passTopologyCuts(const pat::Tau&, const pat::Muon&, bool,reco::Candidate::LorentzVector,const pat::MET&);
-  bool passTopologyCuts(const pat::Tau&, const pat::Electron&, bool,reco::Candidate::LorentzVector,const pat::MET&);
+  bool passRecoJetCuts(const pat::Jet&,bool,reco::Candidate::LorentzVector);
+  bool passTopologyCuts(const pat::Tau&, bool,reco::Candidate::LorentzVector, const pat::Muon&, bool,reco::Candidate::LorentzVector,const pat::MET&);
+  bool passTopologyCuts(const pat::Tau&, bool,reco::Candidate::LorentzVector, const pat::Electron&, bool,reco::Candidate::LorentzVector,const pat::MET&);
   bool passTopologyCuts(const pat::Electron&, bool,reco::Candidate::LorentzVector,const pat::Muon&, bool,reco::Candidate::LorentzVector,const pat::MET&);
   bool passTopologyCuts(const pat::Muon&, bool,reco::Candidate::LorentzVector,const pat::Muon&, bool,reco::Candidate::LorentzVector,const pat::MET&);
-  bool passTopologyCuts(const pat::Tau&, const pat::Tau&, const pat::MET&);
+  bool passTopologyCuts(const pat::Tau&, bool,reco::Candidate::LorentzVector, const pat::Tau&, bool,reco::Candidate::LorentzVector, const pat::MET&);
   bool passTopologyCuts(const pat::Electron&, bool,reco::Candidate::LorentzVector,const pat::Electron&, bool,reco::Candidate::LorentzVector,const pat::MET&);
-  pair<bool, math::XYZTLorentzVector> matchToGen(const pat::Electron&);
-  pair<bool, math::XYZTLorentzVector> matchToGen(const pat::Muon&);
-  pair<bool, math::XYZTLorentzVector> matchToGen(const pat::Tau&);
-  double CalculatePZeta(const pat::Tau&, const pat::Muon&, bool,reco::Candidate::LorentzVector,const pat::MET&);
-  double CalculatePZeta(const pat::Tau&, const pat::Electron&, bool,reco::Candidate::LorentzVector,const pat::MET&);
+  pair<bool, reco::Candidate::LorentzVector> matchToGen(const pat::Electron&);
+  pair<bool, reco::Candidate::LorentzVector> matchToGen(const pat::Muon&);
+  pair<bool, reco::Candidate::LorentzVector> matchToGen(const pat::Tau&);
+  double CalculatePZeta(const pat::Tau&, bool,reco::Candidate::LorentzVector, const pat::Muon&, bool,reco::Candidate::LorentzVector,const pat::MET&);
+  double CalculatePZeta(const pat::Tau&, bool,reco::Candidate::LorentzVector, const pat::Electron&, bool,reco::Candidate::LorentzVector,const pat::MET&);
   double CalculatePZeta(const pat::Electron&, bool,reco::Candidate::LorentzVector,const pat::Muon&, bool,reco::Candidate::LorentzVector,const pat::MET&);
-  double CalculatePZeta(const pat::Tau&, const pat::Tau&, const pat::MET&);
+  double CalculatePZeta(const pat::Tau&, bool,reco::Candidate::LorentzVector, const pat::Tau&, bool,reco::Candidate::LorentzVector, const pat::MET&);
   double CalculatePZeta(const pat::Muon&, bool,reco::Candidate::LorentzVector,const pat::Muon&, bool,reco::Candidate::LorentzVector,const pat::MET&);
   double CalculatePZeta(const pat::Electron&, bool,reco::Candidate::LorentzVector,const pat::Electron&, bool,reco::Candidate::LorentzVector,const pat::MET&);
-  double CalculatePZetaVis(const pat::Tau&, const pat::Muon&, bool,reco::Candidate::LorentzVector,const pat::MET&);
-  double CalculatePZetaVis(const pat::Tau&, const pat::Electron&, bool,reco::Candidate::LorentzVector,const pat::MET&);
+  double CalculatePZetaVis(const pat::Tau&, bool,reco::Candidate::LorentzVector, const pat::Muon&, bool,reco::Candidate::LorentzVector,const pat::MET&);
+  double CalculatePZetaVis(const pat::Tau&, bool,reco::Candidate::LorentzVector, const pat::Electron&, bool,reco::Candidate::LorentzVector,const pat::MET&);
   double CalculatePZetaVis(const pat::Electron&, bool,reco::Candidate::LorentzVector,const pat::Muon&, bool,reco::Candidate::LorentzVector,const pat::MET&);
-  double CalculatePZetaVis(const pat::Tau&, const pat::Tau&, const pat::MET&);
+  double CalculatePZetaVis(const pat::Tau&, bool,reco::Candidate::LorentzVector, const pat::Tau&, bool,reco::Candidate::LorentzVector, const pat::MET&);
   double CalculatePZetaVis(const pat::Muon&, bool,reco::Candidate::LorentzVector,const pat::Muon&, bool,reco::Candidate::LorentzVector,const pat::MET&);
   double CalculatePZetaVis(const pat::Electron&, bool,reco::Candidate::LorentzVector,const pat::Electron&, bool,reco::Candidate::LorentzVector,const pat::MET&);
-  std::pair<bool, reco::Candidate::LorentzVector> CalculateThe4Momentum(const pat::Tau&, const pat::Electron&, bool,reco::Candidate::LorentzVector,const pat::MET&);
-  std::pair<bool, reco::Candidate::LorentzVector> CalculateThe4Momentum(const pat::Tau&, const pat::Muon&, bool,reco::Candidate::LorentzVector,const pat::MET&);
+  std::pair<bool, reco::Candidate::LorentzVector> CalculateThe4Momentum(const pat::Tau&, bool,reco::Candidate::LorentzVector, const pat::Electron&, bool,reco::Candidate::LorentzVector,const pat::MET&);
+  std::pair<bool, reco::Candidate::LorentzVector> CalculateThe4Momentum(const pat::Tau&, bool,reco::Candidate::LorentzVector, const pat::Muon&, bool,reco::Candidate::LorentzVector,const pat::MET&);
   std::pair<bool, reco::Candidate::LorentzVector> CalculateThe4Momentum(const pat::Electron&, bool,reco::Candidate::LorentzVector,const pat::Muon&, bool,reco::Candidate::LorentzVector,const pat::MET&);
-  std::pair<bool, reco::Candidate::LorentzVector> CalculateThe4Momentum(const pat::Tau&, const pat::Tau&, const pat::MET&);
+  std::pair<bool, reco::Candidate::LorentzVector> CalculateThe4Momentum(const pat::Tau&, bool,reco::Candidate::LorentzVector, const pat::Tau&, bool,reco::Candidate::LorentzVector, const pat::MET&);
   std::pair<bool, reco::Candidate::LorentzVector> CalculateThe4Momentum(const pat::Muon&, bool,reco::Candidate::LorentzVector,const pat::Muon&, bool,reco::Candidate::LorentzVector,const pat::MET&);
   std::pair<bool, reco::Candidate::LorentzVector> CalculateThe4Momentum(const pat::Electron&, bool,reco::Candidate::LorentzVector,const pat::Electron&, bool,reco::Candidate::LorentzVector,const pat::MET&);
   double CalculateLeptonMetMt(const pat::Muon&, bool,reco::Candidate::LorentzVector,const pat::MET&);
   double CalculateLeptonMetMt(const pat::Electron&, bool,reco::Candidate::LorentzVector,const pat::MET&);
-  double CalculateLeptonMetMt(const pat::Tau&, const pat::MET&);
+  double CalculateLeptonMetMt(const pat::Tau&, bool,reco::Candidate::LorentzVector, const pat::MET&);
+  double alphaRatio(double);
   std::pair<int, double> CalculateTauTrackIsolation(const pat::Tau&);
   std::pair<int, double> CalculateTauTrackIsolation(const pat::Tau&, float, float);
   std::pair<int, double> CalculateTauEcalIsolation(const pat::Tau&);
   std::pair<int, double> CalculateTauEcalIsolation(const pat::Tau&, float, float);
   int CalculateNumberSignalTauGammas(const pat::Tau&);
   reco::Candidate::LorentzVector CalculateTauSignalTracksMass(const pat::Tau&);
+  reco::Candidate::LorentzVector CalculateTauSignalTracksAndGammasMass(const pat::Tau&);
   reco::Candidate::LorentzVector SmearLightLepton(const pat::Muon&);
   reco::Candidate::LorentzVector SmearLightLepton(const pat::Electron&);
-  std::pair<bool, std::pair<float, float> > isZee(const pat::Electron&);
-  unsigned int numberOfExtraJets(const pat::Electron& , const pat::Tau&);
+  reco::Candidate::LorentzVector SmearTau(const pat::Tau&);
+  reco::Candidate::LorentzVector SmearJet(const pat::Jet&);
+  std::pair<bool, std::pair<float, float> > isZee(reco::Candidate::LorentzVector);
   void InitializeInfoForPDFSystematicUncertaintites();
   void bookHistograms();
   void setMapSelectionAlgoIDs();
@@ -154,9 +159,14 @@ private:
   double _RecoTauIsoSumPtMaxCutValue;
   double _RecoTauEcalIsoRphiForEllipse;
   double _RecoTauEcalIsoRetaForEllipse;
+  double _RecoTauSignal3ProngAndGammasMassMinCutValue;
+  double _RecoTauSignal3ProngAndGammasMassMaxCutValue;
+  double _RecoTauSignal1ProngAndGammasMassForPionMinCutValue;
+  double _RecoTauSignal1ProngAndGammasMassForPionMaxCutValue;
+  double _RecoTauSignal1ProngAndGammasMassForKaonVetoMinCutValue;
+  double _RecoTauSignal1ProngAndGammasMassForKaonVetoMaxCutValue;
   int _RecoTauNisoMax;
   int _RecoTauLeadTrackMinHits;
-  bool _SetTANC;
   bool _DoRecoTauDiscrByIsolation;
   bool _UseRecoTauDiscrByIsolationFlag;
   bool _UseRecoTauIsoSumPtInsteadOfNiso;
@@ -167,6 +177,8 @@ private:
   bool _DoRecoTauDiscrAgainstElectron;
   bool _DoRecoTauDiscrAgainstMuon;
   bool _DoRecoTauDiscrByCrackCut;
+  bool _DoRecoTauDiscrBySignalTracksAndGammasMass;
+  bool   _SetTANC;
   string _RecoTauDiscrByIsolation;
   string _RecoTauDiscrByLeadTrack;
   string _RecoTauDiscrAgainstElectron;
@@ -184,9 +196,13 @@ private:
   double _RecoMuonTrackIsoTrkThreshold;
   double _RecoMuonEcalIsoRecHitThreshold;
   double _RecoMuonIpCut;
+  double _RecoMuonCaloCompCoefficient;
+  double _RecoMuonSegmCompCoefficient;
+  double _RecoMuonAntiPionCut;
   bool _DoRecoMuonDiscrByGlobal;
   bool _DoRecoMuonDiscrByIsolation;
   bool _DoRecoMuonDiscrByIp;
+  bool _DoRecoMuonDiscrByPionVeto;
 
   //-----Reco Electron Inputs
   InputTag _RecoElectronSource;
@@ -214,6 +230,9 @@ private:
   bool _DoRecoElectronDiscrBySigmaEtaEta;
   bool _DoRecoElectronDiscrBySigmaIEtaIEta;
   bool _DoRecoElectronDiscrBySCE5by5;
+  bool _UseElectronUserIsolation;
+  bool _DoRecoElectronDiscrByEcalDrivenSeed;
+  bool _DoRecoElectronDiscrByTrackerDrivenSeed;
 
   //-----Reco Jet Inputs
   InputTag _RecoJetSource;
@@ -267,6 +286,7 @@ private:
   bool _DoDiTauDiscrByDeltaPtDivSumPt;
   bool _DoDiscrByLeg1MetDphi;
   bool _DoDiscrByLeg2MetDphi;
+  bool _DoTauDiscrByIsZeeCut;
   string _DiTauDiscrByOSLSType;
 
   //-----do matching to gen?
@@ -282,7 +302,7 @@ private:
   int _LeptonGrandMotherId;
   double _TauToGenMatchingDeltaR;
   std::vector<reco::GenParticleRef> associatedGenParticles;
-  math::XYZTLorentzVector MChadtau;
+  reco::Candidate::LorentzVector MChadtau;
   const reco::Candidate * daughterCand;
   const reco::Candidate * motherCand;
   const reco::Candidate * grandMotherCand;
@@ -291,10 +311,6 @@ private:
   TTree *_HMTTree;
   std::string _NtupleTreeName;
   bool _DoProduceNtuple;
-  double _MinRecoPtCut;
-  double _MaxRecoEtaCut;
-  double _MinDeltaRCut;
-  double _MinTauDiscValue;
 
   //-----Fill Histograms?
   bool _FillRecoVertexHists;
@@ -307,154 +323,180 @@ private:
 
   //-----histogram that keeps track of the number of analyzed events & the number of
   //-----events passing the user defined cuts
-  TH1* _hEvents;
+  std::map<unsigned int, TH1*> _hEvents;
 
   //-----vertex histograms
-  TH1* _hVertexZposition;
-  TH1* _hVertexNTracks;
-  TH1* _hNVertices;
+  std::map<unsigned int, TH1*> _hVertexZposition;
+  std::map<unsigned int, TH1*> _hVertexNTracks;
+  std::map<unsigned int, TH1*> _hNVertices;
 
   //-----generator level histograms
-  TH1* _hNGenTau;
-  TH1* _hGenTauEnergy;
-  TH1* _hGenTauPt;
-  TH1* _hGenTauEta;
-  TH1* _hGenTauPhi;
+  std::map<unsigned int, TH1*> _hNGenTau;
+  std::map<unsigned int, TH1*> _hGenTauEnergy;
+  std::map<unsigned int, TH1*> _hGenTauPt;
+  std::map<unsigned int, TH1*> _hGenTauEta;
+  std::map<unsigned int, TH1*> _hGenTauPhi;
+  std::map<unsigned int, TH1*> _hGenTauMotherEnergy;
+  std::map<unsigned int, TH1*> _hGenTauMotherPt;
+  std::map<unsigned int, TH1*> _hGenTauMotherEta;
+  std::map<unsigned int, TH1*> _hGenTauMotherPhi;
+  std::map<unsigned int, TH1*> _hGenTauGrandMotherEnergy;
+  std::map<unsigned int, TH1*> _hGenTauGrandMotherPt;
+  std::map<unsigned int, TH1*> _hGenTauGrandMotherEta;
+  std::map<unsigned int, TH1*> _hGenTauGrandMotherPhi;
 
   //-----reconstruction level tau histograms
-  TH1* _hNTau;
-  TH1* _hTauJetEnergy;
-  TH1* _hTauJetPt;
-  TH1* _hTauJetEta;
-  TH1* _hTauJetPhi;
-  TH1* _hTauJetNumSignalTracks;
-  TH1* _hTauJetNumSignalGammas;
-  TH1* _hTauJetSeedTrackPt;
-  TH1* _hTauJetSeedTrackIpSignificance;
-  TH1* _hTauJetSeedTrackNhits;
-  TH1* _hTauJetSeedTrackChi2;
-  TH1* _hTauJetCharge;
-  TH1* _hTauJetSignalTracksMass;
-  TH1* _hTauJetSignalTracksChargeFraction;
-  TH1* _hTauJetNumIsoTracks;
-  TH1* _hTauJetNumIsoGammas;
-  TH1* _hTauJetNumIsoCands;
-  TH1* _hTauJetSumPtIsoTracks;
-  TH1* _hTauJetSumPtIsoGammas;
-  TH1* _hTauJetSumPtIso;
-  TH1* _hTauJetGenTauDeltaPhi;
-  TH1* _hTauJetGenTauDeltaEta;
-  TH1* _hTauJetGenTauDeltaPt;
+  std::map<unsigned int, TH1*> _hNTau;
+  std::map<unsigned int, TH1*> _hTauJetEnergy;
+  std::map<unsigned int, TH1*> _hTauJetPt;
+  std::map<unsigned int, TH1*> _hTauJetEta;
+  std::map<unsigned int, TH1*> _hTauJetPhi;
+  std::map<unsigned int, TH1*> _hTauJetNumSignalTracks;
+  std::map<unsigned int, TH1*> _hTauJetNumSignalGammas;
+  std::map<unsigned int, TH1*> _hTauJetSeedTrackPt;
+  std::map<unsigned int, TH1*> _hTauJetSeedTrackIpSignificance;
+  std::map<unsigned int, TH1*> _hTauJetSeedTrackNhits;
+  std::map<unsigned int, TH1*> _hTauJetSeedTrackChi2;
+  std::map<unsigned int, TH1*> _hTauJetCharge;
+  std::map<unsigned int, TH1*> _hTauJetSignalTracksMass;
+  std::map<unsigned int, TH1*> _hTauJetSignalTracksAndGammasMass;
+  std::map<unsigned int, TH1*> _hTauJetSignalTracksMass1prong;
+  std::map<unsigned int, TH1*> _hTauJetSignalTracksAndGammasMass1prong;
+  std::map<unsigned int, TH1*> _hTauJetSignalTracksMass3prong;
+  std::map<unsigned int, TH1*> _hTauJetSignalTracksAndGammasMass3prong;
+  std::map<unsigned int, TH1*> _hTauJetMass1Prong0Gamma;
+  std::map<unsigned int, TH1*> _hTauJetMass1Prong1Gamma;
+  std::map<unsigned int, TH1*> _hTauJetMass1Prong2orMoreGamma;
+  std::map<unsigned int, TH1*> _hTauJetMass3Prong0Gamma;
+  std::map<unsigned int, TH1*> _hTauJetMass3Prong1Gamma;
+  std::map<unsigned int, TH1*> _hTauJetMass3Prong2orMoreGamma;
+  std::map<unsigned int, TH1*> _hTauJetSignalTracksChargeFraction;
+  std::map<unsigned int, TH1*> _hTauJetNumIsoTracks;
+  std::map<unsigned int, TH1*> _hTauJetNumIsoGammas;
+  std::map<unsigned int, TH1*> _hTauJetNumIsoCands;
+  std::map<unsigned int, TH1*> _hTauJetSumPtIsoTracks;
+  std::map<unsigned int, TH1*> _hTauJetSumPtIsoGammas;
+  std::map<unsigned int, TH1*> _hTauJetSumPtIso;
+  std::map<unsigned int, TH1*> _hTauJetGenTauDeltaPhi;
+  std::map<unsigned int, TH1*> _hTauJetGenTauDeltaEta;
+  std::map<unsigned int, TH1*> _hTauJetGenTauDeltaPt;
 
   //-----reconstruction level muon histograms
-  TH1* _hNMuon;
-  TH1* _hMuonEnergy;
-  TH1* _hMuonPt;
-  TH1* _hMuonEta;
-  TH1* _hMuonPhi;
-  TH1* _hMuonTrackIso;
-  TH1* _hMuonEcalIso;
-  TH1* _hMuonIp;
-  TH1* _hMuonIpSignificance;
-  TH1* _hMuonIso;
-  TH1* _hMuonGenMuonDeltaPhi;
-  TH1* _hMuonGenMuonDeltaEta;
-  TH1* _hMuonGenMuonDeltaPt;
+  std::map<unsigned int, TH1*> _hNMuon;
+  std::map<unsigned int, TH1*> _hMuonEnergy;
+  std::map<unsigned int, TH1*> _hMuonPt;
+  std::map<unsigned int, TH1*> _hMuonEta;
+  std::map<unsigned int, TH1*> _hMuonPhi;
+  std::map<unsigned int, TH1*> _hMuonTrackIso;
+  std::map<unsigned int, TH1*> _hMuonEcalIso;
+  std::map<unsigned int, TH1*> _hMuonIp;
+  std::map<unsigned int, TH1*> _hMuonIpSignificance;
+  std::map<unsigned int, TH1*> _hMuonIso;
+  std::map<unsigned int, TH1*> _hMuonGenMuonDeltaPhi;
+  std::map<unsigned int, TH1*> _hMuonGenMuonDeltaEta;
+  std::map<unsigned int, TH1*> _hMuonGenMuonDeltaPt;
+  std::map<unsigned int, TH1*> _hMuonCaloCompatibility;
+  std::map<unsigned int, TH1*> _hMuonSegmentCompatibility;
+  std::map<unsigned int, TH1*> _hMuonAntiPion;
+  std::map<unsigned int, TH2*> _hMuonCaloCompatibilityVsSegmentCompatibility;
 
   //-----reconstruction level electron histograms  
-  TH1* _hNElectron;
-  TH1* _hElectronEnergy;
-  TH1* _hElectronPt;
-  TH1* _hElectronEta;
-  TH1* _hElectronPhi;
-  TH1* _hElectronTrackIso;
-  TH1* _hElectronEcalIso;
-  TH1* _hElectronIp;
-  TH1* _hElectronEoverP;
-  TH1* _hElectronHoverEm;
-  TH1* _hElectronClassification;
-  TH1* _hElectronGenElectronDeltaPhi;
-  TH1* _hElectronGenElectronDeltaEta;
-  TH1* _hElectronGenElectronDeltaPt;
+  std::map<unsigned int, TH1*> _hNElectron;
+  std::map<unsigned int, TH1*> _hElectronEnergy;
+  std::map<unsigned int, TH1*> _hElectronPt;
+  std::map<unsigned int, TH1*> _hElectronEta;
+  std::map<unsigned int, TH1*> _hElectronPhi;
+  std::map<unsigned int, TH1*> _hElectronTrackIso;
+  std::map<unsigned int, TH1*> _hElectronEcalIso;
+  std::map<unsigned int, TH1*> _hElectronIp;
+  std::map<unsigned int, TH1*> _hElectronEoverP;
+  std::map<unsigned int, TH1*> _hElectronHoverEm;
+  std::map<unsigned int, TH1*> _hElectronClassification;
+  std::map<unsigned int, TH1*> _hElectronGenElectronDeltaPhi;
+  std::map<unsigned int, TH1*> _hElectronGenElectronDeltaEta;
+  std::map<unsigned int, TH1*> _hElectronGenElectronDeltaPt;
+  std::map<unsigned int, TH1*> _hElectronEcalDriven;
+  std::map<unsigned int, TH1*> _hElectronTrackerDriven;
 
   //-----reconstruction level jet histograms  
-  TH1* _hNJet;
-  TH1* _hJetEnergy;
-  TH1* _hJetPt;
-  TH1* _hJetEta;
-  TH1* _hJetPhi;
-  TH1* _hBJetDiscrByTrackCounting;
-  TH1* _hBJetDiscrBySimpleSecondaryV;
-  TH1* _hBJetDiscrByCombinedSecondaryV;
+  std::map<unsigned int, TH1*> _hNJet;
+  std::map<unsigned int, TH1*> _hJetEnergy;
+  std::map<unsigned int, TH1*> _hJetPt;
+  std::map<unsigned int, TH1*> _hJetEta;
+  std::map<unsigned int, TH1*> _hJetPhi;
+  std::map<unsigned int, TH1*> _hBJetDiscrByTrackCounting;
+  std::map<unsigned int, TH1*> _hBJetDiscrBySimpleSecondaryV;
+  std::map<unsigned int, TH1*> _hBJetDiscrByCombinedSecondaryV;
 
   //-----reconstruction level topology histograms
-  TH2* _hMuonPtVsTauPt;
-  TH1* _hMuonTauDeltaR;
-  TH1* _hMuonTauDeltaPtDivSumPt;
-  TH1* _hMuonTauOSLS;
-  TH1* _hMuonTauCosDphi;
-  TH1* _hMuonMetDeltaPhi;
-  TH1* _hTauMetDeltaPhi;
-  TH2* _hMuonMetDeltaPhiVsMuonTauCosDphi;
-  TH2* _hElectronPtVsTauPt;
-  TH1* _hElectronTauDeltaR;
-  TH1* _hElectronTauDeltaPtDivSumPt;
-  TH1* _hElectronTauOSLS;
-  TH1* _hElectronTauCosDphi;
-  TH1* _hElectronMetDeltaPhi;
-  TH2* _hElectronMetDeltaPhiVsElectronTauCosDphi;
-  TH2* _hElectronPtVsMuonPt;
-  TH1* _hElectronMuonDeltaR;
-  TH1* _hElectronMuonDeltaPtDivSumPt;
-  TH1* _hElectronMuonOSLS;
-  TH1* _hElectronMuonCosDphi;
-  TH2* _hElectronMetDeltaPhiVsElectronMuonCosDphi;
-  TH2* _hTau1PtVsTau2Pt;
-  TH1* _hTau1Tau2DeltaR;
-  TH1* _hTau1Tau2DeltaPtDivSumPt;
-  TH1* _hTau1MetMt;
-  TH1* _hTau2MetMt;
-  TH1* _hTau1Tau2OSLS;
-  TH1* _hTau1Tau2CosDphi;
-  TH1* _hTau1MetDeltaPhi;
-  TH1* _hTau2MetDeltaPhi;
-  TH2* _hTau1MetDeltaPhiVsTau1Tau2CosDphi;
-  TH2* _hMuon1PtVsMuon2Pt;
-  TH1* _hMuon1Muon2DeltaR;
-  TH1* _hMuon1Muon2DeltaPtDivSumPt;
-  TH1* _hMuon1MetMt;
-  TH1* _hMuon2MetMt;
-  TH1* _hMuon1Muon2OSLS;
-  TH1* _hMuon1Muon2CosDphi;
-  TH1* _hMuon1MetDeltaPhi;
-  TH1* _hMuon2MetDeltaPhi;
-  TH2* _hMuon1MetDeltaPhiVsMuon1Muon2CosDphi;
-  TH2* _hElectron1PtVsElectron2Pt;
-  TH1* _hElectron1Electron2DeltaR;
-  TH1* _hElectron1Electron2DeltaPtDivSumPt;
-  TH1* _hElectron1MetMt;
-  TH1* _hElectron2MetMt;
-  TH1* _hElectron1Electron2OSLS;
-  TH1* _hElectron1Electron2CosDphi;
-  TH1* _hElectron1MetDeltaPhi;
-  TH1* _hElectron2MetDeltaPhi;
-  TH2* _hElectron1MetDeltaPhiVsElectron1Electron2CosDphi;
-  TH1* _hTauMetMt;
-  TH1* _hElectronMetMt;
-  TH1* _hMuonMetMt;
-  TH1* _hNotReconstructableMass;
-  TH1* _hReconstructableMass;
-  TH1* _hPZeta;
-  TH1* _hPZetaVis;
-  TH2* _hZeta2D;
-  TH1* _hZeta1D;
-  TH1* _hMet;
+  std::map<unsigned int, TH2*> _hMuonPtVsTauPt;
+  std::map<unsigned int, TH1*> _hMuonTauDeltaR;
+  std::map<unsigned int, TH1*> _hMuonTauDeltaPtDivSumPt;
+  std::map<unsigned int, TH1*> _hMuonTauOSLS;
+  std::map<unsigned int, TH1*> _hMuonTauCosDphi;
+  std::map<unsigned int, TH1*> _hMuonMetDeltaPhi;
+  std::map<unsigned int, TH1*> _hTauMetDeltaPhi;
+  std::map<unsigned int, TH2*> _hMuonMetDeltaPhiVsMuonTauCosDphi;
+  std::map<unsigned int, TH2*> _hElectronPtVsTauPt;
+  std::map<unsigned int, TH1*> _hElectronTauDeltaR;
+  std::map<unsigned int, TH1*> _hElectronTauDeltaPtDivSumPt;
+  std::map<unsigned int, TH1*> _hElectronTauOSLS;
+  std::map<unsigned int, TH1*> _hElectronTauCosDphi;
+  std::map<unsigned int, TH1*> _hElectronMetDeltaPhi;
+  std::map<unsigned int, TH2*> _hElectronMetDeltaPhiVsElectronTauCosDphi;
+  std::map<unsigned int, TH2*> _hElectronPtVsMuonPt;
+  std::map<unsigned int, TH1*> _hElectronMuonDeltaR;
+  std::map<unsigned int, TH1*> _hElectronMuonDeltaPtDivSumPt;
+  std::map<unsigned int, TH1*> _hElectronMuonOSLS;
+  std::map<unsigned int, TH1*> _hElectronMuonCosDphi;
+  std::map<unsigned int, TH2*> _hElectronMetDeltaPhiVsElectronMuonCosDphi;
+  std::map<unsigned int, TH2*> _hTau1PtVsTau2Pt;
+  std::map<unsigned int, TH1*> _hTau1Tau2DeltaR;
+  std::map<unsigned int, TH1*> _hTau1Tau2DeltaPtDivSumPt;
+  std::map<unsigned int, TH1*> _hTau1MetMt;
+  std::map<unsigned int, TH1*> _hTau2MetMt;
+  std::map<unsigned int, TH1*> _hTau1Tau2OSLS;
+  std::map<unsigned int, TH1*> _hTau1Tau2CosDphi;
+  std::map<unsigned int, TH1*> _hTau1MetDeltaPhi;
+  std::map<unsigned int, TH1*> _hTau2MetDeltaPhi;
+  std::map<unsigned int, TH2*> _hTau1MetDeltaPhiVsTau1Tau2CosDphi;
+  std::map<unsigned int, TH2*> _hMuon1PtVsMuon2Pt;
+  std::map<unsigned int, TH1*> _hMuon1Muon2DeltaR;
+  std::map<unsigned int, TH1*> _hMuon1Muon2DeltaPtDivSumPt;
+  std::map<unsigned int, TH1*> _hMuon1MetMt;
+  std::map<unsigned int, TH1*> _hMuon2MetMt;
+  std::map<unsigned int, TH1*> _hMuon1Muon2OSLS;
+  std::map<unsigned int, TH1*> _hMuon1Muon2CosDphi;
+  std::map<unsigned int, TH1*> _hMuon1MetDeltaPhi;
+  std::map<unsigned int, TH1*> _hMuon2MetDeltaPhi;
+  std::map<unsigned int, TH2*> _hMuon1MetDeltaPhiVsMuon1Muon2CosDphi;
+  std::map<unsigned int, TH2*> _hElectron1PtVsElectron2Pt;
+  std::map<unsigned int, TH1*> _hElectron1Electron2DeltaR;
+  std::map<unsigned int, TH1*> _hElectron1Electron2DeltaPtDivSumPt;
+  std::map<unsigned int, TH1*> _hElectron1MetMt;
+  std::map<unsigned int, TH1*> _hElectron2MetMt;
+  std::map<unsigned int, TH1*> _hElectron1Electron2OSLS;
+  std::map<unsigned int, TH1*> _hElectron1Electron2CosDphi;
+  std::map<unsigned int, TH1*> _hElectron1MetDeltaPhi;
+  std::map<unsigned int, TH1*> _hElectron2MetDeltaPhi;
+  std::map<unsigned int, TH2*> _hElectron1MetDeltaPhiVsElectron1Electron2CosDphi;
+  std::map<unsigned int, TH1*> _hTauMetMt;
+  std::map<unsigned int, TH1*> _hElectronMetMt;
+  std::map<unsigned int, TH1*> _hMuonMetMt;
+  std::map<unsigned int, TH1*> _hNotReconstructableMass;
+  std::map<unsigned int, TH1*> _hReconstructableMass;
+  std::map<unsigned int, TH1*> _hPZeta;
+  std::map<unsigned int, TH1*> _hPZetaVis;
+  std::map<unsigned int, TH2*> _hZeta2D;
+  std::map<unsigned int, TH1*> _hZeta1D;
+  std::map<unsigned int, TH1*> _hMet;
+  std::map<unsigned int, TH1*> _hElectronIsZee;
 
 /* 
-  TH1* _hTauJetSumPtIso_JetOS;
-  TH1* _hTauJetSumPtIso_JetLS;
-  TH1* _hTauJetSumPtIso_SeedOS;
-  TH1* _hTauJetSumPtIso_SeedLS;
+  std::map<unsigned int, TH1*> _hTauJetSumPtIso_JetOS;
+  std::map<unsigned int, TH1*> _hTauJetSumPtIso_JetLS;
+  std::map<unsigned int, TH1*> _hTauJetSumPtIso_SeedOS;
+  std::map<unsigned int, TH1*> _hTauJetSumPtIso_SeedLS;
 */
 
   //-----Handle to tree collections
@@ -467,7 +509,6 @@ private:
   Handle< reco::CompositeCandidateCollection > _patDiTaus;
   Handle< reco::VertexCollection > _primaryEventVertexCollection;
   edm::Handle< edm::TriggerResults > _triggerResults;
-  ESHandle<TransientTrackBuilder> _theB;
 /*
   Handle< edm::View<reco::Muon> >   _recoMuonsForMetCorrections;
   Handle< ValueMap<reco::MuonMETCorrectionData > > vm_muCorrData_h;
@@ -505,29 +546,61 @@ private:
 
   //-----Inputs for systematic uncertainties
   bool _CalculatePdfSystematicUncertanties;
+  bool _CalculateFSRSystematics;
+  bool _CalculateISRGluonSystematics;
+  bool _CalculateISRGammaSystematics;
   std::vector<edm::InputTag> pdfWeightTags_;
+  InputTag FSRWeightTag_;
+  InputTag ISRWeightTag_;
   std::vector<int> pdfStart_Denominator_;
   std::vector<double> weightedEvents_Denominator_;
   std::vector<int> pdfStart_Numerator_;
   std::vector<double> weightedEvents_Numerator_;
+  double isrgluon_weight;
+  double isrgamma_weight;
+  double fsr_weight;
+  double pdfcentral_weight;
   bool _SmearTheMuon;
-  double _RelativeMuonPtOffset;
-  double _RelativeMuonPtSigma;
-  double _AbsoluteMuonEtaOffset;
-  double _AbsoluteMuonEtaSigma;
-  double _AbsoluteMuonPhiOffset;
-  double _AbsoluteMuonPhiSigma;
+  double _MuonPtScaleOffset;
+  double _MuonPtSigmaOffset;
+  double _MuonEtaScaleOffset;
+  double _MuonEtaSigmaOffset;
+  double _MuonPhiScaleOffset;
+  double _MuonPhiSigmaOffset;
   bool _SmearTheElectron;
-  double _RelativeElectronPtOffset;
-  double _RelativeElectronPtSigma;
-  double _AbsoluteElectronEtaOffset;
-  double _AbsoluteElectronEtaSigma;
-  double _AbsoluteElectronPhiOffset;
-  double _AbsoluteElectronPhiSigma;
+  double _ElectronPtScaleOffset;
+  double _ElectronPtSigmaOffset;
+  double _ElectronEtaScaleOffset;
+  double _ElectronEtaSigmaOffset;
+  double _ElectronPhiScaleOffset;
+  double _ElectronPhiSigmaOffset;
+  bool _SmearTheTau;
+  double _TauPtScaleOffset;
+  double _TauPtSigmaOffset;
+  double _TauEtaScaleOffset;
+  double _TauEtaSigmaOffset;
+  double _TauPhiScaleOffset;
+  double _TauPhiSigmaOffset;
+  bool _SmearTheJet;
+  double _JetEnergyScaleOffset;
+  bool _SmearThePt;
+  bool _SmearTheEta;
+  bool _SmearThePhi;
   std::vector<reco::Candidate::LorentzVector> smearedMuonMomentumVector;
   std::vector<reco::Candidate::LorentzVector> smearedElectronMomentumVector;
+  std::vector<reco::Candidate::LorentzVector> smearedTauMomentumVector;
+  std::vector<reco::Candidate::LorentzVector> smearedJetMomentumVector;
+  std::vector<double> bosonPtBinEdges_;
+  std::vector<double> ptWeights_;
+
+  double deltaForMEx;
+  double deltaForMEy;
   
   //-----For Ntuple
+  vector<double> pdfWeightVector;
+  reco::Candidate::LorentzVector Tau;
+  reco::Candidate::LorentzVector Electron;
+  reco::Candidate::LorentzVector MET;
   vector<unsigned int> *_tauMotherId;
   vector<int> *_tauMatched;
   vector<int> *_tauPdgId;
@@ -551,7 +624,8 @@ private:
   vector<float> *_tauIsoGammaEtSumDR0_75MinPt1_0;
   vector<float> *_tauLTPt;
   vector<float> *_tauLTChi2;
-  vector<int> *_tauLTRecHitsSize;
+  vector<int>   *_tauLTRecHitsSize;
+  vector<float> *_tauLTSignificanceIp;
   vector<float> *_tauEmFraction;
   vector<float> *_tauHcalTotOverPLead;
   vector<float> *_tauHcalMaxOverPLead;
@@ -601,14 +675,11 @@ private:
   vector<float> *_eSCE2x5;
   vector<float> *_eSCE5x5;
   vector<float> *_eIp;
-  vector<float> *_eIpAtVertex;
-  vector<float> *_eIpAtVertexError;
-  vector<unsigned int> *_eMissingHits;
-  
+  vector<float> *_eIpError;
+  vector<float> *_eIpError_ctf;
+  vector<float> *_eIp_ctf;
   vector<int> *_eClass;
-  vector<bool> *_eInEB;
-  vector<bool> *_eInEE;
-  vector<bool> *_eInGap;
+  vector<unsigned int> *_eMissingHits;
   
   vector<float> *_mEt;
   
@@ -623,12 +694,54 @@ private:
   vector<float> *_diTauMass;
   vector<float> *_diTauPt;
   vector<float> *_diTauEt;
-  
-  vector<float> *_jetEnergy;
+
+  //-------Jet info
   vector<float> *_jetPt;
+  vector<float> *_jetEt;
+  vector<float> *_jetE;
   vector<float> *_jetEta;
   vector<float> *_jetPhi;
-  vector<unsigned int> *_nJets;
+  vector<float> *_jetEmFraction;
+  
+  //------Gen resolution
+  vector<float> *_egenE;
+  vector<float> *_egenPt;
+  vector<float> *_egenEta;
+  vector<float> *_egenPhi; 
+
+  vector<float> *_taugenE;
+  vector<float> *_taugenPt;
+  vector<float> *_taugenEta;
+  vector<float> *_taugenPhi;
+
+  vector<float> *_gsfElectronE;
+  vector<int> *_isEEv;
+  vector<int> *_isEBv;
+  vector<int> *_isEBEEGap ;   // true if particle is in the crack between EB and EE
+  vector<int> *_isEBEtaGap ;  // true if particle is in EB, and inside the eta gaps between modules
+  vector<int> *_isEBPhiGap ;  // true if particle is in EB, and inside the phi gaps between modules
+  vector<int> *_isEEDeeGap ;  // true if particle is in EE, and inside the gaps between dees
+  vector<int> *_isEERingGap ; // true if particle is in EE, and inside the gaps between rings
+ 
+  //---Smearing for Systematics
+  vector<float> *_smearElectronPtv;
+  vector<float> *_smearElectronEtav;
+  vector<float> *_smearElectronPhiv;
+  
+  vector<float> *_smearTauPtv;
+  vector<float> *_smearTauEtav;
+  vector<float> *_smearTauPhiv;
+  vector<float> *_eTauSmeredMassv; 
+  vector<float> *_smear;
+
+  vector<bool> *_eEcalDrivenv;
+  vector<bool> *_eTrkDrivenv;
+
+  vector<vector<double> > *_PDF_weightsv;
+  vector<double> *_ISR_gluon_weightsv;
+  vector<double> *_ISR_gamma_weightsv;
+  vector<double> *_FSR_weightsv;
+
   vector<float> *_bJetDiscrByTrackCounting;
   vector<float> *_bJetDiscrBySimpleSecondaryV;
   vector<float> *_bJetDiscrByCombinedSecondaryV;

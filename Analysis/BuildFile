@@ -9,6 +9,7 @@
 <use name=DataFormats/PatCandidates>
 <use name=DataFormats/JetReco>
 <use name=DataFormats/TauReco>
+<use name=DataFormats/MuonReco>
 <use name=DataFormats/Math>
 <use name=PhysicsTools/PatAlgos>
 <use name=PhysicsTools/PatUtils>
@@ -36,6 +37,7 @@
    <use name=DataFormats/PatCandidates>
    <use name=DataFormats/JetReco>
    <use name=DataFormats/TauReco>
+   <use name=DataFormats/MuonReco>
    <use name=DataFormats/Math>
    <use name=PhysicsTools/PatAlgos>
    <use name=PhysicsTools/PatUtils>
