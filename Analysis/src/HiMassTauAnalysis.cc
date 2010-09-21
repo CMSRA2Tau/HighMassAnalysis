@@ -345,6 +345,13 @@ void  HiMassTauAnalysis::setupBranches() {
   _HMTTree->Branch("eIp_ctf", &_eIp_ctf);
   _HMTTree->Branch("eIpError_ctf",&_eIpError_ctf);
   _HMTTree->Branch("eClass", &_eClass);
+  _HMTTree->Branch("eMissingHits", &_eMissingHits);
+  _HMTTree->Branch("eIdRobustTight", &_eIdRobustTight);
+  _HMTTree->Branch("eIdRobustLoose", &_eIdRobustLoose);
+  _HMTTree->Branch("eIdTight", &_eIdTight);
+  _HMTTree->Branch("eIdLoose", &_eIdLoose);
+  _HMTTree->Branch("eIdHighEnergy", &_eIdHighEnergy);
+  
   _HMTTree->Branch("mEt", &_mEt);
   _HMTTree->Branch("eTauMass",&_eTauMass);
   _HMTTree->Branch("eTauCosDPhi",&_eTauCosDPhi);
@@ -380,13 +387,12 @@ void  HiMassTauAnalysis::setupBranches() {
   _HMTTree->Branch("isEB", &_isEBv);
   _HMTTree->Branch("isEBEEGap",&_isEBEEGap) ;  
   _HMTTree->Branch("isEBEtaGap",&_isEBEtaGap); 
-  _HMTTree->Branch("isEBEtaGap",&_isEBPhiGap) ; 
-  _HMTTree->Branch("isEBEtaGap",&_isEEDeeGap) ; 
-  _HMTTree->Branch("isEBEtaGap",&_isEERingGap) ;
-
+  _HMTTree->Branch("isEBPhiGap",&_isEBPhiGap) ; 
+  _HMTTree->Branch("isEEDeeGap",&_isEEDeeGap) ; 
+  _HMTTree->Branch("isEERingGap",&_isEERingGap) ;
+  
   _HMTTree->Branch("eEcalDriven",        &_eEcalDrivenv);
   _HMTTree->Branch("eTrkDriven",         &_eTrkDrivenv);
-  _HMTTree->Branch("eMissingHits", &_eMissingHits);
 
   _HMTTree->Branch("PDF_weights",        &_PDF_weightsv);
   _HMTTree->Branch("ISR_gluon_weights",  &_ISR_gluon_weightsv);
@@ -475,6 +481,12 @@ void HiMassTauAnalysis::initializeVectors(){
   _eIpError_ctf   = NULL;
   _eClass         = NULL;
   _eMissingHits   = NULL;
+  _eIdRobustTight   = NULL;
+  _eIdRobustLoose   = NULL;
+  _eIdTight   = NULL;
+  _eIdLoose   = NULL;
+  _eIdHighEnergy   = NULL;
+  
   
   _mEt            = NULL;
   
@@ -608,6 +620,12 @@ void HiMassTauAnalysis::clearVectors(){
   _eIpError_ctf->clear();
   _eClass->clear();
   _eMissingHits->clear();
+  _eIdRobustTight->clear();
+  _eIdRobustLoose->clear();
+  _eIdTight->clear();
+  _eIdLoose->clear();
+  _eIdHighEnergy->clear();
+  
   
   _mEt->clear();
     
@@ -2830,6 +2848,16 @@ void HiMassTauAnalysis::fillNtuple() {
 
       // Electron classification, is the electron classified as showering? narrow? big brem? golden? is in the cracks region? 
       _eClass->push_back(patElectron->classification());
+      if(patElectron->isElectronIDAvailable("eidRobustTight")) _eIdRobustTight->push_back(patElectron->electronID("eidRobustTight"));
+      else _eIdRobustTight->push_back(-1.);
+      if(patElectron->isElectronIDAvailable("eidRobustLoose")) _eIdRobustLoose->push_back(patElectron->electronID("eidRobustLoose"));
+      else _eIdRobustLoose->push_back(-1.);
+      if(patElectron->isElectronIDAvailable("loose")) _eIdLoose->push_back(patElectron->electronID("loose"));
+      else _eIdLoose->push_back(-1.);
+      if(patElectron->isElectronIDAvailable("tight")) _eIdTight->push_back(patElectron->electronID("tight"));
+      else _eIdTight->push_back(-1.);
+      if(patElectron->isElectronIDAvailable("eidHighEnergy")) _eIdHighEnergy->push_back(patElectron->electronID("eidHighEnergy"));
+      else _eIdHighEnergy->push_back(-1.);
 
       const Track* elTrack = (const reco::Track*)(patElectron->gsfTrack().get());
       // number of expected hits before the first track hit
