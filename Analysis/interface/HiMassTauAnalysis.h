@@ -679,6 +679,12 @@ private:
   vector<float> *_eIpError_ctf;
   vector<float> *_eIp_ctf;
   vector<int> *_eClass;
+  vector<float> *_eIdRobustTight;
+  vector<float> *_eIdRobustLoose;
+  vector<float> *_eIdTight;
+  vector<float> *_eIdLoose;
+  vector<float> *_eIdHighEnergy;
+  
   vector<unsigned int> *_eMissingHits;
   
   vector<float> *_mEt;
