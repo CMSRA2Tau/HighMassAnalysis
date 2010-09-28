@@ -292,13 +292,13 @@ from RecoEgamma.ElectronIdentification.electronIdCutBasedExt_cfi import *
 #   barrel = cms.vdouble(0.015, 0.012, 0.02, 0.0025), # [0.015, 0.0092, 0.020, 0.0025]
 #   endcap = cms.vdouble(0.018, 0.025, 0.02, 0.0040)  # [0.018, 0.025, 0.020, 0.0040]
 #)
-elecIdCutBasedLoose = eidCutBasedExt.copy()
-elecIdCutBasedLoose.electronQuality = 'loose'
-elecIdCutBasedTight = eidCutBasedExt.copy()
-elecIdCutBasedTight.electronQuality = 'tight'
-electronIdCutBased = cms.Sequence( 
-                                  elecIdCutBasedLoose
-                                  *elecIdCutBasedTight )
+#elecIdCutBasedLoose = eidCutBasedExt.copy()
+#elecIdCutBasedLoose.electronQuality = 'loose'
+#elecIdCutBasedTight = eidCutBasedExt.copy()
+#elecIdCutBasedTight.electronQuality = 'tight'
+#electronIdCutBased = cms.Sequence( 
+#                                  elecIdCutBasedLoose
+#                                  *elecIdCutBasedTight )
 
 from RecoEgamma.EgammaIsolationAlgos.eleTrackExtractorBlocks_cff import *
 from RecoEgamma.EgammaIsolationAlgos.eleEcalExtractorBlocks_cff import *
@@ -353,12 +353,12 @@ patElectrons.isoDeposits = cms.PSet(
 #   hcal 	   = patElectrons.userIsolation.hcal.src,
 )
 
-patElectrons.addElectronID = cms.bool(True)
-patElectrons.electronIDSources = cms.PSet(
-   #robust = cms.InputTag("elecIdCutBasedRobust"),
-   loose  = cms.InputTag("elecIdCutBasedLoose"),
-   tight  = cms.InputTag("elecIdCutBasedTight")        
-)
+#patElectrons.addElectronID = cms.bool(True)
+#patElectrons.electronIDSources = cms.PSet(
+#   #robust = cms.InputTag("elecIdCutBasedRobust"),
+#   loose  = cms.InputTag("elecIdCutBasedLoose"),
+#   tight  = cms.InputTag("elecIdCutBasedTight")        
+#)
 #patElectrons.addTrigMatch = cms.bool(True)
 #patElectrons.trigPrimMatch = cms.VInputTag(
 #    cms.InputTag("electronTrigMatchHLT1Electron")
@@ -367,6 +367,13 @@ patElectrons.addGenMatch = cms.bool(True)
 patElectrons.genParticleMatch = cms.InputTag("electronMatch")
 cleanPatElectrons.checkOverlaps = cms.PSet()
 
+
+from SHarper.HEEPAnalyzer.HEEPSelectionCuts_cfi import *
+heepPatElectrons = cms.EDProducer("HEEPAttStatusToPAT",
+                                          eleLabel = cms.InputTag("selectedPatElectrons"),
+                                          barrelCuts = cms.PSet(heepBarrelCuts),
+                                          endcapCuts = cms.PSet(heepEndcapCuts)
+                                          )
 # --------------------Modifications for jets--------------------
 
 cleanPatJets.checkOverlaps = cms.PSet()
@@ -383,6 +390,7 @@ patCustomizedCandidates = cms.Sequence(
 
 selectedPatCustomizedCandidates = cms.Sequence(
     selectedPatElectrons +
+    heepPatElectrons	 +
     selectedPatMuons     +
     selectedLayer1ShrinkingConeHighEffPFTaus +
     selectedLayer1ShrinkingConePFTaus +

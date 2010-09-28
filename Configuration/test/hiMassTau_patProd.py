@@ -32,7 +32,7 @@ from HighMassAnalysis.Configuration.patTupleEventContentForHiMassTau_cff import 
 
 process.savePatTuple = cms.OutputModule("PoolOutputModule",
     patTupleEventContent,                                               
-    fileName = cms.untracked.string('wJetsElecTauSkimPat.root')
+    fileName = cms.untracked.string('zprimeTauTauPat.root')
 )
 
 process.maxEvents = cms.untracked.PSet(            
@@ -42,7 +42,7 @@ process.maxEvents = cms.untracked.PSet(
 process.source = cms.Source("PoolSource",
     skipEvents = cms.untracked.uint32(0),
     fileNames = cms.untracked.vstring(
-       '/store/user/lpctau/HighMassTau/eluiggi/zprimeTauTau1000_7TeV_STARTUP31X_V4_GEN-SIM-RAW/ZprimeTauTau1000_7TeV_START36_V10_GEN-SIM-RECO_RERECO/3642c883d04c18dde8255af9b6e3785e/zprimeReReco_1_1_JKq.root'
+       '/store/user/lpctau/HighMassTau/eluiggi/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/ZprimeTauTau500_7TeV_START36_V10_GEN-SIM-RECO_RERECO/3642c883d04c18dde8255af9b6e3785e/zprimeReReco_1_1_MeL.root'
     )
     #skipBadFiles = cms.untracked.bool(True) 
 )
@@ -95,7 +95,7 @@ from PhysicsTools.PatAlgos.tools.muonTools import *
 addMuonUserIsolation(process)
 
 process.p = cms.Path( 
-		      process.elecTauSkimSequence
-		    + process.producePatTuple
-                    + process.savePatTuple )
+		      #process.elecTauSkimSequence +
+		      process.producePatTuple +
+                      process.savePatTuple )
 

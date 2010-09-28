@@ -207,7 +207,7 @@ from RecoMET.METProducers.genMetCalo_cfi import *
 from PhysicsTools.JetMCAlgos.TauGenJets_cfi import *
 
 producePatTuple = cms.Sequence(
-    electronIdCutBased *
+    #electronIdCutBased *
     recoElectronIsolation *
     ic5PFJetTracksAssociatorAtVertex *
     pfRecoTauTagInfoProducer *

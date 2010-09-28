@@ -39,8 +39,10 @@ patTupleEventContent.outputCommands.extend(
     'keep *_layer1METsPF_*_*',
     'keep *_genMetCalo__hiMassTau',
     'keep *_genMetTrue__hiMassTau',
-    'keep *_generator_*_*',
-    'keep DcsStatuss_scalersRawToDigi_*_*',
+    'keep *_generator_*_*',      
+    'keep recoGsfElectronCores_*_*_*',
+    'keep recoSuperClusters_*_*_*',
+    'keep DcsStatuss_scalersRawToDigi_*_*'
     ]
 )
 
@@ -50,8 +52,7 @@ patTupleEventContent.outputCommands.extend(
 
 patTupleEventContent.outputCommands.extend(
     [ 'keep *_selectedPatElectrons_*_*',
-      'keep recoGsfElectronCores_*_*_*',
-      'keep recoSuperClusters_*_*_*',
+      'keep *_heepPatElectrons_*_*',
       'keep *_selectedPatMuons_*_*',
       'keep *_selectedPatJets_*_*' ]
 )
