@@ -3,6 +3,8 @@
 #include "HighMassAnalysis/Analysis/interface/HiMassTauAnalysis.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
+#include "SHarper/HEEPAnalyzer/interface/HEEPEle.h"
+#include "SHarper/HEEPAnalyzer/interface/HEEPCutCodes.h"
 
 #include <TMath.h>
 #include <iostream>
@@ -334,6 +336,11 @@ void  HiMassTauAnalysis::setupBranches() {
   _HMTTree->Branch("eHcalIsoPat", &_eHcalIsoPat);
   _HMTTree->Branch("eTrkIsoPat", &_eTrkIsoPat);
   _HMTTree->Branch("eIsoPat", &_eIsoPat);
+  _HMTTree->Branch("heepEcalIso", &_heepEcalIso);
+  _HMTTree->Branch("heepHcalIso", &_heepHcalIso);
+  _HMTTree->Branch("heepHcalIsoDepth1", &_heepHcalIsoDepth1);
+  _HMTTree->Branch("heepHcalIsoDepth2", &_heepHcalIsoDepth2);
+  _HMTTree->Branch("heepEcalHcalIsoDepth1", &_heepEcalHcalIsoDepth1);
   _HMTTree->Branch("eUserEcalIso", &_eUserEcalIso);
   _HMTTree->Branch("eUserHcalIso", &_eUserHcalIso);
   _HMTTree->Branch("eUserTrkIso", &_eUserTrkIso);
@@ -351,6 +358,20 @@ void  HiMassTauAnalysis::setupBranches() {
   _HMTTree->Branch("eIdTight", &_eIdTight);
   _HMTTree->Branch("eIdLoose", &_eIdLoose);
   _HMTTree->Branch("eIdHighEnergy", &_eIdHighEnergy);
+  _HMTTree->Branch("heepPassedEt", &_heepPassedEt);
+  _HMTTree->Branch("heepPassedPt", &_heepPassedPt);
+  _HMTTree->Branch("heepPassedDetEta", &_heepPassedDetEta);
+  _HMTTree->Branch("heepPassedCrack", &_heepPassedCrack);
+  _HMTTree->Branch("heepPassedDEtaIn", &_heepPassedDEtaIn);
+  _HMTTree->Branch("heepPassedDPhiIn", &_heepPassedDPhiIn);
+  _HMTTree->Branch("heepPassedHadem", &_heepPassedHadem);
+  _HMTTree->Branch("heepPassedSigmaIEtaIEta", &_heepPassedSigmaIEtaIEta);
+  _HMTTree->Branch("heepPassed2by5Over5By5", &_heepPassed2by5Over5By5);
+  _HMTTree->Branch("heepPassedEcalHad1Iso", &_heepPassedEcalHad1Iso);
+  _HMTTree->Branch("heepPassedHad2Iso", &_heepPassedHad2Iso);
+  _HMTTree->Branch("heepPassedTrkIso", &_heepPassedTrkIso);
+  _HMTTree->Branch("heepPassedEcalDriven", &_heepPassedEcalDriven);
+  _HMTTree->Branch("heepPassedAllCuts", &_heepPassedAllCuts);
   
   _HMTTree->Branch("mEt", &_mEt);
   _HMTTree->Branch("eTauMass",&_eTauMass);
@@ -469,6 +490,11 @@ void HiMassTauAnalysis::initializeVectors(){
   _eHcalIsoPat = NULL;
   _eTrkIsoPat = NULL;
   _eIsoPat = NULL;
+  _heepEcalIso = NULL;
+  _heepHcalIso = NULL;
+  _heepHcalIsoDepth1 = NULL;	 
+  _heepHcalIsoDepth2 = NULL;	 
+  _heepEcalHcalIsoDepth1 = NULL;
   _eUserEcalIso = NULL;
   _eUserTrkIso = NULL;
   _eUserHcalIso = NULL;  
@@ -486,7 +512,20 @@ void HiMassTauAnalysis::initializeVectors(){
   _eIdTight   = NULL;
   _eIdLoose   = NULL;
   _eIdHighEnergy   = NULL;
-  
+  _heepPassedEt = NULL;
+  _heepPassedPt = NULL;
+  _heepPassedDetEta = NULL;
+  _heepPassedCrack = NULL;
+  _heepPassedDEtaIn = NULL;
+  _heepPassedDPhiIn = NULL;
+  _heepPassedHadem = NULL;
+  _heepPassedSigmaIEtaIEta = NULL;
+  _heepPassed2by5Over5By5 = NULL;
+  _heepPassedEcalHad1Iso = NULL;
+  _heepPassedHad2Iso = NULL;
+  _heepPassedTrkIso = NULL;
+  _heepPassedEcalDriven = NULL;
+  _heepPassedAllCuts = NULL;
   
   _mEt            = NULL;
   
@@ -607,6 +646,11 @@ void HiMassTauAnalysis::clearVectors(){
   _eHcalIsoPat->clear();
   _eTrkIsoPat->clear();
   _eIsoPat->clear();
+  _heepEcalIso->clear();
+  _heepHcalIso->clear();
+  _heepHcalIsoDepth1->clear();	 
+  _heepHcalIsoDepth2->clear();	 
+  _heepEcalHcalIsoDepth1->clear();
   _eUserEcalIso->clear();
   _eUserTrkIso->clear();
   _eUserHcalIso->clear();
@@ -625,8 +669,20 @@ void HiMassTauAnalysis::clearVectors(){
   _eIdTight->clear();
   _eIdLoose->clear();
   _eIdHighEnergy->clear();
-  
-  
+  _heepPassedEt->clear();
+  _heepPassedPt->clear();
+  _heepPassedDetEta->clear();
+  _heepPassedCrack->clear();
+  _heepPassedDEtaIn->clear();
+  _heepPassedDPhiIn->clear();
+  _heepPassedHadem->clear();
+  _heepPassedSigmaIEtaIEta->clear();
+  _heepPassed2by5Over5By5->clear();
+  _heepPassedEcalHad1Iso->clear();
+  _heepPassedHad2Iso->clear();
+  _heepPassedTrkIso->clear();
+  _heepPassedEcalDriven->clear();
+  _heepPassedAllCuts->clear();
   _mEt->clear();
     
   _eTauMass->clear();
@@ -2662,11 +2718,8 @@ void HiMassTauAnalysis::fillNtuple() {
       MET = LorentzVectorMET;
 
       //----eEcalDriven? eTrkDriven?
-//      const bool eEcalDriven = patElectron->ecalDrivenSeed();
-//      const bool eTrkDriven  = patElectron->trackerDrivenSeed();
-      
-//      _eEcalDrivenv->push_back(eEcalDriven);
-//      _eTrkDrivenv->push_back(eTrkDriven);
+      _eEcalDrivenv->push_back(patElectron->ecalDrivenSeed());
+      _eTrkDrivenv->push_back(patElectron->trackerDrivenSeed());
       
       // Get generator level information for pt,eta,phi and energy, matching the reco and gen objects using EDAnalyzer matching function 
       _taugenPt->push_back(matchToGen(*patTau).second.pt());
@@ -2779,7 +2832,10 @@ void HiMassTauAnalysis::fillNtuple() {
       _zeeMass->push_back(isZee(Electron).second.first);
       _zeePtAsymm->push_back(isZee(Electron).second.second);
 
+      heep::Ele theHeepElec(*patElectron);  // defines HEEP electron
       // fill bool variable to determing if the electron candidate passed matching or not.
+
+      
       _eMatched->push_back(int(matchToGen(*patElectron).first));
 
       // Is the electron comming from the barrel or the endcap?
@@ -2802,31 +2858,46 @@ void HiMassTauAnalysis::fillNtuple() {
       // fill basic electron quantities
       _eE->push_back(Electron.energy());			       
       _ePt->push_back(Electron.pt());										       
-      _eEt->push_back(patElectron->et());       
+      _eEt->push_back(theHeepElec.et());       
       _eCharge->push_back(patElectron->charge());	       
       _eEta->push_back(Electron.eta());										       
       _ePhi->push_back(Electron.phi());									       
-      _eSigmaEtaEta->push_back(patElectron->scSigmaEtaEta());							       
-      _eSigmaIEtaIEta->push_back(patElectron->scSigmaIEtaIEta());		       
-      _eEOverP->push_back(patElectron->eSuperClusterOverP());					       
-      _eHOverEm->push_back(patElectron->hadronicOverEm());		       
-      _eDeltaPhiIn->push_back(patElectron->deltaEtaSuperClusterTrackAtVtx());	       
-      _eDeltaEtaIn->push_back(patElectron->deltaPhiSuperClusterTrackAtVtx());
+      //_eSigmaEtaEta->push_back(patElectron->scSigmaEtaEta());							       
+      _eSigmaEtaEta->push_back(theHeepElec.sigmaEtaEta());							       
+      //_eSigmaIEtaIEta->push_back(patElectron->scSigmaIEtaIEta());		       
+      _eSigmaIEtaIEta->push_back(theHeepElec.sigmaIEtaIEta());		       
+      //_eEOverP->push_back(patElectron->eSuperClusterOverP());					       
+      _eEOverP->push_back(theHeepElec.epIn());					       
+      //_eHOverEm->push_back(patElectron->hadronicOverEm());		       
+      _eHOverEm->push_back(theHeepElec.hOverE());		       
+      //_eDeltaPhiIn->push_back(patElectron->deltaEtaSuperClusterTrackAtVtx());	       
+      _eDeltaPhiIn->push_back(theHeepElec.dPhiIn());	       
+      //_eDeltaEtaIn->push_back(patElectron->deltaPhiSuperClusterTrackAtVtx());
+      _eDeltaEtaIn->push_back(theHeepElec.dEtaIn());
       // if set to tru use customized user Isolation, else use pat default values 
 
       _eEcalIsoPat->push_back(patElectron->ecalIso());
       _eHcalIsoPat->push_back(patElectron->hcalIso());										       
-      _eTrkIsoPat->push_back(patElectron->trackIso());										       
+      _eTrkIsoPat->push_back(patElectron->trackIso());
+      
+      _heepEcalIso->push_back(theHeepElec.isolEm());
+      _heepHcalIso->push_back(theHeepElec.isolHad());
+      _heepHcalIsoDepth1->push_back(theHeepElec.isolHadDepth1());										       
+      _heepHcalIsoDepth2->push_back(theHeepElec.isolHadDepth2());										       
+      _heepEcalHcalIsoDepth1->push_back(theHeepElec.isolEmHadDepth1());										       
      
       _eUserEcalIso->push_back(patElectron->userIsolation(pat::EcalIso));
       _eUserHcalIso->push_back(patElectron->userIsolation(pat::HcalIso));										     
       _eUserTrkIso->push_back(patElectron->userIsolation(pat::TrackIso));
       _eIsoPat->push_back(patElectron->caloIso());
 
-      _eSCE1x5->push_back(patElectron->scE1x5());								       
-      _eSCE2x5->push_back(patElectron->scE2x5Max());		       
-      _eSCE5x5->push_back(patElectron->scE5x5()); 
-      // fill the electrons impact parameter and its error
+      //_eSCE1x5->push_back(patElectron->scE1x5());								       
+      _eSCE1x5->push_back(theHeepElec.scE1x5());								       
+      //_eSCE2x5->push_back(patElectron->scE2x5Max());		       
+      _eSCE2x5->push_back(theHeepElec.scE2x5Max());		       
+     // _eSCE5x5->push_back(patElectron->scE5x5()); 
+       _eSCE5x5->push_back(theHeepElec.scE5x5()); 
+     // fill the electrons impact parameter and its error
       const reco::Vertex& thePrimaryEventVertex = (*(_primaryEventVertexCollection)->begin());
       if(patElectron->gsfTrack().isNonnull()) {
         _eIp->push_back(patElectron->gsfTrack()->dxy(thePrimaryEventVertex.position()));
@@ -2856,13 +2927,30 @@ void HiMassTauAnalysis::fillNtuple() {
       else _eIdLoose->push_back(-1.);
       if(patElectron->isElectronIDAvailable("tight")) _eIdTight->push_back(patElectron->electronID("tight"));
       else _eIdTight->push_back(-1.);
-      if(patElectron->isElectronIDAvailable("eidHighEnergy")) _eIdHighEnergy->push_back(patElectron->electronID("eidHighEnergy"));
+      if(patElectron->isElectronIDAvailable("eidRobustHighEnergy")) _eIdHighEnergy->push_back(patElectron->electronID("eidRobustHighEnergy"));
       else _eIdHighEnergy->push_back(-1.);
 
       const Track* elTrack = (const reco::Track*)(patElectron->gsfTrack().get());
       // number of expected hits before the first track hit
       const HitPattern& pInner = elTrack->trackerExpectedHitsInner(); 
       _eMissingHits->push_back(pInner.numberOfHits());
+      
+      // HEEP selection cuts
+      int cutResult = patElectron->userInt("HEEPId");
+      _heepPassedEt->push_back(heep::CutCodes::passCuts(cutResult, "et"));
+      _heepPassedPt->push_back(heep::CutCodes::passCuts(cutResult, "pt"));
+      _heepPassedDetEta->push_back(heep::CutCodes::passCuts(cutResult, "detEta"));
+      _heepPassedCrack->push_back(heep::CutCodes::passCuts(cutResult, "crack"));
+      _heepPassedDEtaIn->push_back(heep::CutCodes::passCuts(cutResult, "dEtaIn"));
+      _heepPassedDPhiIn->push_back(heep::CutCodes::passCuts(cutResult, "dPhiIn"));
+      _heepPassedHadem->push_back(heep::CutCodes::passCuts(cutResult, "hadem"));
+      _heepPassedSigmaIEtaIEta->push_back(heep::CutCodes::passCuts(cutResult, "sigmaIEtaIEta"));
+      _heepPassed2by5Over5By5->push_back(heep::CutCodes::passCuts(cutResult, "e2x5Over5x5"));
+      _heepPassedEcalHad1Iso->push_back(heep::CutCodes::passCuts(cutResult, "isolEmHadDepth1"));
+      _heepPassedHad2Iso->push_back(heep::CutCodes::passCuts(cutResult, "isolHadDepth2"));
+      _heepPassedTrkIso->push_back(heep::CutCodes::passCuts(cutResult, "isolPtTrks"));
+      _heepPassedEcalDriven->push_back(heep::CutCodes::passCuts(cutResult, "ecalDriven"));
+      _heepPassedAllCuts->push_back(heep::CutCodes::passCuts(cutResult, ~heep::CutCodes::DETAIN));
 
       // Info for MET
       _mEt->push_back(MET.pt());

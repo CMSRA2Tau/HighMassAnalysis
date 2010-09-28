@@ -667,6 +667,13 @@ private:
   vector<float> *_eTrkIsoPat;
   vector<float> *_eIsoPat;
   
+  vector<float> *_heepEcalIso;
+  vector<float> *_heepHcalIso;
+  vector<float> *_heepHcalIsoDepth1;											 
+  vector<float> *_heepHcalIsoDepth2;											 
+  vector<float> *_heepEcalHcalIsoDepth1;										 
+
+  
   vector<float> *_eUserEcalIso;
   vector<float> *_eUserHcalIso;
   vector<float> *_eUserTrkIso;
@@ -684,6 +691,21 @@ private:
   vector<float> *_eIdTight;
   vector<float> *_eIdLoose;
   vector<float> *_eIdHighEnergy;
+  
+  vector<int> *_heepPassedEt;
+  vector<int> *_heepPassedPt;
+  vector<int> *_heepPassedDetEta;
+  vector<int> *_heepPassedCrack;
+  vector<int> *_heepPassedDEtaIn;
+  vector<int> *_heepPassedDPhiIn;
+  vector<int> *_heepPassedHadem;
+  vector<int> *_heepPassedSigmaIEtaIEta;
+  vector<int> *_heepPassed2by5Over5By5;
+  vector<int> *_heepPassedEcalHad1Iso;
+  vector<int> *_heepPassedHad2Iso;
+  vector<int> *_heepPassedTrkIso;
+  vector<int> *_heepPassedEcalDriven;
+  vector<int> *_heepPassedAllCuts;
   
   vector<unsigned int> *_eMissingHits;
   

@@ -6,6 +6,7 @@ process = cms.Process('HiMassTau')
 process.load('Configuration.StandardSequences.Services_cff')
 process.load('FWCore.MessageService.MessageLogger_cfi')
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
+process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32( -1 )
@@ -13,15 +14,16 @@ process.maxEvents = cms.untracked.PSet(
 process.source = cms.Source("PoolSource",
     skipEvents = cms.untracked.uint32(0),
     fileNames = cms.untracked.vstring(
-'/store/user/eluiggi/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/ZprimeTauTau500PatSummer10Start36V10/a93249a823fb0dc819ca18ebc3447f9a/zprimeTauTauPat_8_1_RCT.root'
-#'/store/user/florez/Zprime500_PAT_STARTUP_36X/florez/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/Zprime500_7TeV_PAT_eTau_STARTUP_36X/8b0dd7d13c5c85a732deb529e37114fd/eTauPatTuple_9_1_8vh.root',
-
+	'file:/uscms_data/d2/luiggi/CMSSW_3_6_2/src/HighMassAnalysis/Configuration/test/zprimeTauTauPat.root'
     )
 )
 
+process.load("HighMassAnalysis.Skimming.genLevelSequence_cff")
+process.load("HighMassAnalysis.Skimming.genDecaysFromZPrimes_cfi")  
+
 process.TFileService = cms.Service("TFileService", 
 #    fileName = cms.string("outputFILENAME")
-    fileName = cms.string("muTauAnalysis.root")
+    fileName = cms.string("eTauAnalysis.root")
 )
 
 process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
@@ -46,7 +48,7 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     RecoTauPtMinCut = cms.double(0.),							# require tau pt>=X
     RecoTauPtMaxCut = cms.double(9999.),						# require tau pt<=X
     DoRecoTauDiscrByLeadTrack = cms.bool(False),					# if true, tau is required to pass a lead track pt cut
-    UseRecoTauDiscrByLeadTrackFlag = cms.bool(True), 					# if true, default seed track discriminator is used
+    UseRecoTauDiscrByLeadTrackFlag = cms.bool(False), 					# if true, default seed track discriminator is used
                                                      					# if false, seed track cut will be recalculated using the parameters below
     RecoTauDiscrByLeadTrack = cms.untracked.string('leadingTrackPtCut'),		# name of the lead track discriminator flag
     DoRecoTauDiscrByLeadTrackNhits = cms.bool(False),					# if true, tau leading track is required to have >= X hits
@@ -55,7 +57,7 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     UseRecoTauDiscrByIsolationFlag = cms.bool(False), 					# if true, the default isolation discriminator is used
                                                       					# if false, isolation is recalculated using the parameters below
     RecoTauDiscrByIsolation = cms.untracked.string('byIsolation'),			# name of the isolation discriminator flag
-    UseRecoTauIsoSumPtInsteadOfNiso = cms.bool(True),					# if true, sum pt is used for tau isolation instead
+    UseRecoTauIsoSumPtInsteadOfNiso = cms.bool(False),					# if true, sum pt is used for tau isolation instead
 											# of the number of isolation candidates
     UseRecoTauEllipseForEcalIso = cms.bool(False),					# if true, an ellipse in eta-phi space will be used to define
 											# the signal to isolation annulus for ECAL isolation
@@ -88,7 +90,7 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     SetTANC = cms.bool(False),								# set true if wanting to fill TanC info in the Ntuple
 
     #-----Reco Muon Inputs
-    RecoMuonSource = cms.InputTag('selectedPatMuons'),				# muon collection
+    RecoMuonSource = cms.InputTag('selectedPatMuons'),					# muon collection
     RecoMuonEtaCut = cms.double(999.1),							# require muon |eta|<=X
     RecoMuonPtMinCut = cms.double(0.),							# require muon pt>=X
     RecoMuonPtMaxCut = cms.double(9999.),						# require muon pt<=X
@@ -107,7 +109,8 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     RecoMuonAntiPionCut = cms.double(1.0),                                              # pion veto > X
 
     #-----Reco Electron Inputs
-    RecoElectronSource = cms.InputTag('selectedPatElectrons'),			# electron collection
+    #RecoElectronSource = cms.InputTag('selectedPatElectrons'),				# electron collection
+    RecoElectronSource = cms.InputTag('heepPatElectrons'),				# electron collection
     RecoElectronEtaCut = cms.double(999.1),						# require electron |eta|<=X
     RecoElectronPtMinCut = cms.double(0.),						# require electron pt>=X
     RecoElectronPtMaxCut = cms.double(9999.),						# require electron pt<=X
@@ -136,16 +139,16 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     DoRecoElectronDiscrByTrackerDrivenSeed = cms.bool(False),
 
     #-----Reco Jet Inputs
-    RecoJetSource                       = cms.InputTag('selectedPatJets'),           # jet collection
+    RecoJetSource                       = cms.InputTag('selectedPatJets'),           	# jet collection
     RecoJetEtaMinCut                    = cms.double(0.0),                              # require jet |eta|>=X
     RecoJetEtaMaxCut                    = cms.double(999.5),                            # require jet |eta|<=X
-    RecoJetPtCut                        = cms.double(0.0),                             # require jet pt>=X
+    RecoJetPtCut                        = cms.double(0.0),                             	# require jet pt>=X
     UseCorrectedJet                     = cms.bool(False),                              # if true, jet corrections are used
-    RemoveJetOverlapWithMuons           = cms.bool(False),                               # if true, jets w/ dR(muon,jet)<X will not be considered
+    RemoveJetOverlapWithMuons           = cms.bool(False),                              # if true, jets w/ dR(muon,jet)<X will not be considered
     JetMuonMatchingDeltaR               = cms.double(0.5),                              # dR(muon,jet)<X used for removing jets from the "good jet" list
     RemoveJetOverlapWithElectrons       = cms.bool(False),                              # if true, jets w/ dR(electron,jet)<X will not be considered
     JetElectronMatchingDeltaR           = cms.double(0.5),                              # dR(electron,jet)<X used for removing jets from the "good jet" list
-    RemoveJetOverlapWithTaus            = cms.bool(False),                               # if true, jets w/ dR(tau,jet)<X will not be considered
+    RemoveJetOverlapWithTaus            = cms.bool(False),                              # if true, jets w/ dR(tau,jet)<X will not be considered
     JetTauMatchingDeltaR                = cms.double(0.25),                             # dR(tau,jet)<X used for removing jets from the "good jet" list
 
     #-----Vertex Inputs
@@ -159,7 +162,7 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     TriggerRequirements = cms.vstring('HLT_Mu9'),					# trigger path name
 
     #-----Topology Inputs
-    RecoMetSource = cms.InputTag('patMETsPF'),					# met collection
+    RecoMetSource = cms.InputTag('patMETsPF'),						# met collection
 											# particle flow met for 2X	= layer1PFMETs
 											# particle flow met for 3X	= layer1METsPF
 											# standard calo met for 2X & 3X	= layer1METs
@@ -222,13 +225,13 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     NtupleTreeName = cms.untracked.string('HMTTree'),					# name of the Ntuple tree
 
     #-----Fill Histograms? Histograms are filled for events passing the specified cuts
-    FillRecoVertexHists = cms.bool(True),						# if true, fill histograms for vertices
-    FillGenTauHists = cms.bool(True),							# if true, fill histograms for gen had taus
-    FillRecoTauHists = cms.bool(True),							# if true, fill histograms for reco taus
+    FillRecoVertexHists = cms.bool(False),						# if true, fill histograms for vertices
+    FillGenTauHists = cms.bool(False),							# if true, fill histograms for gen had taus
+    FillRecoTauHists = cms.bool(False),							# if true, fill histograms for reco taus
     FillRecoMuonHists = cms.bool(False),							# if true, fill histograms for reco muons
-    FillRecoElectronHists = cms.bool(True),						# if true, fill histograms for reco electrons
-    FillRecoJetHists = cms.bool(True),							# if true, fill histograms for reco jets
-    FillTopologyHists = cms.bool(True),							# if true, fill topology histograms (e.g. met, mass, ...)
+    FillRecoElectronHists = cms.bool(False),						# if true, fill histograms for reco electrons
+    FillRecoJetHists = cms.bool(False),							# if true, fill histograms for reco jets
+    FillTopologyHists = cms.bool(False),							# if true, fill topology histograms (e.g. met, mass, ...)
 
     #-----Event Sequence inputs
     RecoTriggersNmin = cms.int32(0),							# require event to pass >=X trigger paths defined above
@@ -304,6 +307,9 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
 )
 
 process.p = cms.Path(
+    #process.genParticlesFromZPrimes *
+    #process.genTausFromZPrimes *
+    #process.genLevelElecTauSequence *
     process.analyzeHiMassTau
     )
 
