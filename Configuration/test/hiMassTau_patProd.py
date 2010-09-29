@@ -1,6 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 import copy
 
+signal = 0
+
 process = cms.Process('hiMassTau')
 
 # import of standard configurations for RECOnstruction
@@ -32,7 +34,7 @@ from HighMassAnalysis.Configuration.patTupleEventContentForHiMassTau_cff import 
 
 process.savePatTuple = cms.OutputModule("PoolOutputModule",
     patTupleEventContent,                                               
-    fileName = cms.untracked.string('zprimeTauTauPat.root')
+    fileName = cms.untracked.string('zTauTauElecTauSkimPat.root')
 )
 
 process.maxEvents = cms.untracked.PSet(            
@@ -42,7 +44,7 @@ process.maxEvents = cms.untracked.PSet(
 process.source = cms.Source("PoolSource",
     skipEvents = cms.untracked.uint32(0),
     fileNames = cms.untracked.vstring(
-       '/store/user/lpctau/HighMassTau/eluiggi/zprimeTauTau500_7TeV_STARTUP31X_V4_GEN-SIM-RAW/ZprimeTauTau500_7TeV_START36_V10_GEN-SIM-RECO_RERECO/3642c883d04c18dde8255af9b6e3785e/zprimeReReco_1_1_MeL.root'
+       '/store/mc/Summer10/QCD_EMEnriched_Pt20to30/GEN-SIM-RECO/START36_V9_S09-v2/0009/EE61B95C-8088-DF11-9003-002618943930.root'
     )
     #skipBadFiles = cms.untracked.bool(True) 
 )
@@ -56,17 +58,6 @@ process.source.inputCommands = cms.untracked.vstring(
 process.load("HighMassAnalysis.Skimming.genLevelSequence_cff")
 # Skim sequence
 process.load("HighMassAnalysis.Skimming.elecTauSkimSequence_cff")
-
-#process.elecTauSkimPath = cms.Path(
-#    process.genLevelElecTauSequence *
-#    process.elecTauSkimSequence
-#)
-
-#elecTauEventSelection = cms.untracked.PSet(
-#  SelectEvents = cms.untracked.PSet(
-#    SelectEvents = cms.vstring('elecTauSkimPath')
-#  )
-#)
 
 # include particle flow based MET
 from PhysicsTools.PatAlgos.tools.metTools import *
@@ -94,8 +85,15 @@ addElectronUserIsolation(process,["Hcal"])
 from PhysicsTools.PatAlgos.tools.muonTools import *
 addMuonUserIsolation(process)
 
-process.p = cms.Path( 
-		      #process.elecTauSkimSequence +
+if(signal):
+	process.p = cms.Path( 
 		      process.producePatTuple +
-                      process.savePatTuple )
-
+                      process.savePatTuple
+	)
+else:
+	process.p = cms.Path( 
+		      process.elecTauSkimSequence +
+		      process.producePatTuple +
+                      process.savePatTuple
+	)
+	

@@ -29,6 +29,7 @@ patTupleEventContent.outputCommands.extend(
     'keep recoTrackExtras_generalTracks_*_*',
     'keep recoMuons_muons_*_*',
     'keep *_muonMETValueMapProducer_*_*',
+    'keep booledmValueMap_muid*_*_*',
     'keep *_selectedLayer1CaloTaus_*_*',
     'keep *_selectedLayer1FixedConeHighEffPFTaus_*_*',
     'keep *_selectedLayer1FixedConePFTaus_*_*',
