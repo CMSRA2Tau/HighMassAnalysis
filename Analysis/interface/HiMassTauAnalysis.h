@@ -290,6 +290,7 @@ private:
   string _DiTauDiscrByOSLSType;
 
   //-----do matching to gen?
+  bool _Skimmed;
   bool _MatchTauToGen;
   bool _UseTauMotherId;
   bool _UseTauGrandMotherId;

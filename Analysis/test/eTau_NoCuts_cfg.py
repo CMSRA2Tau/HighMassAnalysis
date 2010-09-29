@@ -1,6 +1,9 @@
 import FWCore.ParameterSet.Config as cms
 import copy
 
+
+signal = 0
+
 process = cms.Process('HiMassTau')
 
 process.load('Configuration.StandardSequences.Services_cff')
@@ -14,7 +17,7 @@ process.maxEvents = cms.untracked.PSet(
 process.source = cms.Source("PoolSource",
     skipEvents = cms.untracked.uint32(0),
     fileNames = cms.untracked.vstring(
-	'file:/uscms_data/d2/luiggi/CMSSW_3_6_2/src/HighMassAnalysis/Configuration/test/zprimeTauTauPat.root'
+	'/store/user/lpctau/HighMassTau/eluiggi/Ztautau/zTauTauElecTauSkimPat36XV9/958a9567e3da385ae89b24a1fdbe0f90/zTauTauElecTauSkimPat_9_1_R8I.root'
     )
 )
 
@@ -38,14 +41,15 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     AnalyzeTauForLeg2		= cms.bool(True),					# if true, taus will be used for leg2
     AnalyzeMuonForLeg2		= cms.bool(False),					# if true, muons will be used for leg2
     AnalyzeElectronForLeg2	= cms.bool(False),					# if true, electrons will be used for leg2
-
+    Skimmed			= cms.bool(True),					# was the input file skimmed? If so, fill ntuple
+    											# with candidates passing skim requirements
     #-----Reco Tau Inputs
     RecoTauSource = cms.InputTag('selectedLayer1FixedConePFTaus'),			# other choices include:
 											# selectedLayer1FixedConeHighEffPFTaus
 											# selectedLayer1ShrinkingConeHighEffPFTaus
 											# selectedLayer1ShrinkingConePFTaus
-    RecoTauEtaCut = cms.double(999.1),							# require tau |eta|<=X
-    RecoTauPtMinCut = cms.double(0.),							# require tau pt>=X
+    RecoTauEtaCut = cms.double(2.5),							# require tau |eta|<=X
+    RecoTauPtMinCut = cms.double(8.),							# require tau pt>=X
     RecoTauPtMaxCut = cms.double(9999.),						# require tau pt<=X
     DoRecoTauDiscrByLeadTrack = cms.bool(False),					# if true, tau is required to pass a lead track pt cut
     UseRecoTauDiscrByLeadTrackFlag = cms.bool(False), 					# if true, default seed track discriminator is used
@@ -59,7 +63,7 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     RecoTauDiscrByIsolation = cms.untracked.string('byIsolation'),			# name of the isolation discriminator flag
     UseRecoTauIsoSumPtInsteadOfNiso = cms.bool(False),					# if true, sum pt is used for tau isolation instead
 											# of the number of isolation candidates
-    UseRecoTauEllipseForEcalIso = cms.bool(False),					# if true, an ellipse in eta-phi space will be used to define
+    UseRecoTauEllipseForEcalIso = cms.bool(True),					# if true, an ellipse in eta-phi space will be used to define
 											# the signal to isolation annulus for ECAL isolation
     RecoTauEcalIsoRphiForEllipse = cms.double(0.15),					# a:  dphi^2 / a^2 + deta^2 / b^2  (ECAL ellipse)
     RecoTauEcalIsoRetaForEllipse = cms.double(0.07),					# b:  dphi^2 / a^2 + deta^2 / b^2  (ECAL ellipse)
@@ -111,8 +115,8 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     #-----Reco Electron Inputs
     #RecoElectronSource = cms.InputTag('selectedPatElectrons'),				# electron collection
     RecoElectronSource = cms.InputTag('heepPatElectrons'),				# electron collection
-    RecoElectronEtaCut = cms.double(999.1),						# require electron |eta|<=X
-    RecoElectronPtMinCut = cms.double(0.),						# require electron pt>=X
+    RecoElectronEtaCut = cms.double(2.5),						# require electron |eta|<=X
+    RecoElectronPtMinCut = cms.double(8.),						# require electron pt>=X
     RecoElectronPtMaxCut = cms.double(9999.),						# require electron pt<=X
     DoRecoElectronDiscrByTrackIsolation = cms.bool(False), 				# if true, electrons will be required to pass track isolation
     RecoElectronTrackIsoSumPtCutValue = cms.double(1.0), 				# sum pt of tracks < X
@@ -202,21 +206,21 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     DoTauDiscrByIsZeeCut = cms.bool(False),
 
     #-----do matching to gen?
-    MatchLeptonToGen = cms.bool(True),							# if true, match reco lepton to a gen lepton
-    UseLeptonMotherId = cms.bool(True),							# if true, require the matched lepton to come from a certain 
+    MatchLeptonToGen = cms.bool(False),							# if true, match reco lepton to a gen lepton
+    UseLeptonMotherId = cms.bool(False),						# if true, require the matched lepton to come from a certain 
 											# 'mother' particle
-    UseLeptonGrandMotherId = cms.bool(True),						# if true, require the matched lepton to come from a certain
+    UseLeptonGrandMotherId = cms.bool(False),						# if true, require the matched lepton to come from a certain
 											# 'grandmother' particle
-    LeptonMotherId = cms.int32(15),							# pdgId of the 'mother' particle
-    LeptonGrandMotherId = cms.int32(32),						# pdgId of the 'grandmother' particle
-    MatchTauToGen = cms.bool(True),							# if true, match reco tau to a gen had tau
-    UseTauMotherId = cms.bool(True),							# if true, require the matched tau to come from a certain
+    LeptonMotherId = cms.int32(23),							# pdgId of the 'mother' particle
+    LeptonGrandMotherId = cms.int32(0),							# pdgId of the 'grandmother' particle
+    MatchTauToGen = cms.bool(False),							# if true, match reco tau to a gen had tau
+    UseTauMotherId = cms.bool(False),							# if true, require the matched tau to come from a certain
 											# 'mother' particle ('mother' here is NOT 15!!!!! Matching
 											# for the had tau leg already requires the vis had tau to come
 											# from a tau lepton)
     UseTauGrandMotherId = cms.bool(False),						# if true, require the matched tau to come from a certain
 											# 'grandmother' particle
-    TauMotherId = cms.int32(32),							# pdgId of the 'mother' particle
+    TauMotherId = cms.int32(23),							# pdgId of the 'mother' particle
     TauGrandMotherId = cms.int32(1),							# pdgId of the 'grandmother' particle
     TauToGenMatchingDeltaR = cms.double(0.25),						# matching dR:  dR(vis gen tau,reco tau)<X
 
@@ -231,7 +235,7 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     FillRecoMuonHists = cms.bool(False),							# if true, fill histograms for reco muons
     FillRecoElectronHists = cms.bool(False),						# if true, fill histograms for reco electrons
     FillRecoJetHists = cms.bool(False),							# if true, fill histograms for reco jets
-    FillTopologyHists = cms.bool(False),							# if true, fill topology histograms (e.g. met, mass, ...)
+    FillTopologyHists = cms.bool(False),						# if true, fill topology histograms (e.g. met, mass, ...)
 
     #-----Event Sequence inputs
     RecoTriggersNmin = cms.int32(0),							# require event to pass >=X trigger paths defined above
@@ -306,12 +310,18 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     )
 )
 
-process.p = cms.Path(
-    #process.genParticlesFromZPrimes *
-    #process.genTausFromZPrimes *
-    #process.genLevelElecTauSequence *
-    process.analyzeHiMassTau
-    )
+if(signal):
+  process.p = cms.Path(
+      process.genParticlesFromZPrimes *
+      process.genTausFromZPrimes *
+      process.genLevelElecTauSequence *
+      process.analyzeHiMassTau
+  )
+else:
+  process.p = cms.Path(
+      process.analyzeHiMassTau
+  )
+  
 
 # print-out all python configuration parameter information
 #print process.dumpPython()

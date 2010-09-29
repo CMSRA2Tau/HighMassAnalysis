@@ -27,6 +27,7 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
   _AnalyzeTauForLeg2 = iConfig.getParameter<bool>("AnalyzeTauForLeg2");
   _AnalyzeMuonForLeg2 = iConfig.getParameter<bool>("AnalyzeMuonForLeg2");
   _AnalyzeElectronForLeg2 = iConfig.getParameter<bool>("AnalyzeElectronForLeg2");
+  _Skimmed = iConfig.getParameter<bool>("Skimmed");
 
   //-----Reco Tau Inputs 
   _RecoTauSource = iConfig.getParameter<InputTag>("RecoTauSource");
@@ -2637,10 +2638,13 @@ void HiMassTauAnalysis::fillNtuple() {
   int theNumberOfElectrons = 0;
   for(pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin(); patElectron != _patElectrons->end(); ++patElectron) {
     theNumberOfElectrons++;
+    if(_Skimmed && (patElectron->pt() < _RecoElectronPtMinCut || fabs(patElectron->eta()) > _RecoElectronEtaCut)) continue;
     // loop over taus to create e-tau pairs
     int theNumberOfTaus = 0;
     for(pat::TauCollection::const_iterator patTau = _patTaus->begin(); patTau != _patTaus->end(); ++patTau) {
       theNumberOfTaus++;
+      if(_Skimmed && (patTau->pt() < _RecoTauPtMinCut || fabs(patTau->eta()) < _RecoTauEtaCut ))continue;
+      if(_Skimmed && deltaR(patTau->p4(), patElectron->p4()) < _DiTauDeltaRCut) continue;
       // determine whether ntuple information will be filled based on systematics (smearing of resolution and scale for taus or electrons)      
       if(_SmearTheElectron){
         // only apply electron based smearing if the patElectron is matched to a "true" generator level electron
@@ -2970,7 +2974,7 @@ void HiMassTauAnalysis::fillNtuple() {
       reco::Candidate::LorentzVector full_LorentzVector(full_px, full_py, full_pz, full_e);
       _eTauMetMass->push_back(full_LorentzVector.M());      
 
-      // Colliniar mass approximation using the EDAnalyzer function
+      // Collinear mass approximation using the EDAnalyzer function
       _UseVectorSumOfVisProductsAndMetMassReco = false;
       _UseCollinerApproxMassReco = true;
       _eTauCollMass->push_back(CalculateThe4Momentum((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1),(*(_patMETs->begin()))).second.M());
