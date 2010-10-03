@@ -2,7 +2,15 @@ import FWCore.ParameterSet.Config as cms
 import copy
 
 
-signal = 0
+signal = True
+if(signal):
+	MinPTCut = 0.0
+	MaxEtaCut = 999.
+	MinDeltaRCut = 0.0
+else:
+	MinPTCut = 8.0
+	MaxEtaCut = 2.5
+	MinDeltaRCut = 0.7
 
 process = cms.Process('HiMassTau')
 
@@ -17,7 +25,7 @@ process.maxEvents = cms.untracked.PSet(
 process.source = cms.Source("PoolSource",
     skipEvents = cms.untracked.uint32(0),
     fileNames = cms.untracked.vstring(
-	'/store/user/lpctau/HighMassTau/eluiggi/Ztautau/zTauTauElecTauSkimPat36XV9/958a9567e3da385ae89b24a1fdbe0f90/zTauTauElecTauSkimPat_9_1_R8I.root'
+	'file:/nfs/data35/cms/eluiggi/cms/Output/rootOut/zprimeTauTauPat_1_1_Bj6.root'
     )
 )
 
@@ -41,15 +49,14 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     AnalyzeTauForLeg2		= cms.bool(True),					# if true, taus will be used for leg2
     AnalyzeMuonForLeg2		= cms.bool(False),					# if true, muons will be used for leg2
     AnalyzeElectronForLeg2	= cms.bool(False),					# if true, electrons will be used for leg2
-    Skimmed			= cms.bool(True),					# was the input file skimmed? If so, fill ntuple
     											# with candidates passing skim requirements
     #-----Reco Tau Inputs
     RecoTauSource = cms.InputTag('selectedLayer1FixedConePFTaus'),			# other choices include:
 											# selectedLayer1FixedConeHighEffPFTaus
 											# selectedLayer1ShrinkingConeHighEffPFTaus
 											# selectedLayer1ShrinkingConePFTaus
-    RecoTauEtaCut = cms.double(2.5),							# require tau |eta|<=X
-    RecoTauPtMinCut = cms.double(8.),							# require tau pt>=X
+    RecoTauEtaCut = cms.double(MaxEtaCut),							# require tau |eta|<=X
+    RecoTauPtMinCut = cms.double(MinPTCut),							# require tau pt>=X
     RecoTauPtMaxCut = cms.double(9999.),						# require tau pt<=X
     DoRecoTauDiscrByLeadTrack = cms.bool(False),					# if true, tau is required to pass a lead track pt cut
     UseRecoTauDiscrByLeadTrackFlag = cms.bool(False), 					# if true, default seed track discriminator is used
@@ -115,8 +122,8 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     #-----Reco Electron Inputs
     #RecoElectronSource = cms.InputTag('selectedPatElectrons'),				# electron collection
     RecoElectronSource = cms.InputTag('heepPatElectrons'),				# electron collection
-    RecoElectronEtaCut = cms.double(2.5),						# require electron |eta|<=X
-    RecoElectronPtMinCut = cms.double(8.),						# require electron pt>=X
+    RecoElectronEtaCut = cms.double(MaxEtaCut),						# require electron |eta|<=X
+    RecoElectronPtMinCut = cms.double(MinPTCut),						# require electron pt>=X
     RecoElectronPtMaxCut = cms.double(9999.),						# require electron pt<=X
     DoRecoElectronDiscrByTrackIsolation = cms.bool(False), 				# if true, electrons will be required to pass track isolation
     RecoElectronTrackIsoSumPtCutValue = cms.double(1.0), 				# sum pt of tracks < X
@@ -173,7 +180,7 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     DoDiscrByMet = cms.bool(False), 							# if true, met will be required to be > X
     RecoMetCut = cms.double(30.0), 							# met > X
     DoDiTauDiscrByDeltaR = cms.bool(False), 						# if true, ditau pairs must have dR(leg1,leg2) > X
-    DiTauDeltaRCut = cms.double(0.7),	 						# dR(leg1,leg2) > X
+    DiTauDeltaRCut = cms.double(MinDeltaRCut),	 						# dR(leg1,leg2) > X
     DiTauDiscrByOSLSType = cms.string('NONE'),		 				# if 'OS', product of leg1 charge and leg2 charge < 0
 											# if 'LS', product of leg1 charge and leg2 charge > 0
 											# if anything else is used, no OSLS requirement is applied
