@@ -316,13 +316,15 @@ eleIsoDepositEcalFromHits.ExtractorPSet = cms.PSet(EleIsoEcalFromHitsExtractorBl
 EleIsoHcalFromTowersExtractorBlock.extRadius = cms.double(0.6)				# set to 1;  default is 0.6
 eleIsoDepositHcalFromTowers.src = cms.InputTag("gsfElectrons")				# set as default	
 eleIsoDepositHcalFromTowers.ExtractorPSet = cms.PSet(EleIsoHcalFromTowersExtractorBlock)# set as default
+from RecoEgamma.EgammaIsolationAlgos.eleIsoFromDeposits_cff import *
+
 electronIsoDeposits = cms.Sequence( eleIsoDepositTk
                                    *eleIsoDepositEcalFromHits 
-                                   *eleIsoDepositHcalFromTowers 
+                                   *eleIsoDepositHcalFromTowers
 				   *eleIsoDepositHcalDepth1FromTowers
 				   *eleIsoDepositHcalDepth2FromTowers
 				   )
-recoElectronIsolation = cms.Sequence( electronIsoDeposits )
+#recoElectronIsolation = cms.Sequence( electronIsoDeposits )
 
 from PhysicsTools.PatAlgos.recoLayer0.electronId_cff import *
 #from PhysicsTools.PatAlgos.recoLayer0.aodReco_cff import *
@@ -332,6 +334,7 @@ from PhysicsTools.PatAlgos.cleaningLayer1.electronCleaner_cfi import *
 #patTrigMatchElectron = cms.Sequence( electronTrigMatchHLT1Electron )
 #patTrigMatch._seq = patTrigMatch._seq * patHLT1Electron * patTrigMatchElectron
 #
+
 patElectrons.userIsolation = cms.PSet(        
    tracker = cms.PSet(
       src = cms.InputTag("eleIsoFromDepsTk"),							  
@@ -367,13 +370,23 @@ patElectrons.addGenMatch = cms.bool(True)
 patElectrons.genParticleMatch = cms.InputTag("electronMatch")
 cleanPatElectrons.checkOverlaps = cms.PSet()
 
+eleIsoFromDepsTk.deltaR = cms.double(0.6)
+eleIsoFromDepsEcalFromHits.deltaR = cms.double(0.6)
+eleIsoFromDepsHcalFromHits.deltaR = cms.double(0.6)
+eleIsoFromDepsEcalFromHitsByCrystal.deltaR = cms.double(0.6)
+eleIsoFromDepsHcalFromTowers.deltaR = cms.double(0.6)
 
 from SHarper.HEEPAnalyzer.HEEPSelectionCuts_cfi import *
+
+eleIsoFromDepsHcalDepth1FromTowers.deltaR = cms.double(0.6)
+eleIsoFromDepsHcalDepth2FromTowers.deltaR = cms.double(0.6)
+
 heepPatElectrons = cms.EDProducer("HEEPAttStatusToPAT",
                                           eleLabel = cms.InputTag("selectedPatElectrons"),
                                           barrelCuts = cms.PSet(heepBarrelCuts),
                                           endcapCuts = cms.PSet(heepEndcapCuts)
                                           )
+
 # --------------------Modifications for jets--------------------
 
 cleanPatJets.checkOverlaps = cms.PSet()
