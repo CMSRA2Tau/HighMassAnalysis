@@ -318,6 +318,14 @@ eleIsoDepositHcalFromTowers.src = cms.InputTag("gsfElectrons")				# set as defau
 eleIsoDepositHcalFromTowers.ExtractorPSet = cms.PSet(EleIsoHcalFromTowersExtractorBlock)# set as default
 from RecoEgamma.EgammaIsolationAlgos.eleIsoFromDeposits_cff import *
 
+eleIsoFromDepsTk.deltaR = cms.double(0.6)
+eleIsoFromDepsEcalFromHits.deltaR = cms.double(0.6)
+eleIsoFromDepsHcalFromHits.deltaR = cms.double(0.6)
+eleIsoFromDepsEcalFromHitsByCrystal.deltaR = cms.double(0.6)
+eleIsoFromDepsHcalFromTowers.deltaR = cms.double(0.6)
+eleIsoFromDepsHcalDepth1FromTowers.deltaR = cms.double(0.6)
+eleIsoFromDepsHcalDepth2FromTowers.deltaR = cms.double(0.6)
+
 electronIsoDeposits = cms.Sequence( eleIsoDepositTk
                                    *eleIsoDepositEcalFromHits 
                                    *eleIsoDepositHcalFromTowers
@@ -370,16 +378,7 @@ patElectrons.addGenMatch = cms.bool(True)
 patElectrons.genParticleMatch = cms.InputTag("electronMatch")
 cleanPatElectrons.checkOverlaps = cms.PSet()
 
-eleIsoFromDepsTk.deltaR = cms.double(0.6)
-eleIsoFromDepsEcalFromHits.deltaR = cms.double(0.6)
-eleIsoFromDepsHcalFromHits.deltaR = cms.double(0.6)
-eleIsoFromDepsEcalFromHitsByCrystal.deltaR = cms.double(0.6)
-eleIsoFromDepsHcalFromTowers.deltaR = cms.double(0.6)
-
 from SHarper.HEEPAnalyzer.HEEPSelectionCuts_cfi import *
-
-eleIsoFromDepsHcalDepth1FromTowers.deltaR = cms.double(0.6)
-eleIsoFromDepsHcalDepth2FromTowers.deltaR = cms.double(0.6)
 
 heepPatElectrons = cms.EDProducer("HEEPAttStatusToPAT",
                                           eleLabel = cms.InputTag("selectedPatElectrons"),
