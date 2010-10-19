@@ -324,7 +324,7 @@ electronIsoDeposits = cms.Sequence( eleIsoDepositTk
 				   *eleIsoDepositHcalDepth1FromTowers
 				   *eleIsoDepositHcalDepth2FromTowers
 				   )
-#recoElectronIsolation = cms.Sequence( electronIsoDeposits )
+recoElectronIsolation = cms.Sequence( electronIsoDeposits )
 
 from PhysicsTools.PatAlgos.recoLayer0.electronId_cff import *
 #from PhysicsTools.PatAlgos.recoLayer0.aodReco_cff import *
