@@ -13,6 +13,11 @@ ic5PFJetTracksAssociatorAtVertex.j2tParametersVX = cms.PSet(
     coneSize = cms.double(1.0)
 )
 
+ak5PFJetTracksAssociatorAtVertex.j2tParametersVX = cms.PSet(
+    tracks = cms.InputTag("generalTracks"),
+    coneSize = cms.double(1.0)
+)
+
 # tau collection w/ shrinking cone of 3/ET
 fixedConeHighEffPFTauProducer = copy.deepcopy(pfRecoTauProducer)
 fixedConeHighEffPFTauProducer.LeadPFCand_minPt      = cms.double(5.0)
@@ -206,16 +211,34 @@ from RecoMET.METProducers.genMetCalo_cfi import *
 # define sequence for gen jet production
 from PhysicsTools.JetMCAlgos.TauGenJets_cfi import *
 
+produceAndDiscriminateShrinkingConePFTausCustomized = cms.Sequence(
+      shrinkingConePFTauProducer*
+      shrinkingConePFTauDiscriminationByLeadingTrackFinding*
+      shrinkingConePFTauDiscriminationByLeadingTrackPtCut*
+      shrinkingConePFTauDiscriminationByLeadingPionPtCut*
+      shrinkingConePFTauDiscriminationByIsolation*
+      shrinkingConePFTauDiscriminationByTrackIsolation*
+      shrinkingConePFTauDiscriminationByECALIsolation*
+      shrinkingConePFTauDiscriminationByIsolationUsingLeadingPion*
+      shrinkingConePFTauDiscriminationByTrackIsolationUsingLeadingPion*
+      shrinkingConePFTauDiscriminationByECALIsolationUsingLeadingPion*
+      shrinkingConePFTauDiscriminationAgainstElectron*
+      shrinkingConePFTauDiscriminationAgainstMuon
+)
+
+
 producePatTuple = cms.Sequence(
     #electronIdCutBased *
     recoElectronIsolation *
     ic5PFJetTracksAssociatorAtVertex *
+    ak5PFJetTracksAssociatorAtVertex *
     pfRecoTauTagInfoProducer *
-    produceAndDiscriminateShrinkingConePFTaus *
-    produceShrinkingConeDiscriminationByTauNeuralClassifier *
+    produceAndDiscriminateShrinkingConePFTausCustomized *
+#    produceAndDiscriminateShrinkingConePFTaus *
+#    produceShrinkingConeDiscriminationByTauNeuralClassifier *
     fixedConeHighEffPFTauProducer*
-    fixedConeHighEffPFTauDecayModeProducer*
-    fixedConeHighEffPFTauDecayModeIndexProducer*
+#    fixedConeHighEffPFTauDecayModeProducer*
+#    fixedConeHighEffPFTauDecayModeIndexProducer*
     fixedConeHighEffPFTauDiscriminationByLeadingTrackFinding*
     fixedConeHighEffPFTauDiscriminationByLeadingTrackPtCut*
     fixedConeHighEffPFTauDiscriminationByLeadingPionPtCut*
@@ -229,8 +252,8 @@ producePatTuple = cms.Sequence(
     fixedConeHighEffPFTauDiscriminationAgainstMuon *    
     produceAndDiscriminateFixedConePFTaus *
     shrinkingTightConePFTauProducer*
-    shrinkingTightConePFTauDecayModeProducer*
-    shrinkingTightConePFTauDecayModeIndexProducer*
+#    shrinkingTightConePFTauDecayModeProducer*
+#    shrinkingTightConePFTauDecayModeIndexProducer*
     shrinkingTightConePFTauDiscriminationByLeadingTrackFinding*
     shrinkingTightConePFTauDiscriminationByLeadingTrackPtCut*
     shrinkingTightConePFTauDiscriminationByLeadingPionPtCut*
@@ -243,9 +266,9 @@ producePatTuple = cms.Sequence(
     shrinkingTightConePFTauDiscriminationAgainstElectron*
     shrinkingTightConePFTauDiscriminationAgainstMuon *
     patCustomizedCandidates *
-    selectedPatCustomizedCandidates *
-    genMETParticles *
-    genMetCalo *
-    genMetTrue
+    selectedPatCustomizedCandidates 
+#    genMETParticles *
+#    genMetCalo *
+#    genMetTrue
     )
 
