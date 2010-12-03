@@ -20,10 +20,10 @@ selectedCaloTaus = cms.EDFilter("CaloTauSelector",
 #--------------------------------------------------------------------------------
 
 selectedPFTaus = cms.EDFilter("PFTauSelector",
-  src = cms.InputTag('fixedConeHighEffPFTauProducer'),
+  src = cms.InputTag('shrinkingConePFTauProducer'),
   discriminators = cms.VPSet(
     cms.PSet(
-      discriminator = cms.InputTag("fixedConeHighEffPFTauDiscriminationByLeadingPionPtCut"),
+      discriminator = cms.InputTag("shrinkingConePFTauDiscriminationByLeadingPionPtCut"),
       selectionCut = cms.double(0.5)
     )
   ),

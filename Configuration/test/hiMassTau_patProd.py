@@ -20,10 +20,6 @@ process.load('Configuration/StandardSequences/MagneticField_cff')
 process.load('Configuration/StandardSequences/Reconstruction_cff')
 process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
 process.GlobalTag.globaltag = 'GR10_P_V11::All'
-#process.GlobalTag.globaltag = 'GR10_P_V7::All'
-#process.GlobalTag.globaltag = 'START36_V10::All'
-#process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_noesprefer_cff')
-#process.GlobalTag.globaltag = 'STARTUP3XY_V9::All'
 
 # import particle data table - needed for print-out of generator level information
 process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
