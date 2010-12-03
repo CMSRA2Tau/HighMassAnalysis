@@ -1,6 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
+from Configuration.EventContent.EventContent_cff import *
 
 #--------------------------------------------------------------------------------
 # per default, drop everything that is not specifically kept
@@ -69,6 +70,7 @@ patTupleEventContent.outputCommands.extend(
 #--------------------------------------------------------------------------------
 # 
 #--------------------------------------------------------------------------------
+patTupleEventContent.outputCommands.extend(HLTriggerRECO.outputCommands)
 
 patTupleEventContent.outputCommands.extend(
     [ 'drop CaloTowers*_*_*_*',

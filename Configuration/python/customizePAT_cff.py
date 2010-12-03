@@ -1,6 +1,12 @@
 import FWCore.ParameterSet.Config as cms
 import copy
 
+from HighMassAnalysis.Configuration.hiMassSetup_cfi import *
+if(data):
+  doGen = False
+else:
+  doGen = True
+
 # Standard pat sequences
 from PhysicsTools.PatAlgos.patSequences_cff import * 
 
@@ -188,40 +194,40 @@ shrinkingConePatTaus.tauIDSources = cms.PSet(
 #        byTaNCfrTenthPercent = cms.InputTag("shrinkingConePFTauDiscriminationByTaNCfrTenthPercent")
 )
 
-fixedConeHighEffPatTaus.addDecayMode = cms.bool(False)
-fixedConePatTaus.addDecayMode = cms.bool(False)
-shrinkingTightConePatTaus.addDecayMode = cms.bool(False)
-shrinkingConePatTaus.addDecayMode = cms.bool(False)
+fixedConeHighEffPatTaus.addDecayMode = cms.bool(doGen)
+fixedConePatTaus.addDecayMode = cms.bool(doGen)
+shrinkingTightConePatTaus.addDecayMode = cms.bool(doGen)
+shrinkingConePatTaus.addDecayMode = cms.bool(doGen)
 
 fixedConeHighEffPatTaus.decayModeSrc = cms.InputTag("fixedConeHighEffPFTauDecayModeProducer")
 fixedConePatTaus.decayModeSrc = cms.InputTag("fixedConePFTauDecayModeProducer")
 shrinkingTightConePatTaus.decayModeSrc = cms.InputTag("shrinkingTightConePFTauDecayModeProducer")
 shrinkingConePatTaus.decayModeSrc = cms.InputTag("shrinkingConePFTauDecayModeProducer")
 
-fixedConeHighEffPatTaus.addGenMatch = cms.bool(False)
-fixedConePatTaus.addGenMatch = cms.bool(False)
-shrinkingTightConePatTaus.addGenMatch = cms.bool(False)
-shrinkingConePatTaus.addGenMatch = cms.bool(False)
+fixedConeHighEffPatTaus.addGenMatch = cms.bool(doGen)
+fixedConePatTaus.addGenMatch = cms.bool(doGen)
+shrinkingTightConePatTaus.addGenMatch = cms.bool(doGen)
+shrinkingConePatTaus.addGenMatch = cms.bool(doGen)
 
-fixedConeHighEffPatTaus.embedGenMatch = cms.bool(False)
-fixedConePatTaus.embedGenMatch = cms.bool(False)
-shrinkingTightConePatTaus.embedGenMatch = cms.bool(False)
-shrinkingConePatTaus.embedGenMatch = cms.bool(False)
+fixedConeHighEffPatTaus.embedGenMatch = cms.bool(doGen)
+fixedConePatTaus.embedGenMatch = cms.bool(doGen)
+shrinkingTightConePatTaus.embedGenMatch = cms.bool(doGen)
+shrinkingConePatTaus.embedGenMatch = cms.bool(doGen)
 
 shrinkingConePatTaus.genParticleMatch = cms.InputTag("shrinkingConeTauMatch")
 fixedConeHighEffPatTaus.genParticleMatch = cms.InputTag("fixedConeHighEffTauMatch")
 fixedConePatTaus.genParticleMatch = cms.InputTag("fixedConeTauMatch")
 shrinkingTightConePatTaus.genParticleMatch = cms.InputTag("shrinkingTightConeTauMatch")
 
-fixedConeHighEffPatTaus.addGenJetMatch = cms.bool(False)
-fixedConePatTaus.addGenJetMatch = cms.bool(False)
-shrinkingTightConePatTaus.addGenJetMatch = cms.bool(False)
-shrinkingConePatTaus.addGenJetMatch = cms.bool(False)
+fixedConeHighEffPatTaus.addGenJetMatch = cms.bool(doGen)
+fixedConePatTaus.addGenJetMatch = cms.bool(doGen)
+shrinkingTightConePatTaus.addGenJetMatch = cms.bool(doGen)
+shrinkingConePatTaus.addGenJetMatch = cms.bool(doGen)
 
-fixedConeHighEffPatTaus.embedGenJetMatch = cms.bool(False)
-fixedConePatTaus.embedGenJetMatch = cms.bool(False)
-shrinkingTightConePatTaus.embedGenJetMatch = cms.bool(False)
-shrinkingConePatTaus.embedGenJetMatch = cms.bool(False)
+fixedConeHighEffPatTaus.embedGenJetMatch = cms.bool(doGen)
+fixedConePatTaus.embedGenJetMatch = cms.bool(doGen)
+shrinkingTightConePatTaus.embedGenJetMatch = cms.bool(doGen)
+shrinkingConePatTaus.embedGenJetMatch = cms.bool(doGen)
 
 shrinkingConePatTaus.genJetMatch = cms.InputTag("shrinkingConeTauGenJetMatch")
 fixedConeHighEffPatTaus.genJetMatch = cms.InputTag("fixedConeHighEffTauGenJetMatch")
@@ -247,34 +253,53 @@ selectedLayer1CaloTaus.tauIDSources = cms.PSet(
         byIsolation         = cms.InputTag("caloRecoTauDiscriminationByIsolation"),
         againstElectron     = cms.InputTag("caloRecoTauDiscriminationAgainstElectron"),
 )
-selectedLayer1CaloTaus.addDecayMode = cms.bool(False)
-selectedLayer1CaloTaus.addGenMatch = cms.bool(False)
-selectedLayer1CaloTaus.embedGenMatch = cms.bool(False)
-selectedLayer1CaloTaus.addGenJetMatch = cms.bool(False)
-selectedLayer1CaloTaus.addGenJetMatch = cms.bool(False)
-#selectedLayer1CaloTaus.addTrigMatch = cms.bool(False)
+selectedLayer1CaloTaus.addDecayMode = cms.bool(doGen)
+selectedLayer1CaloTaus.addGenMatch = cms.bool(doGen)
+selectedLayer1CaloTaus.embedGenMatch = cms.bool(doGen)
+selectedLayer1CaloTaus.addGenJetMatch = cms.bool(doGen)
+selectedLayer1CaloTaus.addGenJetMatch = cms.bool(doGen)
+#selectedLayer1CaloTaus.addTrigMatch = cms.bool(doGen)
 
-makeCustomizedPatTaus = cms.Sequence(
+
+makeCustomizedPatTauIso = cms.Sequence(
     patPFCandidateIsoDepositSelection *
-    patCustomizedPFTauIsolation *
-#    shrinkingConeTauMatch *
-#    fixedConeHighEffTauMatch *
-#    fixedConeTauMatch *
-#    shrinkingTightConeTauMatch *    
-#    tauGenJets *
-#    tauGenJetsSelectorAllHadrons *
-#    shrinkingConeTauGenJetMatch *
-#    fixedConeHighEffTauGenJetMatch *
-#    fixedConeTauGenJetMatch *
-#    shrinkingTightConeTauGenJetMatch *
-    # object production
+    patCustomizedPFTauIsolation
+)
+
+makeCustomizedPatTauMatch = cms.Sequence(
+    shrinkingConeTauMatch *
+    fixedConeHighEffTauMatch *
+    fixedConeTauMatch *
+    shrinkingTightConeTauMatch *    
+    tauGenJets *
+    tauGenJetsSelectorAllHadrons *
+    shrinkingConeTauGenJetMatch *
+    fixedConeHighEffTauGenJetMatch *
+    fixedConeTauGenJetMatch *
+    shrinkingTightConeTauGenJetMatch
+) 
+
+makePatTaus = cms.Sequence(
     fixedConeHighEffPatTaus *
     fixedConePatTaus *
     shrinkingTightConePatTaus *
     shrinkingConePatTaus *
     selectedLayer1CaloTaus
-    )
 
+)
+
+if(data):
+  makeCustomizedPatTaus = cms.Sequence(
+    makeCustomizedPatTauIso
+    + makePatTaus
+  )
+else:
+  makeCustomizedPatTaus = cms.Sequence(
+    makeCustomizedPatTauIso
+    + makeCustomizedPatTauMatch
+    + makePatTaus
+  )
+  
 # --------------------Modifications for muons--------------------
 
 patMuons.userIsolation = cms.PSet(
@@ -306,8 +331,8 @@ patMuons.isoDeposits = cms.PSet(
   ecal            = patMuons.userIsolation.ecal.src,
   hcal            = patMuons.userIsolation.hcal.src,
 )
-patMuons.addGenMatch = cms.bool(False)
-patMuons.embedGenMatch = cms.bool(False)
+patMuons.addGenMatch = cms.bool(doGen)
+patMuons.embedGenMatch = cms.bool(doGen)
 
 # --------------------Modifications for electrons--------------------
 
@@ -320,8 +345,8 @@ electronIsoDeposits = cms.Sequence( eleIsoDepositTk
 				   )
 recoElectronIsolation = cms.Sequence( electronIsoDeposits )
 
-patElectrons.addGenMatch = cms.bool(False)
-patElectrons.embedGenMatch = cms.bool(False)
+patElectrons.addGenMatch = cms.bool(doGen)
+patElectrons.embedGenMatch = cms.bool(doGen)
 patElectrons.genParticleMatch = cms.InputTag("electronMatch")
 
 cleanPatElectrons.checkOverlaps = cms.PSet()
@@ -335,12 +360,12 @@ heepPatElectrons = cms.EDProducer("HEEPAttStatusToPAT",
 
 # --------------------Modifications for jets--------------------
 
-patJets.addGenPartonMatch   = cms.bool(False)                           ## switch on/off matching to quarks from hard scatterin
-patJets.embedGenPartonMatch = cms.bool(False)                           ## switch on/off embedding of the GenParticle parton for this jet
-patJets.addGenJetMatch      = cms.bool(False)                           ## switch on/off matching to GenJet's
-patJets.embedGenJetMatch    = cms.bool(False)                           ## switch on/off embedding of matched genJet's
-patJets.addPartonJetMatch   = cms.bool(False)                          ## switch on/off matching to PartonJet's (not implemented yet)
-patJets.getJetMCFlavour     = cms.bool(False)
+patJets.addGenPartonMatch   = cms.bool(doGen)                           ## switch on/off matching to quarks from hard scatterin
+patJets.embedGenPartonMatch = cms.bool(doGen)                           ## switch on/off embedding of the GenParticle parton for this jet
+patJets.addGenJetMatch      = cms.bool(doGen)                           ## switch on/off matching to GenJet's
+patJets.embedGenJetMatch    = cms.bool(doGen)                           ## switch on/off embedding of matched genJet's
+patJets.addPartonJetMatch   = cms.bool(doGen)                          ## switch on/off matching to PartonJet's (not implemented yet)
+patJets.getJetMCFlavour     = cms.bool(doGen)
 
 
 cleanPatJets.checkOverlaps = cms.PSet()
@@ -354,12 +379,12 @@ makeCustomizedPatJets = cms.Sequence(
 
 # --------------------Modifications for photons--------------------
 
-patPhotons.addGenMatch = cms.bool(False)
-patPhotons.embedGenMatch = cms.bool(False)
+patPhotons.addGenMatch = cms.bool(doGen)
+patPhotons.embedGenMatch = cms.bool(doGen)
 
 # --------------------Modifications for MET--------------------
 
-patMETs.addGenMET    = cms.bool(False)
+patMETs.addGenMET    = cms.bool(doGen)
 patMETs.metSource  = cms.InputTag("met")
 
 # --------------------Modified PAT sequences--------------------

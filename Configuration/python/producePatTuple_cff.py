@@ -226,19 +226,15 @@ produceAndDiscriminateShrinkingConePFTausCustomized = cms.Sequence(
       shrinkingConePFTauDiscriminationAgainstMuon
 )
 
-
-producePatTuple = cms.Sequence(
-    #electronIdCutBased *
+produceThePatCands = cms.Sequence(
     recoElectronIsolation *
     ic5PFJetTracksAssociatorAtVertex *
-    ak5PFJetTracksAssociatorAtVertex *
     pfRecoTauTagInfoProducer *
-    produceAndDiscriminateShrinkingConePFTausCustomized *
-#    produceAndDiscriminateShrinkingConePFTaus *
-#    produceShrinkingConeDiscriminationByTauNeuralClassifier *
+    produceAndDiscriminateShrinkingConePFTaus *
+    produceShrinkingConeDiscriminationByTauNeuralClassifier *
     fixedConeHighEffPFTauProducer*
-#    fixedConeHighEffPFTauDecayModeProducer*
-#    fixedConeHighEffPFTauDecayModeIndexProducer*
+    fixedConeHighEffPFTauDecayModeProducer*
+    fixedConeHighEffPFTauDecayModeIndexProducer*
     fixedConeHighEffPFTauDiscriminationByLeadingTrackFinding*
     fixedConeHighEffPFTauDiscriminationByLeadingTrackPtCut*
     fixedConeHighEffPFTauDiscriminationByLeadingPionPtCut*
@@ -252,8 +248,8 @@ producePatTuple = cms.Sequence(
     fixedConeHighEffPFTauDiscriminationAgainstMuon *    
     produceAndDiscriminateFixedConePFTaus *
     shrinkingTightConePFTauProducer*
-#    shrinkingTightConePFTauDecayModeProducer*
-#    shrinkingTightConePFTauDecayModeIndexProducer*
+    shrinkingTightConePFTauDecayModeProducer*
+    shrinkingTightConePFTauDecayModeIndexProducer*
     shrinkingTightConePFTauDiscriminationByLeadingTrackFinding*
     shrinkingTightConePFTauDiscriminationByLeadingTrackPtCut*
     shrinkingTightConePFTauDiscriminationByLeadingPionPtCut*
@@ -266,9 +262,23 @@ producePatTuple = cms.Sequence(
     shrinkingTightConePFTauDiscriminationAgainstElectron*
     shrinkingTightConePFTauDiscriminationAgainstMuon *
     patCustomizedCandidates *
-    selectedPatCustomizedCandidates 
-#    genMETParticles *
-#    genMetCalo *
-#    genMetTrue
-    )
+    selectedPatCustomizedCandidates
+)
+
+produceGenMETInfo = cms.Sequence(
+    genMETParticles *
+    genMetCalo *
+    genMetTrue
+)
+
+if(data):
+  producePatTuple = cms.Sequence(
+    produceThePatCands
+  )
+else:
+  producePatTuple = cms.Sequence(
+    produceThePatCands
+    + produceGenMETInfo
+  )
+
 
