@@ -3,7 +3,7 @@
 
 ### signal refers to signal MC => data must be false when signal is true
 ### data refers to data/mc analysis
-### channels: emu, etau, mutau
+### channels: emu, etau, mutau, tautau
 global signal
 global data
 global channel
