@@ -1,10 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 import copy
 
-### This files controls whether we are working with data/MC, signalMC (for skim), and channel.
-### Make sure to set it to the desired process.
-from HighMassAnalysis.Configuration.hiMassSetup_cfi import *
-
 process = cms.Process('hiMassTau')
 
 # import of standard configurations for RECOnstruction
@@ -21,13 +17,9 @@ process.load('Configuration/StandardSequences/GeometryIdeal_cff')
 process.load('Configuration/StandardSequences/MagneticField_cff')
 process.load('Configuration/StandardSequences/Reconstruction_cff')
 process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
-
+process.GlobalTag.globaltag = 'START36_V9::All'
 #process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_noesprefer_cff')
-if(data):
-  process.GlobalTag.globaltag = 'GR10_P_V11::All'
-  #process.GlobalTag.globaltag = 'GR10_P_V7::All'
-else:
-  process.GlobalTag.globaltag = 'START36_V10::All'
+#process.GlobalTag.globaltag = 'STARTUP3XY_V9::All'
 
 # import particle data table - needed for print-out of generator level information
 process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
@@ -40,8 +32,7 @@ from HighMassAnalysis.Configuration.patTupleEventContentForHiMassTau_cff import 
 
 process.savePatTuple = cms.OutputModule("PoolOutputModule",
     patTupleEventContent,                                               
-    fastCloning = cms.untracked.bool(False),
-    fileName = cms.untracked.string('eMuSkimPat.root')
+    fileName = cms.untracked.string('muTauSkimPat.root')
 )
 
 process.maxEvents = cms.untracked.PSet(            
@@ -51,35 +42,20 @@ process.maxEvents = cms.untracked.PSet(
 process.source = cms.Source("PoolSource",
     skipEvents = cms.untracked.uint32(0),
     fileNames = cms.untracked.vstring(
-      '/store/data/Run2010B/Mu/RECO/PromptReco-v2/000/149/711/F47056D9-8DE7-DF11-9355-003048F024FA.root',
+       '/store/user/lpctau/HighMassTau/eluiggi/zprimeTauTau1000_7TeV_STARTUP31X_V4_GEN-SIM-RAW/ZprimeTauTau1000_7TeV_START36_V10_GEN-SIM-RECO_RERECO/3642c883d04c18dde8255af9b6e3785e/zprimeReReco_1_1_JKq.root'
     )
     #skipBadFiles = cms.untracked.bool(True) 
 )
-
 process.source.inputCommands = cms.untracked.vstring(
-       "keep *", 
-       "drop *_MEtoEDMConverter_*_*", 
-       "drop L1GlobalTriggerObjectMapRecord_hltL1GtObjectMap__HLT"
+	"keep *", 
+	"drop *_MEtoEDMConverter_*_*", 
+	"drop L1GlobalTriggerObjectMapRecord_hltL1GtObjectMap__HLT"
 )
 
-process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
-
-process.PFTauProducerSequence = cms.Sequence(
-      process.ic5PFJetTracksAssociatorAtVertex *
-      process.pfRecoTauTagInfoProducer *
-      process.shrinkingConePFTauProducer*
-      process.shrinkingConePFTauDiscriminationByLeadingTrackFinding*
-      process.shrinkingConePFTauDiscriminationByLeadingTrackPtCut*
-      process.shrinkingConePFTauDiscriminationByLeadingPionPtCut*
-      process.shrinkingConePFTauDiscriminationByIsolation*
-      process.shrinkingConePFTauDiscriminationByTrackIsolation*
-      process.shrinkingConePFTauDiscriminationByECALIsolation*
-      process.shrinkingConePFTauDiscriminationByIsolationUsingLeadingPion*
-      process.shrinkingConePFTauDiscriminationByTrackIsolationUsingLeadingPion*
-      process.shrinkingConePFTauDiscriminationByECALIsolationUsingLeadingPion*
-      process.shrinkingConePFTauDiscriminationAgainstElectron*
-      process.shrinkingConePFTauDiscriminationAgainstMuon
-)
+# Generator cuts
+process.load("HighMassAnalysis.Skimming.genLevelSequence_cff")
+# Skim sequence
+process.load("HighMassAnalysis.Skimming.muTauSkimSequence_cff")
 
 # include particle flow based MET
 from PhysicsTools.PatAlgos.tools.metTools import *
@@ -88,72 +64,27 @@ addPfMET(process, 'PF')
 # include particle flow based jets
 from PhysicsTools.PatAlgos.tools.jetTools import *
 addJetCollection(process,cms.InputTag('ak5PFJets'),
-		'AK5', 'PF',
-		doJTA	      = True,
-		doBTagging    = True,
-		jetCorrLabel  = ('AK5','PF'),
-		doType1MET    = False,
-		doL1Cleaning  = False,  	       
-		doL1Counters  = False,
-		genJetCollection=cms.InputTag("ak5GenJets"),
-		doJetID       = False
-		)
+                  'AK5', 'PF',
+                 doJTA        = True,
+                 doBTagging   = True,
+                 jetCorrLabel = ('AK5','PF'),
+                 doType1MET   = False,
+                 doL1Cleaning = False,                 
+                 doL1Counters = False,
+                 genJetCollection=cms.InputTag("ak5GenJets"),
+                 doJetID          = False
+                 )
 
 from PhysicsTools.PatAlgos.tools.electronTools import *
-#addElectronUserIsolation(process,["Tracker"])
-#addElectronUserIsolation(process,["Ecal"])
-#addElectronUserIsolation(process,["Hcal"])
+addElectronUserIsolation(process,["Tracker"])
+addElectronUserIsolation(process,["Ecal"])
+addElectronUserIsolation(process,["Hcal"])
 
 from PhysicsTools.PatAlgos.tools.muonTools import *
 addMuonUserIsolation(process)
 
-# trigger + Skim sequence
-process.load("HighMassAnalysis.Skimming.triggerReq_cfi")
+process.p = cms.Path( 
+		      process.muTauSkimSequence
+		    + process.producePatTuple
+                    + process.savePatTuple )
 
-if(channel == "emu"):
-  process.load("HighMassAnalysis.Skimming.leptonLeptonSkimSequence_cff")
-  process.theSkim = cms.Sequence(
-    process.muElecSkimSequence
-  )
-  process.hltFilter = cms.Sequence(
-    process.emuHLTFilter
-  )
-if(channel == "etau"):
-  process.load("HighMassAnalysis.Skimming.elecTauSkimSequence_cff")
-  process.theSkim = cms.Sequence(
-    process.elecTauSkimSequence
-  )
-  process.hltFilter = cms.Sequence(
-     process.etauHLTFilter
-  )
-if(channel == "mutau"):
-  process.load("HighMassAnalysis.Skimming.muTauSkimSequence_cff")
-  process.theSkim = cms.Sequence(
-    process.muTauSkimSequence
-  )
-  process.hltFilter = cms.Sequence(
-     process.mutauHLTFilter
-  )
-if(channel == "tautau"):
-  process.load("HighMassAnalysis.Skimming.TauTauSkimSequence_cff")
-  process.theSkim = cms.Sequence(
-    process.TauTauSkimSequence
-  )
-  process.hltFilter = cms.Sequence(
-     process.tautauHLTFilter
-  )
-
-
-if(signal):
-  process.p = cms.Path(
-    process.producePatTuple +
-    process.savePatTuple	       
-  )
-else:
-  process.p = cms.Path(
-    process.hltFilter +       
-    process.theSkim +	       
-    process.producePatTuple +
-    process.savePatTuple	       
-  )
-	

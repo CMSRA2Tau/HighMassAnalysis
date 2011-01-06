@@ -1,12 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 import copy
 
-from HighMassAnalysis.Configuration.hiMassSetup_cfi import *
-if(data):
-  doGen = False
-else:
-  doGen = True
-
 # Standard pat sequences
 from PhysicsTools.PatAlgos.patSequences_cff import * 
 
@@ -187,47 +181,22 @@ shrinkingConePatTaus.tauIDSources = cms.PSet(
         byIsolationUsingLeadingPion = cms.InputTag("shrinkingConePFTauDiscriminationByIsolationUsingLeadingPion"),
         againstElectron = cms.InputTag("shrinkingConePFTauDiscriminationAgainstElectron"),
         againstMuon = cms.InputTag("shrinkingConePFTauDiscriminationAgainstMuon"),
-#        byTaNC = cms.InputTag("shrinkingConePFTauDiscriminationByTaNC"),
-#        byTaNCfrOnePercent = cms.InputTag("shrinkingConePFTauDiscriminationByTaNCfrOnePercent"),
-#        byTaNCfrHalfPercent = cms.InputTag("shrinkingConePFTauDiscriminationByTaNCfrHalfPercent"),
-#        byTaNCfrQuarterPercent = cms.InputTag("shrinkingConePFTauDiscriminationByTaNCfrQuarterPercent"),
-#        byTaNCfrTenthPercent = cms.InputTag("shrinkingConePFTauDiscriminationByTaNCfrTenthPercent")
+        byTaNC = cms.InputTag("shrinkingConePFTauDiscriminationByTaNC"),
+        byTaNCfrOnePercent = cms.InputTag("shrinkingConePFTauDiscriminationByTaNCfrOnePercent"),
+        byTaNCfrHalfPercent = cms.InputTag("shrinkingConePFTauDiscriminationByTaNCfrHalfPercent"),
+        byTaNCfrQuarterPercent = cms.InputTag("shrinkingConePFTauDiscriminationByTaNCfrQuarterPercent"),
+        byTaNCfrTenthPercent = cms.InputTag("shrinkingConePFTauDiscriminationByTaNCfrTenthPercent")
 )
-
-fixedConeHighEffPatTaus.addDecayMode = cms.bool(doGen)
-fixedConePatTaus.addDecayMode = cms.bool(doGen)
-shrinkingTightConePatTaus.addDecayMode = cms.bool(doGen)
-shrinkingConePatTaus.addDecayMode = cms.bool(doGen)
 
 fixedConeHighEffPatTaus.decayModeSrc = cms.InputTag("fixedConeHighEffPFTauDecayModeProducer")
 fixedConePatTaus.decayModeSrc = cms.InputTag("fixedConePFTauDecayModeProducer")
 shrinkingTightConePatTaus.decayModeSrc = cms.InputTag("shrinkingTightConePFTauDecayModeProducer")
 shrinkingConePatTaus.decayModeSrc = cms.InputTag("shrinkingConePFTauDecayModeProducer")
 
-fixedConeHighEffPatTaus.addGenMatch = cms.bool(doGen)
-fixedConePatTaus.addGenMatch = cms.bool(doGen)
-shrinkingTightConePatTaus.addGenMatch = cms.bool(doGen)
-shrinkingConePatTaus.addGenMatch = cms.bool(doGen)
-
-fixedConeHighEffPatTaus.embedGenMatch = cms.bool(doGen)
-fixedConePatTaus.embedGenMatch = cms.bool(doGen)
-shrinkingTightConePatTaus.embedGenMatch = cms.bool(doGen)
-shrinkingConePatTaus.embedGenMatch = cms.bool(doGen)
-
 shrinkingConePatTaus.genParticleMatch = cms.InputTag("shrinkingConeTauMatch")
 fixedConeHighEffPatTaus.genParticleMatch = cms.InputTag("fixedConeHighEffTauMatch")
 fixedConePatTaus.genParticleMatch = cms.InputTag("fixedConeTauMatch")
 shrinkingTightConePatTaus.genParticleMatch = cms.InputTag("shrinkingTightConeTauMatch")
-
-fixedConeHighEffPatTaus.addGenJetMatch = cms.bool(doGen)
-fixedConePatTaus.addGenJetMatch = cms.bool(doGen)
-shrinkingTightConePatTaus.addGenJetMatch = cms.bool(doGen)
-shrinkingConePatTaus.addGenJetMatch = cms.bool(doGen)
-
-fixedConeHighEffPatTaus.embedGenJetMatch = cms.bool(doGen)
-fixedConePatTaus.embedGenJetMatch = cms.bool(doGen)
-shrinkingTightConePatTaus.embedGenJetMatch = cms.bool(doGen)
-shrinkingConePatTaus.embedGenJetMatch = cms.bool(doGen)
 
 shrinkingConePatTaus.genJetMatch = cms.InputTag("shrinkingConeTauGenJetMatch")
 fixedConeHighEffPatTaus.genJetMatch = cms.InputTag("fixedConeHighEffTauGenJetMatch")
@@ -253,20 +222,15 @@ selectedLayer1CaloTaus.tauIDSources = cms.PSet(
         byIsolation         = cms.InputTag("caloRecoTauDiscriminationByIsolation"),
         againstElectron     = cms.InputTag("caloRecoTauDiscriminationAgainstElectron"),
 )
-selectedLayer1CaloTaus.addDecayMode = cms.bool(doGen)
-selectedLayer1CaloTaus.addGenMatch = cms.bool(doGen)
-selectedLayer1CaloTaus.embedGenMatch = cms.bool(doGen)
-selectedLayer1CaloTaus.addGenJetMatch = cms.bool(doGen)
-selectedLayer1CaloTaus.addGenJetMatch = cms.bool(doGen)
-#selectedLayer1CaloTaus.addTrigMatch = cms.bool(doGen)
+selectedLayer1CaloTaus.addGenMatch = cms.bool(False)
+selectedLayer1CaloTaus.embedGenMatch = cms.bool(False)
+selectedLayer1CaloTaus.addGenJetMatch = cms.bool(False)
+selectedLayer1CaloTaus.addGenJetMatch = cms.bool(False)
+#selectedLayer1CaloTaus.addTrigMatch = cms.bool(False)
 
-
-makeCustomizedPatTauIso = cms.Sequence(
+makeCustomizedPatTaus = cms.Sequence(
     patPFCandidateIsoDepositSelection *
-    patCustomizedPFTauIsolation
-)
-
-makeCustomizedPatTauMatch = cms.Sequence(
+    patCustomizedPFTauIsolation *
     shrinkingConeTauMatch *
     fixedConeHighEffTauMatch *
     fixedConeTauMatch *
@@ -276,30 +240,15 @@ makeCustomizedPatTauMatch = cms.Sequence(
     shrinkingConeTauGenJetMatch *
     fixedConeHighEffTauGenJetMatch *
     fixedConeTauGenJetMatch *
-    shrinkingTightConeTauGenJetMatch
-) 
-
-makePatTaus = cms.Sequence(
+    shrinkingTightConeTauGenJetMatch *
+    # object production
     fixedConeHighEffPatTaus *
     fixedConePatTaus *
     shrinkingTightConePatTaus *
     shrinkingConePatTaus *
     selectedLayer1CaloTaus
+    )
 
-)
-
-if(data):
-  makeCustomizedPatTaus = cms.Sequence(
-    makeCustomizedPatTauIso
-    + makePatTaus
-  )
-else:
-  makeCustomizedPatTaus = cms.Sequence(
-    makeCustomizedPatTauIso
-    + makeCustomizedPatTauMatch
-    + makePatTaus
-  )
-  
 # --------------------Modifications for muons--------------------
 
 patMuons.userIsolation = cms.PSet(
@@ -331,12 +280,42 @@ patMuons.isoDeposits = cms.PSet(
   ecal            = patMuons.userIsolation.ecal.src,
   hcal            = patMuons.userIsolation.hcal.src,
 )
-patMuons.addGenMatch = cms.bool(doGen)
-patMuons.embedGenMatch = cms.bool(doGen)
+patMuons.addGenMatch = cms.bool(True)
 
 # --------------------Modifications for electrons--------------------
 
+from RecoEgamma.ElectronIdentification.electronIdCutBasedExt_cfi import *
+#elecIdCutBasedRobust = eidCutBasedExt.copy()
+#elecIdCutBasedRobust.src = cms.InputTag("gsfElectrons")
+#elecIdCutBasedRobust.electronQuality = 'robust'
+#elecIdCutBasedRobust.robustEleIDCuts = cms.PSet(
+#   barrel = cms.vdouble(0.015, 0.012, 0.02, 0.0025), # [0.015, 0.0092, 0.020, 0.0025]
+#   endcap = cms.vdouble(0.018, 0.025, 0.02, 0.0040)  # [0.018, 0.025, 0.020, 0.0040]
+#)
+elecIdCutBasedLoose = eidCutBasedExt.copy()
+elecIdCutBasedLoose.electronQuality = 'loose'
+elecIdCutBasedTight = eidCutBasedExt.copy()
+elecIdCutBasedTight.electronQuality = 'tight'
+electronIdCutBased = cms.Sequence( 
+                                  elecIdCutBasedLoose
+                                  *elecIdCutBasedTight )
+
+from RecoEgamma.EgammaIsolationAlgos.eleTrackExtractorBlocks_cff import *
+from RecoEgamma.EgammaIsolationAlgos.eleEcalExtractorBlocks_cff import *
+from RecoEgamma.EgammaIsolationAlgos.eleHcalExtractorBlocks_cff import *
+from RecoEgamma.EgammaIsolationAlgos.eleIsoDepositTk_cff import *
+from RecoEgamma.EgammaIsolationAlgos.eleIsoDepositEcalFromHits_cff import *
 from RecoEgamma.EgammaIsolationAlgos.eleIsoDepositHcalFromTowers_cff import *
+from PhysicsTools.PatAlgos.recoLayer0.electronIsolation_cff import *
+EleIsoTrackExtractorBlock.DR_Max = cms.double(1.) 					# set as default
+eleIsoDepositTk.src = cms.InputTag("gsfElectrons") 					# set as default
+eleIsoDepositTk.ExtractorPSet = cms.PSet(EleIsoTrackExtractorBlock)			# set as default
+EleIsoEcalFromHitsExtractorBlock.extRadius = cms.double(0.6)				# set to 1; default is 0.6
+eleIsoDepositEcalFromHits.src = cms.InputTag("gsfElectrons")				# set as default
+eleIsoDepositEcalFromHits.ExtractorPSet = cms.PSet(EleIsoEcalFromHitsExtractorBlock)	# set as default
+EleIsoHcalFromTowersExtractorBlock.extRadius = cms.double(0.6)				# set to 1;  default is 0.6
+eleIsoDepositHcalFromTowers.src = cms.InputTag("gsfElectrons")				# set as default	
+eleIsoDepositHcalFromTowers.ExtractorPSet = cms.PSet(EleIsoHcalFromTowersExtractorBlock)# set as default
 electronIsoDeposits = cms.Sequence( eleIsoDepositTk
                                    *eleIsoDepositEcalFromHits 
                                    *eleIsoDepositHcalFromTowers 
@@ -345,61 +324,65 @@ electronIsoDeposits = cms.Sequence( eleIsoDepositTk
 				   )
 recoElectronIsolation = cms.Sequence( electronIsoDeposits )
 
-patElectrons.addGenMatch = cms.bool(doGen)
-patElectrons.embedGenMatch = cms.bool(doGen)
+from PhysicsTools.PatAlgos.recoLayer0.electronId_cff import *
+#from PhysicsTools.PatAlgos.recoLayer0.aodReco_cff import *
+#from PhysicsTools.PatAlgos.triggerLayer0.trigMatchSequences_cff import *
+from PhysicsTools.PatAlgos.producersLayer1.electronProducer_cfi import *
+from PhysicsTools.PatAlgos.cleaningLayer1.electronCleaner_cfi import *
+#patTrigMatchElectron = cms.Sequence( electronTrigMatchHLT1Electron )
+#patTrigMatch._seq = patTrigMatch._seq * patHLT1Electron * patTrigMatchElectron
+#
+patElectrons.userIsolation = cms.PSet(        
+   tracker = cms.PSet(
+      src = cms.InputTag("eleIsoFromDepsTk"),							  
+      deltaR = cms.double(0.6)							     
+   ),												       
+   ecal = cms.PSet(										       
+      src = cms.InputTag("eleIsoFromDepsEcalFromHits"), 					     
+      deltaR = cms.double(0.6)  								  
+   ),												       
+   hcal = cms.PSet(										       
+      src = cms.InputTag("eleIsoFromDepsHcalFromTowers"),
+      deltaR = cms.double(0.6)  				       
+   )
+)
+
+patElectrons.isoDeposits = cms.PSet(
+#   tracker	   = patElectrons.userIsolation.tracker.src,
+#   ecal 	   = patElectrons.userIsolation.ecal.src,
+#   hcal 	   = patElectrons.userIsolation.hcal.src,
+)
+
+patElectrons.addElectronID = cms.bool(True)
+patElectrons.electronIDSources = cms.PSet(
+   #robust = cms.InputTag("elecIdCutBasedRobust"),
+   loose  = cms.InputTag("elecIdCutBasedLoose"),
+   tight  = cms.InputTag("elecIdCutBasedTight")        
+)
+#patElectrons.addTrigMatch = cms.bool(True)
+#patElectrons.trigPrimMatch = cms.VInputTag(
+#    cms.InputTag("electronTrigMatchHLT1Electron")
+#)
+patElectrons.addGenMatch = cms.bool(True)
 patElectrons.genParticleMatch = cms.InputTag("electronMatch")
-
 cleanPatElectrons.checkOverlaps = cms.PSet()
-
-from SHarper.HEEPAnalyzer.HEEPSelectionCuts_cfi import *
-heepPatElectrons = cms.EDProducer("HEEPAttStatusToPAT",
-                                          eleLabel = cms.InputTag("selectedPatElectrons"),
-                                          barrelCuts = cms.PSet(heepBarrelCuts),
-                                          endcapCuts = cms.PSet(heepEndcapCuts)
-                                          )
 
 # --------------------Modifications for jets--------------------
 
-patJets.addGenPartonMatch   = cms.bool(doGen)                           ## switch on/off matching to quarks from hard scatterin
-patJets.embedGenPartonMatch = cms.bool(doGen)                           ## switch on/off embedding of the GenParticle parton for this jet
-patJets.addGenJetMatch      = cms.bool(doGen)                           ## switch on/off matching to GenJet's
-patJets.embedGenJetMatch    = cms.bool(doGen)                           ## switch on/off embedding of matched genJet's
-patJets.addPartonJetMatch   = cms.bool(doGen)                          ## switch on/off matching to PartonJet's (not implemented yet)
-patJets.getJetMCFlavour     = cms.bool(doGen)
-
-
 cleanPatJets.checkOverlaps = cms.PSet()
-
-makeCustomizedPatJets = cms.Sequence(
-    patJetCorrections *
-    patJetCharge *
-    patJets
-)
-
-
-# --------------------Modifications for photons--------------------
-
-patPhotons.addGenMatch = cms.bool(doGen)
-patPhotons.embedGenMatch = cms.bool(doGen)
-
-# --------------------Modifications for MET--------------------
-
-patMETs.addGenMET    = cms.bool(doGen)
-patMETs.metSource  = cms.InputTag("met")
 
 # --------------------Modified PAT sequences--------------------
 
 patCustomizedCandidates = cms.Sequence(
-    patElectrons +
-    patMuons     +
+    makePatElectrons +
+    makePatMuons     +
     makeCustomizedPatTaus      +
-    patPhotons   +
-    makeCustomizedPatJets      +
-    patMETs )
+    makePatPhotons   +
+    makePatJets      +
+    makePatMETs )
 
 selectedPatCustomizedCandidates = cms.Sequence(
     selectedPatElectrons +
-    heepPatElectrons	 +
     selectedPatMuons     +
     selectedLayer1ShrinkingConeHighEffPFTaus +
     selectedLayer1ShrinkingConePFTaus +

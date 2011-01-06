@@ -1,7 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
-from Configuration.EventContent.EventContent_cff import *
 
 #--------------------------------------------------------------------------------
 # per default, drop everything that is not specifically kept
@@ -30,7 +29,6 @@ patTupleEventContent.outputCommands.extend(
     'keep recoTrackExtras_generalTracks_*_*',
     'keep recoMuons_muons_*_*',
     'keep *_muonMETValueMapProducer_*_*',
-    'keep booledmValueMap_muid*_*_*',
     'keep *_selectedLayer1CaloTaus_*_*',
     'keep *_selectedLayer1FixedConeHighEffPFTaus_*_*',
     'keep *_selectedLayer1FixedConePFTaus_*_*',
@@ -41,10 +39,7 @@ patTupleEventContent.outputCommands.extend(
     'keep *_layer1METsPF_*_*',
     'keep *_genMetCalo__hiMassTau',
     'keep *_genMetTrue__hiMassTau',
-    'keep *_generator_*_*',      
-    'keep recoGsfElectronCores_*_*_*',
-    'keep recoSuperClusters_*_*_*',
-    'keep DcsStatuss_scalersRawToDigi_*_*'
+    'keep *_generator_*_*',
     ]
 )
 
@@ -54,7 +49,6 @@ patTupleEventContent.outputCommands.extend(
 
 patTupleEventContent.outputCommands.extend(
     [ 'keep *_selectedPatElectrons_*_*',
-      'keep *_heepPatElectrons_*_*',
       'keep *_selectedPatMuons_*_*',
       'keep *_selectedPatJets_*_*' ]
 )
@@ -70,7 +64,6 @@ patTupleEventContent.outputCommands.extend(
 #--------------------------------------------------------------------------------
 # 
 #--------------------------------------------------------------------------------
-patTupleEventContent.outputCommands.extend(HLTriggerRECO.outputCommands)
 
 patTupleEventContent.outputCommands.extend(
     [ 'drop CaloTowers*_*_*_*',
