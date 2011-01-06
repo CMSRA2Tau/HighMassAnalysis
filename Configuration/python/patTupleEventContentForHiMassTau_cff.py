@@ -28,6 +28,7 @@ patTupleEventContent.outputCommands.extend(
     'keep recoTracks_generalTracks_*_*',
     'keep recoTrackExtras_generalTracks_*_*',
     'keep recoMuons_muons_*_*',
+    'keep booledmValueMap_muid*_*_*',
     'keep *_muonMETValueMapProducer_*_*',
     'keep *_selectedLayer1CaloTaus_*_*',
     'keep *_selectedLayer1FixedConeHighEffPFTaus_*_*',
@@ -40,6 +41,9 @@ patTupleEventContent.outputCommands.extend(
     'keep *_genMetCalo__hiMassTau',
     'keep *_genMetTrue__hiMassTau',
     'keep *_generator_*_*',
+    'keep recoGsfElectronCores_*_*_*',
+    'keep recoSuperClusters_*_*_*',
+    'keep DcsStatuss_scalersRawToDigi_*_*'
     ]
 )
 
@@ -49,6 +53,7 @@ patTupleEventContent.outputCommands.extend(
 
 patTupleEventContent.outputCommands.extend(
     [ 'keep *_selectedPatElectrons_*_*',
+      'keep *_heepPatElectrons_*_*',
       'keep *_selectedPatMuons_*_*',
       'keep *_selectedPatJets_*_*' ]
 )
