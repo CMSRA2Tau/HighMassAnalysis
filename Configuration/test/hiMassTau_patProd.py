@@ -32,7 +32,7 @@ from HighMassAnalysis.Configuration.patTupleEventContentForHiMassTau_cff import 
 
 process.savePatTuple = cms.OutputModule("PoolOutputModule",
     patTupleEventContent,                                               
-    fileName = cms.untracked.string('muTauSkimPat.root')
+    fileName = cms.untracked.string('eTauSkimPat.root')
 )
 
 process.maxEvents = cms.untracked.PSet(            
@@ -55,7 +55,8 @@ process.source.inputCommands = cms.untracked.vstring(
 # Generator cuts
 process.load("HighMassAnalysis.Skimming.genLevelSequence_cff")
 # Skim sequence
-process.load("HighMassAnalysis.Skimming.muTauSkimSequence_cff")
+#process.load("HighMassAnalysis.Skimming.muTauSkimSequence_cff")
+process.load("HighMassAnalysis.Skimming.elecTauSkimSequence_cff")
 
 # include particle flow based MET
 from PhysicsTools.PatAlgos.tools.metTools import *
@@ -76,15 +77,16 @@ addJetCollection(process,cms.InputTag('ak5PFJets'),
                  )
 
 from PhysicsTools.PatAlgos.tools.electronTools import *
-addElectronUserIsolation(process,["Tracker"])
-addElectronUserIsolation(process,["Ecal"])
-addElectronUserIsolation(process,["Hcal"])
+#addElectronUserIsolation(process,["Tracker"])
+#addElectronUserIsolation(process,["Ecal"])
+#addElectronUserIsolation(process,["Hcal"])
 
 from PhysicsTools.PatAlgos.tools.muonTools import *
 addMuonUserIsolation(process)
 
 process.p = cms.Path( 
-		      process.muTauSkimSequence
+#		      process.muTauSkimSequence
+		      process.elecTauSkimSequence
 		    + process.producePatTuple
                     + process.savePatTuple )
 
