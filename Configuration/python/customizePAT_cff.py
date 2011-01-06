@@ -285,13 +285,6 @@ patMuons.addGenMatch = cms.bool(True)
 # --------------------Modifications for electrons--------------------
 
 from RecoEgamma.ElectronIdentification.electronIdCutBasedExt_cfi import *
-#elecIdCutBasedRobust = eidCutBasedExt.copy()
-#elecIdCutBasedRobust.src = cms.InputTag("gsfElectrons")
-#elecIdCutBasedRobust.electronQuality = 'robust'
-#elecIdCutBasedRobust.robustEleIDCuts = cms.PSet(
-#   barrel = cms.vdouble(0.015, 0.012, 0.02, 0.0025), # [0.015, 0.0092, 0.020, 0.0025]
-#   endcap = cms.vdouble(0.018, 0.025, 0.02, 0.0040)  # [0.018, 0.025, 0.020, 0.0040]
-#)
 elecIdCutBasedLoose = eidCutBasedExt.copy()
 elecIdCutBasedLoose.electronQuality = 'loose'
 elecIdCutBasedTight = eidCutBasedExt.copy()
@@ -325,33 +318,10 @@ electronIsoDeposits = cms.Sequence( eleIsoDepositTk
 recoElectronIsolation = cms.Sequence( electronIsoDeposits )
 
 from PhysicsTools.PatAlgos.recoLayer0.electronId_cff import *
-#from PhysicsTools.PatAlgos.recoLayer0.aodReco_cff import *
-#from PhysicsTools.PatAlgos.triggerLayer0.trigMatchSequences_cff import *
 from PhysicsTools.PatAlgos.producersLayer1.electronProducer_cfi import *
 from PhysicsTools.PatAlgos.cleaningLayer1.electronCleaner_cfi import *
-#patTrigMatchElectron = cms.Sequence( electronTrigMatchHLT1Electron )
-#patTrigMatch._seq = patTrigMatch._seq * patHLT1Electron * patTrigMatchElectron
-#
-patElectrons.userIsolation = cms.PSet(        
-   tracker = cms.PSet(
-      src = cms.InputTag("eleIsoFromDepsTk"),							  
-      deltaR = cms.double(0.6)							     
-   ),												       
-   ecal = cms.PSet(										       
-      src = cms.InputTag("eleIsoFromDepsEcalFromHits"), 					     
-      deltaR = cms.double(0.6)  								  
-   ),												       
-   hcal = cms.PSet(										       
-      src = cms.InputTag("eleIsoFromDepsHcalFromTowers"),
-      deltaR = cms.double(0.6)  				       
-   )
-)
 
-patElectrons.isoDeposits = cms.PSet(
-#   tracker	   = patElectrons.userIsolation.tracker.src,
-#   ecal 	   = patElectrons.userIsolation.ecal.src,
-#   hcal 	   = patElectrons.userIsolation.hcal.src,
-)
+patElectrons.isoDeposits = cms.PSet()
 
 patElectrons.addElectronID = cms.bool(True)
 patElectrons.electronIDSources = cms.PSet(
@@ -359,13 +329,16 @@ patElectrons.electronIDSources = cms.PSet(
    loose  = cms.InputTag("elecIdCutBasedLoose"),
    tight  = cms.InputTag("elecIdCutBasedTight")        
 )
-#patElectrons.addTrigMatch = cms.bool(True)
-#patElectrons.trigPrimMatch = cms.VInputTag(
-#    cms.InputTag("electronTrigMatchHLT1Electron")
-#)
 patElectrons.addGenMatch = cms.bool(True)
 patElectrons.genParticleMatch = cms.InputTag("electronMatch")
 cleanPatElectrons.checkOverlaps = cms.PSet()
+
+from SHarper.HEEPAnalyzer.HEEPSelectionCuts_cfi import *
+heepPatElectrons = cms.EDProducer("HEEPAttStatusToPAT", 
+                                          eleLabel = cms.InputTag("selectedPatElectrons"),
+                                          barrelCuts = cms.PSet(heepBarrelCuts),
+                                          endcapCuts = cms.PSet(heepEndcapCuts) 
+                                          )
 
 # --------------------Modifications for jets--------------------
 
