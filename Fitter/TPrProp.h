@@ -1,15 +1,27 @@
-//
-// TPrProp
-//
-#include "TH1F.h"
+/*********************************************************
+**********************************************************
+***  October 10,2010					**
+***  Indara Suarez					**
+***  Texas A&M University				**
+***	   TPrProp constructor  			**
+***	version 2.0    	    				**
+**********************************************************
+*********************************************************/
+#include <string>
 
+
+using namespace std;
+#include <vector>
+
+#include "TString.h"
+#include "TH1F.h"
 #ifndef __TPrProp_h__
 #define __TPrProp_h__
 
 
 class TPrProp{
-private:  
-
+ private:  
+  
   Float_t	fTotEff;
   Float_t	fPreScl;
   
@@ -20,6 +32,10 @@ private:
   Float_t	fBRatioerr;
   
   TH1F* fMDTShapeProcess;
+  TH1F* fSystematicShape[6];
+  TH1F* fPDFShapeSys;
+  TH1F* fJetShapeSys;
+  TH1F* fTauEtaShapeSys; 
 
   Float_t ftotscl;
   
@@ -42,17 +58,16 @@ private:
   Float_t fmuIDEffSysErr;
   Float_t ftauIDSysErr ;
   Float_t fTopoEffSysErr;
-  
-  
-  
+  Float_t fCmErrors[10];
+  vector<float> *fSystematics; 
   
   
   string fprocessname;
 
 public:
   TPrProp(){};
- virtual ~TPrProp(){};
-
+  virtual ~TPrProp(){};
+  
   void SetProcessTitle(string fprname){fprocessname =(string)fprname;};
   void SetTotEff(Float_t tch0){fTotEff = tch0;};
   void SetPreScl(Float_t tch1){fPreScl = tch1;};
@@ -64,6 +79,8 @@ public:
   void SettauIDEfficiency(Float_t eff4){ftauIDEff = eff4;};
   void SettopologyEfficiency(Float_t eff5){fTopoEff = eff5;};
   
+  void SetSystematics(vector<float> *systerrs){fSystematics=systerrs;};
+
   void SetbranchingFractionStatError(Float_t eff01){fBFracStatErr = eff01;};  
   void SetacceptanceEfficiencyStatError(Float_t eff02){fAccEffStatErr = eff02;}; 
   void SetelectronIDEfficiencyStatError(Float_t eff03){feIDEffStatErr = eff03;}; 
@@ -84,12 +101,14 @@ public:
   void SetBR(Float_t bratio){fBRatio=bratio;};
   
   void SetProcessShape(TH1F* th4){fMDTShapeProcess = th4;};
-  
-
+  void SetSystematicShape(int m, TH1F* th5){fSystematicShape[m] = th5;};
+  void SetPDFSysShape(TH1F* th01){fPDFShapeSys = th01;};
+  void SetJETSysShape(TH1F* th02){fJetShapeSys = th02;};
+  void SetTauEtaSysShape(TH1F* th03){fTauEtaShapeSys = th03;};
   
   string GetProcessTitle(){return fprocessname;};
   
-  
+
   Float_t GetTotEff(){return fTotEff;};
   Float_t GetPreScl(){return fPreScl;};
   
@@ -99,6 +118,7 @@ public:
   Float_t GetmuonIDEfficiency(){return fmuIDEff;};
   Float_t GettauIDEfficiency(){return ftauIDEff;};
   Float_t GettopologyEfficiency(){return fTopoEff;};
+  vector<float> * GetSystematics(){return fSystematics;};  
   
   Float_t GetbranchingFractionStatError(){return fBFracStatErr;};  
   Float_t GetacceptanceEfficiencyStatError(){return fAccEffStatErr;}; 
@@ -122,8 +142,12 @@ public:
   
   
   TH1F* GetProcessShape(){return fMDTShapeProcess;};
+  TH1F* GetSystematicShape(int n){return fSystematicShape[n];};
+  TH1F* GetPDFSysShape(){return fPDFShapeSys;};
+  TH1F* GetJETSysShape(){return fJetShapeSys;};
+  TH1F* GettauetaSysShape(){return fTauEtaShapeSys;};
   
-  Float_t Scaling(TPrProp fChProcess);
+
    
 
  
