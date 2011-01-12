@@ -11,571 +11,395 @@
 
 //#define TFitter_cxx
 #include <math.h>
-#include <cmath>
 #include <iostream>
 #include <stdio.h>
 #include <string.h>
 #include <fstream>
 #include <TStyle.h>
 #include <TCanvas.h>
-#include <fstream>
 
-#include "TFile.h"
-#include "TTree.h"
-#include "TKey.h" 
-#include "TH1.h"
+#include <TFile.h>
+#include <TTree.h>
+#include <TKey.h> 
+#include <TH1.h>
 
-#include "THStack.h"
-#include "TH1F.h"
-#include "TH2F.h"
-#include "TRandom.h"
-#include "TVector.h"
-#include "TLorentzVector.h" 
-#include "TList.h" 
-#include "TChain.h"
-#include "TMath.h"
+#include <TGraphAsymmErrors.h>
+#include <TLatex.h>
+#include <TLegend.h>
+#include <TROOT.h>
+#include <THStack.h>
+#include <TH1F.h>
+#include <TH2F.h>
+#include <TRandom.h>
+#include <TVector.h>
+#include <TLorentzVector.h>
+#include <TList.h>
+#include <TChain.h>
+#include <TMath.h>
 
 #include "TFitter.h"
 #include "TPrProp.h"
-#include "TPrProp.cc"
 #include "TChProp.h"
-#include "TChProp.cc"
+#include "TSystematicStateGenerator.h"
 
 using namespace std;
 
 void TFitter::Loop(){
 
 
-	Float_t         fbranchingFraction;
-   	Float_t         fFilterEfficiency;
-   	Float_t         fxsection;
-   	Float_t         facceptanceEfficiency;
-   	Float_t         felectronIDEfficiency;
-   	Float_t         fmuonIDEfficiency;
-   	Float_t         ftauIDEfficiency;
-   	Float_t         ftopologyEfficiency;
-   	Float_t         fbranchingFractionStatError;
-   	Float_t         facceptanceEfficiencyStatError;
-   	Float_t         felectronIDEfficiencyStatError;
-   	Float_t         fmuonIDEfficiencyStatError;
-   	Float_t         ftauIDEfficiencyStatError;
-   	Float_t         ftopologyEfficiencyStatError;
-   	Float_t         fbranchingFractionSystError;
-   	Float_t         facceptanceEfficiencySystError;
-   	Float_t         felectronIDEfficiencySystError;
-   	Float_t         fmuonIDEfficiencySystError;
-   	Float_t         ftauIDEfficiencySystError;
-   	Float_t         ftopologyEfficiencySystError;
-
 //Declaration of Variables
-  TPrProp fProcess[15];
-  TPrProp fProcess2[1];
-  TChProp fChannel[4];
-  TFile *fFileRead;
-  TKey *key;
-  TKey *keyh;
-  TList *h2;
-  TList *hl;
-  int nb=0;
-  int ch=0;
-  //int ch=0;
-  int ipr=0;
-  int num=0;
-  int syst_vector=0;
-  Float_t PreScale[4][10];
-  Float_t TotEff[4][10];
-  Double_t distValue_num;
-  Double_t fitValue;
-  Float_t prescl=0;
-  Float_t toteff=0;
-  Double_t lkl=0;
-  Float_t totscl1=0;
-  Float_t totscl0=0;
+  
+  TChProp fChannel[_theRootFiles.size()];
   int ichannel = 0;
+  Double_t sigma95=0;  
+  Double_t sigma950=0;
+  Double_t joint_sigma95, joint_sigma95_mc = 0;
   
-  Float_t JointLikelihood = 0;
-
-  Double_t sigma95=0;
-  Double_t sigma951=0;
-  Double_t sigma952=0;
-  Double_t sigma953=0;
-  
-  Double_t joint_sigma95 = 0;
-  TH1F* Limit_95CL_0 =new TH1F("Limit_95CL_0","Limit_95CL_0", 150,0,15);
-  TH1F* Limit_95CL_1 =new TH1F("Limit_95CL_1","Limit_95CL_1", 150,0,15);
-  TH1F* Limit_95CL_2 =new TH1F("Limit_95CL_2","Limit_95CL_2", 150,0,30);
-  TH1F* Limit_95CL_01 =new TH1F("Limit_95CL_01","Limit_95CL_0", 6000,0,15);
-  TH1F* Limit_95CL_11 =new TH1F("Limit_95CL_11","Limit_95CL_1", 6000,0,15);
-  TH1F* Limit_95CL_21 =new TH1F("Limit_95CL_21","Limit_95CL_2", 6000,0,15);
-  TH1F* Limit_95CL_02 =new TH1F("Limit_95CL_02","Limit_95CL_0", 6000,0,15);
-  TH1F* Limit_95CL_12 =new TH1F("Limit_95CL_12","Limit_95CL_1", 6000,0,15);
-  TH1F* Limit_95CL_22 =new TH1F("Limit_95CL_22","Limit_95CL_2", 6000,0,15);
-  TH1F* Limit_95CL_03 =new TH1F("Limit_95CL_03","Limit_95CL_0", 6000,0,15);
-  TH1F* Limit_95CL_13 =new TH1F("Limit_95CL_13","Limit_95CL_1", 6000,0,15);
-  TH1F* Limit_95CL_23 =new TH1F("Limit_95CL_23","Limit_95CL_2", 6000,0,15);
-  TH1F* Joint_Limit_95CL =new TH1F("Joint_Limit_95CL","Joint_Limit_95CL", 150,0,15);
-  
-  
-    /*TCanvas *cn3 = new TCanvas("cn3","", 100, 100, 1000, 1000);
-  cn3->Clear();
-  cn3->Divide(1,2); 
-  
-  TCanvas *cn2 = new TCanvas("cn2","", 100, 100, 1000, 1000);
-  cn2->Clear();
-  cn2->Divide(1,2);
-  
-
-  TCanvas *cn1 = new TCanvas("cn1","", 100, 100, 1000, 1000);
-  cn1->Clear();
-  cn1->Divide(1,2);
-  */
-  
-  
+  TH1F* Limit_95CL_0 =new TH1F("Limit_95CL_0","Limit_95CL_0", 60,0,15);
+  TH1F* Limit_95CL_1 =new TH1F("Limit_95CL_1","Limit_95CL_1", 60,0,15);
+  TH1F* Joint_Limit_95CL =new TH1F("Joint_Limit_95CL","Joint_Limit_95CL", 60,0,15);
+  TH1F* Joint_Limit_95CL_MC =new TH1F("Joint_Limit_95CL_MC","Joint_Limit_95CL_MC", 60,0,15);
   
  //***********************Settings*****************************//
 
-  Int_t npseudo=300;
+  Int_t npseudo = _theNExp;
+  Int_t systematicset = _SystSettings;
     
-  double lumi_error = 1;
-  Double_t lumi = 50.0; //in pb
-  Double_t mass=500.; //z-prime mass
-  Double_t sigma_input = 1.94;
-
-  int input_sigma_signal = 0;
-  double RebinFactor =1;
-  Double_t background_scale = 1;
-  Double_t signal_scale =1;
-  //0.000001;
-  //99999+20999+2+942; //for cross checks
-  // 0.0000000000000001; //for cross checks
-   //more debugging
-   
-   //mc integrations
-   
-  int mcint = 0;
-//***********************Settings*****************************//   
-
-char line[120],FileName[120];	 
-FILE *fTreeFiles = fopen("channels.dat","read");
-
-	while ( fgets( line, 120, fTreeFiles ) ) {
-	
-	nb=0;
-	ch=0;
-	ipr=0;
-	num=0;
- 	prescl=0;
-	toteff=0;
- 	lkl=0;
-	totscl1=0;
-	 totscl0=0;
-
-    	sscanf(line,"%s",FileName);
-
-   	TFile* fntuple = new TFile(FileName,"read");
-   	if ( fntuple->IsOpen() ) printf("File opened successfully\n"); 
-	//cout<<FileName<<endl;
-   
-   	TDirectory *dirsav = gDirectory;
-
-   	TIter next(dirsav->GetListOfKeys());
-   	while ((key = (TKey*)next())) {
-      		string histname1 = key->GetName();
-		//cout<<"title1  "<<histname1<<"   ";
-      
-      		TObject *obj = key->ReadObj();
-        	string histname2 = obj->ClassName();
-		//cout<<"type  "<<histname2<<endl;
-		
-		if ( obj->IsA()->InheritsFrom( "TTree" ) ) {
-			string teffs = obj->GetName();
-			TTree *tobj = (TTree*)obj;
-				
-			Int_t Nentries = (Int_t)tobj->GetEntries();	
-			tobj->SetBranchAddress("branchingFraction", 		&fbranchingFraction		       );   //&b_fbranchingFraction);
-   			tobj->SetBranchAddress("FilterEfficiency", 		&fFilterEfficiency		       );   //&b_fFilterEfficiency);
-   			tobj->SetBranchAddress("xsection", 			&fxsection			       );   //&b_fxsection);
-   			tobj->SetBranchAddress("acceptanceEfficiency", 		&facceptanceEfficiency		       );   //&b_facceptanceEfficiency);
-   			tobj->SetBranchAddress("electronIDEfficiency", 		&felectronIDEfficiency		       );   //&b_felectronIDEfficiency);
-   			tobj->SetBranchAddress("muonIDEfficiency", 		&fmuonIDEfficiency		       );   //&b_fmuonIDEfficiency);
-   			tobj->SetBranchAddress("tauIDEfficiency", 		&ftauIDEfficiency		       );   //&b_ftauIDEfficiency);
-   			tobj->SetBranchAddress("topologyEfficiency", 		&ftopologyEfficiency		       );   //&b_ftopologyEfficiency);
-   			tobj->SetBranchAddress("branchingFractionStatError", 	&fbranchingFractionStatError	       );   //&b_fbranchingFractionStatError);
-   			tobj->SetBranchAddress("acceptanceEfficiencyStatError", &facceptanceEfficiencyStatError         );   //&b_facceptanceEfficiencyStatError);
-   			tobj->SetBranchAddress("electronIDEfficiencyStatError", &felectronIDEfficiencyStatError         );   //&b_felectronIDEfficiencyStatError);
-   			tobj->SetBranchAddress("muonIDEfficiencyStatError", 	&fmuonIDEfficiencyStatError	       );   //&b_fmuonIDEfficiencyStatError);
-   			tobj->SetBranchAddress("tauIDEfficiencyStatError", 	&ftauIDEfficiencyStatError	       );   //&b_ftauIDEfficiencyStatError);
-   			tobj->SetBranchAddress("topologyEfficiencyStatError", 	&ftopologyEfficiencyStatError	       );   //&b_ftopologyEfficiencyStatError);
-   			tobj->SetBranchAddress("branchingFractionSystError", 	&fbranchingFractionSystError	       );   //&b_fbranchingFractionSystError);
-   			tobj->SetBranchAddress("acceptanceEfficiencySystError", &facceptanceEfficiencySystError         );   //&b_facceptanceEfficiencySystError);
-   			tobj->SetBranchAddress("electronIDEfficiencySystError", &felectronIDEfficiencySystError         );   //&b_felectronIDEfficiencySystError);
-   			tobj->SetBranchAddress("muonIDEfficiencySystError", 	&fmuonIDEfficiencySystError	       );   //&b_fmuonIDEfficiencySystError);
-   			tobj->SetBranchAddress("tauIDEfficiencySystError", 	&ftauIDEfficiencySystError	       );   //&b_ftauIDEfficiencySystError);
-   			tobj->SetBranchAddress("topologyEfficiencySystError", 	&ftopologyEfficiencySystError	       );   //&b_ftopologyEfficiencySystError);
-	
-	  		for ( Int_t iev=0; iev<Nentries; iev++ ) {
-				nb=tobj->GetEntry(iev);
-	  		/*logfile<<"Channel  "<<fntuple->GetName()<<endl;
-			logfile<<"**********************************************"<<endl;
-			logfile<<"Process  "<<teffs<<endl;
-			logfile<<"**********************************************"<<endl;
-			logfile<<"branchingFraction\t FilterEfficiency\t xsection  "<<endl;
-			logfile<<fbranchingFraction<<"\t\t\t "<< fFilterEfficiency<<"\t\t\t "<<fxsection  <<endl;
-			logfile<<"acceptanceEfficiency\t electronIDEfficiency\t muonIDEfficiency\t tauIDEfficiency\t topologyEfficiency "<<endl; 	
-			logfile<<facceptanceEfficiency<<"\t\t\t " <<felectronIDEfficiency<<"\t\t "<< fmuonIDEfficiency<<"\t\t\t "<<ftauIDEfficiency<<"\t\t "<< ftopologyEfficiency <<endl;
-			logfile<<"branchingFractionStatError\t acceptanceEfficiencyStatError\t electronIDEfficiencyStatError\t muonIDEfficiencyStatError\t tauIDEfficiencyStatError\t topologyEfficiencyStatError "<<endl; 
-			logfile<<fbranchingFractionSystError<<"\t\t\t\t "<<facceptanceEfficiencySystError<<"\t\t\t\t "<<felectronIDEfficiencySystError<<"\t\t\t\t "<< fmuonIDEfficiencySystError<<"\t\t\t\t "<<ftauIDEfficiencySystError<<"\t\t\t\t "<< ftopologyEfficiencySystError<<endl; 
-     			*/      
-			if(histname1=="ZprimeTree"){
-				toteff=fFilterEfficiency;
-				toteff = toteff*(facceptanceEfficiency * felectronIDEfficiency * fmuonIDEfficiency * ftauIDEfficiency * ftopologyEfficiency);
-			//Channel[ichannel]<<"  Total Efficiencies  = "<<toteff<<endl;
-				fProcess2[0].SetTotEff(toteff);
-				fProcess2[0].SetSigma(fxsection);
-				if(ichannel==0)fProcess2[0].SetSigma(fxsection*0.000000000001);
-				fProcess2[0].SetBR(fbranchingFraction);
-				fProcess2[0].SetFilterEfficiency(fFilterEfficiency);
-				fProcess2[0].SetacceptanceEfficiency(facceptanceEfficiency);
-				fProcess2[0].SetelectronIDEfficiency(felectronIDEfficiency);
-				fProcess2[0].SetmuonIDEfficiency(fmuonIDEfficiency);
-				fProcess2[0].SettauIDEfficiency(ftauIDEfficiency);
-				fProcess2[0].SettopologyEfficiency(ftopologyEfficiency);
-				
-				
-				fProcess2[0].SetbranchingFractionStatError(fbranchingFractionStatError);  
-				fProcess2[0].SetacceptanceEfficiencyStatError(facceptanceEfficiencyStatError);  
-				fProcess2[0].SetelectronIDEfficiencyStatError(felectronIDEfficiencyStatError);  
-				fProcess2[0].SetmuonIDEfficiencyStatError(fmuonIDEfficiencyStatError);	 
-				fProcess2[0].SettauIDEfficiencyStatError(ftauIDEfficiencyStatError);	
-				fProcess2[0].SettopologyEfficiencyStatError(ftopologyEfficiencyStatError);    
-				fProcess2[0].SetbranchingFractionSystError(fbranchingFractionSystError);	  
-				fProcess2[0].SetacceptanceEfficiencySystError(facceptanceEfficiencySystError);  
-				fProcess2[0].SetelectronIDEfficiencySystError(felectronIDEfficiencySystError);  
-				fProcess2[0].SetmuonIDEfficiencySystError(fmuonIDEfficiencySystError);	 
-				fProcess2[0].SettauIDEfficiencySystError(ftauIDEfficiencySystError);	
-				fProcess2[0].SettopologyEfficiencySystError(ftopologyEfficiencySystError);    
-						
-
-				prescl=lumi*toteff*(fbranchingFraction*fxsection);
-				fProcess2[0].SetPreScl(prescl);
-			}
-			if(histname1!="ZprimeTree"){
-			
-				toteff=fFilterEfficiency;
-				toteff = toteff*(facceptanceEfficiency * felectronIDEfficiency * fmuonIDEfficiency * ftauIDEfficiency * ftopologyEfficiency);
-			//Channel[ichannel]<<"  Total Efficiencies  = "<<toteff<<endl;
-				fProcess[ch].SetTotEff(toteff);
-				fProcess[ch].SetSigma(fxsection);
-				if(ichannel==0) fProcess[ch].SetSigma(fxsection*0.000000000001);
-				fProcess[ch].SetBR(fbranchingFraction);
-				fProcess[ch].SetFilterEfficiency(fFilterEfficiency);
-				fProcess[ch].SetacceptanceEfficiency(facceptanceEfficiency);
-				fProcess[ch].SetelectronIDEfficiency(felectronIDEfficiency);
-				fProcess[ch].SetmuonIDEfficiency(fmuonIDEfficiency);
-				fProcess[ch].SettauIDEfficiency(ftauIDEfficiency);
-				fProcess[ch].SettopologyEfficiency(ftopologyEfficiency);
-				
-				
-				fProcess[ch].SetbranchingFractionStatError(fbranchingFractionStatError);  
-				fProcess[ch].SetacceptanceEfficiencyStatError(facceptanceEfficiencyStatError);  
-				fProcess[ch].SetelectronIDEfficiencyStatError(felectronIDEfficiencyStatError);  
-				fProcess[ch].SetmuonIDEfficiencyStatError(fmuonIDEfficiencyStatError);      
-				fProcess[ch].SettauIDEfficiencyStatError(ftauIDEfficiencyStatError);       
-				fProcess[ch].SettopologyEfficiencyStatError(ftopologyEfficiencyStatError);    
-				fProcess[ch].SetbranchingFractionSystError(fbranchingFractionSystError);     
-				fProcess[ch].SetacceptanceEfficiencySystError(facceptanceEfficiencySystError);  
-				fProcess[ch].SetelectronIDEfficiencySystError(felectronIDEfficiencySystError);  
-				fProcess[ch].SetmuonIDEfficiencySystError(fmuonIDEfficiencySystError);      
-				fProcess[ch].SettauIDEfficiencySystError(ftauIDEfficiencySystError);       
-				fProcess[ch].SettopologyEfficiencySystError(ftopologyEfficiencySystError);    
-						
-
-				prescl=lumi*toteff*(fbranchingFraction*fxsection);
-				fProcess[ch].SetPreScl(prescl);
-			//logfile<<"  Total Efficiencies  = "<<fProcess[ch].GetTotEff()<<"  Prescale (luminosity*tot_eff*BR*sigma) = "<<fProcess[ch].GetPreScl()<<endl;
-			//closing scanning through tree
-  			ch = ch+1;
-			}
-			}
-		//cout<<"N Process "<<ch<<endl;
-	 	//end looking at trees
-		}
-		
-		//cout<<"N Process "<<ch<<endl;
-	
-		fChannel[ichannel].SetNProcess(ch);
-		
-		if (obj->IsA()->InheritsFrom("TDirectoryFile")) {
-	  		TDirectory *dir = (TDirectory*)obj;
-	  		dir->cd(dir->GetPath());
-	  		TIter nexth(dir->GetListOfKeys());
-	  
-			while ((keyh = (TKey*)nexth())) {
-     	      
-        			TObject *objh = keyh->ReadObj();
-				//cout<<"inside TDirFl  "<<endl;
-       
-				if ( objh->IsA()->InheritsFrom( "TH1F" ) ) {
-	
-      					//cout<<"its a histogram   ";
-      
-        				string histnameh = objh->GetName();
-	 				//cout<<histnameh<<endl;
-	 				TH1F* hobj = (TH1F*)objh->Clone("hobj");
-				
-					fProcess[ipr].SetProcessTitle(histname1);
-				
-					//histograms Alexei's get_DefaultTemplates()
-	 				if(histname1=="ZprimeTemplateDirectory"){
-						
-						fProcess2[0].SetProcessShape(hobj);
-				 		if (fProcess2[0].GetProcessShape()->Integral() > 0.){
- 	  						fProcess2[0].GetProcessShape()->Scale(1./fProcess2[0].GetProcessShape()->Integral());
-							//cout<<"Process :"<<fProcess2[0].GetProcessTitle()<<"  integral  =  "<< fProcess2[0].GetProcessShape()->Integral()<<endl;
-						}
-				
-						fProcess2[0].GetProcessShape()->Rebin(RebinFactor);
-						
-					}
-				if(histname1!="ZprimeTemplateDirectory"){
-				
-					TH1F* hobj2 = (TH1F*)objh->Clone("hobj2");
-					//fProcess[ipr].SetProcessTitle(histname1);
-					fProcess[ipr].SetProcessShape(hobj2);
-				 	if (fProcess[ipr].GetProcessShape()->Integral() > 0.){
- 	  					fProcess[ipr].GetProcessShape()->Scale(1./fProcess[ipr].GetProcessShape()->Integral());
-						//cout<<"Process :"<<fProcess[ipr].GetProcessTitle()<<"  integral  =  "<< fProcess[ipr].GetProcessShape()->Integral()<<endl;
-					}
-				
-					fProcess[ipr].GetProcessShape()->Rebin(RebinFactor);
-				ipr=ipr+1;
-				}
-			//	logfile<<"  Process "<<histname1<<"  Number of events  = "<<fProcess[ipr].GetProcessShape()->Integral()<<endl;
-				} 
-				
-			}
-
-		}
-
-	
-	}
-	//cout<<"IPR "<<ipr<<endl;
-	//for(int p=0; p<ipr;p++){
-	//cout<<fProcess[p].GetProcessShape()->Integral()<<endl;
-	//}
-	fChannel[ichannel].SetProcessProp(fProcess, ipr);
-	fChannel[ichannel].SetSignalProp(fProcess2);
-	ichannel=ichannel+1;
-	//fntuple->Close();
-	
-	}
-	
-	//ichannel=ichannel+1;
-	//fntuple->Close();
-	
-	fclose(fTreeFiles);
-	
-	  //TEST
-	//fProcess2 = fChannel[1].GetProcessProp(0);
-	//cout<<"Title "<<fProcess2.GetProcessTitle()<<endl;
-	/*TH1F* default_temp_bgtot = (TH1F*)fProcess2.GetProcessShape()->Clone("default_temp_totbg");
-	cout<<"Testing"<<endl;
-	cout<<"Integral "<<default_temp_bgtot->Integral()<<endl;
-	TCanvas *c3 = new TCanvas("c3","", 100, 100, 1000, 1000);
-	default_temp_bgtot->DrawCopy();
-	*/
-	TCanvas *c1 = new TCanvas("c1","", 100, 100, 1000, 1000);
-	c1->Divide(1,3);
-	TCanvas *c2 = new TCanvas("c2","", 100, 100, 1000, 1000);
-	
-	TCanvas *c3 = new TCanvas("c3","", 100, 100, 1000, 1000);
-	TCanvas *c4 = new TCanvas("c4","", 100, 100, 1000, 1000);
-	
-	TCanvas *cn3 = new TCanvas("cn3","", 100, 100, 1000, 1000);
-  	cn3->Clear();
-  	cn3->Divide(1,2); 
+  Float_t lumi_error = _theLumiErr;
+  Float_t lumi = _theLumi; //in ipb
+  Double_t mass = _theMass; //z-prime mass, 
+  Double_t sigma_input = _theXSection; //ipb
   
-  	TCanvas *cn2 = new TCanvas("cn2","", 100, 100, 1000, 1000);
-  	cn2->Clear();
-  	cn2->Divide(1,2);
+  int mcint = _theNMCInt;
+  
+//***********************Creating Objects*****************************//   
+  for(unsigned int vIt = 0; vIt < _theRootFiles.size(); vIt++){
+     TFile* fchntuple = new TFile(_theRootFiles.at(vIt).c_str(),"read");
+     fChannel[vIt].SetPrProp(ichannel, fchntuple);
+     fChannel[vIt].SetChLumi(lumi);
+     fChannel[vIt].SetChLumiErr(lumi_error);
+  }
+  //Test if your objects were filled correctly
+  /*for(int l=0;l<3;l++){
+    cout<<"Channel: "<<l<<"  BR for signal : "<<fChannel[l].GetSignalProp().GetmuonIDEfficiency()<<endl;
+    cout<<"Channel: "<<l<<"  XSEC for signal : "<<fChannel[l].GetSignalProp().GetSigma()<<endl;
+    cout<<"Channel: "<<l<<"  N Process : "<<(int)fChannel[l].GetNProcess()<<endl;
+    cout<<"Channel: "<<l<<"  Shape for signal : "<<fChannel[l].GetProcessProp(3).GetProcessShape()->Integral()<<endl;
+    }*/
+  
   
 
-  	TCanvas *cn1 = new TCanvas("cn1","", 100, 100, 1000, 1000);
-  	cn1->Clear();
-  	cn1->Divide(1,2);
-	
-		TCanvas *c5 = new TCanvas("c5","c5", 100, 100, 1000, 1000);
-  	c5->Clear();
-  	c5->Divide(2,3);
-	TCanvas *c6 = new TCanvas("c6","c6", 100, 100, 1000, 1000);
-  	c6->Clear();
-  	c6->Divide(1,3);
-	
-	THStack *hs = new THStack("hs","MuTau Channel");
-	THStack *ht = new THStack("ht","eTau Channel");
-	THStack *hu = new THStack("hu","eMu Channel");
-	
-	//Calculations
-	//TPrProp fProcess2[15];
-	
-	int nBins2 = 250;
-	double Min = 0;
-	double Max = 25;
-	
-	TH1F* LogLVsSigma1 = new TH1F("LogLVsSigma1","LogLVsSigma1", nBins2, Min, Max);
-	TH1F* JointlklvSigma= new TH1F("JointlklvSigma","JointlklvSigma", nBins2, Min, Max);
-		for(int lim=0;lim<npseudo;lim++){
-			
-		if(lim==100) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
-		if(lim==150) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
-		if(lim==250) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
-		for(ichannel=0;ichannel<3;ichannel++){
-		LogLVsSigma1->Reset();
-			
-		//TH1F* LogLVsSigmaMC=(TH1F*)fChannel[ichannel].Likelihood(ichannel, fChannel[ichannel], mcint, LogLVsSigma1)->Clone("LogLVsSigmaMC");
-		TH1F* LogLVsSigmaMC0=(TH1F*)fChannel[ichannel].Likelihood(ichannel, fChannel[ichannel], 0, LogLVsSigma1)->Clone("LogLVsSigmaMC0");
-		/*TH1F* LogLVsSigmaMC1=(TH1F*)fChannel[ichannel].Likelihood(ichannel, fChannel[ichannel], 100, LogLVsSigma1)->Clone("LogLVsSigmaMC1");
-		TH1F* LogLVsSigmaMC2=(TH1F*)fChannel[ichannel].Likelihood(ichannel, fChannel[ichannel], 500, LogLVsSigma1)->Clone("LogLVsSigmaMC2");
-		TH1F* LogLVsSigmaMC3=(TH1F*)fChannel[ichannel].Likelihood(ichannel, fChannel[ichannel], 1000, LogLVsSigma1)->Clone("LogLVsSigmaMC3");
-		//cout<<"Integral "<<LogLVsSigmaMC->Integral()<<endl;
-		
-		if(ichannel==0)c1->cd(1);
-		if(ichannel==1)c1->cd(2);
-		if(ichannel==2)c1->cd(3);
-		 LogLVsSigmaMC->DrawCopy();
-		 LogLVsSigmaMC0->DrawCopy("same");
-		 LogLVsSigmaMC1->DrawCopy("same");
-		 LogLVsSigmaMC2->DrawCopy("same");
-		 LogLVsSigmaMC3->DrawCopy("same");
-	
-		if(lim<5){
-			 if(ichannel==0){
-			  	cn1->cd(1);
-			 	if(lim==0){
-			 	  //LogLVsSigma->GetYaxis()->SetRangeUser(0.,1);
-				  LogLVsSigmaMC->GetXaxis()->SetTitle("Sigma");
-				  LogLVsSigmaMC->GetYaxis()->SetTitle("Likelihood");
-				  LogLVsSigmaMC->SetTitle("Likelihood");
-				  //LogLVsSigmaMC->DrawCopy();
-				 // LogLVsSigmaMC0->SetFillColor(kCyan);
-				 LogLVsSigmaMC0->SetLineColor(kBlue);
-				 LogLVsSigmaMC0->DrawCopy();
-				  LogLVsSigmaMC->DrawCopy("same");
-				  cn1->SetLogy();
-				  cn1->BuildLegend();
-				  cn1->Update();
-				
-				}
-			 if(lim>0)LogLVsSigmaMC->DrawCopy("same");
-			 }
-			 if(ichannel==1){
-			  	cn2->cd(1);
-			 	if(lim==0){
-			 	  //LogLVsSigma->GetYaxis()->SetRangeUser(0.,1);
-				  LogLVsSigmaMC->GetXaxis()->SetTitle("Sigma");
-				  LogLVsSigmaMC->GetYaxis()->SetTitle("Likelihood");
-				  LogLVsSigmaMC->SetTitle("Likelihood");
-				  
-				  LogLVsSigmaMC0->SetLineColor(kBlue);
-				 // LogLVsSigmaMC0->SetFillColor(kCyan);
-				  LogLVsSigmaMC0->DrawCopy();
-				  LogLVsSigmaMC->DrawCopy("same");
-				  cn2->SetLogy();
-				  cn2->BuildLegend();
-				  cn2->Update();
-				  
-				}
-			 if(lim>0)LogLVsSigmaMC->DrawCopy("same");
-			 }
- 			 if(ichannel==2){
-			  	cn3->cd(1);
-			 	if(lim==0){
-			 	  //LogLVsSigma->GetYaxis()->SetRangeUser(0.,1);
-				  LogLVsSigmaMC->GetXaxis()->SetTitle("Sigma");
-				  LogLVsSigmaMC->GetYaxis()->SetTitle("Likelihood");
-				  LogLVsSigmaMC->SetTitle("Likelihood");
-				 // LogLVsSigmaMC->DrawCopy();
-				  LogLVsSigmaMC0->SetLineColor(kBlue);
-				 // LogLVsSigmaMC0->SetFillColor(kCyan);
-				  LogLVsSigmaMC0->DrawCopy();
-				  LogLVsSigmaMC->DrawCopy("same");
-				  cn3->SetLogy();
-				  cn3->BuildLegend();
-				  cn3->Update();
-				 
-				  
-				}
-			 if(lim>0)LogLVsSigmaMC->DrawCopy("same");
-			 } 
-			 }*/	
-		
-			if(ichannel==0) JointlklvSigma->Add(LogLVsSigmaMC0);
-			if(ichannel>0) JointlklvSigma->Multiply(LogLVsSigmaMC0);
-		 	
-			sigma95 = fChannel[ichannel].Limit95CL(LogLVsSigmaMC0);
-			/*sigma951 = fChannel[ichannel].Limit95CL(LogLVsSigmaMC1);
-			sigma952 = fChannel[ichannel].Limit95CL(LogLVsSigmaMC2);
-			sigma953 = fChannel[ichannel].Limit95CL(LogLVsSigmaMC3);
-			*/
-			if(ichannel==0){
-			Limit_95CL_0->Fill(sigma95);
-			/*Limit_95CL_01->Fill(sigma951);
-			Limit_95CL_02->Fill(sigma952);
-			Limit_95CL_03->Fill(sigma953);*/
-			}
-			if(ichannel==1){
-			Limit_95CL_1->Fill(sigma95);
-			/*Limit_95CL_12->Fill(sigma952);
-			Limit_95CL_13->Fill(sigma953);
-			Limit_95CL_1->Fill(sigma95);*/
-			}
-			if(ichannel==2){
-			Limit_95CL_2->Fill(sigma95);
-			/*Limit_95CL_21->Fill(sigma951);
-			Limit_95CL_22->Fill(sigma952);
-			Limit_95CL_23->Fill(sigma953);*/
-			}
-			
-			
-		}
-			joint_sigma95 = fChannel[0].Limit95CL(JointlklvSigma);
-			Joint_Limit_95CL->Fill(joint_sigma95);
-	}
-			fChannel[0].SetLimit95CLH(Limit_95CL_0);
-			fChannel[1].SetLimit95CLH(Limit_95CL_1);
-			fChannel[2].SetLimit95CLH(Limit_95CL_2);
-			
-			c6->cd(1);
-			Limit_95CL_0->Draw();
-			/*Limit_95CL_01->Draw("sames");
-			Limit_95CL_02->Draw("sames");
-			Limit_95CL_03->Draw("sames");*/
-			c6->cd(2);
-			Limit_95CL_1->Draw();
-			/*Limit_95CL_11->Draw("sames");
-			Limit_95CL_12->Draw("sames");
-			Limit_95CL_13->Draw("sames");*/
-			c6->cd(3);
-			Limit_95CL_2->Draw();
-			/*Limit_95CL_21->Draw("sames");
-			Limit_95CL_22->Draw("sames");
-			Limit_95CL_23->Draw("sames");*/
-			
-			c5->cd(2);
-			fChannel[0].GetLimit95CLH()->SetTitle("muTau 95%CL Limit, suppressed BG");
-			fChannel[0].GetLimit95CLH()->GetXaxis()->SetTitle("Sigma");
-			fChannel[0].GetLimit95CLH()->DrawCopy();
-			c5->cd(4);
-			fChannel[1].GetLimit95CLH()->SetTitle("eTau 95%CL Limit, suppressed BG");
-			fChannel[1].GetLimit95CLH()->GetXaxis()->SetTitle("Sigma");
-			fChannel[1].GetLimit95CLH()->DrawCopy();
-	     		c5->cd(6);
-			fChannel[2].GetLimit95CLH()->SetTitle("eMu 95%CL Limit, suppressed BG");
-			fChannel[2].GetLimit95CLH()->GetXaxis()->SetTitle("Sigma");
-			fChannel[2].GetLimit95CLH()->DrawCopy();
-			c1->cd();
-			Joint_Limit_95CL->Draw();
+  //********************************Calculations*************************//
+  int nBins2 = 250;									 						
+  double Min = 0;									 						
+  double Max = 25;
+  
+  TH1F* pseudodata_MassDistribution_0;
+  TH1F* LogLVsSigma1 = new TH1F("LogLVsSigma1","LogLVsSigma1", nBins2, Min, Max);	 						
+  TH1F* JointlklvSigma= new TH1F("JointlklvSigma","JointlklvSigma", nBins2, Min, Max);   
+  TH1F* JointlklvSigma_MC= new TH1F("JointlklvSigma_MC","JointlklvSigma_MC", nBins2, Min, Max);
+  
+  for(int lim=0;lim<npseudo;lim++){														    
+    
+    if(lim==1) cout<<"******************   PseudoExperiment "<<lim<<"    ******************"<<endl;	    
+    if(lim==2) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
+    if(lim==10) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
+    if(lim==300) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
+    if(lim==400) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
+    if(lim==500) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
+    if(lim==600) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
+    if(lim==700) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
+    if(lim==800) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
+    if(lim==900) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
+    if(lim==850) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
+    JointlklvSigma->Reset();		
+    
+    for(unsigned int ichannel = 0; ichannel < _theRootFiles.size(); ichannel++){
+      
+      //Generating Pseudodata
+      TH1F* default_temp_bgtots = (TH1F*)fChannel[ichannel].GetProcessProp(0).GetProcessShape()->Clone("default_temp_bgtots");
+      TH1F* pseudodata_MassDistribution = (TH1F*)default_temp_bgtots->Clone("pseudodata_MassDistribution");
+      default_temp_bgtots->Reset();
+      for( int k=0; k<fChannel[ichannel].GetNProcess(); k++){
+    	default_temp_bgtots->Add(fChannel[ichannel].GetProcessProp(k).GetProcessShape(),fChannel[ichannel].GetProcessProp(k).GetTotEff()*fChannel[ichannel].GetChLumi()*fChannel[ichannel].GetProcessProp(k).GetSigma());
+      }
+      gRandom->SetSeed(0);
+      int distIntegral = int(gRandom->Poisson(default_temp_bgtots->Integral()));
+      pseudodata_MassDistribution->Reset();
+      pseudodata_MassDistribution->FillRandom(default_temp_bgtots, distIntegral);
+      
+      //calculating likehood distributions for case with no systematics  											  
+      LogLVsSigma1->Reset();	       
+      TH1F* LogLVsSigma0 =(TH1F*)fChannel[ichannel].Likelihood(systematicset, fChannel[ichannel],0,pseudodata_MassDistribution, LogLVsSigma1)->Clone("LogLVsSigma0");
+      sigma950 = fChannel[ichannel].Limit95CL(LogLVsSigma0);  //calculating 95%CL Limit
+      Limit_95CL_0->Fill(sigma950); //This is the 95%CL Limit distribution without systematics
+      //Filling output histogram
+      if(mcint ==0){	
+        _theNameHistoMap[ichannel]->Fill(sigma950);  
+      }
+      //calculating likelihood distribution with systematics
+      TH1F* LogLVsSigmaMC0;
+      if(mcint>0){
+	LogLVsSigma1->Reset();
+	LogLVsSigmaMC0=(TH1F*)fChannel[ichannel].Likelihood(systematicset, fChannel[ichannel], mcint,pseudodata_MassDistribution, LogLVsSigma1)->Clone("LogLVsSigmaMC0");
+	sigma95 = fChannel[ichannel].Limit95CL(LogLVsSigmaMC0);
+	Limit_95CL_1->Fill(sigma95); //This is the 95%CL Limit distribution with systematics
+	//_theNameHistoMap[ichannel]->Fill(sigma95);
+      }
+      
+      //joint likelihood
+      if(ichannel ==0){
+	JointlklvSigma->Reset();
+	JointlklvSigma_MC->Reset();
+	JointlklvSigma->Add(LogLVsSigma0);
+	JointlklvSigma_MC->Add(LogLVsSigmaMC0);
+      }
+      
+      if(ichannel>0){
+	JointlklvSigma->Multiply(LogLVsSigma0);
+	JointlklvSigma_MC->Multiply(LogLVsSigmaMC0);  //joint likelihood
+      }
+      
+      if(lim==npseudo-1) pseudodata_MassDistribution_0 = (TH1F*)pseudodata_MassDistribution->Clone("pseudodata_MassDistribution_0");
+      
+    }
+    //joint likelihood
+    joint_sigma95 = fChannel[0].Limit95CL(JointlklvSigma);
+    Joint_Limit_95CL->Fill(joint_sigma95);
+    
+    joint_sigma95_mc = fChannel[0].Limit95CL(JointlklvSigma_MC);
+    Joint_Limit_95CL_MC->Fill(joint_sigma95_mc);   
+    
+    
+  }
+  
+  ////////////OUTPUT HISTOGRAMS//////////////////// 
+  
+  //The 95%CL Limit with and without systematics output as a root file
+  TCanvas *theLimitCanvas = new TCanvas("theLimitCanvas","theLimitCanvas");
+  theLimitCanvas->cd();
+  Limit_95CL_0->SetTitle("muTau 95%CL Limit; 95%CL Limit on #sigma_{(pp->Z')} (pb); ");
+  Limit_95CL_1->SetTitle("Limit w/ systemtics");
+  Limit_95CL_0->SetFillColor(30);
+  Limit_95CL_1->SetLineWidth(2);
+  Limit_95CL_0->Draw("hist");
+  Limit_95CL_1->Draw("histsames");
+  theLimitCanvas->BuildLegend();
+  theLimitCanvas->Update();
+  theLimitCanvas->Print("SensitivityLim95CL.root");
+  
+//This is the band plot
+  TGraphAsymmErrors* xsec_band = new TGraphAsymmErrors();
+  TGraphAsymmErrors* xsec = new TGraphAsymmErrors();
+  TGraphAsymmErrors* txsec= new TGraphAsymmErrors();
+  TCanvas *theCLCanvas = new TCanvas("theCLCanvas","theCLCanvas");				 						
+  theCLCanvas->Clear();  									 						
+  theCLCanvas->Divide(1,1);									 						
+  for(unsigned int vIt = 0; vIt < _theRootFiles.size(); vIt++){
+    
+    theCLCanvas->cd(vIt + 1);
+    std::cout << "No Systematics"<<endl;
+    cout<<"Limit = \t" << (Limit_95CL_0->GetMean())*fChannel[vIt].GetSignalProp().GetTotEff()*fChannel[vIt].GetChLumi()
+	<< "  Normalization  "<<fChannel[vIt].GetSignalProp().GetTotEff()*fChannel[vIt].GetChLumi() <<"  \t +- \t" << Limit_95CL_0->GetRMS() << std::endl;
+    
+    std::cout << "** Systematics **"<<endl;
+    cout<<"Morphing and Smearing due to systematics defined in ntuple, and user defined Smearing of Luminosity **"<<endl;
+    cout<<"Limit = \t" << (Limit_95CL_1->GetMean())*fChannel[vIt].GetSignalProp().GetTotEff()*fChannel[vIt].GetChLumi()
+	<<"  \t +- \t" << Limit_95CL_1->GetRMS() << std::endl;      
+    
+    fChannel[vIt].SetLimit95CLH(_theNameHistoMap[vIt]);
+    fChannel[vIt].GetLimit95CLH()->SetTitle(" 95%CL Limit");
+    fChannel[vIt].GetLimit95CLH()->GetXaxis()->SetTitle("Sigma");
+    fChannel[vIt].GetLimit95CLH()->DrawCopy();
 
-				
-	
+    xsec_band->SetPoint(vIt, vIt, _theNameHistoMap[vIt]->GetMean());
+    xsec_band->SetPointError(vIt, 0., 0.,_theNameHistoMap[vIt]->GetRMS(),_theNameHistoMap[vIt]->GetRMS());
+    xsec->SetPoint(vIt, vIt, _theNameHistoMap[vIt]->GetMean());
+    txsec->SetPoint(vIt, vIt, 1.914);
+  }
+  theCLCanvas->Print("95PerCentCL.eps");
+
+  TCanvas *theCLBandCanvas = new TCanvas("theCLBandCanvas","theCLBandCanvas");                                                         
+  theCLBandCanvas->Clear();    
+    theCLBandCanvas->cd();
+    xsec->SetLineColor(2);
+    txsec->SetLineColor(4);
+    xsec_band->SetFillColor(kCyan);
+    xsec_band->GetYaxis()->SetLabelSize(0.04);
+    xsec_band->GetXaxis()->SetLabelSize(0.04);
+    xsec_band->GetXaxis()->SetTitleSize(0.05);
+    xsec_band->GetYaxis()->SetTitleSize(0.05);
+    xsec_band->GetYaxis()->SetTitleOffset(1.25);
+    xsec_band->GetXaxis()->SetTitleOffset(1.25);
+    xsec_band->GetXaxis()->SetTitle("L_{int}(pb^{-1})");
+    xsec_band->GetYaxis()->SetTitle("#sigma_{95%}");
+    xsec_band->GetYaxis()->SetRangeUser(0,10);
+    xsec_band->Draw("Ae3");
+    xsec->Draw("same");
+    txsec->Draw("same");
+
+    TLatex* tex1 = new TLatex(30.,4.5,"CMS Preliminary 2010");
+    TLatex* tex2 = new TLatex(30.,4.2,"Z' #rightarrow #tau#tau");
+    tex1->SetTextSize(0.03);
+    tex2->SetTextSize(0.03);
+    tex1->SetLineWidth(2); tex2->SetLineWidth(2);
+    tex1->Draw(); tex2->Draw();
+
+    TLegend *legend = new TLegend(0.65,0.77,0.92,0.88,NULL,"brNDC");
+    legend->AddEntry(xsec,"Experiment", "l");
+    legend->AddEntry(txsec,"Theory", "l");
+    legend->SetTextFont(42);
+    legend->SetLineColor(1);
+    legend->SetLineStyle(1);
+    legend->SetLineWidth(1);
+    legend->SetFillColor(0);
+    legend->SetFillStyle(1001);
+    legend->SetBorderSize(0);
+    legend->SetFillColor(kWhite);
+    legend->Draw();
+
+  theCLBandCanvas->Print("95PerCentCLBand.eps");
+
+  TCanvas* theJointCLCanvas = new TCanvas("theJointCLCanvas","theJointCLCanvas");
+  theJointCLCanvas->cd();
+  Joint_Limit_95CL->Draw();
+  Joint_Limit_95CL_MC->Draw("same");
+  theJointCLCanvas->Print("Joint95PerCentCL.eps");
+  
+  //For Stacked Mass Histogram, make sure you modify the names and number of processes for your channel; this one is an example for mutau
+  TCanvas* StackedMass = new TCanvas("StackedMass","StackedMass");
+  StackedMass->cd();
+  double default_background_scale = 1; //0.000001;
+  double ymin = 0.001;
+  TH1F* default_temp_signal_0=  (TH1F*)fChannel[0].GetSignalProp().GetProcessShape()->Clone("default_temp_signal_0");
+  THStack *hs = new THStack("hs","MuTau Channel");
+  for( int k=0; k<fChannel[0].GetNProcess(); k++){
+    
+    if(k==0){
+      TH1F *Ztautau = (TH1F*)fChannel[0].GetProcessProp(k).GetProcessShape()->Clone("Ztautau");
+      Ztautau->Scale(fChannel[0].GetProcessProp(k).GetTotEff()*fChannel[0].GetChLumi()*fChannel[0].GetProcessProp(k).GetSigma()*default_background_scale);
+      Ztautau->SetFillColor(kBlue);
+      Ztautau->SetTitle("Ztautau");
+      //c2->cd();
+      //Ztautau->DrawCopy();
+      hs->Add(Ztautau);
+    }
+    if(k==1){
+      TH1F *TTBar =  (TH1F*)fChannel[0].GetProcessProp(k).GetProcessShape()->Clone("TTBar");
+      TTBar->Scale(fChannel[0].GetProcessProp(k).GetTotEff()*fChannel[0].GetChLumi()*fChannel[0].GetProcessProp(k).GetSigma()*default_background_scale);
+      TTBar->SetFillColor(kRed-9);
+      TTBar->SetTitle("TTBar");
+      hs->Add(TTBar);
+    }
+    if(k==2){
+      TH1F *WJets =  (TH1F*)fChannel[0].GetProcessProp(k).GetProcessShape()->Clone("WJets");
+      WJets->Scale(fChannel[0].GetProcessProp(k).GetTotEff()*fChannel[0].GetChLumi()*fChannel[0].GetProcessProp(k).GetSigma()*default_background_scale);
+      WJets->SetFillColor(kCyan);
+      WJets->SetTitle("WJets");
+      hs->Add(WJets);
+    }
+    if(k==3){
+      TH1F *IncMu15 =  (TH1F*)fChannel[0].GetProcessProp(k).GetProcessShape()->Clone("IncMu15");
+      IncMu15->Scale(fChannel[0].GetProcessProp(k).GetTotEff()*fChannel[0].GetChLumi()*fChannel[0].GetProcessProp(k).GetSigma()*default_background_scale);
+      IncMu15->SetFillColor(kYellow);
+      IncMu15->SetTitle("IncMu15");
+      hs->Add(IncMu15);
+      
+      default_temp_signal_0->Scale(fChannel[0].GetSignalProp().GetTotEff()*fChannel[0].GetChLumi()*fChannel[0].GetSignalProp().GetSigma());
+      default_temp_signal_0->SetTitle("Signal, Zprime");
+      // default_temp_signal_0->SetFillColor(kRed-7);
+      //  default_temp_signal_0->SetFillStyle(3325);
+      //hs->Add(default_temp_signal_0);     
+    }
+  }       
+  
+  
+  StackedMass->cd();
+  StackedMass->SetLogy();
+  
+  hs->SetTitle("BG Distributions & Pseudodata for muTau Channel; muTau Mass (GeV);Events per 30GeV Bins at 50ipb");
+  hs->Draw("hist");
+  hs->SetMinimum(ymin);
+  hs->SetMaximum(10.);
+  pseudodata_MassDistribution_0->SetLineColor(kRed+3);
+  pseudodata_MassDistribution_0->SetLineWidth(2);
+  pseudodata_MassDistribution_0->SetMarkerColor(kRed+3);
+  pseudodata_MassDistribution_0->SetMarkerStyle(0);
+  //pseudodata_MassDistribution_0->SetMarkerSize(2);
+  pseudodata_MassDistribution_0->SetTitle("Generated Pseudodata");
+  pseudodata_MassDistribution_0->Draw("same");
+  default_temp_signal_0->Draw("samehist");
+  default_temp_signal_0->SetLineWidth(5);
+  TSystematicStateGenerator fSystemacticState_0;
+  TH1F* Morphing=(TH1F*)fSystemacticState_0.GetNormalizedDistribution(0, fChannel[0].GetSignalProp());
+  Morphing->Scale(fChannel[0].GetSignalProp().GetTotEff()*fChannel[0].GetChLumi()*fChannel[0].GetSignalProp().GetSigma());
+  Morphing->SetLineWidth(2);
+  Morphing->SetLineColor(8);
+  Morphing->SetTitle("Morphed Distribution");
+  Morphing->Draw("same");
+  StackedMass->BuildLegend();
+  StackedMass->Update();      
+  
+  //hs->GetXaxis()->SetTitle("MuTau Mass (GeV)");
+  // hs->GetYaxis()->SetLimits(1., 5.);
+  
+  
+  StackedMass->Print("StackedMass.eps"); 
+  
+  //These are the systematic histograms used for morphing of signal shape
+  TCanvas* ShapeSyst = new TCanvas("ShapeSyst","ShapeSyst");
+  ShapeSyst->cd();
+  default_temp_signal_0->SetLineWidth(3);
+  default_temp_signal_0->Draw();
+  ShapeSyst->BuildLegend();
+  ShapeSyst->Update();
+  for(int kp=0;kp<6;kp++){
+    fChannel[0].GetSignalProp().GetSystematicShape(kp)->SetLineColor(kBlue+2*kp);
+    fChannel[0].GetSignalProp().GetSystematicShape(kp)->Scale(fChannel[0].GetSignalProp().GetTotEff()*fChannel[0].GetChLumi()*fChannel[0].GetSignalProp().GetSigma());
+    fChannel[0].GetSignalProp().GetSystematicShape(kp)->Draw("same");
+  }
+  ShapeSyst->Print("ShapeSystematics.eps"); 
+  
+}
+
+void TFitter::SetNExp(int theNExp){
+  _theNExp = theNExp;
+}
+
+void TFitter::SetLumi(float theLumi){
+  _theLumi = theLumi;
+}
+
+void TFitter::SetLumiErr(float theLumiErr){
+  _theLumiErr = theLumiErr;
+}
+
+void TFitter::SetSystSettings(int SystSettings){
+  _SystSettings = SystSettings;
+}
+
+void TFitter::NMCInt(int theMCInt){
+  _theNMCInt = theMCInt;
+}
+
+void TFitter::SetSignalMassXsection(float theMass, float theXSection){
+  _theMass = theMass;
+  _theXSection = theXSection;
+}
+
+void TFitter::GetTheFiles(){
+  char line[120],FileName[120];	 
+  FILE *fTreeFiles = fopen("channels.dat","read");
+  while ( fgets( line, 120, fTreeFiles ) ) {
+    sscanf(line,"%s",FileName);
+    _theRootFiles.push_back(FileName);
+  }
+  fclose(fTreeFiles);
+}
+
+void TFitter::BookCLHistos(){
+  for(unsigned int vIt = 0; vIt < _theRootFiles.size(); vIt++){
+    char* theHistoName = Form("histo95CL%d",vIt);
+    _theNameHistoMap[vIt] = new TH1F(theHistoName,theHistoName,150,0,15);
+  }
 }
