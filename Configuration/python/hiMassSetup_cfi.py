@@ -10,6 +10,4 @@ global channel
 
 signal = False
 data = True
-channel = "emu"
-
-
+channel = "mutau"

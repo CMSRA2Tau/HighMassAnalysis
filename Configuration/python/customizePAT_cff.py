@@ -1,6 +1,12 @@
 import FWCore.ParameterSet.Config as cms
 import copy
 
+from HighMassAnalysis.Configuration.hiMassSetup_cfi import *
+if(data):
+  doGen = False
+else:
+  doGen = True
+
 # Standard pat sequences
 from PhysicsTools.PatAlgos.patSequences_cff import * 
 
@@ -79,56 +85,74 @@ shrinkingTightConeTauMatch = copy.deepcopy(tauMatch)
 shrinkingTightConeTauMatch.src         = cms.InputTag("shrinkingTightConePFTauProducer")
 shrinkingTightConeTauGenJetMatch = copy.deepcopy(tauGenJetMatch)
 shrinkingTightConeTauGenJetMatch.src         = cms.InputTag("shrinkingTightConePFTauProducer")
+hpsTauMatch = copy.deepcopy(tauMatch)
+hpsTauMatch.src         = cms.InputTag("hpsPFTauProducer")
+hpsTauGenJetMatch = copy.deepcopy(tauGenJetMatch)
+hpsTauGenJetMatch.src         = cms.InputTag("hpsPFTauProducer")
 
 shrinkingConePatTaus = copy.deepcopy(patTaus)
 fixedConeHighEffPatTaus = copy.deepcopy(patTaus)
 fixedConePatTaus = copy.deepcopy(patTaus)
 shrinkingTightConePatTaus = copy.deepcopy(patTaus)
+hpsPatTaus = copy.deepcopy(patTaus)
 
 shrinkingConePatTaus.tauSource = cms.InputTag("shrinkingConePFTauProducer")
 fixedConeHighEffPatTaus.tauSource = cms.InputTag("fixedConeHighEffPFTauProducer")
 fixedConePatTaus.tauSource = cms.InputTag("fixedConePFTauProducer")
 shrinkingTightConePatTaus.tauSource = cms.InputTag("shrinkingTightConePFTauProducer")
+hpsPatTaus.tauSource = cms.InputTag("hpsPFTauProducer")
 
-shrinkingConePatTaus.isoDeposits.pfAllParticles = cms.InputTag("shrinkingConeTauIsoDepositPFCandidates")
-fixedConeHighEffPatTaus.isoDeposits.pfAllParticles = cms.InputTag("fixedConeHighEffTauIsoDepositPFCandidates")
-fixedConePatTaus.isoDeposits.pfAllParticles = cms.InputTag("fixedConeTauIsoDepositPFCandidates")
-shrinkingTightConePatTaus.isoDeposits.pfAllParticles = cms.InputTag("shrinkingTightConeTauIsoDepositPFCandidates")
+#shrinkingConePatTaus.isoDeposits.pfAllParticles = cms.InputTag("shrinkingConeTauIsoDepositPFCandidates")
+#fixedConeHighEffPatTaus.isoDeposits.pfAllParticles = cms.InputTag("fixedConeHighEffTauIsoDepositPFCandidates")
+#fixedConePatTaus.isoDeposits.pfAllParticles = cms.InputTag("fixedConeTauIsoDepositPFCandidates")
+#shrinkingTightConePatTaus.isoDeposits.pfAllParticles = cms.InputTag("shrinkingTightConeTauIsoDepositPFCandidates")
 
-shrinkingConePatTaus.isoDeposits.pfChargedHadron = cms.InputTag("shrinkingConeTauIsoDepositPFChargedHadrons")
-fixedConeHighEffPatTaus.isoDeposits.pfChargedHadron = cms.InputTag("fixedConeHighEffTauIsoDepositPFChargedHadrons")
-fixedConePatTaus.isoDeposits.pfChargedHadron = cms.InputTag("fixedConeTauIsoDepositPFChargedHadrons")
-shrinkingTightConePatTaus.isoDeposits.pfChargedHadron = cms.InputTag("shrinkingTightConeTauIsoDepositPFChargedHadrons")
+#shrinkingConePatTaus.isoDeposits.pfChargedHadron = cms.InputTag("shrinkingConeTauIsoDepositPFChargedHadrons")
+#fixedConeHighEffPatTaus.isoDeposits.pfChargedHadron = cms.InputTag("fixedConeHighEffTauIsoDepositPFChargedHadrons")
+#fixedConePatTaus.isoDeposits.pfChargedHadron = cms.InputTag("fixedConeTauIsoDepositPFChargedHadrons")
+#shrinkingTightConePatTaus.isoDeposits.pfChargedHadron = cms.InputTag("shrinkingTightConeTauIsoDepositPFChargedHadrons")
 
-shrinkingConePatTaus.isoDeposits.pfNeutralHadron = cms.InputTag("shrinkingConeTauIsoDepositPFNeutralHadrons")
-fixedConeHighEffPatTaus.isoDeposits.pfNeutralHadron = cms.InputTag("fixedConeHighEffTauIsoDepositPFNeutralHadrons")
-fixedConePatTaus.isoDeposits.pfNeutralHadron = cms.InputTag("fixedConeTauIsoDepositPFNeutralHadrons")
-shrinkingTightConePatTaus.isoDeposits.pfNeutralHadron = cms.InputTag("shrinkingTightConeTauIsoDepositPFNeutralHadrons")
+#shrinkingConePatTaus.isoDeposits.pfNeutralHadron = cms.InputTag("shrinkingConeTauIsoDepositPFNeutralHadrons")
+#fixedConeHighEffPatTaus.isoDeposits.pfNeutralHadron = cms.InputTag("fixedConeHighEffTauIsoDepositPFNeutralHadrons")
+#fixedConePatTaus.isoDeposits.pfNeutralHadron = cms.InputTag("fixedConeTauIsoDepositPFNeutralHadrons")
+#shrinkingTightConePatTaus.isoDeposits.pfNeutralHadron = cms.InputTag("shrinkingTightConeTauIsoDepositPFNeutralHadrons")
 
-shrinkingConePatTaus.isoDeposits.pfGamma = cms.InputTag("shrinkingConeTauIsoDepositPFGammas")
-fixedConeHighEffPatTaus.isoDeposits.pfGamma = cms.InputTag("fixedConeHighEffTauIsoDepositPFGammas")
-fixedConePatTaus.isoDeposits.pfGamma = cms.InputTag("fixedConeTauIsoDepositPFGammas")
-shrinkingTightConePatTaus.isoDeposits.pfGamma = cms.InputTag("shrinkingTightConeTauIsoDepositPFGammas")
+#shrinkingConePatTaus.isoDeposits.pfGamma = cms.InputTag("shrinkingConeTauIsoDepositPFGammas")
+#fixedConeHighEffPatTaus.isoDeposits.pfGamma = cms.InputTag("fixedConeHighEffTauIsoDepositPFGammas")
+#fixedConePatTaus.isoDeposits.pfGamma = cms.InputTag("fixedConeTauIsoDepositPFGammas")
+#shrinkingTightConePatTaus.isoDeposits.pfGamma = cms.InputTag("shrinkingTightConeTauIsoDepositPFGammas")
 
-shrinkingConePatTaus.userIsolation.pfAllParticles.src = cms.InputTag("shrinkingConeTauIsoDepositPFCandidates")
-fixedConeHighEffPatTaus.userIsolation.pfAllParticles.src = cms.InputTag("fixedConeHighEffTauIsoDepositPFCandidates")
-fixedConePatTaus.userIsolation.pfAllParticles.src = cms.InputTag("fixedConeTauIsoDepositPFCandidates")
-shrinkingTightConePatTaus.userIsolation.pfAllParticles.src = cms.InputTag("shrinkingTightConeTauIsoDepositPFCandidates")
+#shrinkingConePatTaus.userIsolation.pfAllParticles.src = cms.InputTag("shrinkingConeTauIsoDepositPFCandidates")
+#fixedConeHighEffPatTaus.userIsolation.pfAllParticles.src = cms.InputTag("fixedConeHighEffTauIsoDepositPFCandidates")
+#fixedConePatTaus.userIsolation.pfAllParticles.src = cms.InputTag("fixedConeTauIsoDepositPFCandidates")
+#shrinkingTightConePatTaus.userIsolation.pfAllParticles.src = cms.InputTag("shrinkingTightConeTauIsoDepositPFCandidates")
 
-shrinkingConePatTaus.userIsolation.pfChargedHadron.src = cms.InputTag("shrinkingConeTauIsoDepositPFChargedHadrons")
-fixedConeHighEffPatTaus.userIsolation.pfChargedHadron.src = cms.InputTag("fixedConeHighEffTauIsoDepositPFChargedHadrons")
-fixedConePatTaus.userIsolation.pfChargedHadron.src = cms.InputTag("fixedConeTauIsoDepositPFChargedHadrons")
-shrinkingTightConePatTaus.userIsolation.pfChargedHadron.src = cms.InputTag("shrinkingTightConeTauIsoDepositPFChargedHadrons")
+#shrinkingConePatTaus.userIsolation.pfChargedHadron.src = cms.InputTag("shrinkingConeTauIsoDepositPFChargedHadrons")
+#fixedConeHighEffPatTaus.userIsolation.pfChargedHadron.src = cms.InputTag("fixedConeHighEffTauIsoDepositPFChargedHadrons")
+#fixedConePatTaus.userIsolation.pfChargedHadron.src = cms.InputTag("fixedConeTauIsoDepositPFChargedHadrons")
+#shrinkingTightConePatTaus.userIsolation.pfChargedHadron.src = cms.InputTag("shrinkingTightConeTauIsoDepositPFChargedHadrons")
 
-shrinkingConePatTaus.userIsolation.pfNeutralHadron.src = cms.InputTag("shrinkingConeTauIsoDepositPFNeutralHadrons")
-fixedConeHighEffPatTaus.userIsolation.pfNeutralHadron.src = cms.InputTag("fixedConeHighEffTauIsoDepositPFNeutralHadrons")
-fixedConePatTaus.userIsolation.pfNeutralHadron.src = cms.InputTag("fixedConeTauIsoDepositPFNeutralHadrons")
-shrinkingTightConePatTaus.userIsolation.pfNeutralHadron.src = cms.InputTag("shrinkingTightConeTauIsoDepositPFNeutralHadrons")
+#shrinkingConePatTaus.userIsolation.pfNeutralHadron.src = cms.InputTag("shrinkingConeTauIsoDepositPFNeutralHadrons")
+#fixedConeHighEffPatTaus.userIsolation.pfNeutralHadron.src = cms.InputTag("fixedConeHighEffTauIsoDepositPFNeutralHadrons")
+#fixedConePatTaus.userIsolation.pfNeutralHadron.src = cms.InputTag("fixedConeTauIsoDepositPFNeutralHadrons")
+#shrinkingTightConePatTaus.userIsolation.pfNeutralHadron.src = cms.InputTag("shrinkingTightConeTauIsoDepositPFNeutralHadrons")
 
-shrinkingConePatTaus.userIsolation.pfGamma.src = cms.InputTag("shrinkingConeTauIsoDepositPFGammas")
-fixedConeHighEffPatTaus.userIsolation.pfGamma.src = cms.InputTag("fixedConeHighEffTauIsoDepositPFGammas")
-fixedConePatTaus.userIsolation.pfGamma.src = cms.InputTag("fixedConeTauIsoDepositPFGammas")
-shrinkingTightConePatTaus.userIsolation.pfGamma.src = cms.InputTag("shrinkingTightConeTauIsoDepositPFGammas")
+#shrinkingConePatTaus.userIsolation.pfGamma.src = cms.InputTag("shrinkingConeTauIsoDepositPFGammas")
+#fixedConeHighEffPatTaus.userIsolation.pfGamma.src = cms.InputTag("fixedConeHighEffTauIsoDepositPFGammas")
+#fixedConePatTaus.userIsolation.pfGamma.src = cms.InputTag("fixedConeTauIsoDepositPFGammas")
+#shrinkingTightConePatTaus.userIsolation.pfGamma.src = cms.InputTag("shrinkingTightConeTauIsoDepositPFGammas")
+
+shrinkingConePatTaus.isoDeposits = cms.PSet()
+fixedConeHighEffPatTaus.isoDeposits = cms.PSet()
+fixedConePatTaus.isoDeposits = cms.PSet()
+shrinkingTightConePatTaus.isoDeposits = cms.PSet()
+hpsPatTaus.isoDeposits = cms.PSet()
+
+shrinkingConePatTaus.userIsolation = cms.PSet()
+fixedConeHighEffPatTaus.userIsolation  = cms.PSet()
+fixedConePatTaus.userIsolation  = cms.PSet()
+shrinkingTightConePatTaus.userIsolation = cms.PSet()
+hpsPatTaus.userIsolation = cms.PSet()
 
 fixedConeHighEffPatTaus.tauIDSources = cms.PSet(
         leadingTrackFinding = cms.InputTag("fixedConeHighEffPFTauDiscriminationByLeadingTrackFinding"),
@@ -187,21 +211,62 @@ shrinkingConePatTaus.tauIDSources = cms.PSet(
         byTaNCfrQuarterPercent = cms.InputTag("shrinkingConePFTauDiscriminationByTaNCfrQuarterPercent"),
         byTaNCfrTenthPercent = cms.InputTag("shrinkingConePFTauDiscriminationByTaNCfrTenthPercent")
 )
+hpsPatTaus.tauIDSources = cms.PSet(
+        byLooseIsolation = cms.InputTag("hpsPFTauDiscriminationByLooseIsolation"),
+        byMediumIsolation = cms.InputTag("hpsPFTauDiscriminationByMediumIsolation"),
+        byTightIsolation = cms.InputTag("hpsPFTauDiscriminationByTightIsolation"),
+        byDecayModeFinding = cms.InputTag("hpsPFTauDiscriminationByDecayModeFinding"),
+        againstElectron = cms.InputTag("hpsPFTauDiscriminationAgainstElectron"),
+        againstMuon = cms.InputTag("hpsPFTauDiscriminationAgainstMuon"),
+)
+
+fixedConeHighEffPatTaus.addDecayMode = cms.bool(doGen)
+fixedConePatTaus.addDecayMode = cms.bool(doGen)
+shrinkingTightConePatTaus.addDecayMode = cms.bool(doGen)
+shrinkingConePatTaus.addDecayMode = cms.bool(doGen)
+hpsPatTaus.addDecayMode = cms.bool(False)
 
 fixedConeHighEffPatTaus.decayModeSrc = cms.InputTag("fixedConeHighEffPFTauDecayModeProducer")
 fixedConePatTaus.decayModeSrc = cms.InputTag("fixedConePFTauDecayModeProducer")
 shrinkingTightConePatTaus.decayModeSrc = cms.InputTag("shrinkingTightConePFTauDecayModeProducer")
 shrinkingConePatTaus.decayModeSrc = cms.InputTag("shrinkingConePFTauDecayModeProducer")
+hpsPatTaus.decayModeSrc = cms.InputTag("")
+
+fixedConeHighEffPatTaus.addGenMatch = cms.bool(doGen)
+fixedConePatTaus.addGenMatch = cms.bool(doGen)
+shrinkingTightConePatTaus.addGenMatch = cms.bool(doGen)
+shrinkingConePatTaus.addGenMatch = cms.bool(doGen)
+hpsPatTaus.addGenMatch = cms.bool(doGen)
+
+fixedConeHighEffPatTaus.embedGenMatch = cms.bool(doGen)
+fixedConePatTaus.embedGenMatch = cms.bool(doGen)
+shrinkingTightConePatTaus.embedGenMatch = cms.bool(doGen)
+shrinkingConePatTaus.embedGenMatch = cms.bool(doGen)
+hpsPatTaus.embedGenMatch = cms.bool(doGen)
 
 shrinkingConePatTaus.genParticleMatch = cms.InputTag("shrinkingConeTauMatch")
 fixedConeHighEffPatTaus.genParticleMatch = cms.InputTag("fixedConeHighEffTauMatch")
 fixedConePatTaus.genParticleMatch = cms.InputTag("fixedConeTauMatch")
 shrinkingTightConePatTaus.genParticleMatch = cms.InputTag("shrinkingTightConeTauMatch")
+hpsPatTaus.genParticleMatch = cms.InputTag("hpsTauMatch")
+
+fixedConeHighEffPatTaus.addGenJetMatch = cms.bool(doGen)
+fixedConePatTaus.addGenJetMatch = cms.bool(doGen)
+shrinkingTightConePatTaus.addGenJetMatch = cms.bool(doGen)
+shrinkingConePatTaus.addGenJetMatch = cms.bool(doGen)
+hpsPatTaus.addGenJetMatch = cms.bool(doGen)
+
+fixedConeHighEffPatTaus.embedGenJetMatch = cms.bool(doGen)
+fixedConePatTaus.embedGenJetMatch = cms.bool(doGen)
+shrinkingTightConePatTaus.embedGenJetMatch = cms.bool(doGen)
+shrinkingConePatTaus.embedGenJetMatch = cms.bool(doGen)
+hpsPatTaus.embedGenJetMatch = cms.bool(doGen)
 
 shrinkingConePatTaus.genJetMatch = cms.InputTag("shrinkingConeTauGenJetMatch")
 fixedConeHighEffPatTaus.genJetMatch = cms.InputTag("fixedConeHighEffTauGenJetMatch")
 fixedConePatTaus.genJetMatch = cms.InputTag("fixedConeTauGenJetMatch")
 shrinkingTightConePatTaus.genJetMatch = cms.InputTag("shrinkingTightConeTauGenJetMatch")
+hpsPatTaus.genJetMatch = cms.InputTag("hpsTauGenJetMatch")
 
 selectedLayer1ShrinkingConeHighEffPFTaus = copy.deepcopy(selectedPatTaus)
 selectedLayer1ShrinkingConeHighEffPFTaus.src = cms.InputTag("shrinkingConePatTaus")
@@ -211,6 +276,8 @@ selectedLayer1FixedConePFTaus = copy.deepcopy(selectedPatTaus)
 selectedLayer1FixedConePFTaus.src = cms.InputTag("fixedConePatTaus")
 selectedLayer1FixedConeHighEffPFTaus = copy.deepcopy(selectedPatTaus)
 selectedLayer1FixedConeHighEffPFTaus.src = cms.InputTag("fixedConeHighEffPatTaus")
+selectedLayer1HPSPFTaus = copy.deepcopy(selectedPatTaus)
+selectedLayer1HPSPFTaus.src = cms.InputTag("hpsPatTaus")
 
 selectedLayer1CaloTaus = copy.deepcopy(patTaus)
 selectedLayer1CaloTaus.tauSource = cms.InputTag("caloRecoTauProducer")
@@ -222,32 +289,53 @@ selectedLayer1CaloTaus.tauIDSources = cms.PSet(
         byIsolation         = cms.InputTag("caloRecoTauDiscriminationByIsolation"),
         againstElectron     = cms.InputTag("caloRecoTauDiscriminationAgainstElectron"),
 )
+selectedLayer1CaloTaus.addDecayMode = cms.bool(False)
 selectedLayer1CaloTaus.addGenMatch = cms.bool(False)
 selectedLayer1CaloTaus.embedGenMatch = cms.bool(False)
 selectedLayer1CaloTaus.addGenJetMatch = cms.bool(False)
 selectedLayer1CaloTaus.addGenJetMatch = cms.bool(False)
 #selectedLayer1CaloTaus.addTrigMatch = cms.bool(False)
 
-makeCustomizedPatTaus = cms.Sequence(
-    patPFCandidateIsoDepositSelection *
-    patCustomizedPFTauIsolation *
+makeCustomizedPatTauIso = cms.Sequence(
+    patPFCandidateIsoDepositSelection
+#    patCustomizedPFTauIsolation
+)
+
+makeCustomizedPatTauMatch = cms.Sequence(
     shrinkingConeTauMatch *
     fixedConeHighEffTauMatch *
     fixedConeTauMatch *
     shrinkingTightConeTauMatch *    
+    hpsTauMatch *    
     tauGenJets *
     tauGenJetsSelectorAllHadrons *
     shrinkingConeTauGenJetMatch *
     fixedConeHighEffTauGenJetMatch *
     fixedConeTauGenJetMatch *
-    shrinkingTightConeTauGenJetMatch *
-    # object production
+    shrinkingTightConeTauGenJetMatch * 
+    hpsTauGenJetMatch
+) 
+
+makePatTaus = cms.Sequence(
     fixedConeHighEffPatTaus *
     fixedConePatTaus *
     shrinkingTightConePatTaus *
     shrinkingConePatTaus *
+    hpsPatTaus *
     selectedLayer1CaloTaus
-    )
+)
+
+if(data):
+  makeCustomizedPatTaus = cms.Sequence(
+    makeCustomizedPatTauIso
+    + makePatTaus
+  )
+else:
+  makeCustomizedPatTaus = cms.Sequence(
+    makeCustomizedPatTauIso
+    + makeCustomizedPatTauMatch
+    + makePatTaus
+  )
 
 # --------------------Modifications for muons--------------------
 
@@ -280,35 +368,12 @@ patMuons.isoDeposits = cms.PSet(
   ecal            = patMuons.userIsolation.ecal.src,
   hcal            = patMuons.userIsolation.hcal.src,
 )
-patMuons.addGenMatch = cms.bool(True)
+patMuons.addGenMatch = cms.bool(doGen)
+patMuons.embedGenMatch = cms.bool(doGen)
 
 # --------------------Modifications for electrons--------------------
 
-from RecoEgamma.ElectronIdentification.electronIdCutBasedExt_cfi import *
-elecIdCutBasedLoose = eidCutBasedExt.copy()
-elecIdCutBasedLoose.electronQuality = 'loose'
-elecIdCutBasedTight = eidCutBasedExt.copy()
-elecIdCutBasedTight.electronQuality = 'tight'
-electronIdCutBased = cms.Sequence( 
-                                  elecIdCutBasedLoose
-                                  *elecIdCutBasedTight )
-
-from RecoEgamma.EgammaIsolationAlgos.eleTrackExtractorBlocks_cff import *
-from RecoEgamma.EgammaIsolationAlgos.eleEcalExtractorBlocks_cff import *
-from RecoEgamma.EgammaIsolationAlgos.eleHcalExtractorBlocks_cff import *
-from RecoEgamma.EgammaIsolationAlgos.eleIsoDepositTk_cff import *
-from RecoEgamma.EgammaIsolationAlgos.eleIsoDepositEcalFromHits_cff import *
 from RecoEgamma.EgammaIsolationAlgos.eleIsoDepositHcalFromTowers_cff import *
-from PhysicsTools.PatAlgos.recoLayer0.electronIsolation_cff import *
-EleIsoTrackExtractorBlock.DR_Max = cms.double(1.) 					# set as default
-eleIsoDepositTk.src = cms.InputTag("gsfElectrons") 					# set as default
-eleIsoDepositTk.ExtractorPSet = cms.PSet(EleIsoTrackExtractorBlock)			# set as default
-EleIsoEcalFromHitsExtractorBlock.extRadius = cms.double(0.6)				# set to 1; default is 0.6
-eleIsoDepositEcalFromHits.src = cms.InputTag("gsfElectrons")				# set as default
-eleIsoDepositEcalFromHits.ExtractorPSet = cms.PSet(EleIsoEcalFromHitsExtractorBlock)	# set as default
-EleIsoHcalFromTowersExtractorBlock.extRadius = cms.double(0.6)				# set to 1;  default is 0.6
-eleIsoDepositHcalFromTowers.src = cms.InputTag("gsfElectrons")				# set as default	
-eleIsoDepositHcalFromTowers.ExtractorPSet = cms.PSet(EleIsoHcalFromTowersExtractorBlock)# set as default
 electronIsoDeposits = cms.Sequence( eleIsoDepositTk
                                    *eleIsoDepositEcalFromHits 
                                    *eleIsoDepositHcalFromTowers 
@@ -317,49 +382,78 @@ electronIsoDeposits = cms.Sequence( eleIsoDepositTk
 				   )
 recoElectronIsolation = cms.Sequence( electronIsoDeposits )
 
-from PhysicsTools.PatAlgos.recoLayer0.electronId_cff import *
-from PhysicsTools.PatAlgos.producersLayer1.electronProducer_cfi import *
-from PhysicsTools.PatAlgos.cleaningLayer1.electronCleaner_cfi import *
-
-patElectrons.isoDeposits = cms.PSet()
-
-patElectrons.addElectronID = cms.bool(True)
-patElectrons.electronIDSources = cms.PSet(
-   #robust = cms.InputTag("elecIdCutBasedRobust"),
-   loose  = cms.InputTag("elecIdCutBasedLoose"),
-   tight  = cms.InputTag("elecIdCutBasedTight")        
-)
-patElectrons.addGenMatch = cms.bool(True)
+patElectrons.addGenMatch = cms.bool(doGen)
+patElectrons.embedGenMatch = cms.bool(doGen)
 patElectrons.genParticleMatch = cms.InputTag("electronMatch")
+
 cleanPatElectrons.checkOverlaps = cms.PSet()
 
 from SHarper.HEEPAnalyzer.HEEPSelectionCuts_cfi import *
-heepPatElectrons = cms.EDProducer("HEEPAttStatusToPAT", 
+heepPatElectrons = cms.EDProducer("HEEPAttStatusToPAT",
                                           eleLabel = cms.InputTag("selectedPatElectrons"),
                                           barrelCuts = cms.PSet(heepBarrelCuts),
-                                          endcapCuts = cms.PSet(heepEndcapCuts) 
+                                          endcapCuts = cms.PSet(heepEndcapCuts)
                                           )
 
 # --------------------Modifications for jets--------------------
 
+patJets.addGenPartonMatch   = cms.bool(doGen)                           ## switch on/off matching to quarks from hard scatterin
+patJets.embedGenPartonMatch = cms.bool(doGen)                           ## switch on/off embedding of the GenParticle parton for this jet
+patJets.addGenJetMatch      = cms.bool(doGen)                           ## switch on/off matching to GenJet's
+patJets.embedGenJetMatch    = cms.bool(doGen)                           ## switch on/off embedding of matched genJet's
+patJets.addPartonJetMatch   = cms.bool(doGen)                          ## switch on/off matching to PartonJet's (not implemented yet)
+patJets.getJetMCFlavour     = cms.bool(doGen)
+
 cleanPatJets.checkOverlaps = cms.PSet()
+
+makeCustomizedPatJets = cms.Sequence(
+    patJetCorrections *
+    patJetCharge *
+    patJets
+)
+
+# --------------------Modifications for photons--------------------
+
+patPhotons.addGenMatch = cms.bool(doGen)
+patPhotons.embedGenMatch = cms.bool(doGen)
+
+# --------------------Modifications for MET--------------------
+
+patMETs.addGenMET    = cms.bool(doGen)
+patMETs.metSource  = cms.InputTag("met")
+patMETsPF = copy.deepcopy(patMETs)
+patMETsPF.metSource  = cms.InputTag("pfMet")
+patMETsPF.addMuonCorrections = cms.bool(False)
+patMETsPF.addGenMET    = cms.bool(doGen)
 
 # --------------------Modified PAT sequences--------------------
 
-patCustomizedCandidates = cms.Sequence(
-    makePatElectrons +
-    makePatMuons     +
-    makeCustomizedPatTaus      +
-    makePatPhotons   +
-    makePatJets      +
-    makePatMETs )
 
 selectedPatCustomizedCandidates = cms.Sequence(
     selectedPatElectrons +
+    heepPatElectrons	 +
     selectedPatMuons     +
     selectedLayer1ShrinkingConeHighEffPFTaus +
     selectedLayer1ShrinkingConePFTaus +
     selectedLayer1FixedConePFTaus +
     selectedLayer1FixedConeHighEffPFTaus +    
+    selectedLayer1HPSPFTaus +    
     selectedPatPhotons   +
     selectedPatJets )
+
+if(data):
+  patCustomizedCandidates = cms.Sequence(
+    patElectrons +
+    patMuons     +
+    makeCustomizedPatTaus      +
+    patPhotons   +
+    makeCustomizedPatJets      +
+    patMETs + patMETsPF )
+else:
+  patCustomizedCandidates = cms.Sequence(
+    makePatElectrons +
+    makePatMuons     +
+    makeCustomizedPatTaus      +
+    makePatPhotons   +
+    makePatJets      +
+    patMETs + patMETsPF )
