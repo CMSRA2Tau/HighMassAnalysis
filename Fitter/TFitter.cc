@@ -99,30 +99,45 @@ void TFitter::Loop(){
   
   vector<float> sysvectorlumi;
   
+  vector< vector<float> > systematicvector;
+  
   TH1F* pseudodata_MassDistribution_0;
   TH1F* LogLVsSigma1 = new TH1F("LogLVsSigma1","LogLVsSigma1", nBins2, Min, Max);	 						
   TH1F* JointlklvSigma= new TH1F("JointlklvSigma","JointlklvSigma", nBins2, Min, Max);   
   TH1F* JointlklvSigma_MC= new TH1F("JointlklvSigma_MC","JointlklvSigma_MC", nBins2, Min, Max);
   
   TSystematicStateGenerator fSystemacticState_0;
+  int vectorsize = ( (vector<float>*)fChannel[0].GetSignalProp().GetSystematics() )->size();
   
   if(npseudo==0){
     JointlklvSigma->Reset();
     
-    //generating luminosity smearing vector
-    if(mcint>0)  sysvectorlumi = (vector<float>)fSystemacticState_0.GenerateSystematicState(mcint);
+    /////////////////////generating luminosity smearing vector////////////////////////////////////////////
+    if(mcint>0){
+      sysvectorlumi = (vector<float>)fSystemacticState_0.GenerateSystematicState(mcint);
+      for(int i=0;i<mcint;i++){
+        systematicvector.push_back((vector<float>)fSystemacticState_0.GenerateSystematicState(vectorsize));
+      }
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
     
-   //
+    for(int i=0;i<mcint;i++){
+        for(int j=0;j<vectorsize;j++){
+      //  cout<<"mcint "<<i<<" systematic "<<j<<" has nuisance paramete = "<<( (vector<float>)systematicvector.at(i) ).at(j)<<endl;
+      }
+    }
+	
+	
     
     for(unsigned int ichannel = 0; ichannel < _theRootFiles.size(); ichannel++){
       TH1F* data_MassDistribution = (TH1F*)fChannel[ichannel].GetDataHistogram()->Clone("data_MassDistribution");
       cout<<"DATA INTEGRAL =  "<<data_MassDistribution->Integral()<<endl;
       //calculating likehood distributions for case with no systematics  											  
       LogLVsSigma1->Reset();	       
-      TH1F* LogLVsSigma0 =(TH1F*)fChannel[ichannel].Likelihood(systematicset, sysvectorlumi, fChannel[ichannel],0,data_MassDistribution, LogLVsSigma1)->Clone("LogLVsSigma0");
+      TH1F* LogLVsSigma0 =(TH1F*)fChannel[ichannel].Likelihood(systematicset, sysvectorlumi,  systematicvector, fChannel[ichannel],0,data_MassDistribution, LogLVsSigma1)->Clone("LogLVsSigma0");
       sigma950 = fChannel[ichannel].Limit95CL(LogLVsSigma0);  //calculating 95%CL Limit
       Limit_95CL_0->Fill(sigma950); //This is the 95%CL Limit distribution without systematics
-      
+      cout<<"For Channel "<<ichannel<<"  Limit with no systematics for data "<<sigma950<<endl;
       //Filling output histogram
       if(mcint ==0){	
         _theNameHistoMap[ichannel]->Fill(sigma950);  
@@ -131,9 +146,9 @@ void TFitter::Loop(){
       TH1F* LogLVsSigmaMC0;
       if(mcint>0){
 	LogLVsSigma1->Reset();
-	LogLVsSigmaMC0=(TH1F*)fChannel[ichannel].Likelihood(systematicset, sysvectorlumi, fChannel[ichannel], mcint,data_MassDistribution, LogLVsSigma1)->Clone("LogLVsSigmaMC0");
+	LogLVsSigmaMC0=(TH1F*)fChannel[ichannel].Likelihood(systematicset, sysvectorlumi, systematicvector, fChannel[ichannel], mcint,data_MassDistribution, LogLVsSigma1)->Clone("LogLVsSigmaMC0");
 	sigma95 = fChannel[ichannel].Limit95CL(LogLVsSigmaMC0);
-	cout<<"95%CL Limit for channel "<<ichannel<<" for "<<mcint<<" mc itterations fitting data is = "<<sigma95<<endl;
+	cout<<" 95%CL Limit for channel "<<ichannel<<" for "<<mcint<<" mc itterations fitting data is = "<<sigma95<<endl;
 	Limit_95CL_1->Fill(sigma95); //This is the 95%CL Limit distribution with systematics
 	//_theNameHistoMap[ichannel]->Fill(sigma95);
       }
@@ -158,9 +173,12 @@ void TFitter::Loop(){
     joint_sigma95 = fChannel[0].Limit95CL(JointlklvSigma);
     Joint_Limit_95CL->Fill(joint_sigma95);
     
+    cout<<" Joint Limit without systematics "<<joint_sigma95<<endl;
+    
     if(mcint>0){
     joint_sigma95_mc = fChannel[0].Limit95CL(JointlklvSigma_MC);
     Joint_Limit_95CL_MC->Fill(joint_sigma95_mc);   
+    cout<<" Joint Limit with systematics "<<joint_sigma95_mc<<endl;
     }
     
   
@@ -196,7 +214,7 @@ void TFitter::Loop(){
       
       //calculating likehood distributions for case with no systematics  											  
       LogLVsSigma1->Reset();	       
-      TH1F* LogLVsSigma0 =(TH1F*)fChannel[ichannel].Likelihood(systematicset, sysvectorlumi, fChannel[ichannel],0,pseudodata_MassDistribution, LogLVsSigma1)->Clone("LogLVsSigma0");
+      TH1F* LogLVsSigma0 =(TH1F*)fChannel[ichannel].Likelihood(systematicset, sysvectorlumi, systematicvector, fChannel[ichannel],0,pseudodata_MassDistribution, LogLVsSigma1)->Clone("LogLVsSigma0");
       sigma950 = fChannel[ichannel].Limit95CL(LogLVsSigma0);  //calculating 95%CL Limit
       Limit_95CL_0->Fill(sigma950); //This is the 95%CL Limit distribution without systematics
       //Filling output histogram
@@ -208,10 +226,11 @@ void TFitter::Loop(){
       if(mcint>0){
 	LogLVsSigma1->Reset();
 	
-	LogLVsSigmaMC0=(TH1F*)fChannel[ichannel].Likelihood(systematicset, sysvectorlumi, fChannel[ichannel], mcint,pseudodata_MassDistribution, LogLVsSigma1)->Clone("LogLVsSigmaMC0");
+	LogLVsSigmaMC0=(TH1F*)fChannel[ichannel].Likelihood(systematicset, sysvectorlumi, systematicvector, fChannel[ichannel], mcint,pseudodata_MassDistribution, LogLVsSigma1)->Clone("LogLVsSigmaMC0");
 
 	sigma95 = fChannel[ichannel].Limit95CL(LogLVsSigmaMC0);
 	Limit_95CL_1->Fill(sigma95); //This is the 95%CL Limit distribution with systematics
+	
 	//_theNameHistoMap[ichannel]->Fill(sigma95);
       }
       
@@ -404,7 +423,12 @@ void TFitter::Loop(){
       //  default_temp_signal_0->SetFillStyle(3325);
       //hs->Add(default_temp_signal_0);     
     }
-  }       
+  } 
+  
+  for( int k=0; k<fChannel[1].GetNProcess(); k++){
+   (fChannel[1].GetProcessProp(k).GetProcessShape())->Scale(fChannel[1].GetProcessProp(k).GetTotEff()*fChannel[1].GetChLumi()*fChannel[1].GetProcessProp(k).GetSigma()*default_background_scale);
+   cout<<"  Process "<<k<<" has "<<(fChannel[1].GetProcessProp(k).GetProcessShape())->Integral()<<" events "<<endl;
+    }    
   
   
   StackedMass->cd();
