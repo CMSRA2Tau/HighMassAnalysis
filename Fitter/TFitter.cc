@@ -55,66 +55,132 @@ void TFitter::Loop(){
   Double_t sigma950=0;
   Double_t joint_sigma95, joint_sigma95_mc = 0;
   
-  TH1F* Limit_95CL_0 =new TH1F("Limit_95CL_0","Limit_95CL_0", 60,0,15);
-  TH1F* Limit_95CL_1 =new TH1F("Limit_95CL_1","Limit_95CL_1", 60,0,15);
-  TH1F* Joint_Limit_95CL =new TH1F("Joint_Limit_95CL","Joint_Limit_95CL", 60,0,15);
-  TH1F* Joint_Limit_95CL_MC =new TH1F("Joint_Limit_95CL_MC","Joint_Limit_95CL_MC", 60,0,15);
+  TH1F* Limit_95CL_0 =new TH1F("Limit_95CL_0","Limit_95CL_0", 60,0,20);
+  TH1F* Limit_95CL_1 =new TH1F("Limit_95CL_1","Limit_95CL_1", 60,0,20);
+  TH1F* Joint_Limit_95CL =new TH1F("Joint_Limit_95CL","Joint_Limit_95CL", 60,0,20);
+  TH1F* Joint_Limit_95CL_MC =new TH1F("Joint_Limit_95CL_MC","Joint_Limit_95CL_MC", 60,0,20);
   
  //***********************Settings*****************************//
 
   Int_t npseudo = _theNExp;
   Int_t systematicset = _SystSettings;
+  Int_t rebinfactor = _theRebinFactor;
     
   Float_t lumi_error = _theLumiErr;
   Float_t lumi = _theLumi; //in ipb
   Double_t mass = _theMass; //z-prime mass, 
   Double_t sigma_input = _theXSection; //ipb
+  string zprimetemplate = _theZprimetemp;  //name of zprime template directory you wish to analyze
+  string zprimetree = _theZprimetree;  //name of zprime tree you wish to analyze
   
   int mcint = _theNMCInt;
   
 //***********************Creating Objects*****************************//   
   for(unsigned int vIt = 0; vIt < _theRootFiles.size(); vIt++){
      TFile* fchntuple = new TFile(_theRootFiles.at(vIt).c_str(),"read");
-     fChannel[vIt].SetPrProp(ichannel, fchntuple);
+     fChannel[vIt].SetPrProp(ichannel, fchntuple, zprimetree, zprimetemplate, rebinfactor);
      fChannel[vIt].SetChLumi(lumi);
      fChannel[vIt].SetChLumiErr(lumi_error);
   }
   //Test if your objects were filled correctly
-  /*for(int l=0;l<3;l++){
+ /* for(int l=0;l<1;l++){
     cout<<"Channel: "<<l<<"  BR for signal : "<<fChannel[l].GetSignalProp().GetmuonIDEfficiency()<<endl;
     cout<<"Channel: "<<l<<"  XSEC for signal : "<<fChannel[l].GetSignalProp().GetSigma()<<endl;
     cout<<"Channel: "<<l<<"  N Process : "<<(int)fChannel[l].GetNProcess()<<endl;
-    cout<<"Channel: "<<l<<"  Shape for signal : "<<fChannel[l].GetProcessProp(3).GetProcessShape()->Integral()<<endl;
+    cout<<"Channel: "<<l<<"  Shape for signal : "<<fChannel[l].GetSignalProp().GetProcessShape()->Integral()<<endl;
     }*/
   
   
 
   //********************************Calculations*************************//
-  int nBins2 = 250;									 						
+  int nBins2 = 1400;									 						
   double Min = 0;									 						
-  double Max = 25;
+  double Max = 35;
+  
+  vector<float> sysvectorlumi;
   
   TH1F* pseudodata_MassDistribution_0;
   TH1F* LogLVsSigma1 = new TH1F("LogLVsSigma1","LogLVsSigma1", nBins2, Min, Max);	 						
   TH1F* JointlklvSigma= new TH1F("JointlklvSigma","JointlklvSigma", nBins2, Min, Max);   
   TH1F* JointlklvSigma_MC= new TH1F("JointlklvSigma_MC","JointlklvSigma_MC", nBins2, Min, Max);
   
-  for(int lim=0;lim<npseudo;lim++){														    
+  TSystematicStateGenerator fSystemacticState_0;
+  
+  if(npseudo==0){
+    JointlklvSigma->Reset();
     
-    if(lim==1) cout<<"******************   PseudoExperiment "<<lim<<"    ******************"<<endl;	    
-    if(lim==2) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
-    if(lim==10) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
-    if(lim==300) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
-    if(lim==400) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
-    if(lim==500) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
-    if(lim==600) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
-    if(lim==700) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
-    if(lim==800) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
-    if(lim==900) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
-    if(lim==850) cout<<"******************   PseudoExperiment "<<lim<<"   ******************"<<endl;
+    //generating luminosity smearing vector
+    if(mcint>0)  sysvectorlumi = (vector<float>)fSystemacticState_0.GenerateSystematicState(mcint);
+    
+   //
+    
+    for(unsigned int ichannel = 0; ichannel < _theRootFiles.size(); ichannel++){
+      TH1F* data_MassDistribution = (TH1F*)fChannel[ichannel].GetDataHistogram()->Clone("data_MassDistribution");
+      cout<<"DATA INTEGRAL =  "<<data_MassDistribution->Integral()<<endl;
+      //calculating likehood distributions for case with no systematics  											  
+      LogLVsSigma1->Reset();	       
+      TH1F* LogLVsSigma0 =(TH1F*)fChannel[ichannel].Likelihood(systematicset, sysvectorlumi, fChannel[ichannel],0,data_MassDistribution, LogLVsSigma1)->Clone("LogLVsSigma0");
+      sigma950 = fChannel[ichannel].Limit95CL(LogLVsSigma0);  //calculating 95%CL Limit
+      Limit_95CL_0->Fill(sigma950); //This is the 95%CL Limit distribution without systematics
+      
+      //Filling output histogram
+      if(mcint ==0){	
+        _theNameHistoMap[ichannel]->Fill(sigma950);  
+      }
+      //calculating likelihood distribution with systematics
+      TH1F* LogLVsSigmaMC0;
+      if(mcint>0){
+	LogLVsSigma1->Reset();
+	LogLVsSigmaMC0=(TH1F*)fChannel[ichannel].Likelihood(systematicset, sysvectorlumi, fChannel[ichannel], mcint,data_MassDistribution, LogLVsSigma1)->Clone("LogLVsSigmaMC0");
+	sigma95 = fChannel[ichannel].Limit95CL(LogLVsSigmaMC0);
+	cout<<"95%CL Limit for channel "<<ichannel<<" for "<<mcint<<" mc itterations fitting data is = "<<sigma95<<endl;
+	Limit_95CL_1->Fill(sigma95); //This is the 95%CL Limit distribution with systematics
+	//_theNameHistoMap[ichannel]->Fill(sigma95);
+      }
+      
+      //joint likelihood
+      if(ichannel ==0){
+	JointlklvSigma->Reset();
+	if(mcint>0) JointlklvSigma_MC->Reset();
+	JointlklvSigma->Add(LogLVsSigma0);
+	if(mcint>0) JointlklvSigma_MC->Add(LogLVsSigmaMC0);
+      }
+      
+      if(ichannel>0){
+	JointlklvSigma->Multiply(LogLVsSigma0);
+	if(mcint>0) JointlklvSigma_MC->Multiply(LogLVsSigmaMC0);  //joint likelihood
+      }
+      
+      pseudodata_MassDistribution_0 = (TH1F*)data_MassDistribution->Clone("pseudodata_MassDistribution_0");
+      
+    }
+    //joint likelihood
+    joint_sigma95 = fChannel[0].Limit95CL(JointlklvSigma);
+    Joint_Limit_95CL->Fill(joint_sigma95);
+    
+    if(mcint>0){
+    joint_sigma95_mc = fChannel[0].Limit95CL(JointlklvSigma_MC);
+    Joint_Limit_95CL_MC->Fill(joint_sigma95_mc);   
+    }
+    
+  
+  
+  }
+  //if want to run pseudoexperiments
+  if(npseudo>0){
+  
+  for(int lim=0;lim<npseudo;lim++){	
+  //cout<<"Pseudoexperiment  "<<lim<<"   ";
+    //generating luminosity smearing vector
+    if(mcint>0)   sysvectorlumi = (vector<float>)fSystemacticState_0.GenerateSystematicState(mcint);
+    
+    //													    
+
     JointlklvSigma->Reset();		
     
     for(unsigned int ichannel = 0; ichannel < _theRootFiles.size(); ichannel++){
+    
+  //  cout<<"Channel  "<<ichannel<<endl;
       
       //Generating Pseudodata
       TH1F* default_temp_bgtots = (TH1F*)fChannel[ichannel].GetProcessProp(0).GetProcessShape()->Clone("default_temp_bgtots");
@@ -130,7 +196,7 @@ void TFitter::Loop(){
       
       //calculating likehood distributions for case with no systematics  											  
       LogLVsSigma1->Reset();	       
-      TH1F* LogLVsSigma0 =(TH1F*)fChannel[ichannel].Likelihood(systematicset, fChannel[ichannel],0,pseudodata_MassDistribution, LogLVsSigma1)->Clone("LogLVsSigma0");
+      TH1F* LogLVsSigma0 =(TH1F*)fChannel[ichannel].Likelihood(systematicset, sysvectorlumi, fChannel[ichannel],0,pseudodata_MassDistribution, LogLVsSigma1)->Clone("LogLVsSigma0");
       sigma950 = fChannel[ichannel].Limit95CL(LogLVsSigma0);  //calculating 95%CL Limit
       Limit_95CL_0->Fill(sigma950); //This is the 95%CL Limit distribution without systematics
       //Filling output histogram
@@ -141,7 +207,9 @@ void TFitter::Loop(){
       TH1F* LogLVsSigmaMC0;
       if(mcint>0){
 	LogLVsSigma1->Reset();
-	LogLVsSigmaMC0=(TH1F*)fChannel[ichannel].Likelihood(systematicset, fChannel[ichannel], mcint,pseudodata_MassDistribution, LogLVsSigma1)->Clone("LogLVsSigmaMC0");
+	
+	LogLVsSigmaMC0=(TH1F*)fChannel[ichannel].Likelihood(systematicset, sysvectorlumi, fChannel[ichannel], mcint,pseudodata_MassDistribution, LogLVsSigma1)->Clone("LogLVsSigmaMC0");
+
 	sigma95 = fChannel[ichannel].Limit95CL(LogLVsSigmaMC0);
 	Limit_95CL_1->Fill(sigma95); //This is the 95%CL Limit distribution with systematics
 	//_theNameHistoMap[ichannel]->Fill(sigma95);
@@ -150,14 +218,14 @@ void TFitter::Loop(){
       //joint likelihood
       if(ichannel ==0){
 	JointlklvSigma->Reset();
-	JointlklvSigma_MC->Reset();
+	if(mcint>0) JointlklvSigma_MC->Reset();
 	JointlklvSigma->Add(LogLVsSigma0);
-	JointlklvSigma_MC->Add(LogLVsSigmaMC0);
+	if(mcint>0) JointlklvSigma_MC->Add(LogLVsSigmaMC0);
       }
       
       if(ichannel>0){
 	JointlklvSigma->Multiply(LogLVsSigma0);
-	JointlklvSigma_MC->Multiply(LogLVsSigmaMC0);  //joint likelihood
+	if(mcint>0) JointlklvSigma_MC->Multiply(LogLVsSigmaMC0);  //joint likelihood
       }
       
       if(lim==npseudo-1) pseudodata_MassDistribution_0 = (TH1F*)pseudodata_MassDistribution->Clone("pseudodata_MassDistribution_0");
@@ -167,9 +235,11 @@ void TFitter::Loop(){
     joint_sigma95 = fChannel[0].Limit95CL(JointlklvSigma);
     Joint_Limit_95CL->Fill(joint_sigma95);
     
+    if(mcint>0){
     joint_sigma95_mc = fChannel[0].Limit95CL(JointlklvSigma_MC);
     Joint_Limit_95CL_MC->Fill(joint_sigma95_mc);   
-    
+    }
+    }
     
   }
   
@@ -199,13 +269,14 @@ void TFitter::Loop(){
     
     theCLCanvas->cd(vIt + 1);
     std::cout << "No Systematics"<<endl;
-    cout<<"Limit = \t" << (Limit_95CL_0->GetMean())*fChannel[vIt].GetSignalProp().GetTotEff()*fChannel[vIt].GetChLumi()
+    cout<<"Limit = \t" << (Limit_95CL_0->GetMean())
 	<< "  Normalization  "<<fChannel[vIt].GetSignalProp().GetTotEff()*fChannel[vIt].GetChLumi() <<"  \t +- \t" << Limit_95CL_0->GetRMS() << std::endl;
     
     std::cout << "** Systematics **"<<endl;
-    cout<<"Morphing and Smearing due to systematics defined in ntuple, and user defined Smearing of Luminosity **"<<endl;
-    cout<<"Limit = \t" << (Limit_95CL_1->GetMean())*fChannel[vIt].GetSignalProp().GetTotEff()*fChannel[vIt].GetChLumi()
+    cout<<"Morphing and/or Smearing due to systematics defined in ntuple, and Smearing of Luminosity **"<<endl;
+    cout<<"Limit = \t" << (Limit_95CL_1->GetMean())
 	<<"  \t +- \t" << Limit_95CL_1->GetRMS() << std::endl;      
+
     
     fChannel[vIt].SetLimit95CLH(_theNameHistoMap[vIt]);
     fChannel[vIt].GetLimit95CLH()->SetTitle(" 95%CL Limit");
@@ -217,6 +288,8 @@ void TFitter::Loop(){
     xsec->SetPoint(vIt, vIt, _theNameHistoMap[vIt]->GetMean());
     txsec->SetPoint(vIt, vIt, 1.914);
   }
+  cout<<"******************** JOINT LIMIT = \t" << (Joint_Limit_95CL_MC->GetMean())<<"  *******************************"<<endl;
+  
   theCLCanvas->Print("95PerCentCL.eps");
 
   TCanvas *theCLBandCanvas = new TCanvas("theCLBandCanvas","theCLBandCanvas");                                                         
@@ -269,7 +342,7 @@ void TFitter::Loop(){
   //For Stacked Mass Histogram, make sure you modify the names and number of processes for your channel; this one is an example for mutau
   TCanvas* StackedMass = new TCanvas("StackedMass","StackedMass");
   StackedMass->cd();
-  double default_background_scale = 1; //0.000001;
+  double default_background_scale = 1.; //0.000001;
   double ymin = 0.001;
   TH1F* default_temp_signal_0=  (TH1F*)fChannel[0].GetSignalProp().GetProcessShape()->Clone("default_temp_signal_0");
   THStack *hs = new THStack("hs","MuTau Channel");
@@ -277,36 +350,56 @@ void TFitter::Loop(){
     
     if(k==0){
       TH1F *Ztautau = (TH1F*)fChannel[0].GetProcessProp(k).GetProcessShape()->Clone("Ztautau");
+      
       Ztautau->Scale(fChannel[0].GetProcessProp(k).GetTotEff()*fChannel[0].GetChLumi()*fChannel[0].GetProcessProp(k).GetSigma()*default_background_scale);
+      cout<<"ZTAUTAU integral  = "<<Ztautau->Integral()<<endl;
+     // cout<<"ZTAUTAU  "<<fChannel[0].GetProcessProp(k).GetTotEff()*fChannel[0].GetChLumi()*fChannel[0].GetProcessProp(k).GetSigma()*default_background_scale<<endl;
       Ztautau->SetFillColor(kBlue);
       Ztautau->SetTitle("Ztautau");
       //c2->cd();
       //Ztautau->DrawCopy();
       hs->Add(Ztautau);
     }
-    if(k==1){
+    if(k==2){
       TH1F *TTBar =  (TH1F*)fChannel[0].GetProcessProp(k).GetProcessShape()->Clone("TTBar");
       TTBar->Scale(fChannel[0].GetProcessProp(k).GetTotEff()*fChannel[0].GetChLumi()*fChannel[0].GetProcessProp(k).GetSigma()*default_background_scale);
+      cout<<"TTBar integral  = "<<TTBar->Integral()<<endl;
       TTBar->SetFillColor(kRed-9);
       TTBar->SetTitle("TTBar");
       hs->Add(TTBar);
     }
-    if(k==2){
+    if(k==3){
       TH1F *WJets =  (TH1F*)fChannel[0].GetProcessProp(k).GetProcessShape()->Clone("WJets");
       WJets->Scale(fChannel[0].GetProcessProp(k).GetTotEff()*fChannel[0].GetChLumi()*fChannel[0].GetProcessProp(k).GetSigma()*default_background_scale);
+      cout<<"WJets integral  = "<<WJets->Integral()<<endl;
       WJets->SetFillColor(kCyan);
       WJets->SetTitle("WJets");
       hs->Add(WJets);
     }
-    if(k==3){
+    
+    if(k==1){
+      TH1F *Zmumu =  (TH1F*)fChannel[0].GetProcessProp(k).GetProcessShape()->Clone("Zmumu");
+      Zmumu->Scale(fChannel[0].GetProcessProp(k).GetTotEff()*fChannel[0].GetChLumi()*fChannel[0].GetProcessProp(k).GetSigma()*default_background_scale);
+    //   cout<<"ZMuMu  "<<fChannel[0].GetProcessProp(k).GetTotEff()<<endl;
+      cout<<"Zmumu integral  = "<<Zmumu->Integral()<<endl;
+      Zmumu->SetFillColor(kOrange);
+      Zmumu->SetTitle("Zmumu");
+      hs->Add(Zmumu);   
+      }   
+      if(k==4){
       TH1F *IncMu15 =  (TH1F*)fChannel[0].GetProcessProp(k).GetProcessShape()->Clone("IncMu15");
       IncMu15->Scale(fChannel[0].GetProcessProp(k).GetTotEff()*fChannel[0].GetChLumi()*fChannel[0].GetProcessProp(k).GetSigma()*default_background_scale);
+      cout<<"IncMu15 integral  = "<<IncMu15->Integral()<<endl;
       IncMu15->SetFillColor(kYellow);
       IncMu15->SetTitle("IncMu15");
       hs->Add(IncMu15);
+    
       
       default_temp_signal_0->Scale(fChannel[0].GetSignalProp().GetTotEff()*fChannel[0].GetChLumi()*fChannel[0].GetSignalProp().GetSigma());
+      cout<<"MCSIGNAL  "<<fChannel[0].GetSignalProp().GetTotEff()<<endl;
+      cout<<"MCSignal integral  = "<<default_temp_signal_0->Integral()<<endl;;
       default_temp_signal_0->SetTitle("Signal, Zprime");
+      
       // default_temp_signal_0->SetFillColor(kRed-7);
       //  default_temp_signal_0->SetFillStyle(3325);
       //hs->Add(default_temp_signal_0);     
@@ -317,7 +410,7 @@ void TFitter::Loop(){
   StackedMass->cd();
   StackedMass->SetLogy();
   
-  hs->SetTitle("BG Distributions & Pseudodata for muTau Channel; muTau Mass (GeV);Events per 30GeV Bins at 50ipb");
+  hs->SetTitle("BG Distributions & Pseudodata for muTau Channel; muTau Mass (GeV);Events per 50GeV Bins at 35ipb");
   hs->Draw("hist");
   hs->SetMinimum(ymin);
   hs->SetMaximum(10.);
@@ -325,18 +418,19 @@ void TFitter::Loop(){
   pseudodata_MassDistribution_0->SetLineWidth(2);
   pseudodata_MassDistribution_0->SetMarkerColor(kRed+3);
   pseudodata_MassDistribution_0->SetMarkerStyle(0);
+  cout<<"Data Integral / pseudodata example =  "<<pseudodata_MassDistribution_0->Integral()<<endl;
   //pseudodata_MassDistribution_0->SetMarkerSize(2);
-  pseudodata_MassDistribution_0->SetTitle("Generated Pseudodata");
+  pseudodata_MassDistribution_0->SetTitle("Data");
   pseudodata_MassDistribution_0->Draw("same");
   default_temp_signal_0->Draw("samehist");
   default_temp_signal_0->SetLineWidth(5);
-  TSystematicStateGenerator fSystemacticState_0;
+ /* TSystematicStateGenerator fSystemacticState_0;
   TH1F* Morphing=(TH1F*)fSystemacticState_0.GetNormalizedDistribution(0, fChannel[0].GetSignalProp());
   Morphing->Scale(fChannel[0].GetSignalProp().GetTotEff()*fChannel[0].GetChLumi()*fChannel[0].GetSignalProp().GetSigma());
   Morphing->SetLineWidth(2);
   Morphing->SetLineColor(8);
   Morphing->SetTitle("Morphed Distribution");
-  Morphing->Draw("same");
+  Morphing->Draw("same");*/
   StackedMass->BuildLegend();
   StackedMass->Update();      
   
@@ -344,7 +438,7 @@ void TFitter::Loop(){
   // hs->GetYaxis()->SetLimits(1., 5.);
   
   
-  StackedMass->Print("StackedMass.eps"); 
+  StackedMass->Print("StackedMass.root"); 
   
   //These are the systematic histograms used for morphing of signal shape
   TCanvas* ShapeSyst = new TCanvas("ShapeSyst","ShapeSyst");
@@ -366,6 +460,10 @@ void TFitter::SetNExp(int theNExp){
   _theNExp = theNExp;
 }
 
+void TFitter::SetRebinFactor(int theRebinFactor){
+  _theRebinFactor = theRebinFactor;
+}
+
 void TFitter::SetLumi(float theLumi){
   _theLumi = theLumi;
 }
@@ -376,6 +474,14 @@ void TFitter::SetLumiErr(float theLumiErr){
 
 void TFitter::SetSystSettings(int SystSettings){
   _SystSettings = SystSettings;
+}
+
+void TFitter::SetZprimeTempName(string zprimetemp){
+  _theZprimetemp = zprimetemp;
+}
+
+void TFitter::SetZprimeTreeName(string zprimetree){
+  _theZprimetree = zprimetree;
 }
 
 void TFitter::NMCInt(int theMCInt){
