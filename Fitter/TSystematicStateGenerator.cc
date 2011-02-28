@@ -61,7 +61,7 @@ Float_t TSystematicStateGenerator::SmearLumi(float lumi_mean, float lumi_err){
   return(smearedlumi);
 }	
 
-TH1F* TSystematicStateGenerator::GetNormalizedDistribution(int setting, TPrProp ProcessProps){  
+TH1F* TSystematicStateGenerator::GetNormalizedDistribution(int setting,  vector<float> systvect, TPrProp ProcessProps){  
   float alph=0.;
   float err =0.;
   int o = 0;
@@ -75,16 +75,17 @@ TH1F* TSystematicStateGenerator::GetNormalizedDistribution(int setting, TPrProp 
   
   vector<float>* cummulativerrors =(vector<float>*)ProcessProps.GetSystematics();  
   int size = cummulativerrors->size();
-  vector<float> sysvector = (vector<float>)GenerateSystematicState(size);
+  vector<float> sysvector = (vector<float>)systvect;
   vector<float>::iterator it;
   
   //Histograms
   for (it=sysvector.begin(); it<sysvector.end(); it++){
+    alph = 0.;
+    alph = *it;
+   
     if(setting != 0){
       //Morphing histogram
       TH1F* fNormalizedZprime1 = (TH1F*)ProcessProps.GetProcessShape()->Clone("fNormalizedZprime1");
-      alph = 0.;
-      alph = *it;
       Corrections1->Reset();
       Corrections1->Add(fNormalizedZprime1,-1);
       Corrections1->Add(ProcessProps.GetSystematicShape(o));
@@ -92,7 +93,9 @@ TH1F* TSystematicStateGenerator::GetNormalizedDistribution(int setting, TPrProp 
     } 
     //Normalization factor
     err = cummulativerrors->at(o);
+   // cout<<"for systematic "<<o<<"  nuisance parameter = "<<alph<<"  systematic error = "<<err<<"  "<<endl;
     Norm = Norm+(alph*err);
+   // cout<<" normalization adjusted to "<<Norm<<endl;
     o++; 
   }
   

@@ -25,7 +25,7 @@ public:
  
  vector<float> GenerateSystematicState(int n);
  
- TH1F* GetNormalizedDistribution(int setting, TPrProp ProcessProps);
+ TH1F* GetNormalizedDistribution(int setting, vector<float> systvect, TPrProp ProcessProps);
  Float_t SmearLumi(float lumi_mean, float lumi_err);
   
   
