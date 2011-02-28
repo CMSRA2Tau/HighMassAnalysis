@@ -4,7 +4,7 @@
 ***  Indara Suarez					**
 ***  Texas A&M University				**
 ***	   TChProp constructor				**
-***	version 2.0        				**
+***	version 3.0  implementing running with data     **
 **********************************************************
 *********************************************************/
 #include <string>
@@ -33,6 +33,7 @@ class TChProp{
   
   TPrProp fProcessN[15];
   TPrProp fSignal[1];
+  TH1F* fDataEntries;
   
   
   TH1F* fLikelihood;
@@ -45,29 +46,34 @@ class TChProp{
   
   void SetSignalShape(TH1F* th0){fSignalSh = th0;};
   void SetTotBGShape(TH1F* th1){fTotBGSh = th1;};
+  void SetLimit95CLH(TH1F* th2){f95CL = th2;};
+  void SetDataHistogram(TH1F* tdata){fDataEntries = tdata;};
+  
   void SetNProcess(Int_t tch0){fNPr = tch0;};
   void SetChannelTitle(string fpr1){fchannelt=fpr1;};
-  void SetLimit95CLH(TH1F* th2){f95CL = th2;};
+  
   void SetChLumi(Float_t tch3){Lumi2 = tch3;};
   void SetChLumiErr(Float_t tch5){Lumi2err = tch5;};
-
-  void SetPrProp(int ichnl, TFile* fntuple);
+  
+  void SetPrProp(int ichnl, TFile* fntuple, string ZPrime_mass_Tree, string ZPrime_mass_TemplateDirectory, int rebin);
   void SetProcessProp(TPrProp* fprocess4, int ipr);
   void SetSignalProp(TPrProp* fprocess3);
   
-  Float_t GetChLumi(){return Lumi2;};
-  Float_t GetChLumiErr(){return Lumi2err;};
   TH1F* GetSignalShape(){return fSignalSh;};
   TH1F* GetTotBGShape(){return fTotBGSh;};
   TH1F* GetLimit95CLH(){return f95CL;};
-  
-  TPrProp GetSignalProp(){return fSignal[0];};
-  TPrProp GetProcessProp(int p){return fProcessN[p];};
+  TH1F* GetDataHistogram(){return fDataEntries;};
   
   Int_t GetNProcess(){return fNPr;};
   string GetChannelTitle(){return fchannelt;};
   
-  TH1F* Likelihood(int setting0, TChProp fChannelPro, int mcintg,TH1F* pseudo, TH1F* LogLVsSigma1);
+  Float_t GetChLumi(){return Lumi2;};
+  Float_t GetChLumiErr(){return Lumi2err;};
+  
+  TPrProp GetSignalProp(){return fSignal[0];};
+  TPrProp GetProcessProp(int p){return fProcessN[p];};
+  
+  TH1F* Likelihood(int systopt, vector<float> nuisancepar_lumi, TChProp fChannelPro, int mcintg,TH1F* pseudo, TH1F* LogLVsSigma1);
   Double_t Limit95CL(TH1F* LogLVsSigma);
   
   

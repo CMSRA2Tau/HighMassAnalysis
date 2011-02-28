@@ -46,7 +46,6 @@ vector<float> TSystematicStateGenerator::GenerateSystematicState(int n){
 	gRandom->SetSeed(0);
 	for(int i=0;i<n;i++){
 	  alpha = (float)gRandom->Gaus(0,1.0);
-	  // cout<<i<<"  "<<alpha<<endl;
   	  galphas2.push_back(alpha);
 
   	}

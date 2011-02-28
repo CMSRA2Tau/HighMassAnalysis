@@ -34,8 +34,8 @@ TFitter.o: TFitter.cc TFitter.h
 TChProp.o: TChProp.cc TChProp.h TPrProp.h
 	$(CXX) $(CXXFLAGS) -c TChProp.cc
 	
-TPrProp.o: TPrProp.cc TPrProp.h
-	$(CXX) $(CXXFLAGS) -c TPrProp.cc 
+TPrProp.o: TPrProp.h
+	$(CXX) $(CXXFLAGS) -c 
 
 TSystematicStateGenerator.o: TSystematicStateGenerator.cc TSystematicStateGenerator.h
 	$(CXX) $(CXXFLAGS) -c TSystematicStateGenerator.cc 

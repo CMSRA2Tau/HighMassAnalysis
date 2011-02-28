@@ -47,7 +47,7 @@ using namespace std;
 #include <vector>
 
 
-void TChProp::SetPrProp(int ichnl, TFile* fntuple){
+void TChProp::SetPrProp(int ichnl, TFile* fntuple, string ZPrime_mass_Tree, string ZPrime_mass_TemplateDirectory, int rebin){
 
   gROOT->ProcessLine("#include <vector>");
   
@@ -60,27 +60,14 @@ void TChProp::SetPrProp(int ichnl, TFile* fntuple){
   Float_t  ftauIDEfficiency;
   Float_t  ftopologyEfficiency;
   vector<float>* fsystematics0 = new vector<float>;
-  Float_t  fbranchingFractionStatError;
-  Float_t  facceptanceEfficiencyStatError;
-  Float_t  felectronIDEfficiencyStatError;
-  Float_t  fmuonIDEfficiencyStatError;
-  Float_t  ftauIDEfficiencyStatError;
-  Float_t  ftopologyEfficiencyStatError;
-  Float_t  fbranchingFractionSystError;
-  Float_t  facceptanceEfficiencySystError;
-  Float_t  felectronIDEfficiencySystError;
-  Float_t  fmuonIDEfficiencySystError;
-  Float_t  ftauIDEfficiencySystError;
-  Float_t  ftopologyEfficiencySystError;
 
-  vector<float> systv;
-  vector<float> systv2[10];
+
   TKey *key;
   TKey *keyh;
   int nb=0;
   int ch=0;
   int ipr=0;  
-  int RebinFactor =3;
+  int RebinFactor = rebin;
   Float_t binerr=0.;
   Float_t peak=0.;
   Int_t nbinz2=0;
@@ -117,24 +104,13 @@ void TChProp::SetPrProp(int ichnl, TFile* fntuple){
       tobj->SetBranchAddress("tauIDEfficiency", 	      &ftauIDEfficiency 	       );   //&b_ftauIDEfficiency);
       tobj->SetBranchAddress("topologyEfficiency",	      &ftopologyEfficiency	       );   //&b_ftopologyEfficiency);
       tobj->SetBranchAddress("systematics",		      &fsystematics0                   );
-      tobj->SetBranchAddress("branchingFractionStatError",    &fbranchingFractionStatError     );   //&b_fbranchingFractionStatError);
-      tobj->SetBranchAddress("acceptanceEfficiencyStatError", &facceptanceEfficiencyStatError  );   //&b_facceptanceEfficiencyStatError);
-      tobj->SetBranchAddress("electronIDEfficiencyStatError", &felectronIDEfficiencyStatError  );   //&b_felectronIDEfficiencyStatError);
-      tobj->SetBranchAddress("muonIDEfficiencyStatError",     &fmuonIDEfficiencyStatError      );   //&b_fmuonIDEfficiencyStatError);
-      tobj->SetBranchAddress("tauIDEfficiencyStatError",      &ftauIDEfficiencyStatError       );   //&b_ftauIDEfficiencyStatError);
-      tobj->SetBranchAddress("topologyEfficiencyStatError",   &ftopologyEfficiencyStatError    );   //&b_ftopologyEfficiencyStatError);
-      tobj->SetBranchAddress("branchingFractionSystError",    &fbranchingFractionSystError     );   //&b_fbranchingFractionSystError);
-      tobj->SetBranchAddress("acceptanceEfficiencySystError", &facceptanceEfficiencySystError  );   //&b_facceptanceEfficiencySystError);
-      tobj->SetBranchAddress("electronIDEfficiencySystError", &felectronIDEfficiencySystError  );   //&b_felectronIDEfficiencySystError);
-      tobj->SetBranchAddress("muonIDEfficiencySystError",     &fmuonIDEfficiencySystError      );   //&b_fmuonIDEfficiencySystError);
-      tobj->SetBranchAddress("tauIDEfficiencySystError",      &ftauIDEfficiencySystError       );   //&b_ftauIDEfficiencySystError);
-      tobj->SetBranchAddress("topologyEfficiencySystError",   &ftopologyEfficiencySystError    );   //&b_ftopologyEfficiencySystError);
-      
+
       for ( Int_t iev=0; iev<Nentries; iev++ ) {
 	nb=tobj->GetEntry(iev);
-	if(histname1=="ZprimeTree"){
+	if(histname1==ZPrime_mass_Tree){
 	  toteff=fFilterEfficiency;
 	  toteff = toteff*(facceptanceEfficiency * felectronIDEfficiency * fmuonIDEfficiency * ftauIDEfficiency * ftopologyEfficiency*fbranchingFraction);
+	  
 	  fProcess2[0].SetTotEff(toteff);
 	  fProcess2[0].SetSigma(fxsection);
 	  fProcess2[0].SetBR(fbranchingFraction);
@@ -146,21 +122,10 @@ void TChProp::SetPrProp(int ichnl, TFile* fntuple){
 	  fProcess2[0].SettopologyEfficiency(ftopologyEfficiency);
 	  
 	  fProcess2[0].SetSystematics(fsystematics0);
-	  fProcess2[0].SetbranchingFractionStatError(fbranchingFractionStatError);  
-	  fProcess2[0].SetacceptanceEfficiencyStatError(facceptanceEfficiencyStatError);  
-	  fProcess2[0].SetelectronIDEfficiencyStatError(felectronIDEfficiencyStatError);  
-	  fProcess2[0].SetmuonIDEfficiencyStatError(fmuonIDEfficiencyStatError);	 
-	  fProcess2[0].SettauIDEfficiencyStatError(ftauIDEfficiencyStatError);	
-	  fProcess2[0].SettopologyEfficiencyStatError(ftopologyEfficiencyStatError);    
-	  fProcess2[0].SetbranchingFractionSystError(fbranchingFractionSystError);	  
-	  fProcess2[0].SetacceptanceEfficiencySystError(facceptanceEfficiencySystError);  
-	  fProcess2[0].SetelectronIDEfficiencySystError(felectronIDEfficiencySystError);  
-	  fProcess2[0].SetmuonIDEfficiencySystError(fmuonIDEfficiencySystError);	 
-	  fProcess2[0].SettauIDEfficiencySystError(ftauIDEfficiencySystError);	
-	  fProcess2[0].SettopologyEfficiencySystError(ftopologyEfficiencySystError);
 	}
 	
-	if(histname1!="ZprimeTree"){
+	if(histname1!=ZPrime_mass_Tree){
+
 	  toteff=fFilterEfficiency;
 	  toteff = toteff*(facceptanceEfficiency * felectronIDEfficiency * fmuonIDEfficiency * ftauIDEfficiency * ftopologyEfficiency*fbranchingFraction);
 	  fProcess[ch].SetTotEff(toteff);
@@ -174,23 +139,12 @@ void TChProp::SetPrProp(int ichnl, TFile* fntuple){
 	  fProcess[ch].SettopologyEfficiency(ftopologyEfficiency);
 	  
 	  fProcess[ch].SetSystematics(fsystematics0);
-	  
-	  fProcess[ch].SetbranchingFractionStatError(fbranchingFractionStatError);  
-	  fProcess[ch].SetacceptanceEfficiencyStatError(facceptanceEfficiencyStatError);  
-	  fProcess[ch].SetelectronIDEfficiencyStatError(felectronIDEfficiencyStatError);  
-	  fProcess[ch].SetmuonIDEfficiencyStatError(fmuonIDEfficiencyStatError);	   
-	  fProcess[ch].SettauIDEfficiencyStatError(ftauIDEfficiencyStatError);	  
-	  fProcess[ch].SettopologyEfficiencyStatError(ftopologyEfficiencyStatError);    
-	  fProcess[ch].SetbranchingFractionSystError(fbranchingFractionSystError);     
-	  fProcess[ch].SetacceptanceEfficiencySystError(facceptanceEfficiencySystError);  
-	  fProcess[ch].SetelectronIDEfficiencySystError(felectronIDEfficiencySystError);  
-	  fProcess[ch].SetmuonIDEfficiencySystError(fmuonIDEfficiencySystError);	   
-	  fProcess[ch].SettauIDEfficiencySystError(ftauIDEfficiencySystError);	  
-	  fProcess[ch].SettopologyEfficiencySystError(ftopologyEfficiencySystError);
 	  ch=ch+1;
 	}
-	SetNProcess(ch);
-      }
+	
+	}
+	
+      
     }  
     
     int histn=0;
@@ -211,8 +165,7 @@ void TChProp::SetPrProp(int ichnl, TFile* fntuple){
 	  TH1F* hobj = (TH1F*)objh->Clone("hobj");
 	  fProcess[ipr].SetProcessTitle(histname1);
 	  
-	  if(histname1=="ZprimeTemplateDirectory"){ 
-	    
+	  if(histname1==ZPrime_mass_TemplateDirectory){
 	    if(histnameh=="Template"){
 	      fProcess2[0].SetProcessShape(hobj);
 	      if (fProcess2[0].GetProcessShape()->Integral() > 0.) fProcess2[0].GetProcessShape()->Scale(1./fProcess2[0].GetProcessShape()->Integral());
@@ -220,49 +173,30 @@ void TChProp::SetPrProp(int ichnl, TFile* fntuple){
 	    }
 	    if(histnameh!="Template"){
 	      histn2=histn-1;           
-	      ///artificial shifting
-	      /*
-		
-	      Float_t distIntegral=0;
 	      
-	      float binvalue =0;
-	      
-	      TH1F* Shifted = (TH1F*)hobj->Clone("Shifted");
-	      
-	      Shifted->Reset();
-	      Int_t nbinz = Shifted->GetNbinsX();
-	      for (int in= 1; in <= nbinz; in++) {
-	      
-	      binvalue =  0;
-	      binvalue =hobj->GetBinContent(in);
-	      //cout<<" bin "<<binvalue<<endl;
-	      // if(in==0){
-	      for(int i=1;i<10;i++){
-	      Shifted->SetBinContent(i, 0.0);
-	      }
-	      if(binvalue>0.) Shifted->SetBinContent(in+3+histn2, binvalue);
-	      
-	      //}
-	      
-	      }
-	      //TH1F* default_process10 = (TH1F*)fChannel[0].GetProcessProp(7).GetProcessShape()->Clone("default_process10");
-	      //fProcess[10].GetProcessShape()->Reset();
-	      //fProcess[ipr2].SetSystematicShape(histn2,Shifted);
-	      //fProcess2[0].SetSystematicShape(histn2,Shifted);
-	      
-	      ///////////*/
 	      fProcess2[0].SetSystematicShape(histn2,hobj);
-	      if (fProcess2[0].GetSystematicShape(histn2)->Integral() > 0.) fProcess2[0].GetProcessShape()->Scale(1./fProcess2[0].GetSystematicShape(histn2)->Integral());
+	      if (fProcess2[0].GetSystematicShape(histn2)->Integral() > 0.) fProcess2[0].GetSystematicShape(histn2)->Scale(1./fProcess2[0].GetSystematicShape(histn2)->Integral());
 	      fProcess2[0].GetSystematicShape(histn2)->Rebin(RebinFactor);
 	    }
 	    histn=histn+1;
 	  }
 	  
-	  if(histname1!="ZprimeTemplateDirectory"){
+	  if(histname1=="DataTemplateDirectory"){
 	    
+	    if(histnameh=="Template"){
+	      cout<<"YAY WE HAVE DATA"<<endl;
+	      TH1F* default_data = (TH1F*)hobj->Clone("default_data");
+	      SetDataHistogram(default_data);
+	    }
+	  
+	  }
+	  
+	  if(histname1!=ZPrime_mass_TemplateDirectory && histname1!="DataTemplateDirectory"){
+	    //cout<<"ipr  "<<ipr<<"  "<<histname1<<endl;
 	    if(histnameh=="Template"){
 	      fProcess[ipr].SetProcessShape(hobj);
 	      if (fProcess[ipr].GetProcessShape()->Integral() > 0.) fProcess[ipr].GetProcessShape()->Scale(1./fProcess[ipr].GetProcessShape()->Integral());
+	      //cout<<fProcess[0].GetProcessShape()->Integral()<<endl;
 	      fProcess[ipr].GetProcessShape()->Rebin(RebinFactor);
 	      ipr =ipr+1;     
 	    }
@@ -271,7 +205,7 @@ void TChProp::SetPrProp(int ichnl, TFile* fntuple){
 	      
 	      ipr2 =ipr-1;
 	      fProcess[ipr2].SetSystematicShape(histn2,hobj);
-	      if (fProcess[ipr2].GetSystematicShape(histn2)->Integral() > 0.) fProcess[ipr2].GetProcessShape()->Scale(1./fProcess[ipr2].GetSystematicShape(histn2)->Integral());
+	      if (fProcess[ipr2].GetSystematicShape(histn2)->Integral() > 0.) fProcess[ipr2].GetSystematicShape(histn2)->Scale(1./fProcess[ipr2].GetSystematicShape(histn2)->Integral());
 	      fProcess[ipr2].GetSystematicShape(histn2)->Rebin(RebinFactor);
 	      
 	    }
@@ -285,8 +219,9 @@ void TChProp::SetPrProp(int ichnl, TFile* fntuple){
       }
     }
   }  
-  
-  SetProcessProp(fProcess, 4);
+
+  SetNProcess(ipr);
+  SetProcessProp(fProcess, ipr);
   SetSignalProp(fProcess2);
 }
 
@@ -306,25 +241,13 @@ void TChProp::SetProcessProp(TPrProp* fprocess, int ipr0){
     fProcessN[i].SettopologyEfficiency(fprocess[i].GettopologyEfficiency());
     
     fProcessN[i].SetSystematics(fprocess[i].GetSystematics());
-    
-    fProcessN[i].SetbranchingFractionStatError(fprocess[i].GetbranchingFractionStatError());  
-    fProcessN[i].SetacceptanceEfficiencyStatError(fprocess[i].GetacceptanceEfficiencyStatError());  
-    fProcessN[i].SetelectronIDEfficiencyStatError(fprocess[i].GetelectronIDEfficiencyStatError());  
-    fProcessN[i].SetmuonIDEfficiencyStatError(fprocess[i].GetmuonIDEfficiencyStatError());	
-    fProcessN[i].SettauIDEfficiencyStatError(fprocess[i].GettauIDEfficiencyStatError());       
-    fProcessN[i].SettopologyEfficiencyStatError(fprocess[i].GettopologyEfficiencyStatError());    
-    fProcessN[i].SetbranchingFractionSystError(fprocess[i].GetbranchingFractionSystError());	 
-    fProcessN[i].SetacceptanceEfficiencySystError(fprocess[i].GetacceptanceEfficiencySystError());  
-    fProcessN[i].SetelectronIDEfficiencySystError(fprocess[i].GetelectronIDEfficiencySystError());  
-    fProcessN[i].SetmuonIDEfficiencySystError(fprocess[i].GetmuonIDEfficiencySystError());	
-    fProcessN[i].SettauIDEfficiencySystError(fprocess[i].GettauIDEfficiencySystError());       
-    fProcessN[i].SettopologyEfficiencySystError(fprocess[i].GettopologyEfficiencySystError());    
     fProcessN[i].SetLuminosity(fprocess[i].GetLuminosity());
     fProcessN[i].SetSigma(fprocess[i].GetSigma());
     fProcessN[i].SetBR(fprocess[i].GetBR());
     
     TH1F* default_process = (TH1F*)fprocess[i].GetProcessShape()->Clone("default_process");
     fProcessN[i].SetProcessShape(default_process);
+    //cout<<fProcessN[i].GetProcessShape()->Integral()<<endl;
     int sizevect = fProcessN[i].GetSystematics()->size();
     for(int hists=0;hists<sizevect;hists++){
       TH1F* syst_processh = (TH1F*)fprocess[i].GetSystematicShape(hists)->Clone("syst_processh");
@@ -350,19 +273,6 @@ void TChProp::SetSignalProp(TPrProp* fprocess3){
   
   fSignal[0].SetSystematics(fprocess3[0].GetSystematics());
   
-  fSignal[0].SetbranchingFractionStatError(fprocess3[0].GetbranchingFractionStatError());  
-  fSignal[0].SetacceptanceEfficiencyStatError(fprocess3[0].GetacceptanceEfficiencyStatError());  
-  fSignal[0].SetelectronIDEfficiencyStatError(fprocess3[0].GetelectronIDEfficiencyStatError());  
-  fSignal[0].SetmuonIDEfficiencyStatError(fprocess3[0].GetmuonIDEfficiencyStatError());      
-  fSignal[0].SettauIDEfficiencyStatError(fprocess3[0].GettauIDEfficiencyStatError());	    
-  fSignal[0].SettopologyEfficiencyStatError(fprocess3[0].GettopologyEfficiencyStatError());    
-  fSignal[0].SetbranchingFractionSystError(fprocess3[0].GetbranchingFractionSystError());     
-  fSignal[0].SetacceptanceEfficiencySystError(fprocess3[0].GetacceptanceEfficiencySystError());  
-  fSignal[0].SetelectronIDEfficiencySystError(fprocess3[0].GetelectronIDEfficiencySystError());  
-  fSignal[0].SetmuonIDEfficiencySystError(fprocess3[0].GetmuonIDEfficiencySystError());      
-  fSignal[0].SettauIDEfficiencySystError(fprocess3[0].GettauIDEfficiencySystError());	    
-  fSignal[0].SettopologyEfficiencySystError(fprocess3[0].GettopologyEfficiencySystError());    
-  
   fSignal[0].SetLuminosity(fprocess3[0].GetLuminosity());
   fSignal[0].SetSigma(fprocess3[0].GetSigma());
   fSignal[0].SetBR(fprocess3[0].GetBR());
@@ -377,12 +287,12 @@ void TChProp::SetSignalProp(TPrProp* fprocess3){
 }
 
 
-TH1F* TChProp::Likelihood(int setting0, TChProp fChannelPro, int mcintg, TH1F* pseudo, TH1F* LogLVsSigma1){
+TH1F* TChProp::Likelihood(int systopt, vector<float> nuisancepar_lumi, TChProp fChannelPro, int mcintg,TH1F* pseudo, TH1F* LogLVsSigma1){
   
   Float_t fitValue = 0; Float_t distValue_num=0; Float_t lkl=0; 
   
   
-  double lumi = 50.0;
+  double lumi = fChannelPro.GetChLumi();
   
   TPrProp fProcessd;
   TSystematicStateGenerator fSystemacticState;
@@ -395,11 +305,13 @@ TH1F* TChProp::Likelihood(int setting0, TChProp fChannelPro, int mcintg, TH1F* p
   Int_t nbins = LogLVsSigma1->GetNbinsX();
 
   if(mcintg==0){
+    
     default_temp_signal->Scale(fChannelPro.GetSignalProp().GetTotEff()*fChannelPro.GetChLumi()); 
     default_temp_bgtot->Scale(fChannelPro.GetProcessProp(0).GetTotEff()*fChannelPro.GetChLumi()*fChannelPro.GetProcessProp(0).GetSigma());
     for(int k=1; k<fChannelPro.GetNProcess(); k++){
       default_temp_bgtot->Add(fChannelPro.GetProcessProp(k).GetProcessShape(),fChannelPro.GetProcessProp(k).GetTotEff()*fChannelPro.GetChLumi()*fChannelPro.GetProcessProp(k).GetSigma()); 		
-    }		    
+    }
+    //cout<<"TOTAL BGS  "<<default_temp_bgtot->Integral()<<endl;	    
     LogLVsSigma1->Reset();
     for (int in= 1; in <= nbins; in++) {
       Double_t currentSigma = LogLVsSigma1->GetBinCenter(in);// Min + (float(i)-0.5)*step;
@@ -422,9 +334,10 @@ TH1F* TChProp::Likelihood(int setting0, TChProp fChannelPro, int mcintg, TH1F* p
       
       default_temp_signal->Reset();
       default_temp_bgtot->Reset();
-      
-      Lumis = (Float_t)fSystemacticState.SmearLumi(fChannelPro.GetChLumi(),fChannelPro.GetChLumiErr());
-      if(setting0==3){
+     
+      Lumis = fChannelPro.GetChLumi() + (fChannelPro.GetChLumiErr()*nuisancepar_lumi.at(mcin));
+      //cout<<"Luminosity for smearing "<<mcin<<"  with nuisance parameter  "<<nuisancepar_lumi.at(mcin)<<"  =  "<<Lumis<<endl;
+      if(systopt==3){
 	//cout<<"smearing lumi only"<<endl;
 	for( int k=0; k<fChannelPro.GetNProcess(); k++){
 	  // TH1F* Morph0_BG=(TH1F*)fSystemacticState.GetNormalizedDistribution(ichn, fChannelPro.GetProcessProp(k));
@@ -437,15 +350,15 @@ TH1F* TChProp::Likelihood(int setting0, TChProp fChannelPro, int mcintg, TH1F* p
 	default_temp_signal->Add(fChannelPro.GetSignalProp().GetProcessShape(),fChannelPro.GetSignalProp().GetTotEff()*Lumis); 
 	
       }
-      if(setting0<3){
-	// cout<<"fun stuff"<<setting0<<endl;
+      if(systopt<3){
+	// cout<<"fun stuff"<<systopt<<endl;
 	for( int k=0; k<fChannelPro.GetNProcess(); k++){
-	  TH1F* Morph0_BG=(TH1F*)fSystemacticState.GetNormalizedDistribution(setting0, fChannelPro.GetProcessProp(k));
+	  TH1F* Morph0_BG=(TH1F*)fSystemacticState.GetNormalizedDistribution(systopt, fChannelPro.GetProcessProp(k));
 	  default_temp_bgtot->Add(Morph0_BG,fChannelPro.GetProcessProp(k).GetTotEff()*Lumis*fChannelPro.GetProcessProp(k).GetSigma());		
 	}
 	
 	default_temp_signal->Reset();
-	TH1F* Morph0=(TH1F*)fSystemacticState.GetNormalizedDistribution(setting0, fChannelPro.GetSignalProp());
+	TH1F* Morph0=(TH1F*)fSystemacticState.GetNormalizedDistribution(systopt, fChannelPro.GetSignalProp());
 	//Normalizing Histogram to nominal product of effiencies
 	default_temp_signal->Add(Morph0,fChannelPro.GetSignalProp().GetTotEff()*Lumis);
 	
