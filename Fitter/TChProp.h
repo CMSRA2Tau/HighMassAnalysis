@@ -73,7 +73,7 @@ class TChProp{
   TPrProp GetSignalProp(){return fSignal[0];};
   TPrProp GetProcessProp(int p){return fProcessN[p];};
   
-  TH1F* Likelihood(int systopt, vector<float> nuisancepar_lumi, TChProp fChannelPro, int mcintg,TH1F* pseudo, TH1F* LogLVsSigma1);
+  TH1F* Likelihood(int systopt, vector<float> nuisancepar_lumi, vector< vector<float> > vectorofsystematics, TChProp fChannelPro, int mcintg,TH1F* pseudo, TH1F* LogLVsSigma1);
   Double_t Limit95CL(TH1F* LogLVsSigma);
   
   

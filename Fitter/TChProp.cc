@@ -123,8 +123,11 @@ void TChProp::SetPrProp(int ichnl, TFile* fntuple, string ZPrime_mass_Tree, stri
 	  
 	  fProcess2[0].SetSystematics(fsystematics0);
 	}
-	
-	if(histname1!=ZPrime_mass_Tree){
+	string my_string = "Zprime";
+        //string first_ten_of_alphabet = my_string.substr(0, 6);
+
+	if(histname1.substr(0,6)!=my_string){
+	cout<<"BACKGROUND "<<histname1<<endl;
 
 	  toteff=fFilterEfficiency;
 	  toteff = toteff*(facceptanceEfficiency * felectronIDEfficiency * fmuonIDEfficiency * ftauIDEfficiency * ftopologyEfficiency*fbranchingFraction);
@@ -190,8 +193,8 @@ void TChProp::SetPrProp(int ichnl, TFile* fntuple, string ZPrime_mass_Tree, stri
 	    }
 	  
 	  }
-	  
-	  if(histname1!=ZPrime_mass_TemplateDirectory && histname1!="DataTemplateDirectory"){
+	  string my_string2 = "Zprime";
+	  if(histname1.substr(0,6)!=my_string2 && histname1!="DataTemplateDirectory"){
 	    //cout<<"ipr  "<<ipr<<"  "<<histname1<<endl;
 	    if(histnameh=="Template"){
 	      fProcess[ipr].SetProcessShape(hobj);
@@ -287,7 +290,7 @@ void TChProp::SetSignalProp(TPrProp* fprocess3){
 }
 
 
-TH1F* TChProp::Likelihood(int systopt, vector<float> nuisancepar_lumi, TChProp fChannelPro, int mcintg,TH1F* pseudo, TH1F* LogLVsSigma1){
+TH1F* TChProp::Likelihood(int systopt, vector<float> nuisancepar_lumi, vector< vector<float> > vectorofsystematics, TChProp fChannelPro, int mcintg,TH1F* pseudo, TH1F* LogLVsSigma1){
   
   Float_t fitValue = 0; Float_t distValue_num=0; Float_t lkl=0; 
   
@@ -327,6 +330,7 @@ TH1F* TChProp::Likelihood(int systopt, vector<float> nuisancepar_lumi, TChProp f
   }
   
   ////////////////////////////////////Integration Method///////////////////////////////////////////////
+  
   Float_t Lumis = 0.0;
   if(mcintg>0){
     TH1F* LikelVsSigmaMCtot = (TH1F*)LogLVsSigma1->Clone();
@@ -336,34 +340,36 @@ TH1F* TChProp::Likelihood(int systopt, vector<float> nuisancepar_lumi, TChProp f
       default_temp_bgtot->Reset();
      
       Lumis = fChannelPro.GetChLumi() + (fChannelPro.GetChLumiErr()*nuisancepar_lumi.at(mcin));
-      //cout<<"Luminosity for smearing "<<mcin<<"  with nuisance parameter  "<<nuisancepar_lumi.at(mcin)<<"  =  "<<Lumis<<endl;
+      
+      ////////////////////////////////smear luminosity only///////////////////////////////////////////////
       if(systopt==3){
 	//cout<<"smearing lumi only"<<endl;
 	for( int k=0; k<fChannelPro.GetNProcess(); k++){
-	  // TH1F* Morph0_BG=(TH1F*)fSystemacticState.GetNormalizedDistribution(ichn, fChannelPro.GetProcessProp(k));
 	  default_temp_bgtot->Add(fChannelPro.GetProcessProp(k).GetProcessShape(),fChannelPro.GetProcessProp(k).GetTotEff()*Lumis*fChannelPro.GetProcessProp(k).GetSigma());		
 	}
 	
 	default_temp_signal->Reset();
-	//TH1F* Morph0=(TH1F*)fSystemacticState.GetNormalizedDistribution(ichn, fChannelPro.GetSignalProp());
-	//Normalizing Histogram to nominal product of effiencies
 	default_temp_signal->Add(fChannelPro.GetSignalProp().GetProcessShape(),fChannelPro.GetSignalProp().GetTotEff()*Lumis); 
 	
       }
+      ////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+      
+      
+      
       if(systopt<3){
-	// cout<<"fun stuff"<<systopt<<endl;
 	for( int k=0; k<fChannelPro.GetNProcess(); k++){
-	  TH1F* Morph0_BG=(TH1F*)fSystemacticState.GetNormalizedDistribution(systopt, fChannelPro.GetProcessProp(k));
+	 // cout<<"*****************PROCESS "<<k<<" *************************************"<<endl;
+	  TH1F* Morph0_BG=(TH1F*)fSystemacticState.GetNormalizedDistribution(systopt, vectorofsystematics.at(mcin) , fChannelPro.GetProcessProp(k));
 	  default_temp_bgtot->Add(Morph0_BG,fChannelPro.GetProcessProp(k).GetTotEff()*Lumis*fChannelPro.GetProcessProp(k).GetSigma());		
 	}
 	
 	default_temp_signal->Reset();
-	TH1F* Morph0=(TH1F*)fSystemacticState.GetNormalizedDistribution(systopt, fChannelPro.GetSignalProp());
+	TH1F* Morph0=(TH1F*)fSystemacticState.GetNormalizedDistribution(systopt,vectorofsystematics.at(mcin) , fChannelPro.GetSignalProp());
 	//Normalizing Histogram to nominal product of effiencies
 	default_temp_signal->Add(Morph0,fChannelPro.GetSignalProp().GetTotEff()*Lumis);
-	
       }
-      
+
       LogLVsSigma1->Reset();
       for (int in= 1; in <= nbins; in++) {
 	Double_t currentSigma =LogLVsSigma1 ->GetBinCenter(in);// Min + (float(i)-0.5)*step;
