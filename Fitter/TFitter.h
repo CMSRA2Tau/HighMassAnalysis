@@ -36,6 +36,7 @@ TFitter(){
   _theMass = 500.;
   _theXSection = 1.914;
   
+  
   GetTheFiles();
   BookCLHistos();
 };
@@ -46,21 +47,30 @@ virtual ~TFitter(){};
 
    virtual void     Loop();
    void SetNExp(int);
+   void SetRebinFactor(int);
    void SetLumi(float);
    void SetLumiErr(float);
    void SetSystSettings(int);
    void NMCInt(int);
    void SetSignalMassXsection(float, float);
+   void SetZprimeTempName(string);
+   void SetZprimeTreeName(string);
+
+   
    //void AddTree(std::string);
 
 private:
   int _theNExp;
+  int _theRebinFactor;
   float _theLumi;
   float _theLumiErr;
   int _theNMCInt;
   int _SystSettings;
   float _theMass;
   float _theXSection;
+  string _theZprimetree;
+  string _theZprimetemp;
+  
   std::map<int, TH1F*> _theNameHistoMap;
   std::vector<std::string> _theRootFiles;
   void BookCLHistos();
