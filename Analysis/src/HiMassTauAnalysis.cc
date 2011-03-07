@@ -38,24 +38,22 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
   _RecoTauDiscrByLeadTrack = iConfig.getUntrackedParameter<string>("RecoTauDiscrByLeadTrack");
   _DoRecoTauDiscrByLeadTrackNhits = iConfig.getParameter<bool>("DoRecoTauDiscrByLeadTrackNhits");
   _RecoTauLeadTrackMinHits = iConfig.getParameter<int>("RecoTauLeadTrackMinHits");
+  _DoRecoTauDiscrByH3x3OverP = iConfig.getParameter<bool>("DoRecoTauDiscrByH3x3OverP");
+  _RecoTauH3x3OverP = iConfig.getParameter<double>("RecoTauH3x3OverP");
   _DoRecoTauDiscrByIsolation = iConfig.getParameter<bool>("DoRecoTauDiscrByIsolation");
   _UseRecoTauDiscrByIsolationFlag = iConfig.getParameter<bool>("UseRecoTauDiscrByIsolationFlag");
   _UseRecoTauIsoSumPtInsteadOfNiso = iConfig.getParameter<bool>("UseRecoTauIsoSumPtInsteadOfNiso");
   _UseRecoTauEllipseForEcalIso = iConfig.getParameter<bool>("UseRecoTauEllipseForEcalIso");
   _RecoTauEcalIsoRphiForEllipse = iConfig.getParameter<double>("RecoTauEcalIsoRphiForEllipse");
   _RecoTauEcalIsoRetaForEllipse = iConfig.getParameter<double>("RecoTauEcalIsoRetaForEllipse");
-  _RecoTauNisoMax = iConfig.getParameter<int>("RecoTauNisoMax");
-  _RecoTauIsoSumPtMinCutValue = iConfig.getParameter<double>("RecoTauIsoSumPtMinCutValue");
-  _RecoTauIsoSumPtMaxCutValue = iConfig.getParameter<double>("RecoTauIsoSumPtMaxCutValue");
+  _RecoTauTrackNisoMax = iConfig.getParameter<int>("RecoTauTrackNisoMax");
+  _RecoTauEcalNisoMax = iConfig.getParameter<int>("RecoTauEcalNisoMax");
+  _RecoTauTrackIsoSumPtMinCutValue = iConfig.getParameter<double>("RecoTauTrackIsoSumPtMinCutValue");
+  _RecoTauTrackIsoSumPtMaxCutValue = iConfig.getParameter<double>("RecoTauTrackIsoSumPtMaxCutValue");
+  _RecoTauEcalIsoSumPtMinCutValue = iConfig.getParameter<double>("RecoTauEcalIsoSumPtMinCutValue");
+  _RecoTauEcalIsoSumPtMaxCutValue = iConfig.getParameter<double>("RecoTauEcalIsoSumPtMaxCutValue");
   _RecoTauDiscrByIsolation = iConfig.getUntrackedParameter<string>("RecoTauDiscrByIsolation");
   _RecoTauDiscrByProngType = iConfig.getParameter<string>("RecoTauDiscrByProngType");
-  _DoRecoTauDiscrBySignalTracksAndGammasMass = iConfig.getParameter<bool>("DoRecoTauDiscrBySignalTracksAndGammasMass");
-  _RecoTauSignal3ProngAndGammasMassMinCutValue = iConfig.getParameter<double>("RecoTauSignal3ProngAndGammasMassMinCutValue");
-  _RecoTauSignal3ProngAndGammasMassMaxCutValue = iConfig.getParameter<double>("RecoTauSignal3ProngAndGammasMassMaxCutValue");
-  _RecoTauSignal1ProngAndGammasMassForPionMinCutValue = iConfig.getParameter<double>("RecoTauSignal1ProngAndGammasMassForPionMinCutValue");
-  _RecoTauSignal1ProngAndGammasMassForPionMaxCutValue = iConfig.getParameter<double>("RecoTauSignal1ProngAndGammasMassForPionMaxCutValue");
-  _RecoTauSignal1ProngAndGammasMassForKaonVetoMinCutValue = iConfig.getParameter<double>("RecoTauSignal1ProngAndGammasMassForKaonVetoMinCutValue");
-  _RecoTauSignal1ProngAndGammasMassForKaonVetoMaxCutValue = iConfig.getParameter<double>("RecoTauSignal1ProngAndGammasMassForKaonVetoMaxCutValue");
   _RecoTauLeadTrackThreshold = iConfig.getParameter<double>("RecoTauLeadTrackThreshold");
   _RecoTauSigGamThreshold = iConfig.getParameter<double>("RecoTauSigGamThreshold");
   _RecoTauIsoDeltaRCone = iConfig.getParameter<double>("RecoTauIsoDeltaRCone");
@@ -66,7 +64,6 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
   _DoRecoTauDiscrByCrackCut = iConfig.getParameter<bool>("DoRecoTauDiscrByCrackCut");
   _DoRecoTauDiscrAgainstMuon = iConfig.getParameter<bool>("DoRecoTauDiscrAgainstMuon");
   _RecoTauDiscrAgainstMuon = iConfig.getUntrackedParameter<string>("RecoTauDiscrAgainstMuon");
-  _SetTANC = iConfig.getParameter<bool>("SetTANC");
 
   //-----Reco Muon Inputs
   _RecoMuonSource = iConfig.getParameter<InputTag>("RecoMuonSource");
@@ -75,8 +72,10 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
   _RecoMuonPtMaxCut = iConfig.getParameter<double>("RecoMuonPtMaxCut");
   _DoRecoMuonDiscrByGlobal = iConfig.getParameter<bool>("DoRecoMuonDiscrByGlobal");
   _DoRecoMuonDiscrByIsolation = iConfig.getParameter<bool>("DoRecoMuonDiscrByIsolation");
-  _RecoMuonIsoSumPtMinCutValue = iConfig.getParameter<double>("RecoMuonIsoSumPtMinCutValue");
-  _RecoMuonIsoSumPtMaxCutValue = iConfig.getParameter<double>("RecoMuonIsoSumPtMaxCutValue");
+  _RecoMuonTrackIsoSumPtMinCutValue = iConfig.getParameter<double>("RecoMuonTrackIsoSumPtMinCutValue");
+  _RecoMuonTrackIsoSumPtMaxCutValue = iConfig.getParameter<double>("RecoMuonTrackIsoSumPtMaxCutValue");
+  _RecoMuonEcalIsoSumPtMinCutValue = iConfig.getParameter<double>("RecoMuonEcalIsoSumPtMinCutValue");
+  _RecoMuonEcalIsoSumPtMaxCutValue = iConfig.getParameter<double>("RecoMuonEcalIsoSumPtMaxCutValue");
   _RecoMuonIsoDeltaRCone = iConfig.getParameter<double>("RecoMuonIsoDeltaRCone");
   _RecoMuonTrackIsoTrkThreshold = iConfig.getParameter<double>("RecoMuonTrackIsoTrkThreshold");
   _RecoMuonEcalIsoRecHitThreshold = iConfig.getParameter<double>("RecoMuonEcalIsoRecHitThreshold");
@@ -89,15 +88,18 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
 
   //-----Reco Electron Inputs
   _RecoElectronSource = iConfig.getParameter<InputTag>("RecoElectronSource");
+  _UseHeepInfo = iConfig.getParameter<bool>("UseHeepInfo");
   _RecoElectronEtaCut = iConfig.getParameter<double>("RecoElectronEtaCut");
   _RecoElectronPtMinCut = iConfig.getParameter<double>("RecoElectronPtMinCut");
   _RecoElectronPtMaxCut = iConfig.getParameter<double>("RecoElectronPtMaxCut");
   _DoRecoElectronDiscrByTrackIsolation = iConfig.getParameter<bool>("DoRecoElectronDiscrByTrackIsolation");
-  _RecoElectronTrackIsoSumPtCutValue = iConfig.getParameter<double>("RecoElectronTrackIsoSumPtCutValue");
+  _RecoElectronTrackIsoSumPtMaxCutValue = iConfig.getParameter<double>("RecoElectronTrackIsoSumPtMaxCutValue");
+  _RecoElectronTrackIsoSumPtMinCutValue = iConfig.getParameter<double>("RecoElectronTrackIsoSumPtMinCutValue");
   _RecoElectronTrackIsoDeltaRCone = iConfig.getParameter<double>("RecoElectronTrackIsoDeltaRCone");
   _RecoElectronTrackIsoTrkThreshold = iConfig.getParameter<double>("RecoElectronTrackIsoTrkThreshold");
   _DoRecoElectronDiscrByEcalIsolation = iConfig.getParameter<bool>("DoRecoElectronDiscrByEcalIsolation");
-  _RecoElectronEcalIsoSumPtCutValue = iConfig.getParameter<double>("RecoElectronEcalIsoSumPtCutValue");
+  _RecoElectronEcalIsoSumPtMaxCutValue = iConfig.getParameter<double>("RecoElectronEcalIsoSumPtMaxCutValue");
+  _RecoElectronEcalIsoSumPtMinCutValue = iConfig.getParameter<double>("RecoElectronEcalIsoSumPtMinCutValue");
   _RecoElectronEcalIsoDeltaRCone = iConfig.getParameter<double>("RecoElectronEcalIsoDeltaRCone");
   _RecoElectronEcalIsoRecHitThreshold = iConfig.getParameter<double>("RecoElectronEcalIsoRecHitThreshold");
   _DoRecoElectronDiscrByIp = iConfig.getParameter<bool>("DoRecoElectronDiscrByIp");
@@ -107,14 +109,27 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
   _RecoElectronEoverPMin = iConfig.getParameter<double>("RecoElectronEoverPMin");
   _DoRecoElectronDiscrByHoverEm = iConfig.getParameter<bool>("DoRecoElectronDiscrByHoverEm");
   _RecoElectronHoverEmCut = iConfig.getParameter<double>("RecoElectronHoverEmCut");
-  _DoRecoElectronDiscrBySigmaEtaEta = iConfig.getParameter<bool>("DoRecoElectronDiscrBySigmaEtaEta");
-  _RecoElectronSigmaEtaEtaCut = iConfig.getParameter<double>("RecoElectronSigmaEtaEtaCut");
   _DoRecoElectronDiscrBySigmaIEtaIEta = iConfig.getParameter<bool>("DoRecoElectronDiscrBySigmaIEtaIEta");
-  _RecoElectronSigmaIEtaIEtaCut = iConfig.getParameter<double>("RecoElectronSigmaIEtaIEtaCut");
-  _DoRecoElectronDiscrBySCE5by5 = iConfig.getParameter<bool>("DoRecoElectronDiscrBySCE5by5");
-  _RecoElectronSCE5by5Cut = iConfig.getParameter<double>("RecoElectronSCE5by5Cut");
+  _RecoElectronSigmaIEtaIEta = iConfig.getParameter<double>("RecoElectronSigmaIEtaIEta");
+  _DoRecoElectronDiscrByDEtaIn = iConfig.getParameter<bool>("DoRecoElectronDiscrByDEtaIn");
+  _RecoElectronEEDEtaIn = iConfig.getParameter<double>("RecoElectronEEDEtaIn");
+  _RecoElectronEBDEtaIn = iConfig.getParameter<double>("RecoElectronEBDEtaIn");
+  _DoRecoElectronDiscrByDPhiIn = iConfig.getParameter<bool>("DoRecoElectronDiscrByDPhiIn");
+  _RecoElectronEEDPhiIn = iConfig.getParameter<double>("RecoElectronEEDPhiIn");
+  _RecoElectronEBDPhiIn = iConfig.getParameter<double>("RecoElectronEBDPhiIn");
+  _DoRecoElectronDiscrBySCE2by5Over5by5 = iConfig.getParameter<bool>("DoRecoElectronDiscrBySCE2by5Over5by5");
+  _RecoElectronEBscE1by5Over5by5 = iConfig.getParameter<double>("RecoElectronEBscE1by5Over5by5");
+  _RecoElectronEBscE2by5Over5by5 = iConfig.getParameter<double>("RecoElectronEBscE2by5Over5by5");
+  _DoRecoElectronDiscrByMissingHits = iConfig.getParameter<bool>("DoRecoElectronDiscrByMissingHits");
+  _RecoElectronMissingHits = iConfig.getParameter<int>("RecoElectronMissingHits");
   _DoRecoElectronDiscrByEcalDrivenSeed = iConfig.getParameter<bool>("DoRecoElectronDiscrByEcalDrivenSeed");
   _DoRecoElectronDiscrByTrackerDrivenSeed = iConfig.getParameter<bool>("DoRecoElectronDiscrByTrackerDrivenSeed");
+
+/*
+  //-----Reco ParticleFlow Inputs
+  _RecoParticleFlowSource = iConfig.getParameter<InputTag>("RecoParticleFlowSource");
+  _UsePFlowBasedIsolationInsteadOfStandard = iConfig.getParameter<bool>("UsePFlowBasedIsolationInsteadOfStandard");
+*/
 
   //-----Reco Jet Inputs
   _RecoJetSource = iConfig.getParameter<InputTag>("RecoJetSource");
@@ -128,6 +143,16 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
   _JetElectronMatchingDeltaR = iConfig.getParameter<double>("JetElectronMatchingDeltaR");
   _RemoveJetOverlapWithTaus = iConfig.getParameter<bool>("RemoveJetOverlapWithTaus");
   _JetTauMatchingDeltaR = iConfig.getParameter<double>("JetTauMatchingDeltaR");
+  _ApplyJetBTagging = iConfig.getParameter<bool>("ApplyJetBTagging");
+  _JetBTaggingTCHEcut = iConfig.getParameter<double>("JetBTaggingTCHEcut");
+  _DoDiscrByFirstLeadingJet = iConfig.getParameter<bool>("DoDiscrByFirstLeadingJet");
+  _RecoFirstLeadingJetPt = iConfig.getParameter<double>("RecoFirstLeadingJetPt");
+  _RecoFirstLeadingJetEtaMinCut = iConfig.getParameter<double>("RecoFirstLeadingJetEtaMinCut");
+  _RecoFirstLeadingJetEtaMaxCut = iConfig.getParameter<double>("RecoFirstLeadingJetEtaMaxCut");
+  _DoDiscrBySecondLeadingJet = iConfig.getParameter<bool>("DoDiscrBySecondLeadingJet");
+  _RecoSecondLeadingJetPt = iConfig.getParameter<double>("RecoSecondLeadingJetPt");
+  _RecoSecondLeadingJetEtaMinCut = iConfig.getParameter<double>("RecoSecondLeadingJetEtaMinCut");
+  _RecoSecondLeadingJetEtaMaxCut = iConfig.getParameter<double>("RecoSecondLeadingJetEtaMaxCut");
 
   //-----Vertex Inputs
   _RecoVertexSource = iConfig.getParameter<InputTag>("RecoVertexSource");
@@ -142,6 +167,7 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
   //-----Topology Inputs
   _RecoMetSource = iConfig.getParameter<InputTag>("RecoMetSource");
   _DoDiscrByMet = iConfig.getParameter<bool>("DoDiscrByMet");
+  _CalculateMetUsingOnlyLeg1AndLeg2 = iConfig.getParameter<bool>("CalculateMetUsingOnlyLeg1AndLeg2");
   _RecoMetCut = iConfig.getParameter<double>("RecoMetCut");
   _DoDiTauDiscrByDeltaR = iConfig.getParameter<bool>("DoDiTauDiscrByDeltaR");
   _DiTauDeltaRCut = iConfig.getParameter<double>("DiTauDeltaRCut");
@@ -162,6 +188,9 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
   _DoDiTauDiscrByDeltaPtDivSumPt = iConfig.getParameter<bool>("DoDiTauDiscrByDeltaPtDivSumPt");
   _DiTauDeltaPtDivSumPtMinCutValue = iConfig.getParameter<double>("DiTauDeltaPtDivSumPtMinCutValue");
   _DiTauDeltaPtDivSumPtMaxCutValue = iConfig.getParameter<double>("DiTauDeltaPtDivSumPtMaxCutValue");
+  _DoDiTauDiscrByDeltaPt = iConfig.getParameter<bool>("DoDiTauDiscrByDeltaPt");
+  _DiTauDeltaPtMinCutValue = iConfig.getParameter<double>("DiTauDeltaPtMinCutValue");
+  _DiTauDeltaPtMaxCutValue = iConfig.getParameter<double>("DiTauDeltaPtMaxCutValue");
   _DoDiscrByLeg1MetDphi = iConfig.getParameter<bool>("DoDiscrByLeg1MetDphi");
   _Leg1MetDphiMinCut = iConfig.getParameter<double>("Leg1MetDphiMinCut");
   _Leg1MetDphiMaxCut = iConfig.getParameter<double>("Leg1MetDphiMaxCut");
@@ -169,6 +198,25 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
   _Leg2MetDphiMinCut = iConfig.getParameter<double>("Leg2MetDphiMinCut");
   _Leg2MetDphiMaxCut = iConfig.getParameter<double>("Leg2MetDphiMaxCut");
   _DoTauDiscrByIsZeeCut = iConfig.getParameter<bool>("DoTauDiscrByIsZeeCut");
+
+  //-----SUSY Specific Topology Inputs
+  _DoSUSYDiscrByMHT = iConfig.getParameter<bool>("DoSUSYDiscrByMHT");
+  _MhtCut = iConfig.getParameter<double>("MhtCut");
+  _DoSUSYDiscrByR1 = iConfig.getParameter<bool>("DoSUSYDiscrByR1");
+  _R1MinCut = iConfig.getParameter<double>("R1MinCut");
+  _R1MaxCut = iConfig.getParameter<double>("R1MaxCut");
+  _DoSUSYDiscrByR2 = iConfig.getParameter<bool>("DoSUSYDiscrByR2");
+  _R2MinCut = iConfig.getParameter<double>("R2MinCut");
+  _R2MaxCut = iConfig.getParameter<double>("R2MaxCut");
+  _DoSUSYDiscrByAlpha = iConfig.getParameter<bool>("DoSUSYDiscrByAlpha");
+  _AlphaMinCut = iConfig.getParameter<double>("AlphaMinCut");
+  _AlphaMaxCut = iConfig.getParameter<double>("AlphaMaxCut");
+  _DoSUSYDiscrByDphi1 = iConfig.getParameter<bool>("DoSUSYDiscrByDphi1");
+  _Dphi1MinCut = iConfig.getParameter<double>("Dphi1MinCut");
+  _Dphi1MaxCut = iConfig.getParameter<double>("Dphi1MaxCut");
+  _DoSUSYDiscrByDphi2 = iConfig.getParameter<bool>("DoSUSYDiscrByDphi2");
+  _Dphi2MinCut = iConfig.getParameter<double>("Dphi2MinCut");
+  _Dphi2MaxCut = iConfig.getParameter<double>("Dphi2MaxCut");
 
   //-----do matching to gen?
   _MatchLeptonToGen = iConfig.getParameter<bool>("MatchLeptonToGen");
@@ -206,6 +254,9 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
   _RecoLeg2Nmax = iConfig.getParameter<int>("RecoLeg2Nmax");
   _RecoJetNmin = iConfig.getParameter<int>("RecoJetNmin");
   _RecoJetNmax = iConfig.getParameter<int>("RecoJetNmax");
+  _RecoFirstLeadingJetNmin = iConfig.getParameter<int>("RecoFirstLeadingJetNmin");
+  _RecoSecondLeadingJetNmin = iConfig.getParameter<int>("RecoSecondLeadingJetNmin");
+  _SusyCombinationsNmin = iConfig.getParameter<int>("SusyCombinationsNmin");
   _CombinationsNmin = iConfig.getParameter<int>("CombinationsNmin");
   _CombinationsNmax = iConfig.getParameter<int>("CombinationsNmax");
   _EventSelectionSequence = iConfig.getParameter< vector<string> >("EventSelectionSequence");
@@ -242,7 +293,12 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
   _SmearThePt = iConfig.getParameter<bool>("SmearThePt");
   _SmearTheEta = iConfig.getParameter<bool>("SmearTheEta");
   _SmearThePhi = iConfig.getParameter<bool>("SmearThePhi");
+  _CalculatePUSystematics = iConfig.getParameter<bool>("CalculatePUSystematics");
+  _ApplyMuonTriggerScaleFactors = iConfig.getParameter<bool>("ApplyMuonTriggerScaleFactors");
+  _ApplyElectronTriggerScaleFactors = iConfig.getParameter<bool>("ApplyElectronTriggerScaleFactors");
+  _ApplyTauTriggerScaleFactors = iConfig.getParameter<bool>("ApplyTauTriggerScaleFactors");
 
+  //---- Initialize everything needed to calculate systematics due to initial state gluon radiation
   if(_CalculateISRGluonSystematics) {
     // default pt bin edges
     std::vector<double> defPtEdges;
@@ -259,6 +315,92 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
     }
   }
 
+  //---- Initialize everything needed to apply Data/MC scale factors for trigger
+  if(_ApplyMuonTriggerScaleFactors) {
+    // default pt bin edges
+    std::vector<double> defMuonTrigPtEdges;
+    defMuonTrigPtEdges.push_back(0.);
+    defMuonTrigPtEdges.push_back(999999.);
+    MuonTrigPtBinEdges_ = iConfig.getUntrackedParameter<std::vector<double> > ("MuonTrigPtBinEdges",defMuonTrigPtEdges);
+    unsigned int ninputs_expected = MuonTrigPtBinEdges_.size()-1;
+    // default scale factors
+    std::vector<double> defMuonTrigPtWeights;
+    defMuonTrigPtWeights.push_back(1.);
+    MuonTrigptWeights_ = iConfig.getUntrackedParameter<std::vector<double> > ("MuonTrigPtWeights",defMuonTrigPtWeights);
+    if (MuonTrigptWeights_.size()==1 && ninputs_expected>1) {
+      for (unsigned int i=1; i<ninputs_expected; i++){ MuonTrigptWeights_.push_back(MuonTrigptWeights_[0]);}
+    }
+    // default eta bin edges
+    std::vector<double> defMuonTrigEtaEdges;
+    defMuonTrigEtaEdges.push_back(-999999.);
+    defMuonTrigEtaEdges.push_back(999999.);
+    MuonTrigEtaBinEdges_ = iConfig.getUntrackedParameter<std::vector<double> > ("MuonTrigEtaBinEdges",defMuonTrigEtaEdges);
+    ninputs_expected = MuonTrigEtaBinEdges_.size()-1;
+    // default scale factors
+    std::vector<double> defMuonTrigEtaWeights;
+    defMuonTrigEtaWeights.push_back(1.);
+    MuonTrigetaWeights_ = iConfig.getUntrackedParameter<std::vector<double> > ("MuonTrigEtaWeights",defMuonTrigEtaWeights);
+    if (MuonTrigetaWeights_.size()==1 && ninputs_expected>1) {
+      for (unsigned int i=1; i<ninputs_expected; i++){ MuonTrigetaWeights_.push_back(MuonTrigetaWeights_[0]);}
+    }
+  }
+  if(_ApplyElectronTriggerScaleFactors) {
+    // default pt bin edges
+    std::vector<double> defElectronTrigPtEdges;
+    defElectronTrigPtEdges.push_back(0.);
+    defElectronTrigPtEdges.push_back(999999.);   
+    ElectronTrigPtBinEdges_ = iConfig.getUntrackedParameter<std::vector<double> > ("ElectronTrigPtBinEdges",defElectronTrigPtEdges);
+    unsigned int ninputs_expected = ElectronTrigPtBinEdges_.size()-1;
+    // default scale factors
+    std::vector<double> defElectronTrigPtWeights;
+    defElectronTrigPtWeights.push_back(1.);
+    ElectronTrigptWeights_ = iConfig.getUntrackedParameter<std::vector<double> > ("ElectronTrigPtWeights",defElectronTrigPtWeights);
+    if (ElectronTrigptWeights_.size()==1 && ninputs_expected>1) {
+      for (unsigned int i=1; i<ninputs_expected; i++){ ElectronTrigptWeights_.push_back(ElectronTrigptWeights_[0]);}
+    }
+    // default eta bin edges
+    std::vector<double> defElectronTrigEtaEdges;
+    defElectronTrigEtaEdges.push_back(-999999.);
+    defElectronTrigEtaEdges.push_back(999999.);
+    ElectronTrigEtaBinEdges_ = iConfig.getUntrackedParameter<std::vector<double> > ("ElectronTrigEtaBinEdges",defElectronTrigEtaEdges);
+    ninputs_expected = ElectronTrigEtaBinEdges_.size()-1;
+    // default scale factors
+    std::vector<double> defElectronTrigEtaWeights;
+    defElectronTrigEtaWeights.push_back(1.);
+    ElectronTrigetaWeights_ = iConfig.getUntrackedParameter<std::vector<double> > ("ElectronTrigEtaWeights",defElectronTrigEtaWeights);
+    if (ElectronTrigetaWeights_.size()==1 && ninputs_expected>1) {
+      for (unsigned int i=1; i<ninputs_expected; i++){ ElectronTrigetaWeights_.push_back(ElectronTrigetaWeights_[0]);}
+    }
+  }
+  if(_ApplyTauTriggerScaleFactors) {
+    // default pt bin edges
+    std::vector<double> defTauTrigPtEdges;
+    defTauTrigPtEdges.push_back(0.);
+    defTauTrigPtEdges.push_back(999999.);   
+    TauTrigPtBinEdges_ = iConfig.getUntrackedParameter<std::vector<double> > ("TauTrigPtBinEdges",defTauTrigPtEdges);
+    unsigned int ninputs_expected = TauTrigPtBinEdges_.size()-1;
+    // default scale factors
+    std::vector<double> defTauTrigPtWeights;
+    defTauTrigPtWeights.push_back(1.);
+    TauTrigptWeights_ = iConfig.getUntrackedParameter<std::vector<double> > ("TauTrigPtWeights",defTauTrigPtWeights);
+    if (TauTrigptWeights_.size()==1 && ninputs_expected>1) {
+      for (unsigned int i=1; i<ninputs_expected; i++){ TauTrigptWeights_.push_back(TauTrigptWeights_[0]);}
+    }
+    // default eta bin edges
+    std::vector<double> defTauTrigEtaEdges;
+    defTauTrigEtaEdges.push_back(-999999.);
+    defTauTrigEtaEdges.push_back(999999.);
+    TauTrigEtaBinEdges_ = iConfig.getUntrackedParameter<std::vector<double> > ("TauTrigEtaBinEdges",defTauTrigEtaEdges);
+    ninputs_expected = TauTrigEtaBinEdges_.size()-1;
+    // default scale factors
+    std::vector<double> defTauTrigEtaWeights;
+    defTauTrigEtaWeights.push_back(1.);
+    TauTrigetaWeights_ = iConfig.getUntrackedParameter<std::vector<double> > ("TauTrigEtaWeights",defTauTrigEtaWeights);
+    if (TauTrigetaWeights_.size()==1 && ninputs_expected>1) {
+      for (unsigned int i=1; i<ninputs_expected; i++){ TauTrigetaWeights_.push_back(TauTrigetaWeights_[0]);}
+    }
+  }
+
 }
 
 // ------------ method called once each job just before starting event loop  ------------
@@ -268,477 +410,68 @@ void  HiMassTauAnalysis::beginJob() {
   if(_CalculatePdfSystematicUncertanties) {InitializeInfoForPDFSystematicUncertaintites();}
   setMapSelectionAlgoIDs();
   initMapSelectionCounters();
-  //  bookHistograms();  
-  //if (_DoProduceNtuple) {
-    //initializeVectors();
-    //setupBranches();
-  //}
 }
+
 // Set branches for the ntuple
 void  HiMassTauAnalysis::setupBranches() {
-   // For the taus
   _HMTTree = new TTree(_NtupleTreeName.c_str(), "HiMassDiTau Tree");
-  _HMTTree->Branch("tauPdgId",&_tauPdgId);
-  _HMTTree->Branch("tauMatched",&_tauMatched);
-  _HMTTree->Branch("tauMotherPdgId",&_tauMotherPdgId);
-  _HMTTree->Branch("tauE",&_tauE);
-  _HMTTree->Branch("tauEt",&_tauEt);
-  _HMTTree->Branch("tauPt",&_tauPt);
-  _HMTTree->Branch("tauCharge",&_tauCharge);
-  _HMTTree->Branch("tauEta",&_tauEta);
-  _HMTTree->Branch("tauPhi",&_tauPhi);
-  _HMTTree->Branch("tauNProngs",&_tauNProngs);
-  _HMTTree->Branch("tauLTPt",&_tauLTPt);
-  _HMTTree->Branch("tauLTChi2",&_tauLTChi2);
-  _HMTTree->Branch("tauLTRecHitsSize",&_tauLTRecHitsSize);
-  _HMTTree->Branch("tauIsoTrackSumPt",&_tauIsoTrackPtSum);
-  _HMTTree->Branch("tauIsoTrackSumPtDR1_0MinPt1_0",&_tauIsoTrkPtSumDR1_0MinPt1_0);
-  _HMTTree->Branch("tauIsoTrackSumPtDR1_0MinPt0_5",&_tauIsoTrkPtSumDR1_0MinPt0_5);
-  _HMTTree->Branch("tauIsoTrackSumPtDR0_75MinPt1_0",&_tauIsoTrkPtSumDR0_75MinPt1_0);
-  _HMTTree->Branch("tauIsoTrackSumPtDR0_75MinPt0_5",&_tauIsoTrkPtSumDR0_75MinPt0_5);
-  _HMTTree->Branch("tauIsoGammaEtSum",&_tauIsoGammaEtSum);
-  _HMTTree->Branch("tauIsoGammaEtSumDR1_0MinPt1_5",&_tauIsoGammaEtSumDR1_0MinPt1_5);
-  _HMTTree->Branch("tauIsoGammaEtSumDR1_0MinPt1_0",&_tauIsoGammaEtSumDR1_0MinPt1_0);
-  _HMTTree->Branch("tauIsoGammaEtSumDR0_75MinPt1_5",&_tauIsoGammaEtSumDR0_75MinPt1_5);
-  _HMTTree->Branch("tauIsoGammaEtSumDR0_75MinPt1_0",&_tauIsoGammaEtSumDR0_75MinPt1_0);
-  _HMTTree->Branch("tauEmFraction",&_tauEmFraction);
-  _HMTTree->Branch("tauHcalTotOverPLead",&_tauHcalTotOverPLead);
-  _HMTTree->Branch("tauHcalMaxOverPLead",&_tauHcalMaxOverPLead);
-  _HMTTree->Branch("tauHcal3x3OverPLead",&_tauHcal3x3OverPLead);
-  _HMTTree->Branch("tauElectronPreId",&_tauElectronPreId);
-  _HMTTree->Branch("tauModifiedEOverP",&_tauModifiedEOverP);
-  _HMTTree->Branch("tauBremsRecoveryEOverPLead",&_tauBremsRecoveryEOverPLead);
-  _HMTTree->Branch("tauDiscAgainstElec",&_tauDiscAgainstElec);
-  _HMTTree->Branch("tauLTCharge",&_tauLTCharge);
-  _HMTTree->Branch("tauLTSignedIp",&_tauLTSignedIp);
-  _HMTTree->Branch("tauIsInTheCraks",&_tauIsInTheCraks);
-
-  _HMTTree->Branch("eventIsZee",&_eventIsZee);
-  _HMTTree->Branch("zeeMass",&_zeeMass);
-  _HMTTree->Branch("zeePtAsymm",&_zeePtAsymm);
-  // For the electrons
-  _HMTTree->Branch("eMatched",&_eMatched);
-  _HMTTree->Branch("ePdgId",&_ePdgId);
-  _HMTTree->Branch("eMotherPdgId",&_eMotherPdgId);
-  _HMTTree->Branch("eE",&_eE);
-  _HMTTree->Branch("eEt",&_eEt);
-  _HMTTree->Branch("ePt",&_ePt);
-  _HMTTree->Branch("eCharge",&_eCharge);
-  _HMTTree->Branch("eEta",&_eEta);
-  _HMTTree->Branch("ePhi",&_ePhi);
-  _HMTTree->Branch("eSigmaEtaEta",&_eSigmaEtaEta);
-  _HMTTree->Branch("eSigmaIEtaIEta",&_eSigmaIEtaIEta);
-  _HMTTree->Branch("eEOverP",&_eEOverP);
-  _HMTTree->Branch("eHOverEm",&_eHOverEm);
-  _HMTTree->Branch("eDeltaPhiIn", &_eDeltaPhiIn);
-  _HMTTree->Branch("eDeltaEtaIn", &_eDeltaEtaIn);
-  _HMTTree->Branch("eEcalIsoPat", &_eEcalIsoPat);
-  _HMTTree->Branch("eHcalIsoPat", &_eHcalIsoPat);
-  _HMTTree->Branch("eTrkIsoPat", &_eTrkIsoPat);
-  _HMTTree->Branch("eIsoPat", &_eIsoPat);
-  _HMTTree->Branch("heepEcalIso", &_heepEcalIso);
-  _HMTTree->Branch("heepHcalIso", &_heepHcalIso);
-  _HMTTree->Branch("heepHcalIsoDepth1", &_heepHcalIsoDepth1);
-  _HMTTree->Branch("heepHcalIsoDepth2", &_heepHcalIsoDepth2);
-  _HMTTree->Branch("heepEcalHcalIsoDepth1", &_heepEcalHcalIsoDepth1);
-  _HMTTree->Branch("eUserEcalIso", &_eUserEcalIso);
-  _HMTTree->Branch("eUserHcalIso", &_eUserHcalIso);
-  _HMTTree->Branch("eUserTrkIso", &_eUserTrkIso);
-  _HMTTree->Branch("eSCE1x5", &_eSCE1x5);
-  _HMTTree->Branch("eSCE2x5", &_eSCE2x5);
-  _HMTTree->Branch("eSCE5x5", &_eSCE5x5);
-  _HMTTree->Branch("eIp", &_eIp);
-  _HMTTree->Branch("eIpError", &_eIpError);
-  _HMTTree->Branch("eIp_ctf", &_eIp_ctf);
-  _HMTTree->Branch("eIpError_ctf",&_eIpError_ctf);
-  _HMTTree->Branch("eClass", &_eClass);
-  _HMTTree->Branch("eMissingHits", &_eMissingHits);
-  _HMTTree->Branch("eIdRobustTight", &_eIdRobustTight);
-  _HMTTree->Branch("eIdRobustLoose", &_eIdRobustLoose);
-  _HMTTree->Branch("eIdTight", &_eIdTight);
-  _HMTTree->Branch("eIdLoose", &_eIdLoose);
-  _HMTTree->Branch("eIdHighEnergy", &_eIdHighEnergy);
-  _HMTTree->Branch("heepPassedEt", &_heepPassedEt);
-  _HMTTree->Branch("heepPassedPt", &_heepPassedPt);
-  _HMTTree->Branch("heepPassedDetEta", &_heepPassedDetEta);
-  _HMTTree->Branch("heepPassedCrack", &_heepPassedCrack);
-  _HMTTree->Branch("heepPassedDEtaIn", &_heepPassedDEtaIn);
-  _HMTTree->Branch("heepPassedDPhiIn", &_heepPassedDPhiIn);
-  _HMTTree->Branch("heepPassedHadem", &_heepPassedHadem);
-  _HMTTree->Branch("heepPassedSigmaIEtaIEta", &_heepPassedSigmaIEtaIEta);
-  _HMTTree->Branch("heepPassed2by5Over5By5", &_heepPassed2by5Over5By5);
-  _HMTTree->Branch("heepPassedEcalHad1Iso", &_heepPassedEcalHad1Iso);
-  _HMTTree->Branch("heepPassedHad2Iso", &_heepPassedHad2Iso);
-  _HMTTree->Branch("heepPassedTrkIso", &_heepPassedTrkIso);
-  _HMTTree->Branch("heepPassedEcalDriven", &_heepPassedEcalDriven);
-  _HMTTree->Branch("heepPassedAllCuts", &_heepPassedAllCuts);
-  
+  _HMTTree->Branch("tauTrkIsoPat",&_tauTrkIsoPat);
+  _HMTTree->Branch("muTrkIsoPat", &_muTrkIsoPat);
   _HMTTree->Branch("mEt", &_mEt);
-  _HMTTree->Branch("eTauMass",&_eTauMass);
-  _HMTTree->Branch("eTauCosDPhi",&_eTauCosDPhi);
-  _HMTTree->Branch("eTauDeltaR",&_eTauDelatR);
-  _HMTTree->Branch("eTauMetMass",&_eTauMetMass);
-  _HMTTree->Branch("eTauCollMass",&_eTauCollMass);
-  _HMTTree->Branch("eTauPZeta", &_eTauPZeta);
-  _HMTTree->Branch("eTauPZetaVis", &_eTauPZetaVis);
-  _HMTTree->Branch("diTauMass",&_diTauMass);
-  _HMTTree->Branch("diTauPt",&_diTauPt);
-  _HMTTree->Branch("diTauEt",&_diTauEt); 
-
-  //-------Jet Info
+  _HMTTree->Branch("zeta", &_zeta);
+  _HMTTree->Branch("muTauMetMass",&_muTauMetMass);
+  _HMTTree->Branch("muMetMass",&_muMetMass);
+  _HMTTree->Branch("OSLS",  &_OSLS);
   _HMTTree->Branch("jetPt",  &_jetPt);
   _HMTTree->Branch("jetEt",  &_jetEt);
-  _HMTTree->Branch("jetE",   &_jetE);
   _HMTTree->Branch("jetEta", &_jetEta); 
   _HMTTree->Branch("jetPhi", &_jetPhi);
   _HMTTree->Branch("jetEmFraction", &_jetEmFraction);
- 
-  //-----Gen resolution
-  _HMTTree->Branch("egenPt",  &_egenPt);
-  _HMTTree->Branch("egenE",   &_egenE);
-  _HMTTree->Branch("egenPhi", &_egenPhi);
-  _HMTTree->Branch("egenEta", &_egenEta);
-
-  _HMTTree->Branch("taugenPt",  &_taugenPt);
-  _HMTTree->Branch("taugenE",   &_taugenE);
-  _HMTTree->Branch("taugenPhi", &_taugenPhi);
-  _HMTTree->Branch("taugenEta", &_taugenEta);
-
-  _HMTTree->Branch("isEE", &_isEEv);
-  _HMTTree->Branch("isEB", &_isEBv);
-  _HMTTree->Branch("isEBEEGap",&_isEBEEGap) ;  
-  _HMTTree->Branch("isEBEtaGap",&_isEBEtaGap); 
-  _HMTTree->Branch("isEBPhiGap",&_isEBPhiGap) ; 
-  _HMTTree->Branch("isEEDeeGap",&_isEEDeeGap) ; 
-  _HMTTree->Branch("isEERingGap",&_isEERingGap) ;
-  
-  _HMTTree->Branch("eEcalDriven",        &_eEcalDrivenv);
-  _HMTTree->Branch("eTrkDriven",         &_eTrkDrivenv);
-
-  _HMTTree->Branch("PDF_weights",        &_PDF_weightsv);
-  _HMTTree->Branch("ISR_gluon_weights",  &_ISR_gluon_weightsv);
-  _HMTTree->Branch("ISR_gamma_weights",  &_ISR_gamma_weightsv);
-  _HMTTree->Branch("FSR_weights",        &_FSR_weightsv);
-
   _HMTTree->Branch("bJetDiscrByTrackCounting",&_bJetDiscrByTrackCounting);
   _HMTTree->Branch("bJetDiscrBySimpleSecondaryV",&_bJetDiscrBySimpleSecondaryV);
   _HMTTree->Branch("bJetDiscrByCombinedSecondaryV",&_bJetDiscrByCombinedSecondaryV);
 
-  _HMTTree->Branch("tauTancDiscOnePercent",&_tauTancDiscOnePercent);	      
-  _HMTTree->Branch("tauTancDiscHalfPercent",&_tauTancDiscHalfPercent);	      
-  _HMTTree->Branch("tauTancDiscQuarterPercent",&_tauTancDiscQuarterPercent);  
-  _HMTTree->Branch("tauTancDiscTenthPercent",&_tauTancDiscTenthPercent);   
-
 }
+
 // Initialize the vectors for the ntuple
 void HiMassTauAnalysis::initializeVectors(){
 
-  _tauMatched              = NULL;
-  _tauPdgId                = NULL;
-  _tauMotherPdgId          = NULL;
-  _tauE                    = NULL;
-  _tauEt                   = NULL; 
-  _tauPt                   = NULL; 
-  _tauCharge               = NULL;
-  _tauEta                  = NULL;
-  _tauPhi                  = NULL;
-  _tauNProngs              = NULL;
-  _tauLTPt                 = NULL;
-  _tauLTChi2               = NULL;
-  _tauLTRecHitsSize        = NULL;
-  _tauIsoTrackPtSum        = NULL;
-  _tauIsoTrkPtSumDR1_0MinPt1_0    = NULL;
-  _tauIsoTrkPtSumDR1_0MinPt0_5    = NULL;
-  _tauIsoTrkPtSumDR0_75MinPt1_0   = NULL;
-  _tauIsoTrkPtSumDR0_75MinPt0_5   = NULL;
-  _tauIsoGammaEtSum               = NULL;
-  _tauIsoGammaEtSumDR1_0MinPt1_5  = NULL;
-  _tauIsoGammaEtSumDR1_0MinPt1_0  = NULL;
-  _tauIsoGammaEtSumDR0_75MinPt1_5 = NULL;
-  _tauIsoGammaEtSumDR0_75MinPt1_0 = NULL;
-  _tauEmFraction                  = NULL;
-  _tauHcalTotOverPLead            = NULL;
-  _tauHcalMaxOverPLead            = NULL;
-  _tauHcal3x3OverPLead            = NULL;
-  _tauElectronPreId               = NULL;
-  _tauModifiedEOverP              = NULL;
-  _tauBremsRecoveryEOverPLead     = NULL;
-  _tauDiscAgainstElec             = NULL;
-  _tauLTCharge                    = NULL;
-  _tauLTSignedIp                  = NULL;
-  _tauIsInTheCraks                = NULL;
-  
-  _eventIsZee     = NULL;
-  _zeeMass        = NULL;
-  _zeePtAsymm     = NULL;
-  _eMatched       = NULL;
-  _ePdgId         = NULL;
-  _eMotherPdgId   = NULL;
-  _eE             = NULL;
-  _eEt            = NULL;
-  _ePt            = NULL;
-  _eCharge        = NULL;
-  _eEta           = NULL;
-  _ePhi           = NULL;
-  _eSigmaEtaEta   = NULL;
-  _eSigmaIEtaIEta = NULL;
-  _eEOverP        = NULL;
-  _eHOverEm       = NULL;
-  _eDeltaPhiIn    = NULL;
-  _eDeltaEtaIn    = NULL;
-  _eEcalIsoPat = NULL;
-  _eHcalIsoPat = NULL;
-  _eTrkIsoPat = NULL;
-  _eIsoPat = NULL;
-  _heepEcalIso = NULL;
-  _heepHcalIso = NULL;
-  _heepHcalIsoDepth1 = NULL;	 
-  _heepHcalIsoDepth2 = NULL;	 
-  _heepEcalHcalIsoDepth1 = NULL;
-  _eUserEcalIso = NULL;
-  _eUserTrkIso = NULL;
-  _eUserHcalIso = NULL;  
-  _eSCE1x5        = NULL;
-  _eSCE2x5        = NULL;
-  _eSCE5x5        = NULL;
-  _eIp            = NULL;
-  _eIpError       = NULL;
-  _eIp_ctf        = NULL; 
-  _eIpError_ctf   = NULL;
-  _eClass         = NULL;
-  _eMissingHits   = NULL;
-  _eIdRobustTight   = NULL;
-  _eIdRobustLoose   = NULL;
-  _eIdTight   = NULL;
-  _eIdLoose   = NULL;
-  _eIdHighEnergy   = NULL;
-  _heepPassedEt = NULL;
-  _heepPassedPt = NULL;
-  _heepPassedDetEta = NULL;
-  _heepPassedCrack = NULL;
-  _heepPassedDEtaIn = NULL;
-  _heepPassedDPhiIn = NULL;
-  _heepPassedHadem = NULL;
-  _heepPassedSigmaIEtaIEta = NULL;
-  _heepPassed2by5Over5By5 = NULL;
-  _heepPassedEcalHad1Iso = NULL;
-  _heepPassedHad2Iso = NULL;
-  _heepPassedTrkIso = NULL;
-  _heepPassedEcalDriven = NULL;
-  _heepPassedAllCuts = NULL;
-  
-  _mEt            = NULL;
-  
-  _eTauMass       = NULL;
-  _eTauCosDPhi    = NULL;
-  _eTauDelatR     = NULL;
-  _eTauMetMass    = NULL;
-  _eTauCollMass   = NULL;
-  _eTauPZeta      = NULL;
-  _eTauPZetaVis   = NULL;
-    
-  _diTauMass      = NULL;
-  _diTauPt        = NULL;
-  _diTauEt        = NULL;
-
-  //------Jet info
   _jetPt  = NULL;
   _jetEt  = NULL;
-  _jetE   = NULL;
   _jetPhi = NULL;
   _jetEta = NULL;
   _jetEmFraction = NULL;
-
-  //-----Gen resolution
-  _egenPt  = NULL;
-  _egenE   = NULL;
-  _egenEta = NULL;
-  _egenPhi = NULL;
-
-  _taugenPt  = NULL;
-  _taugenE   = NULL;
-  _taugenEta = NULL;
-  _taugenPhi = NULL;
- 
-  _isEEv        = NULL;
-  _isEBv        = NULL;
-  _isEBEEGap    = NULL;  
-  _isEBEtaGap   = NULL; 
-  _isEBPhiGap   = NULL; 
-  _isEEDeeGap   = NULL; 
-  _isEERingGap  = NULL;
-
-  _eEcalDrivenv        = NULL;
-  _eTrkDrivenv         = NULL;
-  _PDF_weightsv        = NULL;
-  _ISR_gluon_weightsv  = NULL;
-  _ISR_gamma_weightsv  = NULL;
-  _FSR_weightsv        = NULL;
-
   _bJetDiscrByTrackCounting = NULL;	  
   _bJetDiscrBySimpleSecondaryV = NULL;   
   _bJetDiscrByCombinedSecondaryV = NULL; 
-
-  _tauTancDiscOnePercent = NULL;
-  _tauTancDiscHalfPercent = NULL;
-  _tauTancDiscQuarterPercent = NULL;
-  _tauTancDiscTenthPercent = NULL;
-
+  _tauTrkIsoPat  = NULL;
+  _muTrkIsoPat  = NULL;
+  _mEt  = NULL;
+  _zeta  = NULL;
+  _muTauMetMass  = NULL;
+  _muMetMass  = NULL;
+  _OSLS  = NULL;
 
 }
+
 // clear the vectors vefore each event
 void HiMassTauAnalysis::clearVectors(){
 
-  _tauMatched->clear();
-  _tauPdgId->clear();
-  _tauMotherPdgId->clear();
-  _tauE->clear();
-  _tauEt->clear(); 
-  _tauPt->clear(); 
-  _tauCharge->clear();
-  _tauEta->clear();
-  _tauPhi->clear();
-  _tauNProngs->clear();
-  _tauIsoTrackPtSum->clear();
-  _tauIsoTrkPtSumDR1_0MinPt1_0->clear();
-  _tauIsoTrkPtSumDR1_0MinPt0_5->clear();
-  _tauIsoTrkPtSumDR0_75MinPt1_0->clear();
-  _tauIsoTrkPtSumDR0_75MinPt0_5->clear();
-  
-  _tauIsoGammaEtSum->clear();
-  _tauIsoGammaEtSumDR1_0MinPt1_5->clear();
-  _tauIsoGammaEtSumDR1_0MinPt1_0->clear();
-  _tauIsoGammaEtSumDR0_75MinPt1_5->clear();
-  _tauIsoGammaEtSumDR0_75MinPt1_0->clear();
-  _tauLTPt->clear();
-  _tauLTChi2->clear();
-  _tauLTRecHitsSize->clear();
-  _tauEmFraction->clear();
-  _tauHcalTotOverPLead->clear();
-  _tauHcalMaxOverPLead->clear();
-  _tauHcal3x3OverPLead->clear();
-  _tauElectronPreId->clear();
-  _tauModifiedEOverP->clear();
-  _tauBremsRecoveryEOverPLead->clear();
-  _tauDiscAgainstElec->clear();
-  _tauLTCharge->clear();
-  _tauLTSignedIp->clear();
-  _tauIsInTheCraks->clear();  
-  _eventIsZee->clear();
-  _zeeMass->clear();
-  _zeePtAsymm->clear();
-  _eMatched->clear();
-  _ePdgId->clear();
-  _eMotherPdgId->clear();
-  _eE->clear();
-  _eEt->clear();
-  _ePt->clear();
-  _eCharge->clear();
-  _eEta->clear();
-  _ePhi->clear();
-  _eSigmaEtaEta->clear();
-  _eSigmaIEtaIEta->clear();
-  _eEOverP->clear();
-  _eHOverEm->clear();
-  _eDeltaPhiIn->clear();
-  _eDeltaEtaIn->clear();
-  _eEcalIsoPat->clear();
-  _eHcalIsoPat->clear();
-  _eTrkIsoPat->clear();
-  _eIsoPat->clear();
-  _heepEcalIso->clear();
-  _heepHcalIso->clear();
-  _heepHcalIsoDepth1->clear();	 
-  _heepHcalIsoDepth2->clear();	 
-  _heepEcalHcalIsoDepth1->clear();
-  _eUserEcalIso->clear();
-  _eUserTrkIso->clear();
-  _eUserHcalIso->clear();
- 
-  _eSCE1x5->clear();
-  _eSCE2x5->clear();
-  _eSCE5x5->clear();
-  _eIp->clear();
-  _eIpError->clear();
-  _eIp_ctf->clear();
-  _eIpError_ctf->clear();
-  _eClass->clear();
-  _eMissingHits->clear();
-  _eIdRobustTight->clear();
-  _eIdRobustLoose->clear();
-  _eIdTight->clear();
-  _eIdLoose->clear();
-  _eIdHighEnergy->clear();
-  _heepPassedEt->clear();
-  _heepPassedPt->clear();
-  _heepPassedDetEta->clear();
-  _heepPassedCrack->clear();
-  _heepPassedDEtaIn->clear();
-  _heepPassedDPhiIn->clear();
-  _heepPassedHadem->clear();
-  _heepPassedSigmaIEtaIEta->clear();
-  _heepPassed2by5Over5By5->clear();
-  _heepPassedEcalHad1Iso->clear();
-  _heepPassedHad2Iso->clear();
-  _heepPassedTrkIso->clear();
-  _heepPassedEcalDriven->clear();
-  _heepPassedAllCuts->clear();
-  _mEt->clear();
-    
-  _eTauMass->clear();
-  _eTauCosDPhi->clear();
-  _eTauDelatR->clear();
-  _eTauMetMass->clear();
-  _eTauCollMass->clear();
-  _eTauPZeta->clear();
-  _eTauPZetaVis->clear();
- 
-  _diTauMass->clear();
-  _diTauPt->clear();
-  _diTauEt->clear();
-
-    //------Jet info
   _jetPt->clear();
   _jetEt->clear();
-  _jetE->clear();
   _jetPhi->clear();
   _jetEta->clear();
   _jetEmFraction->clear();
-
-  //-----Gen resolution
-  _egenPt->clear();
-  _egenE->clear();
-  _egenEta->clear();
-  _egenPhi->clear();
-
-  _taugenPt->clear();
-  _taugenE->clear();
-  _taugenEta->clear();
-  _taugenPhi->clear();
-
-  _isEEv->clear();
-  _isEBv->clear();
-  _isEBEEGap->clear();
-  _isEBEtaGap->clear();
-  _isEBPhiGap->clear();
-  _isEEDeeGap->clear();
-  _isEERingGap->clear();
-
-  _eEcalDrivenv->clear();
-  _eTrkDrivenv ->clear();
-  _PDF_weightsv->clear();
-  _ISR_gluon_weightsv->clear();
-  _ISR_gamma_weightsv->clear();
-  _FSR_weightsv->clear();
-
-  _tauTancDiscOnePercent->clear();
-  _tauTancDiscHalfPercent->clear();
-  _tauTancDiscQuarterPercent->clear();
-  _tauTancDiscTenthPercent->clear();
-
-  _bJetDiscrByTrackCounting->clear();	  
-  _bJetDiscrBySimpleSecondaryV->clear();   
-  _bJetDiscrByCombinedSecondaryV->clear(); 
+  _bJetDiscrByTrackCounting->clear();
+  _bJetDiscrBySimpleSecondaryV->clear();
+  _bJetDiscrByCombinedSecondaryV->clear();
+  _tauTrkIsoPat->clear();
+  _muTrkIsoPat->clear();
+  _mEt->clear();
+  _zeta->clear();
+  _muTauMetMass->clear();
+  _muMetMass->clear();
+  _OSLS->clear();
 
 }
 
@@ -748,13 +481,11 @@ void HiMassTauAnalysis::analyze(const Event& iEvent, const EventSetup& iSetup) {
   //------Number of events analyzed (denominator)
   _totalEvents++;
 
-//  std::cout << "before pdf" << std::endl;
-
   //-----Get weights for the calculation of pdf systematic uncertainties for the denominator
   pdfWeightVector.clear();
   if(_CalculatePdfSystematicUncertanties) {
     for (unsigned int i=0; i<pdfWeightTags_.size(); ++i) {
-//      std::cout << "pdf tag = " << pdfWeightTags_[i] << std::endl;
+      //std::cout << "pdf tag = " << pdfWeightTags_[i] << std::endl;
       edm::Handle<std::vector<double> > weightHandle;
       iEvent.getByLabel(pdfWeightTags_[i], weightHandle);
       std::vector<double> weights = (*weightHandle);
@@ -766,12 +497,10 @@ void HiMassTauAnalysis::analyze(const Event& iEvent, const EventSetup& iSetup) {
       }
       for (unsigned int j=0; j<nmembers; ++j) {
         weightedEvents_Denominator_[pdfStart_Denominator_[i]+j] += weights[j];
-//        std::cout << "weight member " << j << " = " << weights[j] << std::endl;
+        //std::cout << "weight member " << j << " = " << weights[j] << std::endl;
       }
     }
-  }else{
-    pdfWeightVector.push_back(1);
-  } 
+  } else{ pdfWeightVector.push_back(1); } 
 
   //------Grab the handle to the relevant collections
   getCollections(iEvent,iSetup);
@@ -802,9 +531,7 @@ void HiMassTauAnalysis::analyze(const Event& iEvent, const EventSetup& iSetup) {
         }
       }
     }
-  } else {
-    isrgluon_weight = 1;
-  }
+  } else { isrgluon_weight = 1; }
 
   if(_CalculateISRGammaSystematics) {
     isrgamma_weight = 1;
@@ -871,9 +598,7 @@ void HiMassTauAnalysis::analyze(const Event& iEvent, const EventSetup& iSetup) {
       isrgamma_weight = 1. - 2*t*u/(s*s+MV*MV*MV*MV);
       //printf(">>>>>>>>> s %f t %f u %f, MV %f, weight = %f\n", s, t, u, MV, (*weight));
     }
-  } else {
-    isrgamma_weight = 1;
-  }
+  } else { isrgamma_weight = 1; }
 
   //------Calculate event weight for fsr systematic uncertanties
   if(_CalculateFSRSystematics) {
@@ -928,69 +653,143 @@ void HiMassTauAnalysis::analyze(const Event& iEvent, const EventSetup& iSetup) {
 	fsr_weight *= alphaRatio(photonEnergy*sqrt(1-pow(costheta,2)));
       }
     }
-  } else {
-    fsr_weight = 1;
-  }
+  } else { fsr_weight = 1; }
+
+  trig_weight = 1;
 
   // deltas for recalculation of MET (used when studying systematics)
   deltaForMEx = 0;
   deltaForMEy = 0;
 
-  //-----Smearing momentum and position for systematic uncertanties
+  if(_CalculatePUSystematics) {
+    float unirand = (float)(gRandom->Uniform(0,1));
+    if(unirand<=0.225) {
+      double rndphi = gRandom->Uniform(-TMath::Pi(),TMath::Pi());
+      double rndmet = fabs(CLHEP::RandGauss::shoot(0, 3.5));
+      deltaForMEx = deltaForMEx + (1.2 * rndmet * sqrt(1.0) * cos(rndphi));
+      deltaForMEy = deltaForMEy + (1.2 * rndmet * sqrt(1.0) * sin(rndphi));
+    } else if(unirand<=0.512) {
+      double rndphi = gRandom->Uniform(-TMath::Pi(),TMath::Pi());
+      double rndmet = fabs(CLHEP::RandGauss::shoot(0, 3.5));
+      deltaForMEx = deltaForMEx + (1.2 * rndmet * sqrt(2.0) * cos(rndphi));
+      deltaForMEy = deltaForMEy + (1.2 * rndmet * sqrt(2.0) * sin(rndphi));
+    } else if(unirand<=0.780) {
+      double rndphi = gRandom->Uniform(-TMath::Pi(),TMath::Pi());
+      double rndmet = fabs(CLHEP::RandGauss::shoot(0, 3.5));
+      deltaForMEx = deltaForMEx + (1.2 * rndmet * sqrt(3.0) * cos(rndphi));
+      deltaForMEy = deltaForMEy + (1.2 * rndmet * sqrt(3.0) * sin(rndphi));
+    } else if(unirand<=0.919) {
+      double rndphi = gRandom->Uniform(-TMath::Pi(),TMath::Pi());
+      double rndmet = fabs(CLHEP::RandGauss::shoot(0, 3.5));
+      deltaForMEx = deltaForMEx + (1.2 * rndmet * sqrt(4.0) * cos(rndphi));
+      deltaForMEy = deltaForMEy + (1.2 * rndmet * sqrt(4.0) * sin(rndphi));
+    } else if(unirand<=0.976) {
+      double rndphi = gRandom->Uniform(-TMath::Pi(),TMath::Pi());
+      double rndmet = fabs(CLHEP::RandGauss::shoot(0, 3.5));
+      deltaForMEx = deltaForMEx + (1.2 * rndmet * sqrt(5.0) * cos(rndphi));
+      deltaForMEy = deltaForMEy + (1.2 * rndmet * sqrt(5.0) * sin(rndphi));
+    } else if(unirand<=0.986) {
+      double rndphi = gRandom->Uniform(-TMath::Pi(),TMath::Pi());
+      double rndmet = fabs(CLHEP::RandGauss::shoot(0, 3.5));
+      deltaForMEx = deltaForMEx + (1.2 * rndmet * sqrt(6.0) * cos(rndphi));
+      deltaForMEy = deltaForMEy + (1.2 * rndmet * sqrt(6.0) * sin(rndphi));
+    } else {
+      double rndphi = gRandom->Uniform(-TMath::Pi(),TMath::Pi());
+      double rndmet = fabs(CLHEP::RandGauss::shoot(0, 3.5));
+      deltaForMEx = deltaForMEx + (1.2 * rndmet * sqrt(7.0) * cos(rndphi));
+      deltaForMEy = deltaForMEy + (1.2 * rndmet * sqrt(7.0) * sin(rndphi));
+    }
+  }
+
+  //-----Smearing momentum and position for systematic uncertanties and calculation of MET deltas
   smearedMuonMomentumVector.clear();
+  smearedMuonPtEtaPhiMVector.clear();
   if(((_AnalyzeMuonForLeg1) || (_AnalyzeMuonForLeg2))) {
     if(_SmearTheMuon) {
       for(pat::MuonCollection::const_iterator patMuon = _patMuons->begin();patMuon != _patMuons->end();++patMuon) {
-        smearedMuonMomentumVector.push_back(SmearLightLepton(*patMuon));
-        deltaForMEx = deltaForMEx + patMuon->px() - SmearLightLepton(*patMuon).px();
-        deltaForMEy = deltaForMEy + patMuon->py() - SmearLightLepton(*patMuon).py();
+        smearedMuonMomentumVector.push_back(SmearLightLepton(*patMuon).first);
+        smearedMuonPtEtaPhiMVector.push_back(SmearLightLepton(*patMuon).second);
+        deltaForMEx = deltaForMEx + patMuon->px() - SmearLightLepton(*patMuon).first.px();
+        deltaForMEy = deltaForMEy + patMuon->py() - SmearLightLepton(*patMuon).first.py();
       }
     } else {
       for(pat::MuonCollection::const_iterator patMuon = _patMuons->begin();patMuon != _patMuons->end();++patMuon) {
         smearedMuonMomentumVector.push_back(patMuon->p4());
+        math::PtEtaPhiMLorentzVector thePtEtaPhiMVector(patMuon->pt(), patMuon->eta(), patMuon->phi(), patMuon->mass());
+        smearedMuonPtEtaPhiMVector.push_back(thePtEtaPhiMVector);
       }
     }
   }
   smearedElectronMomentumVector.clear();
+  smearedElectronPtEtaPhiMVector.clear();
   if(((_AnalyzeElectronForLeg1) || (_AnalyzeElectronForLeg2))) {
     if(_SmearTheElectron) {
       for(pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin();patElectron != _patElectrons->end();++patElectron) {
-        smearedElectronMomentumVector.push_back(SmearLightLepton(*patElectron));
-        deltaForMEx = deltaForMEx + patElectron->px() - SmearLightLepton(*patElectron).px();
-        deltaForMEy = deltaForMEy + patElectron->py() - SmearLightLepton(*patElectron).py();
+        smearedElectronMomentumVector.push_back(SmearLightLepton(*patElectron).first);
+        smearedElectronPtEtaPhiMVector.push_back(SmearLightLepton(*patElectron).second);
+        deltaForMEx = deltaForMEx + patElectron->px() - SmearLightLepton(*patElectron).first.px();
+        deltaForMEy = deltaForMEy + patElectron->py() - SmearLightLepton(*patElectron).first.py();
       }
     } else {
       for(pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin();patElectron != _patElectrons->end();++patElectron) {
         smearedElectronMomentumVector.push_back(patElectron->p4());
+        if(_UseHeepInfo) {
+          heep::Ele theHeepElec(*patElectron);
+          math::PtEtaPhiMLorentzVector thePtEtaPhiMVector(theHeepElec.et(), theHeepElec.scEta(), patElectron->phi(), patElectron->mass());
+          smearedElectronPtEtaPhiMVector.push_back(thePtEtaPhiMVector);
+        } else {
+          math::PtEtaPhiMLorentzVector thePtEtaPhiMVector(patElectron->pt(), patElectron->eta(), patElectron->phi(), patElectron->mass());
+          smearedElectronPtEtaPhiMVector.push_back(thePtEtaPhiMVector);
+        }
       }
     }
   }
   smearedTauMomentumVector.clear();
+  smearedTauPtEtaPhiMVector.clear();
   if(((_AnalyzeTauForLeg1) || (_AnalyzeTauForLeg2))) {
     if(_SmearTheTau) {
       for(pat::TauCollection::const_iterator patTau = _patTaus->begin();patTau != _patTaus->end();++patTau) {
-        smearedTauMomentumVector.push_back(SmearTau(*patTau));
-        deltaForMEx = deltaForMEx + patTau->px() - SmearTau(*patTau).px();
-        deltaForMEy = deltaForMEy + patTau->py() - SmearTau(*patTau).py();
+        smearedTauMomentumVector.push_back(SmearTau(*patTau).first);
+        smearedTauPtEtaPhiMVector.push_back(SmearTau(*patTau).second);
+        deltaForMEx = deltaForMEx + patTau->px() - SmearTau(*patTau).first.px();
+        deltaForMEy = deltaForMEy + patTau->py() - SmearTau(*patTau).first.py();
       }
     } else {
       for(pat::TauCollection::const_iterator patTau = _patTaus->begin();patTau != _patTaus->end();++patTau) {
         smearedTauMomentumVector.push_back(patTau->p4());
+        math::PtEtaPhiMLorentzVector thePtEtaPhiMVector(patTau->pt(), patTau->eta(), patTau->phi(), patTau->mass());
+        smearedTauPtEtaPhiMVector.push_back(thePtEtaPhiMVector);
       }
     }
   }
   smearedJetMomentumVector.clear();
+  smearedJetPtEtaPhiMVector.clear();
   if(_SmearTheJet) {
     for ( pat::JetCollection::const_iterator patJet = _patJets->begin(); patJet != _patJets->end(); ++patJet ) {
-      smearedJetMomentumVector.push_back(SmearJet(*patJet));
-      deltaForMEx = deltaForMEx + patJet->px() - SmearJet(*patJet).px();
-      deltaForMEy = deltaForMEy + patJet->py() - SmearJet(*patJet).py();
+      smearedJetMomentumVector.push_back(SmearJet(*patJet).first);
+      smearedJetPtEtaPhiMVector.push_back(SmearJet(*patJet).second);
+      deltaForMEx = deltaForMEx + patJet->px() - SmearJet(*patJet).first.px();
+      deltaForMEy = deltaForMEy + patJet->py() - SmearJet(*patJet).first.py();
     }
   } else {
     for ( pat::JetCollection::const_iterator patJet = _patJets->begin(); patJet != _patJets->end(); ++patJet ) {
-      smearedJetMomentumVector.push_back(patJet->p4());
+      if(_UseCorrectedJet) {
+        smearedJetMomentumVector.push_back(patJet->p4());
+        math::PtEtaPhiMLorentzVector thePtEtaPhiMVector(patJet->pt(), patJet->eta(), patJet->phi(), patJet->mass());
+        smearedJetPtEtaPhiMVector.push_back(thePtEtaPhiMVector);
+      } else {
+        smearedJetMomentumVector.push_back(patJet->correctedJet("raw","").p4());
+        math::PtEtaPhiMLorentzVector thePtEtaPhiMVector(patJet->correctedJet("raw","").pt(), patJet->correctedJet("raw","").eta(), patJet->correctedJet("raw","").phi(), patJet->correctedJet("raw","").mass());
+        smearedJetPtEtaPhiMVector.push_back(thePtEtaPhiMVector);
+      }
     }
   }
+  double temppx = (*(_patMETs->begin())).px() + deltaForMEx;
+  double temppy = (*(_patMETs->begin())).py() + deltaForMEy;
+  double temppz = (*(_patMETs->begin())).pz();
+  double temppt = TMath::Sqrt((temppx*temppx) + (temppy*temppy));
+  reco::Candidate::LorentzVector theTempMETVector(temppx,temppy,temppz,temppt);
+  theMETVector = theTempMETVector;
 
   if(_totalEvents == 1) {
     bookHistograms();
@@ -1002,17 +801,16 @@ void HiMassTauAnalysis::analyze(const Event& iEvent, const EventSetup& iSetup) {
 
   //------Number of events analyzed (denominator)
   for(unsigned int NpdfID = 0; NpdfID < pdfWeightVector.size();  NpdfID++){ 
-    _hEvents[NpdfID]->Fill(0.0,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+//    _hEvents[NpdfID]->Fill(0.0,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+    _hEvents[NpdfID]->Fill(0.0);
   }
 
   //------Get the event flags (did the event pass the cuts?)
   getEventFlags(iEvent);
-  if (_DoProduceNtuple){
-    fillNtuple();
-    clearVectors();
-  }
 
   if (!passEventSelectionSequence()) return;  
+
+  isrgluon_weight = isrgluon_weight * trig_weight;
 
   //------Number of events passing cuts (numerator)
   _totalEventsPassingCuts++;
@@ -1023,7 +821,7 @@ void HiMassTauAnalysis::analyze(const Event& iEvent, const EventSetup& iSetup) {
   //-----Get weights for the calculation of pdf systematic uncertainties for the numerator
   if(_CalculatePdfSystematicUncertanties) {
     for (unsigned int i=0; i<pdfWeightTags_.size(); ++i) {
-//      std::cout << "pdf tag = " << pdfWeightTags_[i] << std::endl;
+      //std::cout << "pdf tag = " << pdfWeightTags_[i] << std::endl;
       edm::Handle<std::vector<double> > weightHandle;
       iEvent.getByLabel(pdfWeightTags_[i], weightHandle);
       std::vector<double> weights = (*weightHandle);
@@ -1034,9 +832,14 @@ void HiMassTauAnalysis::analyze(const Event& iEvent, const EventSetup& iSetup) {
       }
       for (unsigned int j=0; j<nmembers; ++j) {
         weightedEvents_Numerator_[pdfStart_Numerator_[i]+j] += weights[j];
-//        std::cout << "weight member " << j << " = " << weights[j] << std::endl;
+        //std::cout << "weight member " << j << " = " << weights[j] << std::endl;
       }
     }
+  }
+
+  if (_DoProduceNtuple){
+    fillNtuple();
+    clearVectors();
   }
 
   //------If the event passed the cut criteria, then fill histograms and ntuple
@@ -1071,9 +874,7 @@ void HiMassTauAnalysis::printEfficiency() {
 }
 
 void HiMassTauAnalysis::setMapSelectionAlgoIDs() {
-  for (unsigned int i=0;i<_EventSelectionSequence.size();i++) {
-    _mapSelectionAlgoID[_EventSelectionSequence[i]] = i;
-  }
+  for (unsigned int i=0;i<_EventSelectionSequence.size();i++) { _mapSelectionAlgoID[_EventSelectionSequence[i]] = i; }
 }
 
 void HiMassTauAnalysis::getEventFlags(const Event& iEvent) {
@@ -1096,13 +897,11 @@ void HiMassTauAnalysis::getEventFlags(const Event& iEvent) {
   if(nLeg2 == 0) {std::cerr << "### HiMassTauAnalysis - CONFIGURATION ERROR:  ZERO objects for leg2!!!! " << std::endl;exit(1);}
 
   // ------Does the event pass trigger requirements?
-//  std::cout << "trigger selections ..." << std::endl;
   int nTriggersSatisfied = 0;
   if(passRecoTriggerCuts(iEvent)) {nTriggersSatisfied++;}
   if (nTriggersSatisfied>=_RecoTriggersNmin) _EventFlag[_mapSelectionAlgoID["RecoTriggersNmin"]] = true;
 
   // ------Number of Good Vertices
-//  std::cout << "vertex selections ..." << std::endl;
   int nGoodVertices = 0;
   for ( reco::VertexCollection::const_iterator primaryVertex = _primaryEventVertexCollection->begin();
         primaryVertex != _primaryEventVertexCollection->end(); ++primaryVertex ) {
@@ -1112,15 +911,149 @@ void HiMassTauAnalysis::getEventFlags(const Event& iEvent) {
   if (nGoodVertices>=_RecoVertexNmin) _EventFlag[_mapSelectionAlgoID["RecoVertexNmin"]] = true;
   if (nGoodVertices<=_RecoVertexNmax) _EventFlag[_mapSelectionAlgoID["RecoVertexNmax"]] = true;
 
+  //------Used only if attempting to recalculate MET using only leg1 and leg2 momenta
+  double temppx = 0;
+  double temppy = 0;
+  std::vector<int> usedMuons;
+  std::vector<int> usedElectrons;
+  std::vector<int> usedTaus;
+  usedMuons.clear();
+  usedElectrons.clear();
+  usedTaus.clear();
+  if((_AnalyzeMuonForLeg1) || (_AnalyzeMuonForLeg2)) {
+    int theNumberOfMuons = 0;
+    double maxptfortrigscalefactor = 0;
+    double etafortrigscalefactor = -6;
+    for ( pat::MuonCollection::const_iterator patMuon = _patMuons->begin(); patMuon != _patMuons->end(); ++patMuon ) {
+      usedMuons.push_back(0);
+      theNumberOfMuons++;
+      if (passRecoMuonCuts((*patMuon),theNumberOfMuons-1)) {
+        if(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt() > maxptfortrigscalefactor) {
+          maxptfortrigscalefactor = smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt();
+          etafortrigscalefactor = smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).eta();
+        }
+      }
+    }
+    if(_ApplyMuonTriggerScaleFactors) {
+      double trig_ptweight = MuonTrigptWeights_[MuonTrigptWeights_.size()-1];
+      unsigned int nbins = MuonTrigPtBinEdges_.size()-1;
+      if (maxptfortrigscalefactor>MuonTrigPtBinEdges_[0] && maxptfortrigscalefactor<MuonTrigPtBinEdges_[nbins]) {
+        bool foundCorrectBin = false;
+        for (unsigned int jtbin=1; jtbin<=nbins; ++jtbin) {
+          if(foundCorrectBin) continue;
+          if (maxptfortrigscalefactor>MuonTrigPtBinEdges_[jtbin]) continue;
+          trig_ptweight = MuonTrigptWeights_[jtbin-1];
+          foundCorrectBin = true;
+        }  
+      }  
+      double trig_etaweight = MuonTrigetaWeights_[MuonTrigetaWeights_.size()-1];
+      nbins = MuonTrigEtaBinEdges_.size()-1;
+      if (etafortrigscalefactor>MuonTrigEtaBinEdges_[0] && etafortrigscalefactor<MuonTrigEtaBinEdges_[nbins]) {
+        bool foundCorrectBin = false;
+        for (unsigned int jtbin=1; jtbin<=nbins; ++jtbin) {
+          if(foundCorrectBin) continue;
+          if (etafortrigscalefactor>MuonTrigEtaBinEdges_[jtbin]) continue;
+          trig_etaweight = MuonTrigetaWeights_[jtbin-1];
+          foundCorrectBin = true;
+        }
+      }
+      trig_weight = trig_weight * trig_ptweight * trig_etaweight;
+    }
+  }
+  if((_AnalyzeElectronForLeg1) || (_AnalyzeElectronForLeg2)) {
+    int theNumberOfElectrons = 0;
+    double maxptfortrigscalefactor = 0;
+    double etafortrigscalefactor = -6;
+    for ( pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin(); patElectron != _patElectrons->end(); ++patElectron ) {
+      usedElectrons.push_back(0);
+      theNumberOfElectrons++;
+      if (passRecoElectronCuts((*patElectron),theNumberOfElectrons-1)) {
+        if(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).pt() > maxptfortrigscalefactor) {
+          maxptfortrigscalefactor = smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).pt();
+          etafortrigscalefactor = smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).eta();
+        }
+      }
+    }
+    if(_ApplyElectronTriggerScaleFactors) {
+      double trig_ptweight = ElectronTrigptWeights_[ElectronTrigptWeights_.size()-1];
+      unsigned int nbins = ElectronTrigPtBinEdges_.size()-1;
+      if (maxptfortrigscalefactor>ElectronTrigPtBinEdges_[0] && maxptfortrigscalefactor<ElectronTrigPtBinEdges_[nbins]) {
+        bool foundCorrectBin = false;
+        for (unsigned int jtbin=1; jtbin<=nbins; ++jtbin) {
+          if(foundCorrectBin) continue;
+          if (maxptfortrigscalefactor>ElectronTrigPtBinEdges_[jtbin]) continue;
+          trig_ptweight = ElectronTrigptWeights_[jtbin-1];
+          foundCorrectBin = true;
+        }
+      }
+      double trig_etaweight = ElectronTrigetaWeights_[ElectronTrigetaWeights_.size()-1];
+      nbins = ElectronTrigEtaBinEdges_.size()-1;
+      if (etafortrigscalefactor>ElectronTrigEtaBinEdges_[0] && etafortrigscalefactor<ElectronTrigEtaBinEdges_[nbins]) {
+        bool foundCorrectBin = false;
+        for (unsigned int jtbin=1; jtbin<=nbins; ++jtbin) {
+          if(foundCorrectBin) continue;
+          if (etafortrigscalefactor>ElectronTrigEtaBinEdges_[jtbin]) continue;
+          trig_etaweight = ElectronTrigetaWeights_[jtbin-1];
+          foundCorrectBin = true;
+        }
+      }  
+      trig_weight = trig_weight * trig_ptweight * trig_etaweight;
+    }
+  }
+  if((_AnalyzeTauForLeg1) || (_AnalyzeTauForLeg2)) {
+    int theNumberOfTaus = 0;
+    double maxptfortrigscalefactor = 0;
+    double etafortrigscalefactor = -6;
+    for ( pat::TauCollection::const_iterator patTau = _patTaus->begin(); patTau != _patTaus->end(); ++patTau ) {
+      usedTaus.push_back(0);
+      theNumberOfTaus++;
+      if (passRecoTauCuts((*patTau),theNumberOfTaus-1)) {
+        if(smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt() > maxptfortrigscalefactor) {
+          maxptfortrigscalefactor = smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt();
+          etafortrigscalefactor = smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).eta();
+        }
+      }
+    }
+    if(_ApplyTauTriggerScaleFactors) {
+      double trig_ptweight = TauTrigptWeights_[TauTrigptWeights_.size()-1];
+      unsigned int nbins = TauTrigPtBinEdges_.size()-1;
+      if (maxptfortrigscalefactor>TauTrigPtBinEdges_[0] && maxptfortrigscalefactor<TauTrigPtBinEdges_[nbins]) {
+        bool foundCorrectBin = false;
+        for (unsigned int jtbin=1; jtbin<=nbins; ++jtbin) {
+          if(foundCorrectBin) continue;
+          if (maxptfortrigscalefactor>TauTrigPtBinEdges_[jtbin]) continue;
+          trig_ptweight = TauTrigptWeights_[jtbin-1];
+          foundCorrectBin = true;
+        }
+      }
+      double trig_etaweight = TauTrigetaWeights_[TauTrigetaWeights_.size()-1];
+      nbins = TauTrigEtaBinEdges_.size()-1;
+      if (etafortrigscalefactor>TauTrigEtaBinEdges_[0] && etafortrigscalefactor<TauTrigEtaBinEdges_[nbins]) {
+        bool foundCorrectBin = false;
+        for (unsigned int jtbin=1; jtbin<=nbins; ++jtbin) {
+          if(foundCorrectBin) continue;
+          if (etafortrigscalefactor>TauTrigEtaBinEdges_[jtbin]) continue;
+          trig_etaweight = TauTrigetaWeights_[jtbin-1];
+          foundCorrectBin = true;
+        }
+      }  
+      trig_weight = trig_weight * trig_ptweight * trig_etaweight;
+    }
+  }
+
   //------Number of Good Candidates for leg1
-//  std::cout << "leg1 selections ..." << std::endl;
   int nGoodCandidatesLeg1 = 0;
   if(_AnalyzeMuonForLeg1) {
     int theNumberOfMuons = 0;
     for ( pat::MuonCollection::const_iterator patMuon = _patMuons->begin(); 
   	  patMuon != _patMuons->end(); ++patMuon ) {
       theNumberOfMuons++;
-      if (!passRecoMuonCuts((*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1))) continue;
+      if (!passRecoMuonCuts((*patMuon),theNumberOfMuons-1)) continue;
+      if(_CalculateMetUsingOnlyLeg1AndLeg2) {
+        temppx += -smearedMuonMomentumVector.at(theNumberOfMuons-1).px();
+        temppy += -smearedMuonMomentumVector.at(theNumberOfMuons-1).py();
+        usedMuons[theNumberOfMuons-1] = 1;
+      }
       nGoodCandidatesLeg1++;
     }
   }
@@ -1129,7 +1062,12 @@ void HiMassTauAnalysis::getEventFlags(const Event& iEvent) {
     for ( pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin();
           patElectron != _patElectrons->end(); ++patElectron ) {
       theNumberOfElectrons++;
-      if (!passRecoElectronCuts((*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1))) continue;
+      if (!passRecoElectronCuts((*patElectron),theNumberOfElectrons-1)) continue;
+      if(_CalculateMetUsingOnlyLeg1AndLeg2) {
+        temppx += -smearedElectronMomentumVector.at(theNumberOfElectrons-1).px();
+        temppy += -smearedElectronMomentumVector.at(theNumberOfElectrons-1).py();
+        usedElectrons[theNumberOfElectrons-1] = 1;
+      }
       nGoodCandidatesLeg1++;
     }
   }
@@ -1138,7 +1076,12 @@ void HiMassTauAnalysis::getEventFlags(const Event& iEvent) {
     for ( pat::TauCollection::const_iterator patTau = _patTaus->begin(); 
 	  patTau != _patTaus->end(); ++patTau ) {
       theNumberOfTaus++;
-      if (!passRecoTauCuts((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1))) continue;
+      if (!passRecoTauCuts((*patTau),theNumberOfTaus-1)) continue;
+      if(_CalculateMetUsingOnlyLeg1AndLeg2) {
+        temppx += -smearedTauMomentumVector.at(theNumberOfTaus-1).px();
+        temppy += -smearedTauMomentumVector.at(theNumberOfTaus-1).py();
+        usedTaus[theNumberOfTaus-1] = 1;
+      }
       nGoodCandidatesLeg1++;
     }
   }
@@ -1146,14 +1089,17 @@ void HiMassTauAnalysis::getEventFlags(const Event& iEvent) {
   if (nGoodCandidatesLeg1<=_RecoLeg1Nmax) _EventFlag[_mapSelectionAlgoID["RecoLeg1Nmax"]] = true;
 
   //------Number of Good Candidates for leg2
-//  std::cout << "leg2 selections ..." << std::endl;
   int nGoodCandidatesLeg2 = 0;
   if(_AnalyzeMuonForLeg2) {
     int theNumberOfMuons = 0;
     for ( pat::MuonCollection::const_iterator patMuon = _patMuons->begin(); 
   	  patMuon != _patMuons->end(); ++patMuon ) {
       theNumberOfMuons++;
-      if (!passRecoMuonCuts((*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1))) continue;
+      if (!passRecoMuonCuts((*patMuon),theNumberOfMuons-1)) continue;
+      if((_CalculateMetUsingOnlyLeg1AndLeg2) && (usedMuons[theNumberOfMuons-1] == 0)) {
+        temppx += -smearedMuonMomentumVector.at(theNumberOfMuons-1).px();
+        temppy += -smearedMuonMomentumVector.at(theNumberOfMuons-1).py();
+      }
       nGoodCandidatesLeg2++;
     }
   }
@@ -1162,7 +1108,11 @@ void HiMassTauAnalysis::getEventFlags(const Event& iEvent) {
     for ( pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin();
           patElectron != _patElectrons->end(); ++patElectron ) {
       theNumberOfElectrons++;
-      if (!passRecoElectronCuts((*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1))) continue;
+      if (!passRecoElectronCuts((*patElectron),theNumberOfElectrons-1)) continue;
+      if((_CalculateMetUsingOnlyLeg1AndLeg2) && (usedElectrons[theNumberOfElectrons-1] == 0)) {
+        temppx += -smearedElectronMomentumVector.at(theNumberOfElectrons-1).px();
+        temppy += -smearedElectronMomentumVector.at(theNumberOfElectrons-1).py();
+      }
       nGoodCandidatesLeg2++;
     }
   }
@@ -1171,28 +1121,98 @@ void HiMassTauAnalysis::getEventFlags(const Event& iEvent) {
     for ( pat::TauCollection::const_iterator patTau = _patTaus->begin(); 
 	  patTau != _patTaus->end(); ++patTau ) {
       theNumberOfTaus++;
-      if (!passRecoTauCuts((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1))) continue;
+      if (!passRecoTauCuts((*patTau),theNumberOfTaus-1)) continue;
+      if((_CalculateMetUsingOnlyLeg1AndLeg2) && (usedTaus[theNumberOfTaus-1] == 0)) {
+        temppx += -smearedTauMomentumVector.at(theNumberOfTaus-1).px();
+        temppy += -smearedTauMomentumVector.at(theNumberOfTaus-1).py();
+      }
       nGoodCandidatesLeg2++;
     }
   }
   if (nGoodCandidatesLeg2>=_RecoLeg2Nmin) _EventFlag[_mapSelectionAlgoID["RecoLeg2Nmin"]] = true;
   if (nGoodCandidatesLeg2<=_RecoLeg2Nmax) _EventFlag[_mapSelectionAlgoID["RecoLeg2Nmax"]] = true;
 
+  if(_CalculateMetUsingOnlyLeg1AndLeg2) {
+    reco::Candidate::LorentzVector theTempMETVector(temppx,temppy,0.0,TMath::Sqrt((temppx*temppx) + (temppy*temppy)));
+    theMETVector = theTempMETVector;
+  }
+
   // ------Number of Good Jets   
-//  std::cout << "jet selections ..." << std::endl;
+  sumpxForMht = 0.0;
+  sumpyForMht = 0.0;
+  sumptForHt  = 0.0;
   int nGoodJets = 0;
   int theNumberOfJets = 0;
   for ( pat::JetCollection::const_iterator patJet = _patJets->begin(); 
 	patJet != _patJets->end(); ++patJet ) {
     theNumberOfJets++;
-    if (!passRecoJetCuts((*patJet),_SmearTheJet,smearedJetMomentumVector.at(theNumberOfJets-1))) continue;
+    if (!passRecoJetCuts((*patJet),theNumberOfJets-1)) continue;
+    sumpxForMht = sumpxForMht - smearedJetMomentumVector.at(theNumberOfJets-1).px();
+    sumpyForMht = sumpyForMht - smearedJetMomentumVector.at(theNumberOfJets-1).py();
+    sumptForHt  = sumptForHt  + smearedJetPtEtaPhiMVector.at(theNumberOfJets-1).pt();
     nGoodJets++;
   }
   if (nGoodJets>=_RecoJetNmin) _EventFlag[_mapSelectionAlgoID["RecoJetNmin"]] = true;
   if (nGoodJets<=_RecoJetNmax) _EventFlag[_mapSelectionAlgoID["RecoJetNmax"]] = true;  
 
+  // ------Number of Good Leading Jets
+  leadingjetpt = 0;
+  theNumberOfJets = 0;
+  theLeadingJetIndex = 0;
+  for ( pat::JetCollection::const_iterator patJet = _patJets->begin();
+        patJet != _patJets->end(); ++patJet ) {
+    theNumberOfJets++;
+    if(smearedJetPtEtaPhiMVector.at(theNumberOfJets-1).pt() > leadingjetpt) {leadingjetpt = smearedJetPtEtaPhiMVector.at(theNumberOfJets-1).pt(); theLeadingJetIndex = theNumberOfJets;}
+  }
+  int nGoodFirstLeadingJets = 0;
+  theNumberOfJets = 0;
+  for ( pat::JetCollection::const_iterator patJet = _patJets->begin();
+        patJet != _patJets->end(); ++patJet ) {
+    theNumberOfJets++;
+    if (theNumberOfJets != theLeadingJetIndex) continue;
+    if (!passRecoFirstLeadingJetCuts((*patJet),theNumberOfJets-1)) continue;
+    nGoodFirstLeadingJets++;
+  }
+  if (nGoodFirstLeadingJets>=_RecoFirstLeadingJetNmin) _EventFlag[_mapSelectionAlgoID["RecoFirstLeadingJetNmin"]] = true;
+
+  // ------Number of Good Second Leading Jets
+  secondleadingjetpt = 0;
+  theNumberOfJets = 0;
+  theSecondLeadingJetIndex = 0;
+  for ( pat::JetCollection::const_iterator patJet = _patJets->begin();
+        patJet != _patJets->end(); ++patJet ) {
+    theNumberOfJets++;
+    if((smearedJetPtEtaPhiMVector.at(theNumberOfJets-1).pt() > secondleadingjetpt) && (theNumberOfJets != theLeadingJetIndex)) {secondleadingjetpt = smearedJetPtEtaPhiMVector.at(theNumberOfJets-1).pt(); theSecondLeadingJetIndex = theNumberOfJets;}
+  }
+  int nGoodSecondLeadingJets = 0;
+  theNumberOfJets = 0;
+  for ( pat::JetCollection::const_iterator patJet = _patJets->begin();
+        patJet != _patJets->end(); ++patJet ) {
+    theNumberOfJets++;
+    if (theNumberOfJets != theSecondLeadingJetIndex) continue;
+    if (!passRecoSecondLeadingJetCuts((*patJet),theNumberOfJets-1)) continue;
+    nGoodSecondLeadingJets++;
+  }
+  if (nGoodSecondLeadingJets>=_RecoSecondLeadingJetNmin) _EventFlag[_mapSelectionAlgoID["RecoSecondLeadingJetNmin"]] = true;
+
+  // ------Number of Good Susy Combinations (jet1+jet2+met combinations)
+  int nGoodSusyCombinations = 0;
+  int numberJets1 = 0;
+  for ( pat::JetCollection::const_iterator patJet1 = _patJets->begin();patJet1 != _patJets->end(); ++patJet1 ) {
+    numberJets1++;
+    if( (numberJets1 == theLeadingJetIndex) && (passRecoFirstLeadingJetCuts((*patJet1),numberJets1 - 1)) ) {
+      int numberJets2 = 0;
+      for ( pat::JetCollection::const_iterator patJet2 = _patJets->begin();patJet2 != _patJets->end(); ++patJet2 ) {
+        numberJets2++;
+        if( (numberJets2 == theSecondLeadingJetIndex) && (passRecoSecondLeadingJetCuts((*patJet2),numberJets2 - 1)) ) {
+          if(passSusyTopologyCuts(numberJets1 - 1,numberJets2 - 1)) {nGoodSusyCombinations++;}
+        }
+      }
+    }
+  }
+  if (nGoodSusyCombinations>=_SusyCombinationsNmin) _EventFlag[_mapSelectionAlgoID["SusyCombinationsNmin"]] = true;
+
   // ------Number of Good Combinations (leg1+leg2+met combinations)
-//  std::cout << "ditau selections ..." << std::endl;
   int nGoodCombinations = 0;
   if( ((_AnalyzeMuonForLeg1) && (_AnalyzeTauForLeg2)) || ((_AnalyzeMuonForLeg2) && (_AnalyzeTauForLeg1)) ) {
     int theNumberOfMuons = 0;
@@ -1201,11 +1221,9 @@ void HiMassTauAnalysis::getEventFlags(const Event& iEvent) {
       int theNumberOfTaus = 0;
       for ( pat::TauCollection::const_iterator patTau = _patTaus->begin();patTau != _patTaus->end(); ++patTau ) {
         theNumberOfTaus++;
-        if ((passRecoTauCuts((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1))) &&
-            (passRecoMuonCuts((*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1))) && 
-            (passTopologyCuts((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),
-                              (*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1),
-                              (*(_patMETs->begin()))))) {
+        if ((passRecoTauCuts((*patTau),theNumberOfTaus-1)) &&
+            (passRecoMuonCuts((*patMuon),theNumberOfMuons-1)) && 
+            (passTopologyCuts((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1))) {
           nGoodCombinations++;
         }
       }
@@ -1218,11 +1236,9 @@ void HiMassTauAnalysis::getEventFlags(const Event& iEvent) {
       int theNumberOfTaus = 0;
       for ( pat::TauCollection::const_iterator patTau = _patTaus->begin();patTau != _patTaus->end(); ++patTau ) {
         theNumberOfTaus++;
-        if ((passRecoTauCuts((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1))) &&
-            (passRecoElectronCuts((*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1))) &&
-            (passTopologyCuts((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),
-                              (*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1),
-                              (*(_patMETs->begin()))))) {
+        if ((passRecoTauCuts((*patTau),theNumberOfTaus-1)) &&
+            (passRecoElectronCuts((*patElectron),theNumberOfElectrons-1)) &&
+            (passTopologyCuts((*patTau),theNumberOfTaus-1,(*patElectron),theNumberOfElectrons-1))) {
           nGoodCombinations++;
         }
       }
@@ -1235,9 +1251,9 @@ void HiMassTauAnalysis::getEventFlags(const Event& iEvent) {
       int theNumberOfElectrons = 0;
       for ( pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin();patElectron != _patElectrons->end(); ++patElectron ) {
         theNumberOfElectrons++;
-        if ((passRecoElectronCuts((*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1))) && 
-            (passRecoMuonCuts((*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1))) && 
-            (passTopologyCuts((*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1),(*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1),(*(_patMETs->begin()))))) {
+        if ((passRecoElectronCuts((*patElectron),theNumberOfElectrons-1)) && 
+            (passRecoMuonCuts((*patMuon),theNumberOfMuons-1)) && 
+            (passTopologyCuts((*patElectron),theNumberOfElectrons-1,(*patMuon),theNumberOfMuons-1))) {
           nGoodCombinations++;
         }
       }
@@ -1250,9 +1266,10 @@ void HiMassTauAnalysis::getEventFlags(const Event& iEvent) {
       int theNumberOfTaus2 = 0;
       for ( pat::TauCollection::const_iterator patTau2 = _patTaus->begin();patTau2 != _patTaus->end(); ++patTau2 ) {
         theNumberOfTaus2++;
-        if ((passRecoTauCuts((*patTau1),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus1 - 1))) && 
-            (passRecoTauCuts((*patTau2),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus2 - 1))) && 
-            (passTopologyCuts((*patTau1),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus1 - 1),(*patTau2),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus2 - 1),(*(_patMETs->begin()))))) {
+        if ((passRecoTauCuts((*patTau1),theNumberOfTaus1 - 1)) && 
+            (passRecoTauCuts((*patTau2),theNumberOfTaus2 - 1)) && 
+            (passTopologyCuts((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1)) &&
+            (theNumberOfTaus2 >= theNumberOfTaus1)) {
           nGoodCombinations++;
         }
       }
@@ -1265,9 +1282,10 @@ void HiMassTauAnalysis::getEventFlags(const Event& iEvent) {
       int theNumberOfMuons2 = 0;
       for ( pat::MuonCollection::const_iterator patMuon2 = _patMuons->begin();patMuon2 != _patMuons->end(); ++patMuon2 ) {
         theNumberOfMuons2++;
-        if ((passRecoMuonCuts((*patMuon1),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons1 - 1))) && 
-            (passRecoMuonCuts((*patMuon2),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons2 - 1))) && 
-            (passTopologyCuts((*patMuon1),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons1 - 1),(*patMuon2),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons2 - 1),(*(_patMETs->begin()))))) {
+        if ((passRecoMuonCuts((*patMuon1),theNumberOfMuons1 - 1)) && 
+            (passRecoMuonCuts((*patMuon2),theNumberOfMuons2 - 1)) && 
+            (passTopologyCuts((*patMuon1),theNumberOfMuons1 - 1,(*patMuon2),theNumberOfMuons2 - 1)) &&
+            (theNumberOfMuons2 >= theNumberOfMuons1)) {
           nGoodCombinations++;
         }
       }
@@ -1280,9 +1298,10 @@ void HiMassTauAnalysis::getEventFlags(const Event& iEvent) {
       int theNumberOfElectrons2 = 0;
       for ( pat::ElectronCollection::const_iterator patElectron2 = _patElectrons->begin();patElectron2 != _patElectrons->end(); ++patElectron2 ) {
         theNumberOfElectrons2++;
-        if ((passRecoElectronCuts((*patElectron1),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1))) && 
-            (passRecoElectronCuts((*patElectron2),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1))) && 
-            (passTopologyCuts((*patElectron1),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1),(*patElectron2),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1),(*(_patMETs->begin()))))) {
+        if ((passRecoElectronCuts((*patElectron1),theNumberOfElectrons1 - 1)) && 
+            (passRecoElectronCuts((*patElectron2),theNumberOfElectrons2 - 1)) && 
+            (passTopologyCuts((*patElectron1),theNumberOfElectrons1 - 1,(*patElectron2),theNumberOfElectrons2 - 1)) &&
+            (theNumberOfElectrons2 >= theNumberOfElectrons1)) {
           nGoodCombinations++;
         }
       }
@@ -1298,33 +1317,28 @@ bool HiMassTauAnalysis::passEventSelectionSequence() {
   bool cumulDecision = true;
   for (unsigned int i=0;i<_EventSelectionSequence.size();i++) {
     cumulDecision = cumulDecision && _EventFlag[i]; 
-    if (_EventFlag[i]) {
-      (_mapSelectionCounter[_EventSelectionSequence[i]])++;
-    }
-    if (cumulDecision) {
-      (_mapSelectionCounterCumul[_EventSelectionSequence[i]])++;
-    }
+    if (_EventFlag[i]) { (_mapSelectionCounter[_EventSelectionSequence[i]])++; }
+    if (cumulDecision) { (_mapSelectionCounterCumul[_EventSelectionSequence[i]])++; }
   }  
   return cumulDecision;
 }
 
 // -------------Apply Trigger Requirements
-
 bool HiMassTauAnalysis::passRecoTriggerCuts(const Event& iEvent) {
   const edm::TriggerNames & TheTriggerNames = iEvent.triggerNames(*_triggerResults);
   for(std::vector<std::string>::const_iterator TheTriggerPath = _TriggerRequirements.begin();
-      TheTriggerPath != _TriggerRequirements.end(); ++TheTriggerPath ) {
+    TheTriggerPath != _TriggerRequirements.end(); ++TheTriggerPath ) {
     unsigned int index = TheTriggerNames.triggerIndex(*TheTriggerPath);
     if(index < TheTriggerNames.size()) {if(_triggerResults->accept(index)) {return true;}}
     else {
       std::cout << "### HiMassTauAnalysis - CONFIGURATION ERROR:  Specified trigger " << (*TheTriggerPath) << " is not found/defined!!!!" << std::endl;
-      std::cout << "Please use one of the following triggers :" << std::endl;
+//      std::cout << "Please use one of the following triggers :" << std::endl;
       for(edm::TriggerNames::Strings::const_iterator triggerName = TheTriggerNames.triggerNames().begin();
           triggerName != TheTriggerNames.triggerNames().end(); ++triggerName ) {
         unsigned int index = TheTriggerNames.triggerIndex(*triggerName);
         if(index < TheTriggerNames.size()) {
-          std::string triggerDecision = (_triggerResults->accept(index)) ? "passed" : "failed";
-          std::cout << " Trigger Name = " << (*triggerName) << " " << triggerDecision << std::endl;
+//          std::string triggerDecision = (_triggerResults->accept(index)) ? "passed" : "failed";
+//          std::cout << " Trigger Name = " << (*triggerName) << " " << triggerDecision << std::endl;
         }
       }
 //      exit(1);
@@ -1352,7 +1366,7 @@ bool HiMassTauAnalysis::passRecoVertexCuts(const reco::Vertex& theVertex) {
 }
 
 // -------------Apply Tau Cuts
-bool HiMassTauAnalysis::passRecoTauCuts(const pat::Tau& patTau,bool smear,reco::Candidate::LorentzVector smearedLV) {
+bool HiMassTauAnalysis::passRecoTauCuts(const pat::Tau& patTau,int nobj) {
   // ----Matching to gen
   if(_MatchTauToGen) {
     if(_GenParticleSource.label() != "") {
@@ -1360,15 +1374,9 @@ bool HiMassTauAnalysis::passRecoTauCuts(const pat::Tau& patTau,bool smear,reco::
     } else {return false;}
   }
   // ----Acceptance cuts
-  if(smear) {
-    if (fabs(smearedLV.eta())>_RecoTauEtaCut) {return false;}
-    if (smearedLV.pt()<_RecoTauPtMinCut) {return false;}
-    if (smearedLV.pt()>_RecoTauPtMaxCut) {return false;}
-  } else {
-    if (fabs(patTau.eta())>_RecoTauEtaCut) {return false;}
-    if (patTau.pt()<_RecoTauPtMinCut) {return false;}
-    if (patTau.pt()>_RecoTauPtMaxCut) {return false;}
-  }
+  if (fabs(smearedTauPtEtaPhiMVector.at(nobj).eta())>_RecoTauEtaCut) {return false;}
+  if (smearedTauPtEtaPhiMVector.at(nobj).pt()<_RecoTauPtMinCut) {return false;}
+  if (smearedTauPtEtaPhiMVector.at(nobj).pt()>_RecoTauPtMaxCut) {return false;}
   // ----Lead track requirement
   if (_DoRecoTauDiscrByLeadTrack) {
     if (_UseRecoTauDiscrByLeadTrackFlag) { if ( (patTau.tauID(_RecoTauDiscrByLeadTrack.data()) < 0.5) ) {return false;} }
@@ -1377,7 +1385,7 @@ bool HiMassTauAnalysis::passRecoTauCuts(const pat::Tau& patTau,bool smear,reco::
       else { if( (!(patTau.leadPFChargedHadrCand().isNonnull())) || (patTau.leadPFChargedHadrCand()->pt() < _RecoTauLeadTrackThreshold) ) {return false;} }
     }
   }
-  // ----Lead track minimimum hits requirement
+  // ----"eVeto" - Lead track minimimum hits requirement && H3x3/LTpt
   if (_DoRecoTauDiscrByLeadTrackNhits) {
     if (patTau.isCaloTau()) {
       if( (!(patTau.leadTrack().isNonnull())) || ((int)(patTau.leadTrack()->recHitsSize()) < _RecoTauLeadTrackMinHits) ) {return false;}
@@ -1386,14 +1394,31 @@ bool HiMassTauAnalysis::passRecoTauCuts(const pat::Tau& patTau,bool smear,reco::
       if( (int)(patTau.leadPFChargedHadrCand()->trackRef()->recHitsSize()) < _RecoTauLeadTrackMinHits ) {return false;}
     }
   }
+  if (_DoRecoTauDiscrByH3x3OverP) {
+    if (patTau.isCaloTau()) {
+      if( (!(patTau.leadTrack().isNonnull())) || ((patTau.hcal3x3OverPLead()) <= _RecoTauH3x3OverP) ) {return false;}
+    } else {
+      if( (!(patTau.leadPFChargedHadrCand().isNonnull())) || (patTau.hcal3x3OverPLead() <= _RecoTauH3x3OverP) ) {return false;}
+    }
+  }
   // ----Isolation requirement
   if (_DoRecoTauDiscrByIsolation) {
     if (_UseRecoTauDiscrByIsolationFlag) {if ( (patTau.tauID(_RecoTauDiscrByIsolation.data()) < 0.5) ) {return false;}}
     else {
       if(_UseRecoTauIsoSumPtInsteadOfNiso) {
+        /*
         if( (CalculateTauTrackIsolation(patTau).second + CalculateTauEcalIsolation(patTau).second) >= _RecoTauIsoSumPtMaxCutValue ) {return false;}
         if( (CalculateTauTrackIsolation(patTau).second + CalculateTauEcalIsolation(patTau).second) < _RecoTauIsoSumPtMinCutValue ) {return false;}
-      } else { if( (CalculateTauTrackIsolation(patTau).first + CalculateTauEcalIsolation(patTau).first) > _RecoTauNisoMax ) {return false;} }
+        */
+        if( (CalculateTauTrackIsolation(patTau).second) >= _RecoTauTrackIsoSumPtMaxCutValue ) {return false;}
+        if( (CalculateTauTrackIsolation(patTau).second) < _RecoTauTrackIsoSumPtMinCutValue ) {return false;}
+        if( (CalculateTauEcalIsolation(patTau).second) >= _RecoTauEcalIsoSumPtMaxCutValue ) {return false;}
+        if( (CalculateTauEcalIsolation(patTau).second) < _RecoTauEcalIsoSumPtMinCutValue ) {return false;}
+      } else {
+        //if( (CalculateTauTrackIsolation(patTau).first + CalculateTauEcalIsolation(patTau).first) > _RecoTauNisoMax ) {return false;}
+        if( (CalculateTauTrackIsolation(patTau).first) > _RecoTauTrackNisoMax ) {return false;}
+        if( (CalculateTauEcalIsolation(patTau).first) > _RecoTauEcalNisoMax ) {return false;}
+      }
     }
   }
   // ----Require 1 or 3 prongs
@@ -1422,6 +1447,7 @@ bool HiMassTauAnalysis::passRecoTauCuts(const pat::Tau& patTau,bool smear,reco::
       else {return false;}
     }
   } else {}
+/*
   // ----Signal constituents invariant mass cuts
   if (_DoRecoTauDiscrBySignalTracksAndGammasMass) {
     if (patTau.isCaloTau()) {
@@ -1441,21 +1467,17 @@ bool HiMassTauAnalysis::passRecoTauCuts(const pat::Tau& patTau,bool smear,reco::
       }
     }
   }
+*/
   // ----Electron and Muon vetos
   if (_DoRecoTauDiscrAgainstElectron) { if ( (patTau.tauID(_RecoTauDiscrAgainstElectron.data()) < 0.5) ) {return false;} }
-  if (_DoRecoTauDiscrByCrackCut) {
-    if(smear) {
-      if(isInTheCracks(smearedLV.eta())) {return false;}
-    } else {
-      if(isInTheCracks(patTau.eta())) {return false;}
-    }
-  }
+  if (_DoRecoTauDiscrByCrackCut) { if(isInTheCracks(smearedTauPtEtaPhiMVector.at(nobj).eta())) {return false;} }
   if (_DoRecoTauDiscrAgainstMuon) { if ( (patTau.tauID(_RecoTauDiscrAgainstMuon.data()) < 0.5) ) {return false;} }
+//  if (_DoRecoTauDiscrAgainstMuon) { if ( (patTau.tauID(_RecoTauDiscrAgainstMuon.data()) > 0.5) ) {return false;} }
   return true;
 }
 
 // ---------------Apply Muon Cuts
-bool HiMassTauAnalysis::passRecoMuonCuts(const pat::Muon& patMuon,bool smear,reco::Candidate::LorentzVector smearedLV) {
+bool HiMassTauAnalysis::passRecoMuonCuts(const pat::Muon& patMuon,int nobj) {
   // ----Matching to gen
   if(_MatchLeptonToGen) {
     if(_GenParticleSource.label() != "") {
@@ -1465,15 +1487,9 @@ bool HiMassTauAnalysis::passRecoMuonCuts(const pat::Muon& patMuon,bool smear,rec
   // ----Require maching tracks in silicon tracker and muon chamber
   if (_DoRecoMuonDiscrByGlobal) {if (!patMuon.isGlobalMuon()) {return false;}}
   // ----Acceptance cuts
-  if(smear) {
-    if (fabs(smearedLV.eta())>_RecoMuonEtaCut) {return false;}
-    if (smearedLV.pt()<_RecoMuonPtMinCut) {return false;}
-    if (smearedLV.pt()>_RecoMuonPtMaxCut) {return false;}
-  } else {
-    if (fabs(patMuon.eta())>_RecoMuonEtaCut) {return false;}
-    if (patMuon.pt()<_RecoMuonPtMinCut) {return false;}
-    if (patMuon.pt()>_RecoMuonPtMaxCut) {return false;}
-  }
+  if (fabs(smearedMuonPtEtaPhiMVector.at(nobj).eta())>_RecoMuonEtaCut) {return false;}
+  if (smearedMuonPtEtaPhiMVector.at(nobj).pt()<_RecoMuonPtMinCut) {return false;}
+  if (smearedMuonPtEtaPhiMVector.at(nobj).pt()>_RecoMuonPtMaxCut) {return false;}
 /*
   if (_DoRecoMuonDiscrByTrackIsolation) {
     if ( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuonTrackIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonTrackIsoTrkThreshold).first >= _RecoMuonTrackIsoSumPtCutValue) ) {return false;}
@@ -1484,18 +1500,28 @@ bool HiMassTauAnalysis::passRecoMuonCuts(const pat::Muon& patMuon,bool smear,rec
 */
   // ----Isolation requirement
   if (_DoRecoMuonDiscrByIsolation) {
+    /*
     if( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonTrackIsoTrkThreshold).first +
          patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonEcalIsoRecHitThreshold).first) 
          >= _RecoMuonIsoSumPtMaxCutValue) {return false;}
     if( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonTrackIsoTrkThreshold).first +
          patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonEcalIsoRecHitThreshold).first) 
          < _RecoMuonIsoSumPtMinCutValue) {return false;}
-/*
+    */
+    if( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonTrackIsoTrkThreshold).first) 
+         >= _RecoMuonTrackIsoSumPtMaxCutValue) {return false;}
+    if( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonTrackIsoTrkThreshold).first) 
+         < _RecoMuonTrackIsoSumPtMinCutValue) {return false;}
+    if( (patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonEcalIsoRecHitThreshold).first) 
+         >= _RecoMuonEcalIsoSumPtMaxCutValue) {return false;}
+    if( (patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonEcalIsoRecHitThreshold).first) 
+         < _RecoMuonEcalIsoSumPtMinCutValue) {return false;}
+    /*
     if( (patMuon.trackIso() + patMuon.ecalIso()) 
 	 >= _RecoMuonIsoSumPtMaxCutValue) {return false;}
     if( (patMuon.trackIso() + patMuon.ecalIso()) 
 	 < _RecoMuonIsoSumPtMinCutValue) {return false;}
-*/
+    */
   }
   // ----Impact parameter requirement
   if (_DoRecoMuonDiscrByIp) {
@@ -1506,11 +1532,44 @@ bool HiMassTauAnalysis::passRecoMuonCuts(const pat::Muon& patMuon,bool smear,rec
   if (_DoRecoMuonDiscrByPionVeto) {
     if( ((_RecoMuonCaloCompCoefficient * muon::caloCompatibility(patMuon)) + (_RecoMuonSegmCompCoefficient * muon::segmentCompatibility(patMuon))) <= _RecoMuonAntiPionCut ) {return false;}
   }
+  if(_RecoTriggersNmin > 0) {
+    bool matchedToTrigger = false;
+    const trigger::TriggerObjectCollection & toc(handleTriggerEvent->getObjects());
+//    std::vector<reco::Particle>  HLTMuMatched; 
+//    int nMuHLT=0;
+    for ( size_t ia = 0; ia < handleTriggerEvent->sizeFilters(); ++ ia) {
+      std::string fullname = handleTriggerEvent->filterTag(ia).encode();
+      std::string name;
+      size_t p = fullname.find_first_of(':');
+      if ( p != std::string::npos) {name = fullname.substr(0, p);}
+      else {name = fullname;}
+      if ( &toc !=0 ) {
+        const trigger::Keys & k = handleTriggerEvent->filterKeys(ia);
+        for (trigger::Keys::const_iterator ki = k.begin(); ki !=k.end(); ++ki ) {
+          if (name == "hltSingleMu9L3Filtered9"  ) { 
+//            HLTMuMatched.push_back(toc[*ki].particle());
+//            nMuHLT++;
+//            std::cout << "name = " << name << std::endl;
+//            std::cout << "pt = " << toc[*ki].particle().pt() << std::endl;
+//            std::cout << "eta = " << toc[*ki].particle().eta() << std::endl;
+            if( (reco::deltaR(smearedMuonPtEtaPhiMVector.at(nobj).eta(),smearedMuonPtEtaPhiMVector.at(nobj).phi(),toc[*ki].particle().eta(),toc[*ki].particle().phi()) <= 0.5) && 
+                (toc[*ki].particle().pt() > 15.0) ) {matchedToTrigger = true;}
+          }
+        }    
+      }
+    }
+//    std::cout << "number of trigs = " << nMuHLT << std::endl;
+    if(!(matchedToTrigger)) {return false;}
+  }
   return true;
 }
 
 //--------------Apply Electron Cuts
-bool HiMassTauAnalysis::passRecoElectronCuts(const pat::Electron& patElectron,bool smear,reco::Candidate::LorentzVector smearedLV) {
+bool HiMassTauAnalysis::passRecoElectronCuts(const pat::Electron& patElectron,int nobj) {
+  heep::Ele theHeepElec(patElectron);
+  int cutResult = patElectron.userInt("HEEPId");
+  const Track* elTrack = (const reco::Track*)(patElectron.gsfTrack().get());
+  const HitPattern& pInner = elTrack->trackerExpectedHitsInner();
   // ----Matching to gen
   if(_MatchLeptonToGen) {
     if(_GenParticleSource.label() != "") {
@@ -1518,23 +1577,21 @@ bool HiMassTauAnalysis::passRecoElectronCuts(const pat::Electron& patElectron,bo
     } else {return false;}
   }
   // ----Acceptance cuts
-  if(smear) {
-    if (fabs(smearedLV.eta())>_RecoElectronEtaCut) {return false;}
-    if (smearedLV.pt()<_RecoElectronPtMinCut) {return false;}
-    if (smearedLV.pt()>_RecoElectronPtMaxCut) {return false;}
-  } else {
-    if (fabs(patElectron.eta())>_RecoElectronEtaCut) {return false;}
-    if (patElectron.pt()<_RecoElectronPtMinCut) {return false;}
-    if (patElectron.pt()>_RecoElectronPtMaxCut) {return false;}
-  }
+  if (fabs(smearedElectronPtEtaPhiMVector.at(nobj).eta())>_RecoElectronEtaCut) {return false;}
+  if (smearedElectronPtEtaPhiMVector.at(nobj).pt()<_RecoElectronPtMinCut) {return false;}
+  if (smearedElectronPtEtaPhiMVector.at(nobj).pt()>_RecoElectronPtMaxCut) {return false;}
   // ----Isolation requirement
   if (_DoRecoElectronDiscrByTrackIsolation) {
 //    if ( (patElectron.trackIsoDeposit()->depositAndCountWithin(_RecoElectronTrackIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoElectronTrackIsoTrkThreshold).first >= _RecoElectronTrackIsoSumPtCutValue) ) {return false;}
-    if(patElectron.trackIso() > _RecoElectronTrackIsoSumPtCutValue) {return false;}
+//    if(patElectron.trackIso() > _RecoElectronTrackIsoSumPtCutValue) {return false;}
+    if(patElectron.dr04TkSumPt() > _RecoElectronTrackIsoSumPtMaxCutValue) {return false;}
+    if(patElectron.dr04TkSumPt() < _RecoElectronTrackIsoSumPtMinCutValue) {return false;}
   }
   if (_DoRecoElectronDiscrByEcalIsolation) {
 //    if ( (patElectron.ecalIsoDeposit()->depositAndCountWithin(_RecoElectronEcalIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoElectronEcalIsoRecHitThreshold).first >= _RecoElectronEcalIsoSumPtCutValue) ) {return false;}
-    if(patElectron.ecalIso() > _RecoElectronEcalIsoSumPtCutValue) {return false;}
+//    if(patElectron.ecalIso() > _RecoElectronEcalIsoSumPtCutValue) {return false;}
+    if(patElectron.dr04EcalRecHitSumEt() > _RecoElectronEcalIsoSumPtMaxCutValue) {return false;}
+    if(patElectron.dr04EcalRecHitSumEt() < _RecoElectronEcalIsoSumPtMinCutValue) {return false;}
   }
   // ----Impact parameter requirement
   if (_DoRecoElectronDiscrByIp) {
@@ -1546,220 +1603,115 @@ bool HiMassTauAnalysis::passRecoElectronCuts(const pat::Electron& patElectron,bo
   // ----E over p requirement
   if (_DoRecoElectronDiscrByEoverP) { if((patElectron.eSuperClusterOverP()>_RecoElectronEoverPMax) || (patElectron.eSuperClusterOverP()<_RecoElectronEoverPMin)) {return false;} }
   // ----Electromagnetic energy fraction requirement
-  if (_DoRecoElectronDiscrByHoverEm) { if(patElectron.hadronicOverEm() > _RecoElectronHoverEmCut) {return false;} }
-  if (_DoRecoElectronDiscrBySigmaEtaEta) {}
-  if (_DoRecoElectronDiscrBySigmaIEtaIEta) {}
-  if (_DoRecoElectronDiscrBySCE5by5) {}
-//  if (_DoRecoElectronDiscrByEcalDrivenSeed) { if(!(patElectron.ecalDrivenSeed())) {return false;} }
-//  if (_DoRecoElectronDiscrByTrackerDrivenSeed) { if(!(patElectron.trackerDrivenSeed())) {return false;} }
+  if (_DoRecoElectronDiscrByEcalDrivenSeed) { if(!(patElectron.ecalDrivenSeed())) {return false;} }
+  if (_DoRecoElectronDiscrByTrackerDrivenSeed) { if(!(patElectron.trackerDrivenSeed())) {return false;} }
+  if (_DoRecoElectronDiscrByHoverEm) {
+    if(_UseHeepInfo) {
+      if(!(heep::CutCodes::passCuts(cutResult, "hadem"))) {return false;}
+    } else { if(patElectron.hadronicOverEm() > _RecoElectronHoverEmCut) {return false;} }
+  }
+  if (_DoRecoElectronDiscrBySigmaIEtaIEta) {
+    if(_UseHeepInfo) {
+      if(!(heep::CutCodes::passCuts(cutResult, "sigmaIEtaIEta"))) {return false;}
+    } else {
+      if(patElectron.isEE()) { if(patElectron.scSigmaIEtaIEta() > _RecoElectronSigmaIEtaIEta) {return false;} }
+    }
+  }
+  if (_DoRecoElectronDiscrByDEtaIn) {
+    if(_UseHeepInfo) {
+      if(!(heep::CutCodes::passCuts(cutResult, "dEtaIn"))) {return false;}
+    } else {
+      if(patElectron.isEE()) { if(fabs(patElectron.deltaEtaSuperClusterTrackAtVtx()) > _RecoElectronEEDEtaIn) {return false;} }
+      if(patElectron.isEB()) { if(fabs(patElectron.deltaEtaSuperClusterTrackAtVtx()) > _RecoElectronEBDEtaIn) {return false;} }
+    }
+  }
+  if (_DoRecoElectronDiscrByDPhiIn) {
+    if(_UseHeepInfo) {
+      if(!(heep::CutCodes::passCuts(cutResult, "dPhiIn"))) {return false;}
+    } else {
+      if(patElectron.isEE()) { if(fabs(patElectron.deltaPhiSuperClusterTrackAtVtx()) > _RecoElectronEEDPhiIn) {return false;} }
+      if(patElectron.isEB()) { if(fabs(patElectron.deltaPhiSuperClusterTrackAtVtx()) > _RecoElectronEBDPhiIn) {return false;} }
+    }
+  }
+  if (_DoRecoElectronDiscrBySCE2by5Over5by5) {
+    if(_UseHeepInfo) {
+      if(!(heep::CutCodes::passCuts(cutResult, "e2x5Over5x5"))) {return false;}
+    } else {
+      if(patElectron.isEB()) {
+        if( ((patElectron.scE2x5Max() / patElectron.scE5x5()) > _RecoElectronEBscE2by5Over5by5) || 
+            ((patElectron.scE1x5() / patElectron.scE5x5()) > _RecoElectronEBscE1by5Over5by5) ) { }
+        else {return false;}
+      }
+    }
+  }
+  if (_DoRecoElectronDiscrByMissingHits) { if(pInner.numberOfHits() >= _RecoElectronMissingHits) {return false;} }
   return true;
 }
 
 //--------------Apply Jet Cuts
-bool HiMassTauAnalysis::passRecoJetCuts(const pat::Jet& patJet,bool smear,reco::Candidate::LorentzVector smearedLV) {
-  // use corrected jet?
-  if(_UseCorrectedJet) {
-    // ----Acceptance cuts
-    if(smear) {
-      if (fabs(smearedLV.eta())>_RecoJetEtaMaxCut) {return false;}
-      if (fabs(smearedLV.eta())<_RecoJetEtaMinCut) {return false;}
-      if (smearedLV.pt()<_RecoJetPtCut) {return false;}
-      // ----anti-overlap requirements
-      if (_RemoveJetOverlapWithMuons) {
-        int theNumberOfMuons = 0;
-        for ( pat::MuonCollection::const_iterator patMuon = _patMuons->begin(); patMuon != _patMuons->end(); ++patMuon ) {
-          theNumberOfMuons++;
-          if( (passRecoMuonCuts((*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1))) ) {
-            if(_SmearTheMuon) {
-              if(reco::deltaR(smearedLV, smearedMuonMomentumVector.at(theNumberOfMuons-1)) < _JetMuonMatchingDeltaR) {return false;}
-            } else {
-              if(reco::deltaR(smearedLV, patMuon->p4()) < _JetMuonMatchingDeltaR) {return false;}
-            }
-          }
-        }
-      }
-      if (_RemoveJetOverlapWithElectrons) {
-        int theNumberOfElectrons = 0;
-        for ( pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin(); patElectron != _patElectrons->end(); ++patElectron ) {
-          theNumberOfElectrons++;
-          if( (passRecoElectronCuts((*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1))) ) {
-            if(_SmearTheElectron) {
-              if(reco::deltaR(smearedLV, smearedElectronMomentumVector.at(theNumberOfElectrons-1)) < _JetElectronMatchingDeltaR) {return false;}
-            } else {
-              if(reco::deltaR(smearedLV, patElectron->p4()) < _JetElectronMatchingDeltaR) {return false;}
-            }
-          }
-        }
-      }
-      if (_RemoveJetOverlapWithTaus) {
-        int theNumberOfTaus = 0;
-        for ( pat::TauCollection::const_iterator patTau = _patTaus->begin(); patTau != _patTaus->end(); ++patTau ) {
-          theNumberOfTaus++;
-          if( (passRecoTauCuts((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1))) ) {
-            if(_SmearTheTau) {
-              if(reco::deltaR(smearedLV, smearedTauMomentumVector.at(theNumberOfTaus-1)) < _JetTauMatchingDeltaR) {return false;}
-            } else {
-              if(reco::deltaR(smearedLV, patTau->p4()) < _JetTauMatchingDeltaR) {return false;}
-            }
-          }
-        }
-      }
-    } else {
-      if (fabs(patJet.eta())>_RecoJetEtaMaxCut) {return false;}
-      if (fabs(patJet.eta())<_RecoJetEtaMinCut) {return false;}
-      if (patJet.pt()<_RecoJetPtCut) {return false;}
-      // ----anti-overlap requirements
-      if (_RemoveJetOverlapWithMuons) {
-        int theNumberOfMuons = 0;
-        for ( pat::MuonCollection::const_iterator patMuon = _patMuons->begin(); patMuon != _patMuons->end(); ++patMuon ) {
-          theNumberOfMuons++;
-          if( (passRecoMuonCuts((*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1))) ) {
-            if(_SmearTheMuon) {
-              if(reco::deltaR(patJet.p4(), smearedMuonMomentumVector.at(theNumberOfMuons-1)) < _JetMuonMatchingDeltaR) {return false;}
-            } else {
-              if(reco::deltaR(patJet.p4(), patMuon->p4()) < _JetMuonMatchingDeltaR) {return false;}
-            }
-          }
-        }
-      }
-      if (_RemoveJetOverlapWithElectrons) {
-        int theNumberOfElectrons = 0;
-        for ( pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin(); patElectron != _patElectrons->end(); ++patElectron ) {
-          theNumberOfElectrons++;
-          if( (passRecoElectronCuts((*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1))) ) {
-            if(_SmearTheElectron) {
-              if(reco::deltaR(patJet.p4(), smearedElectronMomentumVector.at(theNumberOfElectrons-1)) < _JetElectronMatchingDeltaR) {return false;}
-            } else {
-              if(reco::deltaR(patJet.p4(), patElectron->p4()) < _JetElectronMatchingDeltaR) {return false;}
-            }
-          }
-        }
-      }
-      if (_RemoveJetOverlapWithTaus) {
-        int theNumberOfTaus = 0;
-        for ( pat::TauCollection::const_iterator patTau = _patTaus->begin(); patTau != _patTaus->end(); ++patTau ) {
-          theNumberOfTaus++;
-          if( (passRecoTauCuts((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1))) ) {
-            if(_SmearTheTau) {
-              if(reco::deltaR(patJet.p4(), smearedTauMomentumVector.at(theNumberOfTaus-1)) < _JetTauMatchingDeltaR) {return false;}
-            } else {
-              if(reco::deltaR(patJet.p4(), patTau->p4()) < _JetTauMatchingDeltaR) {return false;}
-            }
-          }
-        }
+bool HiMassTauAnalysis::passRecoJetCuts(const pat::Jet& patJet,int nobj) {
+  // ----Acceptance cuts
+  if (fabs(smearedJetPtEtaPhiMVector.at(nobj).eta())>_RecoJetEtaMaxCut) {return false;}
+  if (fabs(smearedJetPtEtaPhiMVector.at(nobj).eta())<_RecoJetEtaMinCut) {return false;}
+  if (smearedJetPtEtaPhiMVector.at(nobj).pt()<_RecoJetPtCut) {return false;}
+  // ----anti-overlap requirements
+  if (_RemoveJetOverlapWithMuons) {
+    int theNumberOfMuons = 0;
+    for ( pat::MuonCollection::const_iterator patMuon = _patMuons->begin(); patMuon != _patMuons->end(); ++patMuon ) {
+      theNumberOfMuons++;
+      if( (passRecoMuonCuts((*patMuon),theNumberOfMuons-1)) ) {
+        if(reco::deltaR(smearedJetMomentumVector.at(nobj), smearedMuonMomentumVector.at(theNumberOfMuons-1)) < _JetMuonMatchingDeltaR) {return false;}
       }
     }
-  } else {
-    // ----Acceptance cuts
-    if(smear) {
-      if (fabs(smearedLV.eta())>_RecoJetEtaMaxCut) {return false;}
-      if (fabs(smearedLV.eta())<_RecoJetEtaMinCut) {return false;}
-      if (smearedLV.pt()<_RecoJetPtCut) {return false;}
-      // ----anti-overlap requirements
-      if (_RemoveJetOverlapWithMuons) {
-        int theNumberOfMuons = 0;
-        for ( pat::MuonCollection::const_iterator patMuon = _patMuons->begin(); patMuon != _patMuons->end(); ++patMuon ) {
-          theNumberOfMuons++;
-          if( (passRecoMuonCuts((*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1))) ) {
-            if(_SmearTheMuon) {
-              if(reco::deltaR(smearedLV, smearedMuonMomentumVector.at(theNumberOfMuons-1)) < _JetMuonMatchingDeltaR) {return false;}
-            } else {
-              if(reco::deltaR(smearedLV, patMuon->p4()) < _JetMuonMatchingDeltaR) {return false;}
-            }
-          }
-        }
-      }
-      if (_RemoveJetOverlapWithElectrons) {
-        int theNumberOfElectrons = 0;
-        for ( pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin(); patElectron != _patElectrons->end(); ++patElectron ) {
-          theNumberOfElectrons++;
-          if( (passRecoElectronCuts((*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1))) ) {
-            if(_SmearTheElectron) {
-              if(reco::deltaR(smearedLV, smearedElectronMomentumVector.at(theNumberOfElectrons-1)) < _JetElectronMatchingDeltaR) {return false;}
-            } else {
-              if(reco::deltaR(smearedLV, patElectron->p4()) < _JetElectronMatchingDeltaR) {return false;}
-            }
-          }
-        }
-      }
-      if (_RemoveJetOverlapWithTaus) {
-        int theNumberOfTaus = 0;
-        for ( pat::TauCollection::const_iterator patTau = _patTaus->begin(); patTau != _patTaus->end(); ++patTau ) {
-          theNumberOfTaus++;
-          if( (passRecoTauCuts((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1))) ) {
-            if(_SmearTheTau) {
-              if(reco::deltaR(smearedLV, smearedTauMomentumVector.at(theNumberOfTaus-1)) < _JetTauMatchingDeltaR) {return false;}
-            } else {
-              if(reco::deltaR(smearedLV, patTau->p4()) < _JetTauMatchingDeltaR) {return false;}
-            }
-          }
-        }
-      }
-    } else {
-      if (fabs(patJet.correctedJet("raw","").eta())>_RecoJetEtaMaxCut) {return false;}
-      if (fabs(patJet.correctedJet("raw","").eta())<_RecoJetEtaMinCut) {return false;}
-      if (patJet.correctedJet("raw","").pt()<_RecoJetPtCut) {return false;}
-      // ----anti-overlap requirements
-      if (_RemoveJetOverlapWithMuons) {
-        int theNumberOfMuons = 0;
-        for ( pat::MuonCollection::const_iterator patMuon = _patMuons->begin(); patMuon != _patMuons->end(); ++patMuon ) {
-          theNumberOfMuons++;
-          if( (passRecoMuonCuts((*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1))) ) {
-            if(_SmearTheMuon) {
-              if(reco::deltaR(patJet.correctedJet("raw","").p4(), smearedMuonMomentumVector.at(theNumberOfMuons-1)) < _JetMuonMatchingDeltaR) {return false;}
-            } else {
-              if(reco::deltaR(patJet.correctedJet("raw","").p4(), patMuon->p4()) < _JetMuonMatchingDeltaR) {return false;}
-            }
-          }
-        }
-      }
-      if (_RemoveJetOverlapWithElectrons) {
-        int theNumberOfElectrons = 0;
-        for ( pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin(); patElectron != _patElectrons->end(); ++patElectron ) {
-          theNumberOfElectrons++;
-          if( (passRecoElectronCuts((*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1))) ) {
-            if(_SmearTheElectron) {
-              if(reco::deltaR(patJet.correctedJet("raw","").p4(), smearedElectronMomentumVector.at(theNumberOfElectrons-1)) < _JetElectronMatchingDeltaR) {return false;}
-            } else {
-              if(reco::deltaR(patJet.correctedJet("raw","").p4(), patElectron->p4()) < _JetElectronMatchingDeltaR) {return false;}
-            }
-          }
-        }
-      }
-      if (_RemoveJetOverlapWithTaus) {
-        int theNumberOfTaus = 0;
-        for ( pat::TauCollection::const_iterator patTau = _patTaus->begin(); patTau != _patTaus->end(); ++patTau ) {
-          theNumberOfTaus++;
-          if( (passRecoTauCuts((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1))) ) {
-            if(_SmearTheTau) {
-              if(reco::deltaR(patJet.correctedJet("raw","").p4(), smearedTauMomentumVector.at(theNumberOfTaus-1)) < _JetTauMatchingDeltaR) {return false;}
-            } else {
-              if(reco::deltaR(patJet.correctedJet("raw","").p4(), patTau->p4()) < _JetTauMatchingDeltaR) {return false;}
-            }
-          }
-        }
+  }
+  if (_RemoveJetOverlapWithElectrons) {
+    int theNumberOfElectrons = 0;
+    for ( pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin(); patElectron != _patElectrons->end(); ++patElectron ) {
+      theNumberOfElectrons++;
+      if( (passRecoElectronCuts((*patElectron),theNumberOfElectrons-1)) ) {
+        if(reco::deltaR(smearedJetMomentumVector.at(nobj), smearedElectronMomentumVector.at(theNumberOfElectrons-1)) < _JetElectronMatchingDeltaR) {return false;}
       }
     }
+  }
+  if (_RemoveJetOverlapWithTaus) {
+    int theNumberOfTaus = 0;
+    for ( pat::TauCollection::const_iterator patTau = _patTaus->begin(); patTau != _patTaus->end(); ++patTau ) {
+      theNumberOfTaus++;
+      if( (passRecoTauCuts((*patTau),theNumberOfTaus-1)) ) {
+        if(reco::deltaR(smearedJetMomentumVector.at(nobj), smearedTauMomentumVector.at(theNumberOfTaus-1)) < _JetTauMatchingDeltaR) {return false;}
+      }
+    }
+  }
+  if (_ApplyJetBTagging) {if(patJet.bDiscriminator("trackCountingHighEffBJetTags") <= _JetBTaggingTCHEcut) {return false;}}
+  return true;
+}
+
+//--------------Apply Leading Jet Cuts
+bool HiMassTauAnalysis::passRecoFirstLeadingJetCuts(const pat::Jet& patJet,int nobj) {
+  if(_DoDiscrByFirstLeadingJet) {
+    // ----Acceptance cuts
+    if (fabs(smearedJetPtEtaPhiMVector.at(nobj).eta())>_RecoFirstLeadingJetEtaMaxCut) {return false;}
+    if (fabs(smearedJetPtEtaPhiMVector.at(nobj).eta())<_RecoFirstLeadingJetEtaMinCut) {return false;}
+    if (smearedJetPtEtaPhiMVector.at(nobj).pt()<_RecoFirstLeadingJetPt) {return false;}
+  }
+  return true;
+}
+
+//--------------Apply Second Leading Jet Cuts
+bool HiMassTauAnalysis::passRecoSecondLeadingJetCuts(const pat::Jet& patJet,int nobj) {
+  if(_DoDiscrBySecondLeadingJet) {
+    // ----Acceptance cuts
+    if (fabs(smearedJetPtEtaPhiMVector.at(nobj).eta())>_RecoSecondLeadingJetEtaMaxCut) {return false;}
+    if (fabs(smearedJetPtEtaPhiMVector.at(nobj).eta())<_RecoSecondLeadingJetEtaMinCut) {return false;}
+    if (smearedJetPtEtaPhiMVector.at(nobj).pt()<_RecoSecondLeadingJetPt) {return false;}
   }
   return true;
 }
 
 // ---------------Apply Topology Cuts
-bool HiMassTauAnalysis::passTopologyCuts(const pat::Tau& patTau, bool smearT, reco::Candidate::LorentzVector smearedLVT, const pat::Muon& patMuon, bool smearM, reco::Candidate::LorentzVector smearedLVM, const pat::MET& patMET) {
+bool HiMassTauAnalysis::passTopologyCuts(const pat::Tau& patTau, int nobjT, const pat::Muon& patMuon, int nobjM) {
   // ----Separation cut between lepton and tau jet (remove overlaps)
-  if(smearT) {
-    if(smearM) {
-      if (_DoDiTauDiscrByDeltaR) { if(reco::deltaR(smearedLVM, smearedLVT) < _DiTauDeltaRCut) {return false;} }
-    } else {
-      if (_DoDiTauDiscrByDeltaR) { if(reco::deltaR(patMuon.p4(), smearedLVT) < _DiTauDeltaRCut) {return false;} }
-    }
-  } else {
-    if(smearM) {
-      if (_DoDiTauDiscrByDeltaR) { if(reco::deltaR(smearedLVM, patTau.p4()) < _DiTauDeltaRCut) {return false;} }
-    } else {
-      if (_DoDiTauDiscrByDeltaR) { if(reco::deltaR(patMuon.p4(), patTau.p4()) < _DiTauDeltaRCut) {return false;} }
-    }
-  }
+  if (_DoDiTauDiscrByDeltaR) { if(reco::deltaR(smearedTauMomentumVector.at(nobjT), smearedMuonMomentumVector.at(nobjM)) < _DiTauDeltaRCut) {return false;} }
   // ----Opposite sign - Like sign requirement
   if (_DiTauDiscrByOSLSType == "OS") {
     if(_UseTauSeedTrackForDiTauDiscrByOSLS) {
@@ -1773,171 +1725,55 @@ bool HiMassTauAnalysis::passTopologyCuts(const pat::Tau& patTau, bool smearT, re
     } else { if((patMuon.charge() * patTau.charge()) <= 0) {return false;} }
   } else {}
   // ----Require both legs to be almost back-to-back in phi
-  if(smearT) {
-    if(smearM) {
-      if (_DoDiTauDiscrByCosDphi) {
-        if(cos(TMath::Abs(normalizedPhi(smearedLVT.phi() - smearedLVM.phi()))) > _DiTauCosDphiMaxCut) {return false;}
-        if(cos(TMath::Abs(normalizedPhi(smearedLVT.phi() - smearedLVM.phi()))) < _DiTauCosDphiMinCut) {return false;}
-      }
-    } else {
-      if (_DoDiTauDiscrByCosDphi) {
-        if(cos(TMath::Abs(normalizedPhi(smearedLVT.phi() - patMuon.phi()))) > _DiTauCosDphiMaxCut) {return false;}
-        if(cos(TMath::Abs(normalizedPhi(smearedLVT.phi() - patMuon.phi()))) < _DiTauCosDphiMinCut) {return false;}
-      }
-    }
-  } else {
-    if(smearM) {
-      if (_DoDiTauDiscrByCosDphi) {
-        if(cos(TMath::Abs(normalizedPhi(patTau.phi() - smearedLVM.phi()))) > _DiTauCosDphiMaxCut) {return false;}
-        if(cos(TMath::Abs(normalizedPhi(patTau.phi() - smearedLVM.phi()))) < _DiTauCosDphiMinCut) {return false;}
-      }
-    } else {
-      if (_DoDiTauDiscrByCosDphi) {
-        if(cos(TMath::Abs(normalizedPhi(patTau.phi() - patMuon.phi()))) > _DiTauCosDphiMaxCut) {return false;}
-        if(cos(TMath::Abs(normalizedPhi(patTau.phi() - patMuon.phi()))) < _DiTauCosDphiMinCut) {return false;}
-      }
-    }
+  if (_DoDiTauDiscrByCosDphi) {
+    if(cos(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(nobjT).phi() - smearedMuonPtEtaPhiMVector.at(nobjM).phi()))) > _DiTauCosDphiMaxCut) {return false;}
+    if(cos(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(nobjT).phi() - smearedMuonPtEtaPhiMVector.at(nobjM).phi()))) < _DiTauCosDphiMinCut) {return false;}
   }
   // ----Mass window requirement
-  if (_DoDiscrByMassReco) { if( (CalculateThe4Momentum(patTau,smearT,smearedLVT,patMuon,smearM,smearedLVM,patMET).second.M() < _MassMinCut) || (CalculateThe4Momentum(patTau,smearT,smearedLVT,patMuon,smearM,smearedLVM,patMET).second.M() > _MassMaxCut) ) {return false;} }
+  if (_DoDiscrByMassReco) { if( (CalculateThe4Momentum(patTau,nobjT,patMuon,nobjM).second.M() < _MassMinCut) || (CalculateThe4Momentum(patTau,nobjT,patMuon,nobjM).second.M() > _MassMaxCut) ) {return false;} }
   // ----Zeta requirement
   if (_DoDiTauDiscrByCDFzeta2D) {
-    if( ((_PZetaCutCoefficient * CalculatePZeta(patTau,smearT,smearedLVT,patMuon,smearM,smearedLVM,patMET)) + 
-         (_PZetaVisCutCoefficient * CalculatePZetaVis(patTau,smearT,smearedLVT,patMuon,smearM,smearedLVM,patMET))) < _CDFzeta2DCutValue )
+    if( ((_PZetaCutCoefficient * CalculatePZeta(patTau,nobjT,patMuon,nobjM)) + 
+         (_PZetaVisCutCoefficient * CalculatePZetaVis(patTau,nobjT,patMuon,nobjM))) < _CDFzeta2DCutValue )
     {return false;}
   }
   // ----Missing transverse energy requirement
-  if (_DoDiscrByMet) {
-    if((TMath::Sqrt((patMET.px() + deltaForMEx)*(patMET.px() + deltaForMEx) + (patMET.py() + deltaForMEy)*(patMET.py() + deltaForMEy))) < _RecoMetCut) {return false;}
-    //    if (patMET.pt()<_RecoMetCut) {return false;}
+  if (_DoDiscrByMet) {if(theMETVector.pt() < _RecoMetCut) {return false;}}
+  if (_DoDiTauDiscrByDeltaPtDivSumPt) {
+    if ( ((smearedTauPtEtaPhiMVector.at(nobjT).pt() - smearedMuonPtEtaPhiMVector.at(nobjM).pt()) / (smearedTauPtEtaPhiMVector.at(nobjT).pt() + smearedMuonPtEtaPhiMVector.at(nobjM).pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
+    if ( ((smearedTauPtEtaPhiMVector.at(nobjT).pt() - smearedMuonPtEtaPhiMVector.at(nobjM).pt()) / (smearedTauPtEtaPhiMVector.at(nobjT).pt() + smearedMuonPtEtaPhiMVector.at(nobjM).pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
   }
-  if(smearT) {
-    if(smearM) {
-      if (_DoDiTauDiscrByDeltaPtDivSumPt) {
-        if ( ((smearedLVT.pt() - smearedLVM.pt()) / (smearedLVT.pt() + smearedLVM.pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
-        if ( ((smearedLVT.pt() - smearedLVM.pt()) / (smearedLVT.pt() + smearedLVM.pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
-      }
-      if (_DoDiscrByLeg1MetDphi) {
-        if(_AnalyzeMuonForLeg1) {
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeTauForLeg1) {
-          if(TMath::Abs(normalizedPhi(smearedLVT.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVT.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-      }
-      if (_DoDiscrByLeg2MetDphi) {
-        if(_AnalyzeMuonForLeg2) {
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeTauForLeg2) {
-          if(TMath::Abs(normalizedPhi(smearedLVT.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVT.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-      }
-    } else {
-      if (_DoDiTauDiscrByDeltaPtDivSumPt) {
-        if ( ((smearedLVT.pt() - patMuon.pt()) / (smearedLVT.pt() + patMuon.pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
-        if ( ((smearedLVT.pt() - patMuon.pt()) / (smearedLVT.pt() + patMuon.pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
-      }
-      if (_DoDiscrByLeg1MetDphi) {
-        if(_AnalyzeMuonForLeg1) {
-          if(TMath::Abs(normalizedPhi(patMuon.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patMuon.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeTauForLeg1) {
-          if(TMath::Abs(normalizedPhi(smearedLVT.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVT.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-      }
-      if (_DoDiscrByLeg2MetDphi) {
-        if(_AnalyzeMuonForLeg2) {
-          if(TMath::Abs(normalizedPhi(patMuon.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patMuon.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeTauForLeg2) {
-          if(TMath::Abs(normalizedPhi(smearedLVT.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVT.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-      }
+  if (_DoDiTauDiscrByDeltaPt) {
+    if ( ((smearedTauPtEtaPhiMVector.at(nobjT).pt() - smearedMuonPtEtaPhiMVector.at(nobjM).pt())) < _DiTauDeltaPtMinCutValue ) {return false;}
+    if ( ((smearedTauPtEtaPhiMVector.at(nobjT).pt() - smearedMuonPtEtaPhiMVector.at(nobjM).pt())) > _DiTauDeltaPtMaxCutValue ) {return false;}
+  }
+  if (_DoDiscrByLeg1MetDphi) {
+    if(_AnalyzeMuonForLeg1) {
+      if(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(nobjM).phi() - theMETVector.phi())) > _Leg1MetDphiMaxCut) {return false;}
+      if(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(nobjM).phi() - theMETVector.phi())) < _Leg1MetDphiMinCut) {return false;}
     }
-  } else {
-    if(smearM) {
-      if (_DoDiTauDiscrByDeltaPtDivSumPt) {
-        if ( ((patTau.pt() - smearedLVM.pt()) / (patTau.pt() + smearedLVM.pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
-        if ( ((patTau.pt() - smearedLVM.pt()) / (patTau.pt() + smearedLVM.pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
-      }
-      if (_DoDiscrByLeg1MetDphi) {
-        if(_AnalyzeMuonForLeg1) {
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeTauForLeg1) {
-          if(TMath::Abs(normalizedPhi(patTau.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patTau.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-      }
-      if (_DoDiscrByLeg2MetDphi) {
-        if(_AnalyzeMuonForLeg2) {
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeTauForLeg2) {
-          if(TMath::Abs(normalizedPhi(patTau.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patTau.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-      }
-    } else {
-      if (_DoDiTauDiscrByDeltaPtDivSumPt) {
-        if ( ((patTau.pt() - patMuon.pt()) / (patTau.pt() + patMuon.pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
-        if ( ((patTau.pt() - patMuon.pt()) / (patTau.pt() + patMuon.pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
-      }
-      if (_DoDiscrByLeg1MetDphi) {
-        if(_AnalyzeMuonForLeg1) {
-          if(TMath::Abs(normalizedPhi(patMuon.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patMuon.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeTauForLeg1) {
-          if(TMath::Abs(normalizedPhi(patTau.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patTau.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-      }
-      if (_DoDiscrByLeg2MetDphi) {
-        if(_AnalyzeMuonForLeg2) {
-          if(TMath::Abs(normalizedPhi(patMuon.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patMuon.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeTauForLeg2) {
-          if(TMath::Abs(normalizedPhi(patTau.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patTau.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-      }
+    if(_AnalyzeTauForLeg1) {
+      if(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(nobjT).phi() - theMETVector.phi())) > _Leg1MetDphiMaxCut) {return false;}
+      if(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(nobjT).phi() - theMETVector.phi())) < _Leg1MetDphiMinCut) {return false;}
+    }
+  }
+  if (_DoDiscrByLeg2MetDphi) {
+    if(_AnalyzeMuonForLeg2) {
+      if(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(nobjM).phi() - theMETVector.phi())) > _Leg2MetDphiMaxCut) {return false;}
+      if(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(nobjM).phi() - theMETVector.phi())) < _Leg2MetDphiMinCut) {return false;}
+    }
+    if(_AnalyzeTauForLeg2) {
+      if(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(nobjT).phi() - theMETVector.phi())) > _Leg2MetDphiMaxCut) {return false;}
+      if(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(nobjT).phi() - theMETVector.phi())) < _Leg2MetDphiMinCut) {return false;}
     }
   }
   return true;
 }
-bool HiMassTauAnalysis::passTopologyCuts(const pat::Tau& patTau, bool smearT, reco::Candidate::LorentzVector smearedLVT, const pat::Electron& patElectron, bool smearM, reco::Candidate::LorentzVector smearedLVM, const pat::MET& patMET) {
+bool HiMassTauAnalysis::passTopologyCuts(const pat::Tau& patTau, int nobjT, const pat::Electron& patElectron, int nobjE) {
   // ----Separation cut between lepton and tau jet (remove overlaps)
-  if(smearT) {
-    if(smearM) {
-      if (_DoDiTauDiscrByDeltaR) { if(reco::deltaR(smearedLVM, smearedLVT) < _DiTauDeltaRCut) {return false;} }
-    } else {
-      if (_DoDiTauDiscrByDeltaR) { if(reco::deltaR(patElectron.p4(), smearedLVT) < _DiTauDeltaRCut) {return false;} }
-    }
-  } else {
-    if(smearM) {
-      if (_DoDiTauDiscrByDeltaR) { if(reco::deltaR(smearedLVM, patTau.p4()) < _DiTauDeltaRCut) {return false;} }
-    } else {
-      if (_DoDiTauDiscrByDeltaR) { if(reco::deltaR(patElectron.p4(), patTau.p4()) < _DiTauDeltaRCut) {return false;} }
-    }
-  }
-
+  if (_DoDiTauDiscrByDeltaR) { if(reco::deltaR(smearedTauMomentumVector.at(nobjT), smearedElectronMomentumVector.at(nobjE)) < _DiTauDeltaRCut) {return false;} }
   // ---- apply Zee veto cut
-  if(smearM) { if (_DoTauDiscrByIsZeeCut) { if(!(isZee(smearedLVM).first)) {return false;} }
-  } else { if (_DoTauDiscrByIsZeeCut) { if(!(isZee(patElectron.p4()).first)) {return false;} } }
-
+  if (_DoTauDiscrByIsZeeCut) { if((isZee(smearedElectronMomentumVector.at(nobjE)).first)) {return false;} }
   // ----Opposite sign - Like sign requirement
   if (_DiTauDiscrByOSLSType == "OS") {
     if(_UseTauSeedTrackForDiTauDiscrByOSLS) {
@@ -1951,166 +1787,53 @@ bool HiMassTauAnalysis::passTopologyCuts(const pat::Tau& patTau, bool smearT, re
     } else { if((patElectron.charge() * patTau.charge()) <= 0) {return false;} }
   } else {}
   // ----Require both legs to be almost back-to-back in phi
-  if(smearT) {
-    if(smearM) {
-      if (_DoDiTauDiscrByCosDphi) {
-        if(cos(TMath::Abs(normalizedPhi(smearedLVT.phi() - smearedLVM.phi()))) > _DiTauCosDphiMaxCut) {return false;}
-        if(cos(TMath::Abs(normalizedPhi(smearedLVT.phi() - smearedLVM.phi()))) < _DiTauCosDphiMinCut) {return false;}
-      }
-    } else {
-      if (_DoDiTauDiscrByCosDphi) {
-        if(cos(TMath::Abs(normalizedPhi(smearedLVT.phi() - patElectron.phi()))) > _DiTauCosDphiMaxCut) {return false;}
-        if(cos(TMath::Abs(normalizedPhi(smearedLVT.phi() - patElectron.phi()))) < _DiTauCosDphiMinCut) {return false;}
-      }
-    }
-  } else {
-    if(smearM) {
-      if (_DoDiTauDiscrByCosDphi) {
-        if(cos(TMath::Abs(normalizedPhi(patTau.phi() - smearedLVM.phi()))) > _DiTauCosDphiMaxCut) {return false;}
-        if(cos(TMath::Abs(normalizedPhi(patTau.phi() - smearedLVM.phi()))) < _DiTauCosDphiMinCut) {return false;}
-      }
-    } else {
-      if (_DoDiTauDiscrByCosDphi) {
-        if(cos(TMath::Abs(normalizedPhi(patTau.phi() - patElectron.phi()))) > _DiTauCosDphiMaxCut) {return false;}
-        if(cos(TMath::Abs(normalizedPhi(patTau.phi() - patElectron.phi()))) < _DiTauCosDphiMinCut) {return false;}
-      }
-    }
+  if (_DoDiTauDiscrByCosDphi) {
+    if(cos(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(nobjT).phi() - smearedElectronPtEtaPhiMVector.at(nobjE).phi()))) > _DiTauCosDphiMaxCut) {return false;}
+    if(cos(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(nobjT).phi() - smearedElectronPtEtaPhiMVector.at(nobjE).phi()))) < _DiTauCosDphiMinCut) {return false;}
   }
   // ----Mass window requirement
-  if (_DoDiscrByMassReco) { if( (CalculateThe4Momentum(patTau,smearT,smearedLVT,patElectron,smearM,smearedLVM,patMET).second.M() < _MassMinCut) || (CalculateThe4Momentum(patTau,smearT,smearedLVT,patElectron,smearM,smearedLVM,patMET).second.M() > _MassMaxCut) ) {return false;} }
+  if (_DoDiscrByMassReco) { if( (CalculateThe4Momentum(patTau,nobjT,patElectron,nobjE).second.M() < _MassMinCut) || (CalculateThe4Momentum(patTau,nobjT,patElectron,nobjE).second.M() > _MassMaxCut) ) {return false;} }
   // ----Zeta requirement
   if (_DoDiTauDiscrByCDFzeta2D) {
-    if( ((_PZetaCutCoefficient * CalculatePZeta(patTau,smearT,smearedLVT,patElectron,smearM,smearedLVM,patMET)) + 
-         (_PZetaVisCutCoefficient * CalculatePZetaVis(patTau,smearT,smearedLVT,patElectron,smearM,smearedLVM,patMET))) < _CDFzeta2DCutValue )
+    if( ((_PZetaCutCoefficient * CalculatePZeta(patTau,nobjT,patElectron,nobjE)) + 
+         (_PZetaVisCutCoefficient * CalculatePZetaVis(patTau,nobjT,patElectron,nobjE))) < _CDFzeta2DCutValue )
     {return false;}
   }
   // ----Missing transverse energy requirement
-  if (_DoDiscrByMet) {
-    if((TMath::Sqrt((patMET.px() + deltaForMEx)*(patMET.px() + deltaForMEx) + (patMET.py() + deltaForMEy)*(patMET.py() + deltaForMEy))) < _RecoMetCut) {return false;}
-    //    if (patMET.pt()<_RecoMetCut) {return false;}
+  if (_DoDiscrByMet) {if(theMETVector.pt() < _RecoMetCut) {return false;}}
+  if (_DoDiTauDiscrByDeltaPtDivSumPt) {
+    if ( ((smearedTauPtEtaPhiMVector.at(nobjT).pt() - smearedElectronPtEtaPhiMVector.at(nobjE).pt()) / (smearedTauPtEtaPhiMVector.at(nobjT).pt() + smearedElectronPtEtaPhiMVector.at(nobjE).pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
+    if ( ((smearedTauPtEtaPhiMVector.at(nobjT).pt() - smearedElectronPtEtaPhiMVector.at(nobjE).pt()) / (smearedTauPtEtaPhiMVector.at(nobjT).pt() + smearedElectronPtEtaPhiMVector.at(nobjE).pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
   }
-  if(smearT) {
-    if(smearM) {
-      if (_DoDiTauDiscrByDeltaPtDivSumPt) {
-        if ( ((smearedLVT.pt() - smearedLVM.pt()) / (smearedLVT.pt() + smearedLVM.pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
-        if ( ((smearedLVT.pt() - smearedLVM.pt()) / (smearedLVT.pt() + smearedLVM.pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
-      }
-      if (_DoDiscrByLeg1MetDphi) {
-        if(_AnalyzeElectronForLeg1) {
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeTauForLeg1) {
-          if(TMath::Abs(normalizedPhi(smearedLVT.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVT.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-      }
-      if (_DoDiscrByLeg2MetDphi) {
-        if(_AnalyzeElectronForLeg2) {
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeTauForLeg2) {
-          if(TMath::Abs(normalizedPhi(smearedLVT.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVT.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-      }
-    } else {
-      if (_DoDiTauDiscrByDeltaPtDivSumPt) {
-        if ( ((smearedLVT.pt() - patElectron.pt()) / (smearedLVT.pt() + patElectron.pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
-        if ( ((smearedLVT.pt() - patElectron.pt()) / (smearedLVT.pt() + patElectron.pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
-      }
-      if (_DoDiscrByLeg1MetDphi) {
-        if(_AnalyzeElectronForLeg1) {
-          if(TMath::Abs(normalizedPhi(patElectron.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patElectron.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeTauForLeg1) {
-          if(TMath::Abs(normalizedPhi(smearedLVT.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVT.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-      }
-      if (_DoDiscrByLeg2MetDphi) {
-        if(_AnalyzeElectronForLeg2) {
-          if(TMath::Abs(normalizedPhi(patElectron.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patElectron.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeTauForLeg2) {
-          if(TMath::Abs(normalizedPhi(smearedLVT.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVT.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-      }
+  if (_DoDiTauDiscrByDeltaPt) {
+    if ( ((smearedTauPtEtaPhiMVector.at(nobjT).pt() - smearedElectronPtEtaPhiMVector.at(nobjE).pt())) < _DiTauDeltaPtMinCutValue ) {return false;}
+    if ( ((smearedTauPtEtaPhiMVector.at(nobjT).pt() - smearedElectronPtEtaPhiMVector.at(nobjE).pt())) > _DiTauDeltaPtMaxCutValue ) {return false;}
+  }
+  if (_DoDiscrByLeg1MetDphi) {
+    if(_AnalyzeElectronForLeg1) {
+      if(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(nobjE).phi() - theMETVector.phi())) > _Leg1MetDphiMaxCut) {return false;}
+      if(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(nobjE).phi() - theMETVector.phi())) < _Leg1MetDphiMinCut) {return false;}
     }
-  } else {
-    if(smearM) {
-      if (_DoDiTauDiscrByDeltaPtDivSumPt) {
-        if ( ((patTau.pt() - smearedLVM.pt()) / (patTau.pt() + smearedLVM.pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
-        if ( ((patTau.pt() - smearedLVM.pt()) / (patTau.pt() + smearedLVM.pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
-      }
-      if (_DoDiscrByLeg1MetDphi) {
-        if(_AnalyzeElectronForLeg1) {
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeTauForLeg1) {
-          if(TMath::Abs(normalizedPhi(patTau.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patTau.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-      }
-      if (_DoDiscrByLeg2MetDphi) {
-        if(_AnalyzeElectronForLeg2) {
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeTauForLeg2) {
-          if(TMath::Abs(normalizedPhi(patTau.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patTau.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-      }
-    } else {
-      if (_DoDiTauDiscrByDeltaPtDivSumPt) {
-        if ( ((patTau.pt() - patElectron.pt()) / (patTau.pt() + patElectron.pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
-        if ( ((patTau.pt() - patElectron.pt()) / (patTau.pt() + patElectron.pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
-      }
-      if (_DoDiscrByLeg1MetDphi) {
-        if(_AnalyzeElectronForLeg1) {
-          if(TMath::Abs(normalizedPhi(patElectron.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patElectron.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeTauForLeg1) {
-          if(TMath::Abs(normalizedPhi(patTau.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patTau.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-      }
-      if (_DoDiscrByLeg2MetDphi) {
-        if(_AnalyzeElectronForLeg2) {
-          if(TMath::Abs(normalizedPhi(patElectron.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patElectron.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeTauForLeg2) {
-          if(TMath::Abs(normalizedPhi(patTau.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patTau.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-      }
+    if(_AnalyzeTauForLeg1) {
+      if(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(nobjT).phi() - theMETVector.phi())) > _Leg1MetDphiMaxCut) {return false;}
+      if(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(nobjT).phi() - theMETVector.phi())) < _Leg1MetDphiMinCut) {return false;}
+    }
+  }
+  if (_DoDiscrByLeg2MetDphi) {
+    if(_AnalyzeElectronForLeg2) {
+      if(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(nobjE).phi() - theMETVector.phi())) > _Leg2MetDphiMaxCut) {return false;}
+      if(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(nobjE).phi() - theMETVector.phi())) < _Leg2MetDphiMinCut) {return false;}
+    }
+    if(_AnalyzeTauForLeg2) {
+      if(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(nobjT).phi() - theMETVector.phi())) > _Leg2MetDphiMaxCut) {return false;}
+      if(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(nobjT).phi() - theMETVector.phi())) < _Leg2MetDphiMinCut) {return false;}
     }
   }
   return true;
 }
-bool HiMassTauAnalysis::passTopologyCuts(const pat::Electron& patElectron, bool smearE, reco::Candidate::LorentzVector smearedLVE, const pat::Muon& patMuon, bool smearM, reco::Candidate::LorentzVector smearedLVM, const pat::MET& patMET) {
+bool HiMassTauAnalysis::passTopologyCuts(const pat::Electron& patElectron, int nobjE, const pat::Muon& patMuon, int nobjM) {
   // ----Separation cut between lepton and tau jet (remove overlaps)
-  if(smearE) {
-    if(smearM) {
-      if (_DoDiTauDiscrByDeltaR) { if(reco::deltaR(smearedLVM, smearedLVE) < _DiTauDeltaRCut) {return false;} }
-    } else {
-      if (_DoDiTauDiscrByDeltaR) { if(reco::deltaR(patMuon.p4(), smearedLVE) < _DiTauDeltaRCut) {return false;} }
-    }
-  } else {
-    if(smearM) {
-      if (_DoDiTauDiscrByDeltaR) { if(reco::deltaR(smearedLVM, patElectron.p4()) < _DiTauDeltaRCut) {return false;} }
-    } else {
-      if (_DoDiTauDiscrByDeltaR) { if(reco::deltaR(patMuon.p4(), patElectron.p4()) < _DiTauDeltaRCut) {return false;} }
-    }
-  }
+  if (_DoDiTauDiscrByDeltaR) { if(reco::deltaR(smearedMuonMomentumVector.at(nobjM), smearedElectronMomentumVector.at(nobjE)) < _DiTauDeltaRCut) {return false;} }
   // ----Opposite sign - Like sign requirement
   if (_DiTauDiscrByOSLSType == "OS") {
     if((patElectron.charge() * patMuon.charge()) >= 0) {return false;}
@@ -2118,179 +1841,53 @@ bool HiMassTauAnalysis::passTopologyCuts(const pat::Electron& patElectron, bool 
     if((patElectron.charge() * patMuon.charge()) <= 0) {return false;}
   } else {}
   // ----Require both legs to be almost back-to-back in phi
-  if(smearE) {
-    if(smearM) {
-      if (_DoDiTauDiscrByCosDphi) {
-        if(cos(TMath::Abs(normalizedPhi(smearedLVE.phi() - smearedLVM.phi()))) > _DiTauCosDphiMaxCut) {return false;}
-        if(cos(TMath::Abs(normalizedPhi(smearedLVE.phi() - smearedLVM.phi()))) < _DiTauCosDphiMinCut) {return false;}
-      }
-    } else {
-      if (_DoDiTauDiscrByCosDphi) {
-        if(cos(TMath::Abs(normalizedPhi(smearedLVE.phi() - patMuon.phi()))) > _DiTauCosDphiMaxCut) {return false;}
-        if(cos(TMath::Abs(normalizedPhi(smearedLVE.phi() - patMuon.phi()))) < _DiTauCosDphiMinCut) {return false;}
-      }
-    }
-  } else {
-    if(smearM) {
-      if (_DoDiTauDiscrByCosDphi) {
-        if(cos(TMath::Abs(normalizedPhi(patElectron.phi() - smearedLVM.phi()))) > _DiTauCosDphiMaxCut) {return false;}
-        if(cos(TMath::Abs(normalizedPhi(patElectron.phi() - smearedLVM.phi()))) < _DiTauCosDphiMinCut) {return false;}
-      }
-    } else {
-      if (_DoDiTauDiscrByCosDphi) {
-        if(cos(TMath::Abs(normalizedPhi(patElectron.phi() - patMuon.phi()))) > _DiTauCosDphiMaxCut) {return false;}
-        if(cos(TMath::Abs(normalizedPhi(patElectron.phi() - patMuon.phi()))) < _DiTauCosDphiMinCut) {return false;}
-      }
-    }
+  if (_DoDiTauDiscrByCosDphi) {
+    if(cos(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(nobjE).phi() - smearedMuonPtEtaPhiMVector.at(nobjM).phi()))) > _DiTauCosDphiMaxCut) {return false;}
+    if(cos(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(nobjE).phi() - smearedMuonPtEtaPhiMVector.at(nobjM).phi()))) < _DiTauCosDphiMinCut) {return false;}
   }
   // ----Mass window requirement
-  if (_DoDiscrByMassReco) { if( (CalculateThe4Momentum(patElectron,smearE,smearedLVE,patMuon,smearM,smearedLVM,patMET).second.M() < _MassMinCut) || (CalculateThe4Momentum(patElectron,smearE,smearedLVE,patMuon,smearM,smearedLVM,patMET).second.M() > _MassMaxCut) ) {return false;} }
+  if (_DoDiscrByMassReco) { if( (CalculateThe4Momentum(patElectron,nobjE,patMuon,nobjM).second.M() < _MassMinCut) || (CalculateThe4Momentum(patElectron,nobjE,patMuon,nobjM).second.M() > _MassMaxCut) ) {return false;} }
   // ----Zeta requirement
   if (_DoDiTauDiscrByCDFzeta2D) {
-    if( ((_PZetaCutCoefficient * CalculatePZeta(patElectron,smearE,smearedLVE,patMuon,smearM,smearedLVM,patMET)) +
-         (_PZetaVisCutCoefficient * CalculatePZetaVis(patElectron,smearE,smearedLVE,patMuon,smearM,smearedLVM,patMET))) < _CDFzeta2DCutValue )
+    if( ((_PZetaCutCoefficient * CalculatePZeta(patElectron,nobjE,patMuon,nobjM)) +
+         (_PZetaVisCutCoefficient * CalculatePZetaVis(patElectron,nobjE,patMuon,nobjM))) < _CDFzeta2DCutValue )
     {return false;}
   }
   // ----Missing transverse energy requirement
-  if (_DoDiscrByMet) {
-    if(smearE) {
-      if(smearM) {
-        if (TMath::Sqrt(((patMET.px() + patElectron.px() + patMuon.px() - smearedLVM.px() - smearedLVE.px() + deltaForMEx) * 
-                         (patMET.px() + patElectron.px() + patMuon.px() - smearedLVM.px() - smearedLVE.px() + deltaForMEx)) + 
-                        ((patMET.py() + patElectron.py() + patMuon.py() - smearedLVM.py() - smearedLVE.py() + deltaForMEy) * 
-                         (patMET.py() + patElectron.py() + patMuon.py() - smearedLVM.py() - smearedLVE.py() + deltaForMEy))) < _RecoMetCut) {return false;}
-      } else {
-        if (TMath::Sqrt(((patMET.px() + patElectron.px() + patMuon.px() - smearedLVM.px() - patMuon.px() + deltaForMEx) * 
-                         (patMET.px() + patElectron.px() + patMuon.px() - smearedLVM.px() - patMuon.px() + deltaForMEx)) + 
-                        ((patMET.py() + patElectron.py() + patMuon.py() - smearedLVM.py() - patMuon.py() + deltaForMEy) * 
-                         (patMET.py() + patElectron.py() + patMuon.py() - smearedLVM.py() - patMuon.py() + deltaForMEy))) < _RecoMetCut) {return false;}
-      }
-    } else {
-      if(smearM) {
-        if (TMath::Sqrt(((patMET.px() + patElectron.px() + patMuon.px() - patElectron.px() - smearedLVM.px() + deltaForMEx) * 
-                         (patMET.px() + patElectron.px() + patMuon.px() - patElectron.px() - smearedLVM.px() + deltaForMEx)) + 
-                        ((patMET.py() + patElectron.py() + patMuon.py() - patElectron.py() - smearedLVM.py() + deltaForMEy) * 
-                         (patMET.py() + patElectron.py() + patMuon.py() - patElectron.py() - smearedLVM.py() + deltaForMEy))) < _RecoMetCut) {return false;}
-      } else {
-        if((TMath::Sqrt((patMET.px() + deltaForMEx)*(patMET.px() + deltaForMEx) + (patMET.py() + deltaForMEy)*(patMET.py() + deltaForMEy))) < _RecoMetCut) {return false;}
-//        if (patMET.pt()<_RecoMetCut) {return false;}
-      }
+  if (_DoDiscrByMet) {if(theMETVector.pt() < _RecoMetCut) {return false;}}
+  if (_DoDiTauDiscrByDeltaPtDivSumPt) {
+    if ( ((smearedMuonPtEtaPhiMVector.at(nobjM).pt() - smearedElectronPtEtaPhiMVector.at(nobjE).pt()) / (smearedMuonPtEtaPhiMVector.at(nobjM).pt() + smearedElectronPtEtaPhiMVector.at(nobjE).pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
+    if ( ((smearedMuonPtEtaPhiMVector.at(nobjM).pt() - smearedElectronPtEtaPhiMVector.at(nobjE).pt()) / (smearedMuonPtEtaPhiMVector.at(nobjM).pt() + smearedElectronPtEtaPhiMVector.at(nobjE).pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
+  }
+  if (_DoDiTauDiscrByDeltaPt) {
+    if ( ((smearedMuonPtEtaPhiMVector.at(nobjM).pt() - smearedElectronPtEtaPhiMVector.at(nobjE).pt())) < _DiTauDeltaPtMinCutValue ) {return false;}
+    if ( ((smearedMuonPtEtaPhiMVector.at(nobjM).pt() - smearedElectronPtEtaPhiMVector.at(nobjE).pt())) > _DiTauDeltaPtMaxCutValue ) {return false;}
+  }
+  if (_DoDiscrByLeg1MetDphi) {
+    if(_AnalyzeElectronForLeg1) {
+      if(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(nobjE).phi() - theMETVector.phi())) > _Leg1MetDphiMaxCut) {return false;}
+      if(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(nobjE).phi() - theMETVector.phi())) < _Leg1MetDphiMinCut) {return false;}
+    }
+    if(_AnalyzeMuonForLeg1) {
+      if(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(nobjM).phi() - theMETVector.phi())) > _Leg1MetDphiMaxCut) {return false;}
+      if(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(nobjM).phi() - theMETVector.phi())) < _Leg1MetDphiMinCut) {return false;}
     }
   }
-  if(smearE) {
-    if(smearM) {
-      if (_DoDiTauDiscrByDeltaPtDivSumPt) {
-        if ( ((smearedLVM.pt() - smearedLVE.pt()) / (smearedLVM.pt() + smearedLVE.pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
-        if ( ((smearedLVM.pt() - smearedLVE.pt()) / (smearedLVM.pt() + smearedLVE.pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
-      }
-      if (_DoDiscrByLeg1MetDphi) {
-        if(_AnalyzeElectronForLeg1) {
-          if(TMath::Abs(normalizedPhi(smearedLVE.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVE.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeMuonForLeg1) {
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-      }
-      if (_DoDiscrByLeg2MetDphi) {
-        if(_AnalyzeElectronForLeg2) {
-          if(TMath::Abs(normalizedPhi(smearedLVE.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVE.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeMuonForLeg2) {
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-      }
-    } else {
-      if (_DoDiTauDiscrByDeltaPtDivSumPt) {
-        if ( ((patMuon.pt() - smearedLVE.pt()) / (patMuon.pt() + smearedLVE.pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
-        if ( ((patMuon.pt() - smearedLVE.pt()) / (patMuon.pt() + smearedLVE.pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
-      }
-      if (_DoDiscrByLeg1MetDphi) {
-        if(_AnalyzeElectronForLeg1) {
-          if(TMath::Abs(normalizedPhi(smearedLVE.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVE.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeMuonForLeg1) {
-          if(TMath::Abs(normalizedPhi(patMuon.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patMuon.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-      }
-      if (_DoDiscrByLeg2MetDphi) {
-        if(_AnalyzeElectronForLeg2) {
-          if(TMath::Abs(normalizedPhi(smearedLVE.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVE.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeMuonForLeg2) {
-          if(TMath::Abs(normalizedPhi(patMuon.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patMuon.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-      }
+  if (_DoDiscrByLeg2MetDphi) {
+    if(_AnalyzeElectronForLeg2) {
+      if(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(nobjE).phi() - theMETVector.phi())) > _Leg2MetDphiMaxCut) {return false;}
+      if(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(nobjE).phi() - theMETVector.phi())) < _Leg2MetDphiMinCut) {return false;}
     }
-  } else {
-    if(smearM) {
-      if (_DoDiTauDiscrByDeltaPtDivSumPt) {
-        if ( ((smearedLVM.pt() - patElectron.pt()) / (smearedLVM.pt() + patElectron.pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
-        if ( ((smearedLVM.pt() - patElectron.pt()) / (smearedLVM.pt() + patElectron.pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
-      }
-      if (_DoDiscrByLeg1MetDphi) {
-        if(_AnalyzeElectronForLeg1) {
-          if(TMath::Abs(normalizedPhi(patElectron.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patElectron.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeMuonForLeg1) {
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-      }
-      if (_DoDiscrByLeg2MetDphi) {
-        if(_AnalyzeElectronForLeg2) {
-          if(TMath::Abs(normalizedPhi(patElectron.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patElectron.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeMuonForLeg2) {
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(smearedLVM.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-      }
-    } else {
-      if (_DoDiTauDiscrByDeltaPtDivSumPt) {
-        if ( ((patMuon.pt() - patElectron.pt()) / (patMuon.pt() + patElectron.pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
-        if ( ((patMuon.pt() - patElectron.pt()) / (patMuon.pt() + patElectron.pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
-      }
-      if (_DoDiscrByLeg1MetDphi) {
-        if(_AnalyzeElectronForLeg1) {
-          if(TMath::Abs(normalizedPhi(patElectron.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patElectron.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeMuonForLeg1) {
-          if(TMath::Abs(normalizedPhi(patMuon.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patMuon.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-        }
-      }
-      if (_DoDiscrByLeg2MetDphi) {
-        if(_AnalyzeElectronForLeg2) {
-          if(TMath::Abs(normalizedPhi(patElectron.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patElectron.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-        if(_AnalyzeMuonForLeg2) {
-          if(TMath::Abs(normalizedPhi(patMuon.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-          if(TMath::Abs(normalizedPhi(patMuon.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-        }
-      }
+    if(_AnalyzeMuonForLeg2) {
+      if(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(nobjM).phi() - theMETVector.phi())) > _Leg2MetDphiMaxCut) {return false;}
+      if(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(nobjM).phi() - theMETVector.phi())) < _Leg2MetDphiMinCut) {return false;}
     }
   }
   return true;
 }
-bool HiMassTauAnalysis::passTopologyCuts(const pat::Muon& patMuon1, bool smear1, reco::Candidate::LorentzVector smearedLV1, const pat::Muon& patMuon2, bool smear2, reco::Candidate::LorentzVector smearedLV2, const pat::MET& patMET) {
+bool HiMassTauAnalysis::passTopologyCuts(const pat::Muon& patMuon1, int nobj1, const pat::Muon& patMuon2, int nobj2) {
   // ----Separation cut between muon legs (remove double counting)
-  if(smear1) {
-    if (_DoDiTauDiscrByDeltaR) { if(reco::deltaR(smearedLV1, smearedLV2) < _DiTauDeltaRCut) {return false;} }
-  } else {
-    if (_DoDiTauDiscrByDeltaR) { if(reco::deltaR(patMuon1.p4(), patMuon2.p4()) < _DiTauDeltaRCut) {return false;} }
-  }
+  if (_DoDiTauDiscrByDeltaR) { if(reco::deltaR(smearedMuonMomentumVector.at(nobj1), smearedMuonMomentumVector.at(nobj2)) < _DiTauDeltaRCut) {return false;} }
   // ----Opposite sign - Like sign requirement
   if (_DiTauDiscrByOSLSType == "OS") {
     if((patMuon1.charge() * patMuon2.charge()) >= 0) {return false;}
@@ -2298,95 +1895,45 @@ bool HiMassTauAnalysis::passTopologyCuts(const pat::Muon& patMuon1, bool smear1,
     if((patMuon1.charge() * patMuon2.charge()) <= 0) {return false;}
   } else {}
   // ----Require both legs to be almost back-to-back in phi
-  if(smear1) {
-    if (_DoDiTauDiscrByCosDphi) {
-      if(cos(TMath::Abs(normalizedPhi(smearedLV1.phi() - smearedLV2.phi()))) > _DiTauCosDphiMaxCut) {return false;}
-      if(cos(TMath::Abs(normalizedPhi(smearedLV1.phi() - smearedLV2.phi()))) < _DiTauCosDphiMinCut) {return false;}
-    }
-  } else {
-    if (_DoDiTauDiscrByCosDphi) {
-      if(cos(TMath::Abs(normalizedPhi(patMuon1.phi() - patMuon2.phi()))) > _DiTauCosDphiMaxCut) {return false;}
-      if(cos(TMath::Abs(normalizedPhi(patMuon1.phi() - patMuon2.phi()))) < _DiTauCosDphiMinCut) {return false;}
-    }
+  if (_DoDiTauDiscrByCosDphi) {
+    if(cos(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(nobj1).phi() - smearedMuonPtEtaPhiMVector.at(nobj2).phi()))) > _DiTauCosDphiMaxCut) {return false;}
+    if(cos(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(nobj1).phi() - smearedMuonPtEtaPhiMVector.at(nobj2).phi()))) < _DiTauCosDphiMinCut) {return false;}
   }
   // ----Mass window requirement
-  if (_DoDiscrByMassReco) { if( (CalculateThe4Momentum(patMuon1,smear1,smearedLV1,patMuon2,smear2,smearedLV2,patMET).second.M() < _MassMinCut) || (CalculateThe4Momentum(patMuon1,smear1,smearedLV1,patMuon2,smear2,smearedLV2,patMET).second.M() > _MassMaxCut) ) {return false;} }
+  if (_DoDiscrByMassReco) { if( (CalculateThe4Momentum(patMuon1,nobj1,patMuon2,nobj2).second.M() < _MassMinCut) || (CalculateThe4Momentum(patMuon1,nobj1,patMuon2,nobj2).second.M() > _MassMaxCut) ) {return false;} }
   // ----Zeta requirement
   if (_DoDiTauDiscrByCDFzeta2D) {
-    if( ((_PZetaCutCoefficient * CalculatePZeta(patMuon1,smear1,smearedLV1,patMuon2,smear2,smearedLV2,patMET)) +
-         (_PZetaVisCutCoefficient * CalculatePZetaVis(patMuon1,smear1,smearedLV1,patMuon2,smear2,smearedLV2,patMET))) < _CDFzeta2DCutValue )
+    if( ((_PZetaCutCoefficient * CalculatePZeta(patMuon1,nobj1,patMuon2,nobj2)) +
+         (_PZetaVisCutCoefficient * CalculatePZetaVis(patMuon1,nobj1,patMuon2,nobj2))) < _CDFzeta2DCutValue )
     {return false;}
   }
   // ----Missing transverse energy requirement
-  if (_DoDiscrByMet) {
-    if(smear1) {
-      if(smear2) {
-        if (TMath::Sqrt(((patMET.px() + patMuon1.px() + patMuon2.px() - smearedLV1.px() - smearedLV2.px() + deltaForMEx) * 
-                         (patMET.px() + patMuon1.px() + patMuon2.px() - smearedLV1.px() - smearedLV2.px() + deltaForMEx)) + 
-                        ((patMET.py() + patMuon1.py() + patMuon2.py() - smearedLV1.py() - smearedLV2.py() + deltaForMEy) * 
-                         (patMET.py() + patMuon1.py() + patMuon2.py() - smearedLV1.py() - smearedLV2.py() + deltaForMEy))) < _RecoMetCut) {return false;}
-      } else {
-        if (TMath::Sqrt(((patMET.px() + patMuon1.px() + patMuon2.px() - smearedLV1.px() - patMuon2.px() + deltaForMEx) * 
-                         (patMET.px() + patMuon1.px() + patMuon2.px() - smearedLV1.px() - patMuon2.px() + deltaForMEx)) + 
-                        ((patMET.py() + patMuon1.py() + patMuon2.py() - smearedLV1.py() - patMuon2.py() + deltaForMEy) * 
-                         (patMET.py() + patMuon1.py() + patMuon2.py() - smearedLV1.py() - patMuon2.py() + deltaForMEy))) < _RecoMetCut) {return false;}
-      }
-    } else {
-      if(smear2) {
-        if (TMath::Sqrt(((patMET.px() + patMuon1.px() + patMuon2.px() - patMuon1.px() - smearedLV2.px() + deltaForMEx) * 
-                         (patMET.px() + patMuon1.px() + patMuon2.px() - patMuon1.px() - smearedLV2.px() + deltaForMEx)) + 
-                        ((patMET.py() + patMuon1.py() + patMuon2.py() - patMuon1.py() - smearedLV2.py() + deltaForMEy) * 
-                         (patMET.py() + patMuon1.py() + patMuon2.py() - patMuon1.py() - smearedLV2.py() + deltaForMEy))) < _RecoMetCut) {return false;}
-      } else {
-        if((TMath::Sqrt((patMET.px() + deltaForMEx)*(patMET.px() + deltaForMEx) + (patMET.py() + deltaForMEy)*(patMET.py() + deltaForMEy))) < _RecoMetCut) {return false;}
-//        if (patMET.pt()<_RecoMetCut) {return false;}
-      }
+  if (_DoDiscrByMet) {if(theMETVector.pt() < _RecoMetCut) {return false;}}
+  if (_DoDiTauDiscrByDeltaPtDivSumPt) {
+    if ( ((smearedMuonPtEtaPhiMVector.at(nobj1).pt() - smearedMuonPtEtaPhiMVector.at(nobj2).pt()) / (smearedMuonPtEtaPhiMVector.at(nobj1).pt() + smearedMuonPtEtaPhiMVector.at(nobj2).pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
+    if ( ((smearedMuonPtEtaPhiMVector.at(nobj1).pt() - smearedMuonPtEtaPhiMVector.at(nobj2).pt()) / (smearedMuonPtEtaPhiMVector.at(nobj1).pt() + smearedMuonPtEtaPhiMVector.at(nobj2).pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
+  }
+  if (_DoDiTauDiscrByDeltaPt) {
+    if ( ((smearedMuonPtEtaPhiMVector.at(nobj1).pt() - smearedMuonPtEtaPhiMVector.at(nobj2).pt())) < _DiTauDeltaPtMinCutValue ) {return false;}
+    if ( ((smearedMuonPtEtaPhiMVector.at(nobj1).pt() - smearedMuonPtEtaPhiMVector.at(nobj2).pt())) > _DiTauDeltaPtMaxCutValue ) {return false;}
+  }
+  if (_DoDiscrByLeg1MetDphi) {
+    if(_AnalyzeMuonForLeg1) {
+      if(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(nobj1).phi() - theMETVector.phi())) > _Leg1MetDphiMaxCut) {return false;}
+      if(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(nobj1).phi() - theMETVector.phi())) < _Leg1MetDphiMinCut) {return false;}
     }
   }
-  if(smear1) {
-    if (_DoDiTauDiscrByDeltaPtDivSumPt) {
-      if ( ((smearedLV1.pt() - smearedLV2.pt()) / (smearedLV1.pt() + smearedLV2.pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
-      if ( ((smearedLV1.pt() - smearedLV2.pt()) / (smearedLV1.pt() + smearedLV2.pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
-    }
-    if (_DoDiscrByLeg1MetDphi) {
-      if(_AnalyzeMuonForLeg1) {
-        if(TMath::Abs(normalizedPhi(smearedLV1.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-        if(TMath::Abs(normalizedPhi(smearedLV1.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-      }
-    }
-    if (_DoDiscrByLeg2MetDphi) {
-      if(_AnalyzeMuonForLeg2) {
-        if(TMath::Abs(normalizedPhi(smearedLV2.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-        if(TMath::Abs(normalizedPhi(smearedLV2.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-      }
-    }
-  } else {
-    if (_DoDiTauDiscrByDeltaPtDivSumPt) {
-      if ( ((patMuon1.pt() - patMuon2.pt()) / (patMuon1.pt() + patMuon2.pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
-      if ( ((patMuon1.pt() - patMuon2.pt()) / (patMuon1.pt() + patMuon2.pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
-    }
-    if (_DoDiscrByLeg1MetDphi) {
-      if(_AnalyzeMuonForLeg1) {
-        if(TMath::Abs(normalizedPhi(patMuon1.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-        if(TMath::Abs(normalizedPhi(patMuon1.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-      }
-    }
-    if (_DoDiscrByLeg2MetDphi) {
-      if(_AnalyzeMuonForLeg2) {
-        if(TMath::Abs(normalizedPhi(patMuon2.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-        if(TMath::Abs(normalizedPhi(patMuon2.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-      }
+  if (_DoDiscrByLeg2MetDphi) {
+    if(_AnalyzeMuonForLeg2) {
+      if(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(nobj2).phi() - theMETVector.phi())) > _Leg2MetDphiMaxCut) {return false;}
+      if(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(nobj2).phi() - theMETVector.phi())) < _Leg2MetDphiMinCut) {return false;}
     }
   }
   return true;
 }
-bool HiMassTauAnalysis::passTopologyCuts(const pat::Electron& patElectron1, bool smear1, reco::Candidate::LorentzVector smearedLV1, const pat::Electron& patElectron2, bool smear2, reco::Candidate::LorentzVector smearedLV2, const pat::MET& patMET) {
+bool HiMassTauAnalysis::passTopologyCuts(const pat::Electron& patElectron1, int nobj1, const pat::Electron& patElectron2, int nobj2) {
   // ----Separation cut between electron legs (remove double counting)
-  if(smear1) {
-    if (_DoDiTauDiscrByDeltaR) { if(reco::deltaR(smearedLV1, smearedLV2) < _DiTauDeltaRCut) {return false;} }
-  } else {
-    if (_DoDiTauDiscrByDeltaR) { if(reco::deltaR(patElectron1.p4(), patElectron2.p4()) < _DiTauDeltaRCut) {return false;} }
-  }
+  if (_DoDiTauDiscrByDeltaR) { if(reco::deltaR(smearedElectronMomentumVector.at(nobj1), smearedElectronMomentumVector.at(nobj2)) < _DiTauDeltaRCut) {return false;} }
   // ----Opposite sign - Like sign requirement
   if (_DiTauDiscrByOSLSType == "OS") {
     if((patElectron1.charge() * patElectron2.charge()) >= 0) {return false;}
@@ -2394,97 +1941,45 @@ bool HiMassTauAnalysis::passTopologyCuts(const pat::Electron& patElectron1, bool
     if((patElectron1.charge() * patElectron2.charge()) <= 0) {return false;}
   } else {}
   // ----Require both legs to be almost back-to-back in phi
-  if(smear1) {
-    if (_DoDiTauDiscrByCosDphi) {
-      if(cos(TMath::Abs(normalizedPhi(smearedLV1.phi() - smearedLV2.phi()))) > _DiTauCosDphiMaxCut) {return false;}
-      if(cos(TMath::Abs(normalizedPhi(smearedLV1.phi() - smearedLV2.phi()))) < _DiTauCosDphiMinCut) {return false;}
-    }
-  } else {
-    if (_DoDiTauDiscrByCosDphi) {
-      if(cos(TMath::Abs(normalizedPhi(patElectron1.phi() - patElectron2.phi()))) > _DiTauCosDphiMaxCut) {return false;}
-      if(cos(TMath::Abs(normalizedPhi(patElectron1.phi() - patElectron2.phi()))) < _DiTauCosDphiMinCut) {return false;}
-    }
+  if (_DoDiTauDiscrByCosDphi) {
+    if(cos(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(nobj1).phi() - smearedElectronPtEtaPhiMVector.at(nobj2).phi()))) > _DiTauCosDphiMaxCut) {return false;}
+    if(cos(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(nobj1).phi() - smearedElectronPtEtaPhiMVector.at(nobj2).phi()))) < _DiTauCosDphiMinCut) {return false;}
   }
   // ----Mass window requirement
-  if (_DoDiscrByMassReco) { if( (CalculateThe4Momentum(patElectron1,smear1,smearedLV1,patElectron2,smear2,smearedLV2,patMET).second.M() < _MassMinCut) || (CalculateThe4Momentum(patElectron1,smear1,smearedLV1,patElectron2,smear2,smearedLV2,patMET).second.M() > _MassMaxCut) ) {return false;} }
+  if (_DoDiscrByMassReco) { if( (CalculateThe4Momentum(patElectron1,nobj1,patElectron2,nobj2).second.M() < _MassMinCut) || (CalculateThe4Momentum(patElectron1,nobj1,patElectron2,nobj2).second.M() > _MassMaxCut) ) {return false;} }
   // ----Zeta requirement
   if (_DoDiTauDiscrByCDFzeta2D) {
-    if( ((_PZetaCutCoefficient * CalculatePZeta(patElectron1,smear1,smearedLV1,patElectron2,smear2,smearedLV2,patMET)) +
-         (_PZetaVisCutCoefficient * CalculatePZetaVis(patElectron1,smear1,smearedLV1,patElectron2,smear2,smearedLV2,patMET))) < _CDFzeta2DCutValue )
+    if( ((_PZetaCutCoefficient * CalculatePZeta(patElectron1,nobj1,patElectron2,nobj2)) +
+         (_PZetaVisCutCoefficient * CalculatePZetaVis(patElectron1,nobj1,patElectron2,nobj2))) < _CDFzeta2DCutValue )
     {return false;}
   }
   // ----Missing transverse energy requirement
-  if (_DoDiscrByMet) {
-    if(smear1) {
-      if(smear2) {
-        if (TMath::Sqrt(((patMET.px() + patElectron1.px() + patElectron2.px() - smearedLV1.px() - smearedLV2.px() + deltaForMEx) * 
-                         (patMET.px() + patElectron1.px() + patElectron2.px() - smearedLV1.px() - smearedLV2.px() + deltaForMEx)) + 
-                        ((patMET.py() + patElectron1.py() + patElectron2.py() - smearedLV1.py() - smearedLV2.py() + deltaForMEy) * 
-                         (patMET.py() + patElectron1.py() + patElectron2.py() - smearedLV1.py() - smearedLV2.py() + deltaForMEy))) < _RecoMetCut) {return false;}
-      } else {
-        if (TMath::Sqrt(((patMET.px() + patElectron1.px() + patElectron2.px() - smearedLV1.px() - patElectron2.px() + deltaForMEx) * 
-                         (patMET.px() + patElectron1.px() + patElectron2.px() - smearedLV1.px() - patElectron2.px() + deltaForMEx)) + 
-                        ((patMET.py() + patElectron1.py() + patElectron2.py() - smearedLV1.py() - patElectron2.py() + deltaForMEy) * 
-                         (patMET.py() + patElectron1.py() + patElectron2.py() - smearedLV1.py() - patElectron2.py() + deltaForMEy))) < _RecoMetCut) {return false;}
-      }
-    } else {
-      if(smear2) {
-        if (TMath::Sqrt(((patMET.px() + patElectron1.px() + patElectron2.px() - patElectron1.px() - smearedLV2.px() + deltaForMEx) * 
-                         (patMET.px() + patElectron1.px() + patElectron2.px() - patElectron1.px() - smearedLV2.px() + deltaForMEx)) + 
-                        ((patMET.py() + patElectron1.py() + patElectron2.py() - patElectron1.py() - smearedLV2.py() + deltaForMEy) * 
-                         (patMET.py() + patElectron1.py() + patElectron2.py() - patElectron1.py() - smearedLV2.py() + deltaForMEy))) < _RecoMetCut) {return false;}
-      } else {
-        if((TMath::Sqrt((patMET.px() + deltaForMEx)*(patMET.px() + deltaForMEx) + (patMET.py() + deltaForMEy)*(patMET.py() + deltaForMEy))) < _RecoMetCut) {return false;}
-//        if (patMET.pt()<_RecoMetCut) {return false;}
-      }
+  if (_DoDiscrByMet) {if(theMETVector.pt() < _RecoMetCut) {return false;}}
+  if (_DoDiTauDiscrByDeltaPtDivSumPt) {
+    if ( ((smearedElectronPtEtaPhiMVector.at(nobj1).pt() - smearedElectronPtEtaPhiMVector.at(nobj2).pt()) / (smearedElectronPtEtaPhiMVector.at(nobj1).pt() + smearedElectronPtEtaPhiMVector.at(nobj2).pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
+    if ( ((smearedElectronPtEtaPhiMVector.at(nobj1).pt() - smearedElectronPtEtaPhiMVector.at(nobj2).pt()) / (smearedElectronPtEtaPhiMVector.at(nobj1).pt() + smearedElectronPtEtaPhiMVector.at(nobj2).pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
+  }
+  if (_DoDiTauDiscrByDeltaPt) {
+    if ( ((smearedElectronPtEtaPhiMVector.at(nobj1).pt() - smearedElectronPtEtaPhiMVector.at(nobj2).pt())) < _DiTauDeltaPtMinCutValue ) {return false;}
+    if ( ((smearedElectronPtEtaPhiMVector.at(nobj1).pt() - smearedElectronPtEtaPhiMVector.at(nobj2).pt())) > _DiTauDeltaPtMaxCutValue ) {return false;}
+  }
+  if (_DoDiscrByLeg1MetDphi) {
+    if(_AnalyzeElectronForLeg1) {
+      if(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(nobj1).phi() - theMETVector.phi())) > _Leg1MetDphiMaxCut) {return false;}
+      if(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(nobj1).phi() - theMETVector.phi())) < _Leg1MetDphiMinCut) {return false;}
     }
   }
-  if(smear1) {
-    if (_DoDiTauDiscrByDeltaPtDivSumPt) {
-      if ( ((smearedLV1.pt() - smearedLV2.pt()) / (smearedLV1.pt() + smearedLV2.pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
-      if ( ((smearedLV1.pt() - smearedLV2.pt()) / (smearedLV1.pt() + smearedLV2.pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
-    }
-    if (_DoDiscrByLeg1MetDphi) {
-      if(_AnalyzeElectronForLeg1) {
-        if(TMath::Abs(normalizedPhi(smearedLV1.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-        if(TMath::Abs(normalizedPhi(smearedLV1.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-      }
-    }
-    if (_DoDiscrByLeg2MetDphi) {
-      if(_AnalyzeElectronForLeg2) {
-        if(TMath::Abs(normalizedPhi(smearedLV2.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-        if(TMath::Abs(normalizedPhi(smearedLV2.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-      }
-    }
-  } else {
-    if (_DoDiTauDiscrByDeltaPtDivSumPt) {
-      if ( ((patElectron1.pt() - patElectron2.pt()) / (patElectron1.pt() + patElectron2.pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
-      if ( ((patElectron1.pt() - patElectron2.pt()) / (patElectron1.pt() + patElectron2.pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
-    }
-    if (_DoDiscrByLeg1MetDphi) {
-      if(_AnalyzeElectronForLeg1) {
-        if(TMath::Abs(normalizedPhi(patElectron1.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-        if(TMath::Abs(normalizedPhi(patElectron1.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-      }
-    }
-    if (_DoDiscrByLeg2MetDphi) {
-      if(_AnalyzeElectronForLeg2) {
-        if(TMath::Abs(normalizedPhi(patElectron2.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-        if(TMath::Abs(normalizedPhi(patElectron2.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-      }
+  if (_DoDiscrByLeg2MetDphi) {
+    if(_AnalyzeElectronForLeg2) {
+      if(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(nobj2).phi() - theMETVector.phi())) > _Leg2MetDphiMaxCut) {return false;}
+      if(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(nobj2).phi() - theMETVector.phi())) < _Leg2MetDphiMinCut) {return false;}
     }
   }
   return true;
 }
-bool HiMassTauAnalysis::passTopologyCuts(const pat::Tau& patTau1, bool smear1, reco::Candidate::LorentzVector smearedLV1, const pat::Tau& patTau2, bool smear2, reco::Candidate::LorentzVector smearedLV2, const pat::MET& patMET) {
+bool HiMassTauAnalysis::passTopologyCuts(const pat::Tau& patTau1, int nobj1, const pat::Tau& patTau2, int nobj2) {
   // ----Separation cut between lepton and tau jet (remove overlaps)
-  if (_DoDiTauDiscrByDeltaR) {
-    if(smear1) {
-      if(reco::deltaR(smearedLV1, smearedLV2) < _DiTauDeltaRCut) {return false;}
-    } else {
-      if(reco::deltaR(patTau1.p4(), patTau2.p4()) < _DiTauDeltaRCut) {return false;}
-    }
-  }
+  if (_DoDiTauDiscrByDeltaR) {if(reco::deltaR(smearedTauMomentumVector.at(nobj1), smearedTauMomentumVector.at(nobj2)) < _DiTauDeltaRCut) {return false;}}
   // ----Opposite sign - Like sign requirement
   if (_DiTauDiscrByOSLSType == "OS") {
     if(_UseTauSeedTrackForDiTauDiscrByOSLS) {
@@ -2499,78 +1994,82 @@ bool HiMassTauAnalysis::passTopologyCuts(const pat::Tau& patTau1, bool smear1, r
   } else {}
   // ----Require both legs to be almost back-to-back in phi
   if (_DoDiTauDiscrByCosDphi) {
-    if(smear1) {
-      if(cos(TMath::Abs(normalizedPhi(smearedLV1.phi() - smearedLV2.phi()))) > _DiTauCosDphiMaxCut) {return false;}
-      if(cos(TMath::Abs(normalizedPhi(smearedLV1.phi() - smearedLV2.phi()))) < _DiTauCosDphiMinCut) {return false;}
-    } else {
-      if(cos(TMath::Abs(normalizedPhi(patTau1.phi() - patTau2.phi()))) > _DiTauCosDphiMaxCut) {return false;}
-      if(cos(TMath::Abs(normalizedPhi(patTau1.phi() - patTau2.phi()))) < _DiTauCosDphiMinCut) {return false;}
-    }
+    if(cos(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(nobj1).phi() - smearedTauPtEtaPhiMVector.at(nobj2).phi()))) > _DiTauCosDphiMaxCut) {return false;}
+    if(cos(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(nobj1).phi() - smearedTauPtEtaPhiMVector.at(nobj2).phi()))) < _DiTauCosDphiMinCut) {return false;}
   }
   // ----Mass window requirement
-  if (_DoDiscrByMassReco) { if( (CalculateThe4Momentum(patTau1,smear1,smearedLV1,patTau2,smear2,smearedLV2,patMET).second.M() < _MassMinCut) || (CalculateThe4Momentum(patTau1,smear1,smearedLV1,patTau2,smear2,smearedLV2,patMET).second.M() > _MassMaxCut) ) {return false;} }
+  if (_DoDiscrByMassReco) { if( (CalculateThe4Momentum(patTau1,nobj1,patTau2,nobj2).second.M() < _MassMinCut) || (CalculateThe4Momentum(patTau1,nobj1,patTau2,nobj2).second.M() > _MassMaxCut) ) {return false;} }
   // ----Zeta requirement
   if (_DoDiTauDiscrByCDFzeta2D) {
-    if( ((_PZetaCutCoefficient * CalculatePZeta(patTau1,smear1,smearedLV1,patTau2,smear2,smearedLV2,patMET)) +
-         (_PZetaVisCutCoefficient * CalculatePZetaVis(patTau1,smear1,smearedLV1,patTau2,smear2,smearedLV2,patMET))) < _CDFzeta2DCutValue )
+    if( ((_PZetaCutCoefficient * CalculatePZeta(patTau1,nobj1,patTau2,nobj2)) +
+         (_PZetaVisCutCoefficient * CalculatePZetaVis(patTau1,nobj1,patTau2,nobj2))) < _CDFzeta2DCutValue )
     {return false;}
   }
   // ----Missing transverse energy requirement
-  if (_DoDiscrByMet) {
-    if(smear1) {
-      if(smear2) {
-        if (TMath::Sqrt(((patMET.px() + patTau1.px() + patTau2.px() - smearedLV1.px() - smearedLV2.px() + deltaForMEx) * 
-                         (patMET.px() + patTau1.px() + patTau2.px() - smearedLV1.px() - smearedLV2.px() + deltaForMEx)) + 
-                        ((patMET.py() + patTau1.py() + patTau2.py() - smearedLV1.py() - smearedLV2.py() + deltaForMEy) * 
-                         (patMET.py() + patTau1.py() + patTau2.py() - smearedLV1.py() - smearedLV2.py() + deltaForMEy))) < _RecoMetCut) {return false;}
-      } else {
-        if (TMath::Sqrt(((patMET.px() + patTau1.px() + patTau2.px() - smearedLV1.px() - patTau2.px() + deltaForMEx) * 
-                         (patMET.px() + patTau1.px() + patTau2.px() - smearedLV1.px() - patTau2.px() + deltaForMEx)) + 
-                        ((patMET.py() + patTau1.py() + patTau2.py() - smearedLV1.py() - patTau2.py() + deltaForMEy) * 
-                         (patMET.py() + patTau1.py() + patTau2.py() - smearedLV1.py() - patTau2.py() + deltaForMEy))) < _RecoMetCut) {return false;}
-      }
-    } else {
-      if(smear2) {
-        if (TMath::Sqrt(((patMET.px() + patTau1.px() + patTau2.px() - patTau1.px() - smearedLV2.px() + deltaForMEx) * 
-                         (patMET.px() + patTau1.px() + patTau2.px() - patTau1.px() - smearedLV2.px() + deltaForMEx)) + 
-                        ((patMET.py() + patTau1.py() + patTau2.py() - patTau1.py() - smearedLV2.py() + deltaForMEy) * 
-                         (patMET.py() + patTau1.py() + patTau2.py() - patTau1.py() - smearedLV2.py() + deltaForMEy))) < _RecoMetCut) {return false;}
-      } else {
-        if((TMath::Sqrt((patMET.px() + deltaForMEx)*(patMET.px() + deltaForMEx) + (patMET.py() + deltaForMEy)*(patMET.py() + deltaForMEy))) < _RecoMetCut) {return false;}
-//        if (patMET.pt()<_RecoMetCut) {return false;}
-      }
-    }
-  }
+  if (_DoDiscrByMet) {if(theMETVector.pt() < _RecoMetCut) {return false;}}
   if (_DoDiTauDiscrByDeltaPtDivSumPt) {
-    if(smear1) {
-      if ( ((smearedLV1.pt() - smearedLV2.pt()) / (smearedLV1.pt() + smearedLV2.pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
-      if ( ((smearedLV1.pt() - smearedLV2.pt()) / (smearedLV1.pt() + smearedLV2.pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
-    } else {
-      if ( ((patTau1.pt() - patTau2.pt()) / (patTau1.pt() + patTau2.pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
-      if ( ((patTau1.pt() - patTau2.pt()) / (patTau1.pt() + patTau2.pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
-    }
+    if ( ((smearedTauPtEtaPhiMVector.at(nobj1).pt() - smearedTauPtEtaPhiMVector.at(nobj2).pt()) / (smearedTauPtEtaPhiMVector.at(nobj1).pt() + smearedTauPtEtaPhiMVector.at(nobj2).pt())) < _DiTauDeltaPtDivSumPtMinCutValue ) {return false;}
+    if ( ((smearedTauPtEtaPhiMVector.at(nobj1).pt() - smearedTauPtEtaPhiMVector.at(nobj2).pt()) / (smearedTauPtEtaPhiMVector.at(nobj1).pt() + smearedTauPtEtaPhiMVector.at(nobj2).pt())) > _DiTauDeltaPtDivSumPtMaxCutValue ) {return false;}
+  }
+  if (_DoDiTauDiscrByDeltaPt) {
+    if ( ((smearedTauPtEtaPhiMVector.at(nobj1).pt() - smearedTauPtEtaPhiMVector.at(nobj2).pt())) < _DiTauDeltaPtMinCutValue ) {return false;}
+    if ( ((smearedTauPtEtaPhiMVector.at(nobj1).pt() - smearedTauPtEtaPhiMVector.at(nobj2).pt())) > _DiTauDeltaPtMaxCutValue ) {return false;}
   }
   if (_DoDiscrByLeg1MetDphi) {
     if(_AnalyzeTauForLeg1) {
-      if(smear1) {
-        if(TMath::Abs(normalizedPhi(smearedLV1.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-        if(TMath::Abs(normalizedPhi(smearedLV1.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-      } else {
-        if(TMath::Abs(normalizedPhi(patTau1.phi() - patMET.phi())) > _Leg1MetDphiMaxCut) {return false;}
-        if(TMath::Abs(normalizedPhi(patTau1.phi() - patMET.phi())) < _Leg1MetDphiMinCut) {return false;}
-      }
+      if(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(nobj1).phi() - theMETVector.phi())) > _Leg1MetDphiMaxCut) {return false;}
+      if(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(nobj1).phi() - theMETVector.phi())) < _Leg1MetDphiMinCut) {return false;}
     }
   }
   if (_DoDiscrByLeg2MetDphi) {
     if(_AnalyzeTauForLeg2) {
-      if(smear1) {
-        if(TMath::Abs(normalizedPhi(smearedLV2.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-        if(TMath::Abs(normalizedPhi(smearedLV2.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-      } else {
-        if(TMath::Abs(normalizedPhi(patTau2.phi() - patMET.phi())) > _Leg2MetDphiMaxCut) {return false;}
-        if(TMath::Abs(normalizedPhi(patTau2.phi() - patMET.phi())) < _Leg2MetDphiMinCut) {return false;}
-      }
+      if(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(nobj2).phi() - theMETVector.phi())) > _Leg2MetDphiMaxCut) {return false;}
+      if(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(nobj2).phi() - theMETVector.phi())) < _Leg2MetDphiMinCut) {return false;}
     }
+  }
+  return true;
+}
+bool HiMassTauAnalysis::passSusyTopologyCuts(int nobj1, int nobj2) {
+  if(_DoSUSYDiscrByMHT) { if(sqrt((sumpxForMht * sumpxForMht) + (sumpyForMht * sumpyForMht)) < _MhtCut) {return false;} }
+  double dphi1;
+  double dphi2;
+  double r1;
+  double r2;
+  double alpha;
+  if(_DoSUSYDiscrByR1) {
+    dphi1 = TMath::Abs(normalizedPhi(smearedJetPtEtaPhiMVector.at(nobj1).phi() - theMETVector.phi()));
+    dphi2 = TMath::Abs(normalizedPhi(smearedJetPtEtaPhiMVector.at(nobj2).phi() - theMETVector.phi()));
+    r1 = sqrt( pow(dphi1,2.0) + pow((TMath::Pi() - dphi2),2.0) );
+    if(r1 < _R1MinCut) {return false;}
+    if(r1 > _R1MaxCut) {return false;}
+  }
+  if(_DoSUSYDiscrByR2) {
+    dphi1 = TMath::Abs(normalizedPhi(smearedJetPtEtaPhiMVector.at(nobj1).phi() - theMETVector.phi()));
+    dphi2 = TMath::Abs(normalizedPhi(smearedJetPtEtaPhiMVector.at(nobj2).phi() - theMETVector.phi()));
+    r2 = sqrt( pow(dphi2,2.0) + pow((TMath::Pi() - dphi1),2.0) );
+    if(r2 < _R2MinCut) {return false;}
+    if(r2 > _R2MaxCut) {return false;}
+  }
+  if(_DoSUSYDiscrByAlpha) {
+    double px = smearedJetMomentumVector.at(nobj1).px() + smearedJetMomentumVector.at(nobj2).px();
+    double py = smearedJetMomentumVector.at(nobj1).py() + smearedJetMomentumVector.at(nobj2).py();
+    double pz = smearedJetMomentumVector.at(nobj1).pz() + smearedJetMomentumVector.at(nobj2).pz();
+    double e = smearedJetMomentumVector.at(nobj1).energy() + smearedJetMomentumVector.at(nobj2).energy();
+    reco::Candidate::LorentzVector Susy_LorentzVect(px, py, pz, e);
+    if(Susy_LorentzVect.M() > 0) {alpha = smearedJetPtEtaPhiMVector.at(nobj2).pt() / Susy_LorentzVect.M();}
+    else {alpha = 999999999.0;}
+    if(alpha < _AlphaMinCut) {return false;}
+    if(alpha > _AlphaMaxCut) {return false;}
+  }
+  if(_DoSUSYDiscrByDphi1) {
+    dphi1 = TMath::Abs(normalizedPhi(smearedJetPtEtaPhiMVector.at(nobj1).phi() - theMETVector.phi()));
+    if(dphi1 < _Dphi1MinCut) {return false;}
+    if(dphi1 > _Dphi1MaxCut) {return false;}
+  }
+  if(_DoSUSYDiscrByDphi2) {
+    dphi2 = TMath::Abs(normalizedPhi(smearedJetPtEtaPhiMVector.at(nobj2).phi() - theMETVector.phi()));
+    if(dphi2 < _Dphi2MinCut) {return false;}
+    if(dphi2 > _Dphi2MaxCut) {return false;}
   }
   return true;
 }
@@ -2578,427 +2077,54 @@ bool HiMassTauAnalysis::passTopologyCuts(const pat::Tau& patTau1, bool smear1, r
 // ---------------Fill Ntuple
 void HiMassTauAnalysis::fillNtuple() {
 
-  // store vector of PDF weights
-  _PDF_weightsv->push_back(pdfWeightVector);
-
-  // store ISR weights
-  _ISR_gluon_weightsv->push_back(isrgluon_weight);
-  _ISR_gamma_weightsv->push_back(isrgamma_weight);
-
-  // store FSR weights
-  _FSR_weightsv->push_back(fsr_weight);
-
   // fill jet information used for jet based cuts (e.g. jet veto)
   int theNumberOfJets = 0;
   for ( pat::JetCollection::const_iterator patJet = _patJets->begin(); patJet != _patJets->end(); ++patJet ) {
-    // use corrected jets or raw calorimeter jets
     _bJetDiscrByTrackCounting->push_back(patJet->bDiscriminator("trackCountingHighEffBJetTags"));	     
     _bJetDiscrBySimpleSecondaryV->push_back(patJet->bDiscriminator("simpleSecondaryVertexBJetTags"));	   
     _bJetDiscrByCombinedSecondaryV->push_back(patJet->bDiscriminator("combinedSecondaryVertexBJetTags")); 
-    if(_UseCorrectedJet) {
-      // smear the jets using EDAnalyzer function "SmearJet"
-      if(_SmearTheJet) {
-        _jetPt->push_back(smearedJetMomentumVector.at(theNumberOfJets).pt());
-        _jetEt->push_back(smearedJetMomentumVector.at(theNumberOfJets).energy() * sin(smearedJetMomentumVector.at(theNumberOfJets).theta()));
-        _jetE->push_back(smearedJetMomentumVector.at(theNumberOfJets).energy());
-        _jetEta->push_back(smearedJetMomentumVector.at(theNumberOfJets).eta()); 
-        _jetPhi->push_back(smearedJetMomentumVector.at(theNumberOfJets).phi());
-        _jetEmFraction->push_back(patJet->correctedJet("raw", "").emEnergyFraction());
-      } else {
-        _jetPt->push_back(patJet->pt());
-        _jetEt->push_back(patJet->et());
-        _jetE->push_back(patJet->energy());
-        _jetEta->push_back(patJet->eta()); 
-        _jetPhi->push_back(patJet->phi());
-        _jetEmFraction->push_back(patJet->correctedJet("raw", "").emEnergyFraction());
-      }
-    } else {
-      // smear the jets using EDAnalyzer function "SmearJet"
-      if(_SmearTheJet) {
-        _jetPt->push_back(smearedJetMomentumVector.at(theNumberOfJets).pt());
-        _jetEt->push_back(smearedJetMomentumVector.at(theNumberOfJets).energy() * sin(smearedJetMomentumVector.at(theNumberOfJets).theta()));
-        _jetE->push_back(smearedJetMomentumVector.at(theNumberOfJets).energy());
-        _jetEta->push_back(smearedJetMomentumVector.at(theNumberOfJets).eta()); 
-        _jetPhi->push_back(smearedJetMomentumVector.at(theNumberOfJets).phi());
-        _jetEmFraction->push_back(patJet->correctedJet("raw", "").emEnergyFraction());
-      } else {
-        _jetPt->push_back((float)patJet->correctedJet("raw","").pt());
-        _jetEt->push_back(patJet->correctedJet("raw","").et());
-        _jetE->push_back(patJet->correctedJet("raw","").energy());
-        _jetEta->push_back(patJet->correctedJet("raw","").eta()); 
-        _jetPhi->push_back(patJet->correctedJet("raw","").phi());
-        _jetEmFraction->push_back(patJet->correctedJet("raw", "").emEnergyFraction());
-      }
-    }
+    _jetPt->push_back(smearedJetPtEtaPhiMVector.at(theNumberOfJets).pt());
+    _jetEt->push_back(smearedJetMomentumVector.at(theNumberOfJets).energy() * sin(smearedJetMomentumVector.at(theNumberOfJets).theta()));
+    _jetEta->push_back(smearedJetPtEtaPhiMVector.at(theNumberOfJets).eta()); 
+    _jetPhi->push_back(smearedJetPtEtaPhiMVector.at(theNumberOfJets).phi());
+    _jetEmFraction->push_back(patJet->correctedJet("raw", "").emEnergyFraction());
     theNumberOfJets++;
   }
 
-  // loop over electrons
-  int theNumberOfElectrons = 0;
-  for(pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin(); patElectron != _patElectrons->end(); ++patElectron) {
-    theNumberOfElectrons++;
-    if(patElectron->pt() < _RecoElectronPtMinCut || fabs(patElectron->eta()) > _RecoElectronEtaCut) continue;
-    // loop over taus to create e-tau pairs
+  int theNumberOfMuons = 0;
+  for ( pat::MuonCollection::const_iterator patMuon = _patMuons->begin();patMuon != _patMuons->end(); ++patMuon ) {
+    theNumberOfMuons++;
     int theNumberOfTaus = 0;
-    for(pat::TauCollection::const_iterator patTau = _patTaus->begin(); patTau != _patTaus->end(); ++patTau) {
+    for ( pat::TauCollection::const_iterator patTau = _patTaus->begin();patTau != _patTaus->end(); ++patTau ) {
       theNumberOfTaus++;
-      if(patTau->pt() < _RecoTauPtMinCut || fabs(patTau->eta()) > _RecoTauEtaCut)continue;
-      if(deltaR(patTau->p4(), patElectron->p4()) < _DiTauDeltaRCut) continue;
-      // determine whether ntuple information will be filled based on systematics (smearing of resolution and scale for taus or electrons)      
-      if(_SmearTheElectron){
-        // only apply electron based smearing if the patElectron is matched to a "true" generator level electron
-        if(matchToGen(*patElectron).first) {
-          reco::Candidate::LorentzVector genElectron = matchToGen(*patElectron).second;
-          double genElectronPt;
-          double genElectronEta;
-          double genElectronPhi;
-          // determine whether we want to smear the resolution or change the scale of the pt, eta, or phi of the electron distribution
-          if(_SmearThePt){
-            genElectronPt  = ((genElectron.pt())*_ElectronPtScaleOffset + (patElectron->pt() - genElectron.pt())*_ElectronPtSigmaOffset);
-          }else{genElectronPt  = patElectron->pt();}
-          if(_SmearTheEta){
-            genElectronEta = ((genElectron.eta())*_ElectronEtaScaleOffset + (patElectron->eta()- genElectron.eta())*_ElectronEtaSigmaOffset);
-          }else{genElectronEta = patElectron->eta();}
-          if(_SmearThePhi){
-            genElectronPhi = ((genElectron.phi())*_ElectronPhiScaleOffset + (patElectron->phi()- genElectron.phi())*_ElectronPhiSigmaOffset);
-          }else{genElectronPhi = patElectron->phi();}
-
-          // create pt,eta,phi smeared root vector in order to recalculate the lorentz 4-momentum
-          math::PtEtaPhiMLorentzVector genElectronLorentzVector(genElectronPt, genElectronEta, genElectronPhi, genElectron.mass());
-          reco::Candidate::LorentzVector LorentzGenElectron(genElectronLorentzVector.px(), genElectronLorentzVector.py(), genElectronLorentzVector.pz(), genElectronLorentzVector.energy());
-          // store the recalculated 4-momentum (will be used below)	  
-          Electron = LorentzGenElectron;
+      if ((passRecoTauCuts((*patTau),theNumberOfTaus-1)) &&
+	  (passRecoMuonCuts((*patMuon),theNumberOfMuons-1)) &&
+	  (passTopologyCuts((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1))) {
+        _mEt->push_back(theMETVector.pt());
+        _muTauMetMass->push_back( CalculateThe4Momentum((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1).second.M() );      
+        _muMetMass->push_back(CalculateLeptonMetMt((*patMuon),theNumberOfMuons-1));
+        _zeta->push_back( (_PZetaCutCoefficient * CalculatePZeta((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1)) +
+                          (_PZetaVisCutCoefficient * CalculatePZetaVis((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1)) );  
+        _muTrkIsoPat->push_back(patMuon->trackIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonTrackIsoTrkThreshold).first);
+        if (patTau->isCaloTau()) {
+          if (_UseRecoTauDiscrByIsolationFlag) {_tauTrkIsoPat->push_back(patTau->isolationTracksPtSum());}
+          else {_tauTrkIsoPat->push_back(CalculateTauTrackIsolation(*patTau).second);}
+        } else {
+          if (_UseRecoTauDiscrByIsolationFlag) {_tauTrkIsoPat->push_back(patTau->isolationPFChargedHadrCandsPtSum());}
+          else {_tauTrkIsoPat->push_back(CalculateTauTrackIsolation(*patTau).second);}
         }
-      }else{
-        // if smearing is set to false, use default patElectron 4-momentum
-	Electron = patElectron->p4();
+	if(_UseTauSeedTrackForDiTauDiscrByOSLS) {
+	  if (patTau->isCaloTau()) {
+	    if( (patTau->leadTrack().isNonnull()) ) {_OSLS->push_back(patMuon->charge() * patTau->leadTrack()->charge());}
+	  } else {
+            if( (patTau->leadPFChargedHadrCand().isNonnull()) ) {_OSLS->push_back(patMuon->charge() * patTau->leadPFChargedHadrCand()->charge());}
+	  }
+	} else {_OSLS->push_back(patMuon->charge() * patTau->charge());}
       }
-
-      // determine whether ntuple information will be filled based on systematics (smearing of resolution and scale for taus or electrons) 
-      if(_SmearTheTau){
-        // only apply tau based smearing if the patTau is matched to a "true" generator level tau
-        if(matchToGen(*patTau).first) {
-          reco::Candidate::LorentzVector genTau = matchToGen(*patTau).second;
-          double genTauPt;
-          double genTauEta;
-          double genTauPhi;
-
-          // determine whether we want to smear the resolution or change the scale of the pt, eta, or phi of the tau distribution
-          if(_SmearThePt){
-            genTauPt  = ((genTau.pt())*_TauPtScaleOffset + (patTau->pt() - genTau.pt())*_TauPtSigmaOffset);
-          }else{genTauPt  = patTau->pt();}
-          if(_SmearTheEta){
-            genTauEta = ((genTau.eta())*_TauEtaScaleOffset + (patTau->eta()- genTau.eta())*_TauEtaSigmaOffset);
-          }else{genTauEta = patTau->eta();}
-          if(_SmearThePhi){
-            genTauPhi = ((genTau.phi())*_TauPhiScaleOffset + (patTau->phi()- genTau.phi())*_TauPhiSigmaOffset);
-          }else{genTauPhi = patTau->phi();}
-
-          // create pt,eta,phi smeared root vector in order to recalculate the lorentz 4-momentum
-          math::PtEtaPhiMLorentzVector genTauLorentzVector(genTauPt, genTauEta, genTauPhi, genTau.mass());
-          reco::Candidate::LorentzVector LorentzGenTau(genTauLorentzVector.px(), genTauLorentzVector.py(), genTauLorentzVector.pz(), genTauLorentzVector.energy());
-
-          // store the recalculated 4-momentum (will be used below)	  	  
-          Tau = LorentzGenTau;
-        }
-      }else{
-        // if smearing is set to false, use default patElectron 4-momentum
-	Tau = patTau->p4();
-      }
-
-      // Recalculate MET for cases when electron or taus are smeared (using EDAnalyzer method and configuration parameters to recalculate the MET)
-      // Recalculating MET for cases when electron is smeared ----> set SmearTheTau to False, SmearTheElectron to True, and specify correct smearing factors
-      // Recalculating MET for cases when tau is smeared ----> set SmearTheTau to True, SmearTheElectron to False, and specify correct smearing factors
-      // Recalculating MET for cases when jets are smeared ----> set SmearTheTau to False, SmearTheElectron to False, SmearTheJet to True, and specify correct smearing factors
-      // SMEARING FACTORS: smear ONLY electron pt, tau pt, and jet energy scale factor
-
-      double met_e = TMath::Sqrt(((*(_patMETs->begin())).px() + deltaForMEx)*((*(_patMETs->begin())).px() + deltaForMEx) + ((*(_patMETs->begin())).py() + deltaForMEy)*((*(_patMETs->begin())).py() + deltaForMEy));
-      double met_px = ((*(_patMETs->begin())).px() + deltaForMEx);
-      double met_py = ((*(_patMETs->begin())).py() + deltaForMEy);
-      double met_pz = (*(_patMETs->begin())).pz();
-
-      reco::Candidate::LorentzVector LorentzVectorMET(met_px,  met_py,  met_pz, met_e);
-      MET = LorentzVectorMET;
-
-      //----eEcalDriven? eTrkDriven?
-      _eEcalDrivenv->push_back(patElectron->ecalDrivenSeed());
-      _eTrkDrivenv->push_back(patElectron->trackerDrivenSeed());
-      
-      // Get generator level information for pt,eta,phi and energy, matching the reco and gen objects using EDAnalyzer matching function 
-      _taugenPt->push_back(matchToGen(*patTau).second.pt());
-      _taugenE->push_back(matchToGen(*patTau).second.energy());
-      _taugenEta->push_back(matchToGen(*patTau).second.eta());
-      _taugenPhi->push_back(matchToGen(*patTau).second.phi());
-      _egenPt->push_back(matchToGen(*patElectron).second.pt());
-      _egenE->push_back(matchToGen(*patElectron).second.energy());
-      _egenEta->push_back(matchToGen(*patElectron).second.eta());
-      _egenPhi->push_back(matchToGen(*patElectron).second.phi());
-
-      //  Get basic infomration of the tau candidate 
-      _tauE->push_back(Tau.energy());    
-      _tauEt->push_back((Tau.energy())*sin(Tau.theta()));									       
-      _tauPt->push_back(Tau.pt());									       
-      _tauCharge->push_back(patTau->charge());						       
-      _tauEta->push_back(Tau.eta()); 						       
-      _tauPhi->push_back(Tau.phi());
-      // if patTau is a CaloTau, fill variables related to enery with dummy values (we use PFTaus)
-      if (patTau->isCaloTau()){
-        _tauNProngs->push_back(patTau->signalTracks().size());	       
-        _tauEmFraction->push_back(-1.);									       
-      	_tauHcalTotOverPLead->push_back(-1.);					    
-      	_tauHcalMaxOverPLead->push_back(-1.); 									    
-      	_tauHcal3x3OverPLead->push_back(-1.);									    
-      	_tauElectronPreId->push_back(0);									    
-      	_tauModifiedEOverP->push_back(-1.);						    
-      	_tauBremsRecoveryEOverPLead->push_back(-1.);
-        _tauDiscAgainstElec->push_back(patTau->tauID(_RecoTauDiscrAgainstElectron.data()));
-        _tauIsInTheCraks->push_back(isInTheCracks(patTau->eta()));
-        if(patTau->leadTrack().isNonnull()){
-          _tauLTPt->push_back(patTau->leadTrack()->pt());
-          _tauLTCharge->push_back(patTau->leadTrack()->charge());
-          _tauLTChi2->push_back(patTau->leadTrack()->chi2());
-          _tauLTRecHitsSize->push_back(patTau->leadTrack()->recHitsSize());
-          _tauLTSignedIp->push_back(patTau->leadTracksignedSipt());
-          _tauPdgId->push_back(getMatchedPdgId(patTau->leadTrack()->pt(), patTau->leadTrack()->eta(), patTau->leadTrack()->phi(), patTau->leadTrack()->charge()).first);
-          _tauMotherPdgId->push_back(getMatchedPdgId(patTau->leadTrack()->pt(), patTau->leadTrack()->eta(), patTau->leadTrack()->phi(), patTau->leadTrack()->charge()).second);  
- 
-        }else{
-          _tauLTPt->push_back(-1.);
-          _tauLTCharge->push_back(-10);
-          _tauLTChi2->push_back(100.);
-          _tauLTRecHitsSize->push_back(0);
-          _tauLTSignedIp->push_back(100);
-          _tauPdgId->push_back(getMatchedPdgId(patTau->pt(), patTau->eta(), patTau->phi(), patTau->charge()).first);
-          _tauMotherPdgId->push_back(getMatchedPdgId(patTau->pt(), patTau->eta(), patTau->phi(), patTau->charge()).second);
-        }
-        
-      }else{
-        // If there is a valid reference wrt a gen level object of a leadding PFCharged hadron candidate, then get all the track quility info
-        // and the pdg particle and mother IDs     
-        const PFCandidateRef& theLeadPFCand = patTau->leadPFChargedHadrCand();
-        if(theLeadPFCand.isNonnull()){
-	  _tauLTPt->push_back(theLeadPFCand->pt());
-	  _tauLTCharge->push_back(theLeadPFCand->charge());
-	  _tauLTChi2->push_back(theLeadPFCand->trackRef()->chi2());
-	  _tauLTRecHitsSize->push_back(theLeadPFCand->trackRef()->recHitsSize());
-	  _tauLTSignedIp->push_back(patTau->leadPFChargedHadrCandsignedSipt());
-          _tauPdgId->push_back(getMatchedPdgId(theLeadPFCand->pt(), theLeadPFCand->eta(), theLeadPFCand->phi(), theLeadPFCand->charge()).first);
-          _tauMotherPdgId->push_back(getMatchedPdgId(theLeadPFCand->pt(), theLeadPFCand->eta(), theLeadPFCand->phi(), theLeadPFCand->charge()).second); 
-        }
-        else {
-          _tauLTPt->push_back(-1.);
-          _tauLTCharge->push_back(-10);
-          _tauLTChi2->push_back(100.);
-          _tauLTRecHitsSize->push_back(0);
-          _tauLTSignedIp->push_back(100);
-          _tauPdgId->push_back(getMatchedPdgId(patTau->pt(), patTau->eta(), patTau->phi(), patTau->charge()).first);
-          _tauMotherPdgId->push_back(getMatchedPdgId(patTau->pt(), patTau->eta(), patTau->phi(), patTau->charge()).second);
-        } 									
-        // Get all the energy related quantities of the tau (PFTau) and N prongs
-        _tauNProngs->push_back(patTau->signalPFChargedHadrCands().size());				       
-        _tauEmFraction->push_back(patTau->emFraction());							       
-        _tauHcalTotOverPLead->push_back(patTau->hcalTotOverPLead());			       
-        _tauHcalMaxOverPLead->push_back(patTau->hcalMaxOverPLead());					       
-        _tauHcal3x3OverPLead->push_back(patTau->hcal3x3OverPLead());					       
-        _tauElectronPreId->push_back(patTau->electronPreIDDecision());		       
-        _tauModifiedEOverP->push_back(patTau->ecalStripSumEOverPLead());			       
-        _tauBremsRecoveryEOverPLead->push_back(patTau->bremsRecoveryEOverPLead());       
-        _tauDiscAgainstElec->push_back(patTau->tauID(_RecoTauDiscrAgainstElectron.data()));
-	_tauIsInTheCraks->push_back(isInTheCracks(patTau->eta()));
-      }
-
-      // fill bool variable to determing if the tau candidate passed matching or not. 
-      _tauMatched->push_back(int(matchToGen(*patTau).first));
-
-      // Get tauIso using different cone sizes and/or thresholds 
-      _tauIsoTrackPtSum->push_back(CalculateTauTrackIsolation(*patTau, 0.5, 1.0).second);
-      _tauIsoTrkPtSumDR1_0MinPt1_0->push_back(CalculateTauTrackIsolation(*patTau, 1.0, 1.0).second);
-      _tauIsoTrkPtSumDR1_0MinPt0_5->push_back(CalculateTauTrackIsolation(*patTau, 1.0, 0.5).second);
-      _tauIsoTrkPtSumDR0_75MinPt1_0->push_back(CalculateTauTrackIsolation(*patTau, 0.75, 1.0).second);
-      _tauIsoTrkPtSumDR0_75MinPt0_5->push_back(CalculateTauTrackIsolation(*patTau, 0.75, 0.5).second);
-      _tauIsoGammaEtSum->push_back(CalculateTauEcalIsolation(*patTau, 0.5, 1.5).second);
-      _tauIsoGammaEtSumDR1_0MinPt1_5->push_back(CalculateTauEcalIsolation(*patTau, 1.0, 1.5).second);
-      _tauIsoGammaEtSumDR1_0MinPt1_0->push_back(CalculateTauEcalIsolation(*patTau, 1.0, 1.0).second);
-      _tauIsoGammaEtSumDR0_75MinPt1_5->push_back(CalculateTauEcalIsolation(*patTau, 0.75, 1.5).second);
-      _tauIsoGammaEtSumDR0_75MinPt1_0->push_back(CalculateTauEcalIsolation(*patTau, 0.75, 1.0).second);
-      
-      if(_SetTANC){
-        _tauTancDiscOnePercent->push_back(patTau->tauID("byTaNCfrOnePercent"));
-        _tauTancDiscHalfPercent->push_back(patTau->tauID("byTaNCfrHalfPercent"));
-        _tauTancDiscQuarterPercent->push_back(patTau->tauID("byTaNCfrQuarterPercent"));
-        _tauTancDiscTenthPercent->push_back(patTau->tauID("byTaNCfrTenthPercent"));
-      }
-
-      // ZeeVeto : look for 2 electrons that reconstruct the mass of the Z within 3 sigmas or that have a small Pt asymmetry.
-      // if so, electron flaged as comming from Z->ee 
-      _eventIsZee->push_back(int(isZee(Electron).first));
-      _zeeMass->push_back(isZee(Electron).second.first);
-      _zeePtAsymm->push_back(isZee(Electron).second.second);
-
-      heep::Ele theHeepElec(*patElectron);  // defines HEEP electron
-      // fill bool variable to determing if the electron candidate passed matching or not.
-
-      
-      _eMatched->push_back(int(matchToGen(*patElectron).first));
-
-      // Is the electron comming from the barrel or the endcap?
-      _isEEv->push_back(patElectron->isEE());
-      _isEBv->push_back(patElectron->isEB());
-      // true if particle is in the crack between EB and EE
-      _isEBEEGap   ->push_back(patElectron->isEBEEGap()) ;
-      // true if particle is in EB, and inside the eta gaps between modules
-      _isEBEtaGap  ->push_back(patElectron->isEBEtaGap());
-      // true if particle is in EB, and inside the phi gaps between modules
-      _isEBPhiGap  ->push_back(patElectron->isEBPhiGap());
-      // true if particle is in EE, and inside the gaps between dees
-      _isEEDeeGap  ->push_back(patElectron->isEEDeeGap());
-      // true if particle is in EE, and inside the gaps between rings
-      _isEERingGap ->push_back(patElectron->isEERingGap());
-
-      // get Electron pdg Id 
-      _ePdgId->push_back(getMatchedPdgId(patElectron->pt(), patElectron->eta(), patElectron->phi(), patElectron->charge()).first);
-      _eMotherPdgId->push_back(getMatchedPdgId(patElectron->pt(), patElectron->eta(), patElectron->phi(), patElectron->charge()).second);
-      // fill basic electron quantities
-      _eE->push_back(Electron.energy());			       
-      _ePt->push_back(Electron.pt());										       
-      _eEt->push_back(theHeepElec.et());       
-      _eCharge->push_back(patElectron->charge());	       
-      _eEta->push_back(Electron.eta());										       
-      _ePhi->push_back(Electron.phi());									       
-      //_eSigmaEtaEta->push_back(patElectron->scSigmaEtaEta());							       
-      _eSigmaEtaEta->push_back(theHeepElec.sigmaEtaEta());							       
-      //_eSigmaIEtaIEta->push_back(patElectron->scSigmaIEtaIEta());		       
-      _eSigmaIEtaIEta->push_back(theHeepElec.sigmaIEtaIEta());		       
-      //_eEOverP->push_back(patElectron->eSuperClusterOverP());					       
-      _eEOverP->push_back(theHeepElec.epIn());					       
-      //_eHOverEm->push_back(patElectron->hadronicOverEm());		       
-      _eHOverEm->push_back(theHeepElec.hOverE());		       
-      //_eDeltaPhiIn->push_back(patElectron->deltaEtaSuperClusterTrackAtVtx());	       
-      _eDeltaPhiIn->push_back(theHeepElec.dPhiIn());	       
-      //_eDeltaEtaIn->push_back(patElectron->deltaPhiSuperClusterTrackAtVtx());
-      _eDeltaEtaIn->push_back(theHeepElec.dEtaIn());
-      // if set to tru use customized user Isolation, else use pat default values 
-
-      _eEcalIsoPat->push_back(patElectron->ecalIso());
-      _eHcalIsoPat->push_back(patElectron->hcalIso());										       
-      _eTrkIsoPat->push_back(patElectron->trackIso());
-      
-      _heepEcalIso->push_back(theHeepElec.isolEm());
-      _heepHcalIso->push_back(theHeepElec.isolHad());
-      _heepHcalIsoDepth1->push_back(theHeepElec.isolHadDepth1());										       
-      _heepHcalIsoDepth2->push_back(theHeepElec.isolHadDepth2());										       
-      _heepEcalHcalIsoDepth1->push_back(theHeepElec.isolEmHadDepth1());										       
-     
-      _eUserEcalIso->push_back(patElectron->userIsolation(pat::EcalIso));
-      _eUserHcalIso->push_back(patElectron->userIsolation(pat::HcalIso));										     
-      _eUserTrkIso->push_back(patElectron->userIsolation(pat::TrackIso));
-      _eIsoPat->push_back(patElectron->caloIso());
-
-      //_eSCE1x5->push_back(patElectron->scE1x5());								       
-      _eSCE1x5->push_back(theHeepElec.scE1x5());								       
-      //_eSCE2x5->push_back(patElectron->scE2x5Max());		       
-      _eSCE2x5->push_back(theHeepElec.scE2x5Max());		       
-     // _eSCE5x5->push_back(patElectron->scE5x5()); 
-       _eSCE5x5->push_back(theHeepElec.scE5x5()); 
-     // fill the electrons impact parameter and its error
-      const reco::Vertex& thePrimaryEventVertex = (*(_primaryEventVertexCollection)->begin());
-      if(patElectron->gsfTrack().isNonnull()) {
-        _eIp->push_back(patElectron->gsfTrack()->dxy(thePrimaryEventVertex.position()));
-        _eIpError->push_back(patElectron->gsfTrack()->d0Error()); 
-      }
-      else{
-	_eIp->push_back(-100.);
-	_eIpError->push_back(-100.);
-      } 
-      // get impact paramenter from of the CTF tracks
-      if(patElectron->closestCtfTrackRef().isNonnull()){
-	_eIp_ctf->push_back(patElectron->closestCtfTrackRef()->dxy(thePrimaryEventVertex.position()));
-	_eIpError_ctf->push_back(patElectron->closestCtfTrackRef()->d0Error());
-      } 
-      else{ 
-        _eIpError_ctf->push_back(-100.);
-        _eIp_ctf->push_back(-100.); 
-      }
-
-      // Electron classification, is the electron classified as showering? narrow? big brem? golden? is in the cracks region? 
-      _eClass->push_back(patElectron->classification());
-      if(patElectron->isElectronIDAvailable("eidRobustTight")) _eIdRobustTight->push_back(patElectron->electronID("eidRobustTight"));
-      else _eIdRobustTight->push_back(-1.);
-      if(patElectron->isElectronIDAvailable("eidRobustLoose")) _eIdRobustLoose->push_back(patElectron->electronID("eidRobustLoose"));
-      else _eIdRobustLoose->push_back(-1.);
-      if(patElectron->isElectronIDAvailable("loose")) _eIdLoose->push_back(patElectron->electronID("loose"));
-      else _eIdLoose->push_back(-1.);
-      if(patElectron->isElectronIDAvailable("tight")) _eIdTight->push_back(patElectron->electronID("tight"));
-      else _eIdTight->push_back(-1.);
-      if(patElectron->isElectronIDAvailable("eidRobustHighEnergy")) _eIdHighEnergy->push_back(patElectron->electronID("eidRobustHighEnergy"));
-      else _eIdHighEnergy->push_back(-1.);
-
-      const Track* elTrack = (const reco::Track*)(patElectron->gsfTrack().get());
-      // number of expected hits before the first track hit
-      const HitPattern& pInner = elTrack->trackerExpectedHitsInner(); 
-      _eMissingHits->push_back(pInner.numberOfHits());
-      
-      // HEEP selection cuts
-      int cutResult = patElectron->userInt("HEEPId");
-      _heepPassedEt->push_back(heep::CutCodes::passCuts(cutResult, "et"));
-      _heepPassedPt->push_back(heep::CutCodes::passCuts(cutResult, "pt"));
-      _heepPassedDetEta->push_back(heep::CutCodes::passCuts(cutResult, "detEta"));
-      _heepPassedCrack->push_back(heep::CutCodes::passCuts(cutResult, "crack"));
-      _heepPassedDEtaIn->push_back(heep::CutCodes::passCuts(cutResult, "dEtaIn"));
-      _heepPassedDPhiIn->push_back(heep::CutCodes::passCuts(cutResult, "dPhiIn"));
-      _heepPassedHadem->push_back(heep::CutCodes::passCuts(cutResult, "hadem"));
-      _heepPassedSigmaIEtaIEta->push_back(heep::CutCodes::passCuts(cutResult, "sigmaIEtaIEta"));
-      _heepPassed2by5Over5By5->push_back(heep::CutCodes::passCuts(cutResult, "e2x5Over5x5"));
-      _heepPassedEcalHad1Iso->push_back(heep::CutCodes::passCuts(cutResult, "isolEmHadDepth1"));
-      _heepPassedHad2Iso->push_back(heep::CutCodes::passCuts(cutResult, "isolHadDepth2"));
-      _heepPassedTrkIso->push_back(heep::CutCodes::passCuts(cutResult, "isolPtTrks"));
-      _heepPassedEcalDriven->push_back(heep::CutCodes::passCuts(cutResult, "ecalDriven"));
-      _heepPassedAllCuts->push_back(heep::CutCodes::passCuts(cutResult, ~heep::CutCodes::DETAIN));
-
-      // Info for MET
-      _mEt->push_back(MET.pt());
-      // fill mass of the eTau visible producs												       
-      reco::Candidate::LorentzVector The_LorentzVect = Tau + Electron;					       
-      _eTauMass->push_back(The_LorentzVect.M());
-      // CosDphi(e-Tau) between the electron and the tau 					       
-      _eTauCosDPhi->push_back(cos(TMath::Abs(normalizedPhi(Electron.phi() - Tau.phi()))));	
-      // DR between the electron and the tau       
-      _eTauDelatR->push_back(reco::deltaR(Electron, Tau));
-      
-      //--------MET and Full Mass Reconstruction
-      double full_px = Tau.px() + Electron.px() + MET.px();
-      double full_py = Tau.py() + Electron.py() + MET.py();
-      double full_pz = Tau.pz() + Electron.pz();
-      double full_e  =  Tau.energy() + Electron.energy() + TMath::Sqrt((MET.px() * MET.px()) + (MET.py() * MET.py()));
-      reco::Candidate::LorentzVector full_LorentzVector(full_px, full_py, full_pz, full_e);
-      _eTauMetMass->push_back(full_LorentzVector.M());      
-
-      // Collinear mass approximation using the EDAnalyzer function
-      _UseVectorSumOfVisProductsAndMetMassReco = false;
-      _UseCollinerApproxMassReco = true;
-      _eTauCollMass->push_back(CalculateThe4Momentum((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1),(*(_patMETs->begin()))).second.M());
-
-      //=======Visible Pzeta
-      double zetaX = cos(Tau.phi()) + cos(Electron.phi());
-      double zetaY = sin(Tau.phi()) + sin(Electron.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = Tau.px() + Electron.px();
-      double visPy = Tau.py() + Electron.py();
-      double pZetaVis = visPx*zetaX + visPy*zetaY;
-      _eTauPZetaVis->push_back(pZetaVis);
-  
-      //======Pzeta     
-      double px = visPx + MET.px();
-      double py = visPy + MET.py();
-      double pZeta = px*zetaX + py*zetaY;
-      _eTauPZeta->push_back(pZeta);  
-    
-    }										  
+    }
   }
+
   _HMTTree->Fill();
-
-
 }
 
 // ---------------Fill Histograms
@@ -3111,178 +2237,102 @@ void HiMassTauAnalysis::fillHistograms() {
     if (_FillRecoTauHists) {
       int nTaus = 0;
       int theNumberOfTaus = 0;
-      for ( pat::TauCollection::const_iterator patTau = _patTaus->begin(); 
-	    patTau != _patTaus->end(); ++patTau ) {
+      for ( pat::TauCollection::const_iterator patTau = _patTaus->begin(); patTau != _patTaus->end(); ++patTau ) {
 	theNumberOfTaus++;
-	if (!passRecoTauCuts((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1))) continue;
-	if(_SmearTheTau) {
-	  _hTauJetEnergy[NpdfID]->Fill(smearedTauMomentumVector.at(theNumberOfTaus-1).energy(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  _hTauJetPt[NpdfID]->Fill(smearedTauMomentumVector.at(theNumberOfTaus-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  _hTauJetEta[NpdfID]->Fill(smearedTauMomentumVector.at(theNumberOfTaus-1).eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  _hTauJetPhi[NpdfID]->Fill(smearedTauMomentumVector.at(theNumberOfTaus-1).phi(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  if (patTau->isCaloTau()) {
-	    _hTauJetNumSignalTracks[NpdfID]->Fill(patTau->signalTracks().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hTauJetNumSignalGammas[NpdfID]->Fill(0.0,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hTauJetCharge[NpdfID]->Fill(fabs(patTau->charge()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hTauJetSignalTracksMass[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hTauJetSignalTracksAndGammasMass[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hTauJetSignalTracksChargeFraction[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).pt() / smearedTauMomentumVector.at(theNumberOfTaus-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    if(patTau->signalTracks().size() == 1) {_hTauJetSignalTracksMass1prong[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	    if(patTau->signalTracks().size() == 3) {_hTauJetSignalTracksMass3prong[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	    if(patTau->signalTracks().size() == 1) {_hTauJetSignalTracksAndGammasMass1prong[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	    if(patTau->signalTracks().size() == 3) {_hTauJetSignalTracksAndGammasMass3prong[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	    if( (patTau->leadTrack().isNonnull()) ) {
-	      _hTauJetSeedTrackPt[NpdfID]->Fill(patTau->leadTrack()->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSeedTrackIpSignificance[NpdfID]->Fill(patTau->leadTracksignedSipt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      //            _hTauJetSeedTrackNhits[NpdfID]->Fill(patTau->leadTrack()->recHitsSize(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      //            _hTauJetSeedTrackChi2[NpdfID]->Fill(patTau->leadTrack()->chi2(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    }
-	  } else {
-	    _hTauJetNumSignalTracks[NpdfID]->Fill(patTau->signalPFChargedHadrCands().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hTauJetNumSignalGammas[NpdfID]->Fill(CalculateNumberSignalTauGammas(*patTau),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hTauJetCharge[NpdfID]->Fill(fabs(patTau->charge()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hTauJetSignalTracksMass[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hTauJetSignalTracksAndGammasMass[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hTauJetSignalTracksChargeFraction[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).pt() / smearedTauMomentumVector.at(theNumberOfTaus-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    if(patTau->signalPFChargedHadrCands().size() == 1) {
-	      _hTauJetSignalTracksMass1prong[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSignalTracksAndGammasMass1prong[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      if(CalculateNumberSignalTauGammas(*patTau) == 0) {_hTauJetMass1Prong0Gamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	      if(CalculateNumberSignalTauGammas(*patTau) == 1) {_hTauJetMass1Prong1Gamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	      if(CalculateNumberSignalTauGammas(*patTau) >= 2) {_hTauJetMass1Prong2orMoreGamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	    }
-	    if(patTau->signalPFChargedHadrCands().size() == 3) {
-	      _hTauJetSignalTracksMass3prong[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSignalTracksAndGammasMass3prong[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      if(CalculateNumberSignalTauGammas(*patTau) == 0) {_hTauJetMass3Prong0Gamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	      if(CalculateNumberSignalTauGammas(*patTau) == 1) {_hTauJetMass3Prong1Gamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	      if(CalculateNumberSignalTauGammas(*patTau) >= 2) {_hTauJetMass3Prong2orMoreGamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	    }
-	    if( (patTau->leadPFChargedHadrCand().isNonnull()) ) {
-	      _hTauJetSeedTrackPt[NpdfID]->Fill(patTau->leadPFChargedHadrCand()->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSeedTrackIpSignificance[NpdfID]->Fill(patTau->leadPFChargedHadrCandsignedSipt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      if( (patTau->leadPFChargedHadrCand()->trackRef().isNonnull()) ) {
-		_hTauJetSeedTrackNhits[NpdfID]->Fill(patTau->leadPFChargedHadrCand()->trackRef()->recHitsSize(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hTauJetSeedTrackChi2[NpdfID]->Fill(patTau->leadPFChargedHadrCand()->trackRef()->chi2(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      }
-	    }
+	if (!passRecoTauCuts((*patTau),theNumberOfTaus-1)) continue;
+	_hTauJetEnergy[NpdfID]->Fill(smearedTauMomentumVector.at(theNumberOfTaus-1).energy(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hTauJetPt[NpdfID]->Fill(smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hTauJetEta[NpdfID]->Fill(smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hTauJetPhi[NpdfID]->Fill(smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).phi(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	if (patTau->isCaloTau()) {
+	  _hTauJetNumSignalTracks[NpdfID]->Fill(patTau->signalTracks().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	  _hTauJetNumSignalGammas[NpdfID]->Fill(0.0,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	  _hTauJetCharge[NpdfID]->Fill(fabs(patTau->charge()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	  _hTauJetSignalTracksMass[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	  _hTauJetSignalTracksAndGammasMass[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	  _hTauJetSignalTracksChargeFraction[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).pt() / smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	  if(patTau->signalTracks().size() == 1) {_hTauJetSignalTracksMass1prong[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+	  if(patTau->signalTracks().size() == 3) {_hTauJetSignalTracksMass3prong[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+	  if(patTau->signalTracks().size() == 1) {_hTauJetSignalTracksAndGammasMass1prong[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+	  if(patTau->signalTracks().size() == 3) {_hTauJetSignalTracksAndGammasMass3prong[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+	  if( (patTau->leadTrack().isNonnull()) ) {
+	    _hTauJetSeedTrackPt[NpdfID]->Fill(patTau->leadTrack()->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hTauJetSeedTrackIpSignificance[NpdfID]->Fill(patTau->leadTracksignedSipt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hTauJetSeedTrackNhits[NpdfID]->Fill(patTau->leadTrack()->recHitsSize(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hTauJetSeedTrackChi2[NpdfID]->Fill(patTau->leadTrack()->chi2(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hTauJetH3x3OverP[NpdfID]->Fill(patTau->hcal3x3OverPLead(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  }
-	  if(_GenParticleSource.label() != "") {
-	    if(matchToGen(*patTau).first) {
-	      _hTauJetGenTauDeltaPhi[NpdfID]->Fill(normalizedPhi(smearedTauMomentumVector.at(theNumberOfTaus-1).phi() - matchToGen(*patTau).second.phi()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetGenTauDeltaEta[NpdfID]->Fill(smearedTauMomentumVector.at(theNumberOfTaus-1).eta() - matchToGen(*patTau).second.eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetGenTauDeltaPt[NpdfID]->Fill((smearedTauMomentumVector.at(theNumberOfTaus-1).pt() - matchToGen(*patTau).second.pt()) / matchToGen(*patTau).second.pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    }
-	  }
-	  if (_UseRecoTauDiscrByIsolationFlag) {
-	    if (patTau->isCaloTau()) {
-	      _hTauJetNumIsoTracks[NpdfID]->Fill(patTau->isolationTracks().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetNumIsoGammas[NpdfID]->Fill(0.0,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetNumIsoCands[NpdfID]->Fill(patTau->isolationTracks().size() + 0,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSumPtIsoTracks[NpdfID]->Fill(patTau->isolationTracksPtSum(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSumPtIsoGammas[NpdfID]->Fill(patTau->isolationECALhitsEtSum(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSumPtIso[NpdfID]->Fill(patTau->isolationTracksPtSum() + patTau->isolationECALhitsEtSum(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    } else {
-	      _hTauJetNumIsoTracks[NpdfID]->Fill(patTau->isolationPFChargedHadrCands().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetNumIsoGammas[NpdfID]->Fill(patTau->isolationPFGammaCands().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetNumIsoCands[NpdfID]->Fill(patTau->isolationPFChargedHadrCands().size() + patTau->isolationPFGammaCands().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSumPtIsoTracks[NpdfID]->Fill(patTau->isolationPFChargedHadrCandsPtSum(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSumPtIsoGammas[NpdfID]->Fill(patTau->isolationPFGammaCandsEtSum(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSumPtIso[NpdfID]->Fill(patTau->isolationPFChargedHadrCandsPtSum() + patTau->isolationPFGammaCandsEtSum(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    }
-	  } else {
+          if (_UseRecoTauDiscrByIsolationFlag) {
+	    _hTauJetNumIsoTracks[NpdfID]->Fill(patTau->isolationTracks().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hTauJetNumIsoGammas[NpdfID]->Fill(0.0,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hTauJetNumIsoCands[NpdfID]->Fill(patTau->isolationTracks().size() + 0,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hTauJetSumPtIsoTracks[NpdfID]->Fill(patTau->isolationTracksPtSum(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hTauJetSumPtIsoGammas[NpdfID]->Fill(patTau->isolationECALhitsEtSum(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hTauJetSumPtIso[NpdfID]->Fill(patTau->isolationTracksPtSum() + patTau->isolationECALhitsEtSum(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+          } else {
 	    _hTauJetNumIsoTracks[NpdfID]->Fill(CalculateTauTrackIsolation(*patTau).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hTauJetNumIsoGammas[NpdfID]->Fill(CalculateTauEcalIsolation(*patTau).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hTauJetNumIsoCands[NpdfID]->Fill(CalculateTauTrackIsolation(*patTau).first + CalculateTauEcalIsolation(*patTau).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hTauJetSumPtIsoTracks[NpdfID]->Fill(CalculateTauTrackIsolation(*patTau).second,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hTauJetSumPtIsoGammas[NpdfID]->Fill(CalculateTauEcalIsolation(*patTau).second,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hTauJetSumPtIso[NpdfID]->Fill(CalculateTauTrackIsolation(*patTau).second + CalculateTauEcalIsolation(*patTau).second,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  }
+          }
 	} else {
-	  _hTauJetEnergy[NpdfID]->Fill(patTau->energy(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  _hTauJetPt[NpdfID]->Fill(patTau->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  _hTauJetEta[NpdfID]->Fill(patTau->eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  _hTauJetPhi[NpdfID]->Fill(patTau->phi(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  if (patTau->isCaloTau()) {
-	    _hTauJetNumSignalTracks[NpdfID]->Fill(patTau->signalTracks().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hTauJetNumSignalGammas[NpdfID]->Fill(0.0,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hTauJetCharge[NpdfID]->Fill(fabs(patTau->charge()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hTauJetSignalTracksMass[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hTauJetSignalTracksAndGammasMass[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hTauJetSignalTracksChargeFraction[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).pt() / patTau->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    if(patTau->signalTracks().size() == 1) {_hTauJetSignalTracksMass1prong[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	    if(patTau->signalTracks().size() == 3) {_hTauJetSignalTracksMass3prong[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	    if(patTau->signalTracks().size() == 1) {_hTauJetSignalTracksAndGammasMass1prong[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	    if(patTau->signalTracks().size() == 3) {_hTauJetSignalTracksAndGammasMass3prong[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	    if( (patTau->leadTrack().isNonnull()) ) {
-	      _hTauJetSeedTrackPt[NpdfID]->Fill(patTau->leadTrack()->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSeedTrackIpSignificance[NpdfID]->Fill(patTau->leadTracksignedSipt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSeedTrackNhits[NpdfID]->Fill(patTau->leadTrack()->recHitsSize(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSeedTrackChi2[NpdfID]->Fill(patTau->leadTrack()->chi2(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    }
-	  } else {
-	    _hTauJetNumSignalTracks[NpdfID]->Fill(patTau->signalPFChargedHadrCands().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hTauJetNumSignalGammas[NpdfID]->Fill(CalculateNumberSignalTauGammas(*patTau),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hTauJetCharge[NpdfID]->Fill(fabs(patTau->charge()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hTauJetSignalTracksMass[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hTauJetSignalTracksAndGammasMass[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hTauJetSignalTracksChargeFraction[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).pt() / patTau->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    if(patTau->signalPFChargedHadrCands().size() == 1) {
-	      _hTauJetSignalTracksMass1prong[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSignalTracksAndGammasMass1prong[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      if(CalculateNumberSignalTauGammas(*patTau) == 0) {_hTauJetMass1Prong0Gamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	      if(CalculateNumberSignalTauGammas(*patTau) == 1) {_hTauJetMass1Prong1Gamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	      if(CalculateNumberSignalTauGammas(*patTau) >= 2) {_hTauJetMass1Prong2orMoreGamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	    }
-	    if(patTau->signalPFChargedHadrCands().size() == 3) {
-	      _hTauJetSignalTracksMass3prong[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSignalTracksAndGammasMass3prong[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      if(CalculateNumberSignalTauGammas(*patTau) == 0) {_hTauJetMass3Prong0Gamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	      if(CalculateNumberSignalTauGammas(*patTau) == 1) {_hTauJetMass3Prong1Gamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	      if(CalculateNumberSignalTauGammas(*patTau) >= 2) {_hTauJetMass3Prong2orMoreGamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	    }
-	    if( (patTau->leadPFChargedHadrCand().isNonnull()) ) {
-	      _hTauJetSeedTrackPt[NpdfID]->Fill(patTau->leadPFChargedHadrCand()->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSeedTrackIpSignificance[NpdfID]->Fill(patTau->leadPFChargedHadrCandsignedSipt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      if( (patTau->leadPFChargedHadrCand()->trackRef().isNonnull()) ) {
-		_hTauJetSeedTrackNhits[NpdfID]->Fill(patTau->leadPFChargedHadrCand()->trackRef()->recHitsSize(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hTauJetSeedTrackChi2[NpdfID]->Fill(patTau->leadPFChargedHadrCand()->trackRef()->chi2(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      }
-	    }
+	  _hTauJetNumSignalTracks[NpdfID]->Fill(patTau->signalPFChargedHadrCands().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	  _hTauJetNumSignalGammas[NpdfID]->Fill(CalculateNumberSignalTauGammas(*patTau),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	  _hTauJetCharge[NpdfID]->Fill(fabs(patTau->charge()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	  _hTauJetSignalTracksMass[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	  _hTauJetSignalTracksAndGammasMass[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	  _hTauJetSignalTracksChargeFraction[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).pt() / smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	  if(patTau->signalPFChargedHadrCands().size() == 1) {
+	    _hTauJetSignalTracksMass1prong[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hTauJetSignalTracksAndGammasMass1prong[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hTauJetSignalTracksAndPiZerosMass1prong[NpdfID]->Fill(CalculateTauSignalTracksAndPiZerosMass(*patTau).first.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hTauJetNumSignalPiZeros1prong[NpdfID]->Fill(CalculateTauSignalTracksAndPiZerosMass(*patTau).second,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    if(CalculateNumberSignalTauGammas(*patTau) == 0) {_hTauJetMass1Prong0Gamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+	    if(CalculateNumberSignalTauGammas(*patTau) == 1) {_hTauJetMass1Prong1Gamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+	    if(CalculateNumberSignalTauGammas(*patTau) >= 2) {_hTauJetMass1Prong2orMoreGamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
 	  }
-	  if(_GenParticleSource.label() != "") {
-	    if(matchToGen(*patTau).first) {
-	      _hTauJetGenTauDeltaPhi[NpdfID]->Fill(normalizedPhi(patTau->phi() - matchToGen(*patTau).second.phi()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetGenTauDeltaEta[NpdfID]->Fill(patTau->eta() - matchToGen(*patTau).second.eta(),isrgluon_weight * isrgamma_weight * fsr_weight);
-	      _hTauJetGenTauDeltaPt[NpdfID]->Fill((patTau->pt() - matchToGen(*patTau).second.pt()) / matchToGen(*patTau).second.pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    }
+	  if(patTau->signalPFChargedHadrCands().size() == 3) {
+	    _hTauJetSignalTracksMass3prong[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hTauJetSignalTracksAndGammasMass3prong[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    if(CalculateNumberSignalTauGammas(*patTau) == 0) {_hTauJetMass3Prong0Gamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+	    if(CalculateNumberSignalTauGammas(*patTau) == 1) {_hTauJetMass3Prong1Gamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+	    if(CalculateNumberSignalTauGammas(*patTau) >= 2) {_hTauJetMass3Prong2orMoreGamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
 	  }
-	  if (_UseRecoTauDiscrByIsolationFlag) {
-	    if (patTau->isCaloTau()) {
-	      _hTauJetNumIsoTracks[NpdfID]->Fill(patTau->isolationTracks().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetNumIsoGammas[NpdfID]->Fill(0.0,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetNumIsoCands[NpdfID]->Fill(patTau->isolationTracks().size() + 0,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSumPtIsoTracks[NpdfID]->Fill(patTau->isolationTracksPtSum(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSumPtIsoGammas[NpdfID]->Fill(patTau->isolationECALhitsEtSum(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSumPtIso[NpdfID]->Fill(patTau->isolationTracksPtSum() + patTau->isolationECALhitsEtSum(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    } else {
-	      _hTauJetNumIsoTracks[NpdfID]->Fill(patTau->isolationPFChargedHadrCands().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetNumIsoGammas[NpdfID]->Fill(patTau->isolationPFGammaCands().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetNumIsoCands[NpdfID]->Fill(patTau->isolationPFChargedHadrCands().size() + patTau->isolationPFGammaCands().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSumPtIsoTracks[NpdfID]->Fill(patTau->isolationPFChargedHadrCandsPtSum(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSumPtIsoGammas[NpdfID]->Fill(patTau->isolationPFGammaCandsEtSum(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauJetSumPtIso[NpdfID]->Fill(patTau->isolationPFChargedHadrCandsPtSum() + patTau->isolationPFGammaCandsEtSum(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    }
-	  } else {
+	  if( (patTau->leadPFChargedHadrCand().isNonnull()) ) {
+	    _hTauJetSeedTrackPt[NpdfID]->Fill(patTau->leadPFChargedHadrCand()->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hTauJetSeedTrackIpSignificance[NpdfID]->Fill(patTau->leadPFChargedHadrCandsignedSipt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    if( (patTau->leadPFChargedHadrCand()->trackRef().isNonnull()) ) {
+	      _hTauJetSeedTrackNhits[NpdfID]->Fill(patTau->leadPFChargedHadrCand()->trackRef()->recHitsSize(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hTauJetSeedTrackChi2[NpdfID]->Fill(patTau->leadPFChargedHadrCand()->trackRef()->chi2(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+            }
+	    _hTauJetH3x3OverP[NpdfID]->Fill(patTau->hcal3x3OverPLead(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	  }
+          if (_UseRecoTauDiscrByIsolationFlag) {
+	    _hTauJetNumIsoTracks[NpdfID]->Fill(patTau->isolationPFChargedHadrCands().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hTauJetNumIsoGammas[NpdfID]->Fill(patTau->isolationPFGammaCands().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hTauJetNumIsoCands[NpdfID]->Fill(patTau->isolationPFChargedHadrCands().size() + patTau->isolationPFGammaCands().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hTauJetSumPtIsoTracks[NpdfID]->Fill(patTau->isolationPFChargedHadrCandsPtSum(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hTauJetSumPtIsoGammas[NpdfID]->Fill(patTau->isolationPFGammaCandsEtSum(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hTauJetSumPtIso[NpdfID]->Fill(patTau->isolationPFChargedHadrCandsPtSum() + patTau->isolationPFGammaCandsEtSum(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+          } else {
 	    _hTauJetNumIsoTracks[NpdfID]->Fill(CalculateTauTrackIsolation(*patTau).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hTauJetNumIsoGammas[NpdfID]->Fill(CalculateTauEcalIsolation(*patTau).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hTauJetNumIsoCands[NpdfID]->Fill(CalculateTauTrackIsolation(*patTau).first + CalculateTauEcalIsolation(*patTau).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hTauJetSumPtIsoTracks[NpdfID]->Fill(CalculateTauTrackIsolation(*patTau).second,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hTauJetSumPtIsoGammas[NpdfID]->Fill(CalculateTauEcalIsolation(*patTau).second,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hTauJetSumPtIso[NpdfID]->Fill(CalculateTauTrackIsolation(*patTau).second + CalculateTauEcalIsolation(*patTau).second,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+          }
+	}
+	if(_GenParticleSource.label() != "") {
+	  if(matchToGen(*patTau).first) {
+	    _hTauJetGenTauDeltaPhi[NpdfID]->Fill(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).phi() - matchToGen(*patTau).second.phi()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hTauJetGenTauDeltaEta[NpdfID]->Fill(smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).eta() - matchToGen(*patTau).second.eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hTauJetGenTauDeltaPt[NpdfID]->Fill((smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt() - matchToGen(*patTau).second.pt()) / matchToGen(*patTau).second.pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  }
 	}
-	nTaus++;
+        nTaus++;
       }
       _hNTau[NpdfID]->Fill(nTaus,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
     }
@@ -3291,33 +2341,24 @@ void HiMassTauAnalysis::fillHistograms() {
     if (_FillRecoMuonHists) {
       int nMuons = 0;
       int theNumberOfMuons = 0;
+      double maxMuonPt = 0;
       for ( pat::MuonCollection::const_iterator patMuon = _patMuons->begin(); 
 	    patMuon != _patMuons->end(); ++patMuon ) {
 	theNumberOfMuons++;
-	if (!passRecoMuonCuts((*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1))) continue;
-	if(_SmearTheMuon) {
-	  _hMuonEnergy[NpdfID]->Fill(smearedMuonMomentumVector.at(theNumberOfMuons-1).energy(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  _hMuonPt[NpdfID]->Fill(smearedMuonMomentumVector.at(theNumberOfMuons-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  _hMuonEta[NpdfID]->Fill(smearedMuonMomentumVector.at(theNumberOfMuons-1).eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  _hMuonPhi[NpdfID]->Fill(smearedMuonMomentumVector.at(theNumberOfMuons-1).phi(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  if(_GenParticleSource.label() != "") {
-	    if(matchToGen(*patMuon).first) {
-	      _hMuonGenMuonDeltaPhi[NpdfID]->Fill(normalizedPhi(smearedMuonMomentumVector.at(theNumberOfMuons-1).phi() - matchToGen(*patMuon).second.phi()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hMuonGenMuonDeltaEta[NpdfID]->Fill(smearedMuonMomentumVector.at(theNumberOfMuons-1).eta() - matchToGen(*patMuon).second.eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hMuonGenMuonDeltaPt[NpdfID]->Fill((smearedMuonMomentumVector.at(theNumberOfMuons-1).pt() - matchToGen(*patMuon).second.pt()) / matchToGen(*patMuon).second.pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    }
-	  }
-	} else {
-	  _hMuonEnergy[NpdfID]->Fill(patMuon->energy(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  _hMuonPt[NpdfID]->Fill(patMuon->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  _hMuonEta[NpdfID]->Fill(patMuon->eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  _hMuonPhi[NpdfID]->Fill(patMuon->phi(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  if(_GenParticleSource.label() != "") {
-	    if(matchToGen(*patMuon).first) {
-	      _hMuonGenMuonDeltaPhi[NpdfID]->Fill(normalizedPhi(patMuon->phi() - matchToGen(*patMuon).second.phi()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hMuonGenMuonDeltaEta[NpdfID]->Fill(patMuon->eta() - matchToGen(*patMuon).second.eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hMuonGenMuonDeltaPt[NpdfID]->Fill((patMuon->pt() - matchToGen(*patMuon).second.pt()) / matchToGen(*patMuon).second.pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    }
+	if (!passRecoMuonCuts((*patMuon),theNumberOfMuons-1)) continue;
+         if(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt() > maxMuonPt){
+           maxMuonPt = smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt();
+           maxPtMuonVector = smearedMuonMomentumVector.at(theNumberOfMuons-1);
+         }
+        _hMuonEnergy[NpdfID]->Fill(smearedMuonMomentumVector.at(theNumberOfMuons-1).energy(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hMuonPt[NpdfID]->Fill(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hMuonEta[NpdfID]->Fill(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hMuonPhi[NpdfID]->Fill(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).phi(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	if(_GenParticleSource.label() != "") {
+	  if(matchToGen(*patMuon).first) {
+	    _hMuonGenMuonDeltaPhi[NpdfID]->Fill(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).phi() - matchToGen(*patMuon).second.phi()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hMuonGenMuonDeltaEta[NpdfID]->Fill(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).eta() - matchToGen(*patMuon).second.eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hMuonGenMuonDeltaPt[NpdfID]->Fill((smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt() - matchToGen(*patMuon).second.pt()) / matchToGen(*patMuon).second.pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  }
 	}
 	_hMuonTrackIso[NpdfID]->Fill(patMuon->trackIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonTrackIsoTrkThreshold).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
@@ -3344,54 +2385,77 @@ void HiMassTauAnalysis::fillHistograms() {
       }
       _hNMuon[NpdfID]->Fill(nMuons,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
     }
-    
+
     //-----Fill Reco Electron Histograms
     if (_FillRecoElectronHists) {
       int nElectrons = 0;
       int theNumberOfElectrons = 0;
+      double maxElecEt = 0;
       for ( pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin();
 	    patElectron != _patElectrons->end(); ++patElectron ) {
 	theNumberOfElectrons++;
-	if (!passRecoElectronCuts((*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1))) continue;
-	if(_SmearTheElectron) {
-	  _hElectronEnergy[NpdfID]->Fill(smearedElectronMomentumVector.at(theNumberOfElectrons-1).energy(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  _hElectronPt[NpdfID]->Fill(smearedElectronMomentumVector.at(theNumberOfElectrons-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  _hElectronEta[NpdfID]->Fill(smearedElectronMomentumVector.at(theNumberOfElectrons-1).eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  _hElectronPhi[NpdfID]->Fill(smearedElectronMomentumVector.at(theNumberOfElectrons-1).phi(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  if(_GenParticleSource.label() != "") {
-	    if(matchToGen(*patElectron).first) {
-	      _hElectronGenElectronDeltaPhi[NpdfID]->Fill(normalizedPhi(smearedElectronMomentumVector.at(theNumberOfElectrons-1).phi() - matchToGen(*patElectron).second.phi()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hElectronGenElectronDeltaEta[NpdfID]->Fill(smearedElectronMomentumVector.at(theNumberOfElectrons-1).eta() - matchToGen(*patElectron).second.eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hElectronGenElectronDeltaPt[NpdfID]->Fill((smearedElectronMomentumVector.at(theNumberOfElectrons-1).pt() - matchToGen(*patElectron).second.pt()) / matchToGen(*patElectron).second.pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    }
-	  }
-	} else {
-	  _hElectronEnergy[NpdfID]->Fill(patElectron->energy(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  _hElectronPt[NpdfID]->Fill(patElectron->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  _hElectronEta[NpdfID]->Fill(patElectron->eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  _hElectronPhi[NpdfID]->Fill(patElectron->phi(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  if(_GenParticleSource.label() != "") {
-	    if(matchToGen(*patElectron).first) {
-	      _hElectronGenElectronDeltaPhi[NpdfID]->Fill(normalizedPhi(patElectron->phi() - matchToGen(*patElectron).second.phi()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hElectronGenElectronDeltaEta[NpdfID]->Fill(patElectron->eta() - matchToGen(*patElectron).second.eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hElectronGenElectronDeltaPt[NpdfID]->Fill((patElectron->pt() - matchToGen(*patElectron).second.pt()) / matchToGen(*patElectron).second.pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    }
+	if (!passRecoElectronCuts((*patElectron),theNumberOfElectrons-1)) continue;
+        if(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).pt() > maxElecEt){
+          maxElecEt = smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).pt();
+          maxEtElectronVector = smearedElectronMomentumVector.at(theNumberOfElectrons-1); 
+        }
+	_hElectronEnergy[NpdfID]->Fill(smearedElectronMomentumVector.at(theNumberOfElectrons-1).energy(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hElectronPt[NpdfID]->Fill(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hElectronEta[NpdfID]->Fill(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hElectronPhi[NpdfID]->Fill(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).phi(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	if(_GenParticleSource.label() != "") {
+	  if(matchToGen(*patElectron).first) {
+	    _hElectronGenElectronDeltaPhi[NpdfID]->Fill(normalizedPhi(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).phi() - matchToGen(*patElectron).second.phi()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hElectronGenElectronDeltaEta[NpdfID]->Fill(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).eta() - matchToGen(*patElectron).second.eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hElectronGenElectronDeltaPt[NpdfID]->Fill((smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).pt() - matchToGen(*patElectron).second.pt()) / matchToGen(*patElectron).second.pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  }
 	}
-	_hElectronTrackIso[NpdfID]->Fill(patElectron->trackIso(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	_hElectronEcalIso[NpdfID]->Fill(patElectron->ecalIso(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hElectronTrackIso[NpdfID]->Fill(patElectron->dr04TkSumPt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hElectronEcalIso[NpdfID]->Fill(patElectron->dr04EcalRecHitSumEt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	/*
 	  _hElectronTrackIso[NpdfID]->Fill(patElectron->trackIsoDeposit()->depositAndCountWithin(_RecoElectronTrackIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoElectronTrackIsoTrkThreshold).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  _hElectronEcalIso[NpdfID]->Fill(patElectron->ecalIsoDeposit()->depositAndCountWithin(_RecoElectronEcalIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoElectronEcalIsoRecHitThreshold).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	*/
 	const reco::Vertex& thePrimaryEventVertex = (*(_primaryEventVertexCollection)->begin());
 	if ( patElectron->track().isNonnull() ) { _hElectronIp[NpdfID]->Fill( patElectron->track()->dxy(thePrimaryEventVertex.position()) ,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID)); }
-	//      if ( patElectron->gsfTrack().isNonnull() ) { _hElectronIp[NpdfID]->Fill( patElectron->gsfTrack()->dxy(thePrimaryEventVertex.position()) ,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID)); }
+	//if ( patElectron->gsfTrack().isNonnull() ) { _hElectronIp[NpdfID]->Fill( patElectron->gsfTrack()->dxy(thePrimaryEventVertex.position()) ,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID)); }
 	_hElectronEoverP[NpdfID]->Fill(patElectron->eSuperClusterOverP(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	_hElectronHoverEm[NpdfID]->Fill(patElectron->hadronicOverEm(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        if(_UseHeepInfo) {
+          heep::Ele theHeepElec(*patElectron);
+	  _hElectronHoverEm[NpdfID]->Fill(theHeepElec.hOverE(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+          if(patElectron->isEE()) {
+	    _hElectronEESigmaIEtaIEta[NpdfID]->Fill(theHeepElec.sigmaIEtaIEta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hElectronEEDEta[NpdfID]->Fill(theHeepElec.dEtaIn(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hElectronEEDPhi[NpdfID]->Fill(theHeepElec.dPhiIn(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+          }
+          if(patElectron->isEB()) {
+	    _hElectronEBSigmaIEtaIEta[NpdfID]->Fill(theHeepElec.sigmaIEtaIEta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hElectronEBDEta[NpdfID]->Fill(theHeepElec.dEtaIn(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hElectronEBDPhi[NpdfID]->Fill(theHeepElec.dPhiIn(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hElectronEB2by5Over5by5[NpdfID]->Fill(theHeepElec.scE2x5Max() / theHeepElec.scE5x5(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hElectronEB1by5Over5by5[NpdfID]->Fill(theHeepElec.scE1x5() / theHeepElec.scE5x5(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+          }
+        } else {
+	  _hElectronHoverEm[NpdfID]->Fill(patElectron->hadronicOverEm(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+          if(patElectron->isEE()) {
+	    _hElectronEESigmaIEtaIEta[NpdfID]->Fill(patElectron->scSigmaIEtaIEta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hElectronEEDEta[NpdfID]->Fill(patElectron->deltaEtaSuperClusterTrackAtVtx(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hElectronEEDPhi[NpdfID]->Fill(patElectron->deltaPhiSuperClusterTrackAtVtx(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+          }
+          if(patElectron->isEB()) {
+	    _hElectronEBSigmaIEtaIEta[NpdfID]->Fill(patElectron->scSigmaIEtaIEta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hElectronEBDEta[NpdfID]->Fill(patElectron->deltaEtaSuperClusterTrackAtVtx(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hElectronEBDPhi[NpdfID]->Fill(patElectron->deltaPhiSuperClusterTrackAtVtx(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hElectronEB2by5Over5by5[NpdfID]->Fill(patElectron->scE2x5Max() / patElectron->scE5x5(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _hElectronEB1by5Over5by5[NpdfID]->Fill(patElectron->scE1x5() / patElectron->scE5x5(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+          }
+        }
+        const Track* elTrack = (const reco::Track*)(patElectron->gsfTrack().get());
+        const HitPattern& pInner = elTrack->trackerExpectedHitsInner();
+	_hElectronMissingHits[NpdfID]->Fill(pInner.numberOfHits(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hElectronClassification[NpdfID]->Fill(patElectron->classification(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	//_hElectronEcalDriven[NpdfID]->Fill(patElectron->ecalDrivenSeed(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	//_hElectronTrackerDriven[NpdfID]->Fill(patElectron->trackerDrivenSeed(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hElectronEcalDriven[NpdfID]->Fill(patElectron->ecalDrivenSeed(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hElectronTrackerDriven[NpdfID]->Fill(patElectron->trackerDrivenSeed(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	nElectrons++;
       }
       _hNElectron[NpdfID]->Fill(nElectrons,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
@@ -3404,236 +2468,345 @@ void HiMassTauAnalysis::fillHistograms() {
       for ( pat::JetCollection::const_iterator patJet = _patJets->begin(); 
 	    patJet != _patJets->end(); ++patJet ) {
 	theNumberOfJets++;
-	if (!passRecoJetCuts((*patJet),_SmearTheJet,smearedJetMomentumVector.at(theNumberOfJets-1))) continue;
-	if(_UseCorrectedJet) {
-	  if(_SmearTheJet) {
-	    _hJetEnergy[NpdfID]->Fill(smearedJetMomentumVector.at(theNumberOfJets-1).energy(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hJetPt[NpdfID]->Fill(smearedJetMomentumVector.at(theNumberOfJets-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hJetEta[NpdfID]->Fill(smearedJetMomentumVector.at(theNumberOfJets-1).eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hJetPhi[NpdfID]->Fill(smearedJetMomentumVector.at(theNumberOfJets-1).phi(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  } else {
-	    _hJetEnergy[NpdfID]->Fill(patJet->energy(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hJetPt[NpdfID]->Fill(patJet->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hJetEta[NpdfID]->Fill(patJet->eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hJetPhi[NpdfID]->Fill(patJet->phi(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  }
-	  nJets++;
-	} else {
-	  if(_SmearTheJet) {
-	    _hJetEnergy[NpdfID]->Fill(smearedJetMomentumVector.at(theNumberOfJets-1).energy(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hJetPt[NpdfID]->Fill(smearedJetMomentumVector.at(theNumberOfJets-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hJetEta[NpdfID]->Fill(smearedJetMomentumVector.at(theNumberOfJets-1).eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hJetPhi[NpdfID]->Fill(smearedJetMomentumVector.at(theNumberOfJets-1).phi(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  } else {
-	    _hJetEnergy[NpdfID]->Fill(patJet->correctedJet("raw","").energy(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hJetPt[NpdfID]->Fill(patJet->correctedJet("raw","").pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hJetEta[NpdfID]->Fill(patJet->correctedJet("raw","").eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	    _hJetPhi[NpdfID]->Fill(patJet->correctedJet("raw","").phi(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	  }
-	  nJets++;
-	}
+	if (!passRecoJetCuts((*patJet),theNumberOfJets-1)) continue;
 	_hBJetDiscrByTrackCounting[NpdfID]->Fill(patJet->bDiscriminator("trackCountingHighEffBJetTags"),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hBJetDiscrBySimpleSecondaryV[NpdfID]->Fill(patJet->bDiscriminator("simpleSecondaryVertexBJetTags"),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hBJetDiscrByCombinedSecondaryV[NpdfID]->Fill(patJet->bDiscriminator("combinedSecondaryVertexBJetTags"),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _hJetEnergy[NpdfID]->Fill(smearedJetMomentumVector.at(theNumberOfJets-1).energy(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hJetPt[NpdfID]->Fill(smearedJetPtEtaPhiMVector.at(theNumberOfJets-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hJetEta[NpdfID]->Fill(smearedJetPtEtaPhiMVector.at(theNumberOfJets-1).eta(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hJetPhi[NpdfID]->Fill(smearedJetPtEtaPhiMVector.at(theNumberOfJets-1).phi(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	nJets++;
       }
       _hNJet[NpdfID]->Fill(nJets,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+      _hMHT[NpdfID]->Fill(sqrt((sumpxForMht * sumpxForMht) + (sumpyForMht * sumpyForMht)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+      _hHT[NpdfID]->Fill(sumptForHt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+      _hFirstLeadingJetPt[NpdfID]->Fill(leadingjetpt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+      _hSecondLeadingJetPt[NpdfID]->Fill(secondleadingjetpt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
     }
     
     // ------Topology Histograms
+    double maximumLeptonPt = 0.0;
+    double minimumLeptonEta = 9999.9;
+    double maximumdR = 0.0;
+    double minimumLeptonTrackIso = 9999.9;
+    double minimumLeptonEcalIso = 9999.9;
+    double maximumTauPt = 0.0;
+    double maximumTauSeedPt = -1.0;
+    double minimumTauEta = 9999.9;
+    double minimumTauTrackIso = 9999.9;
+    double minimumTauEcalIso = 9999.9;
+    double minimumTauLeadNhits = 9999.9;
+    double minimumTauH3x3OverP = 9999.9;
+    double mimimumCosDphi = 1.0;
+    double minimumOSLS = 9999.9;
+    double maximumZeta = 0.0;
+    double maximumLeptonMetMt = 0.0;
     if (_FillTopologyHists) {
-      _hMet[NpdfID]->Fill(TMath::Sqrt((((*(_patMETs->begin())).px() + deltaForMEx)*((*(_patMETs->begin())).px() + deltaForMEx)) + (((*(_patMETs->begin())).py() + deltaForMEy)*((*(_patMETs->begin())).py() + deltaForMEy))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+      _hMet[NpdfID]->Fill(theMETVector.pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
       if( ((_AnalyzeMuonForLeg1) && (_AnalyzeTauForLeg2)) || ((_AnalyzeMuonForLeg2) && (_AnalyzeTauForLeg1)) ) {
+        double minimumIp = 999.9;
+        double maximumSegComp = 0.0;
+        double maximumCaloComp = 0.0;
+        double maximumPionVeto = 0.0;
 	int theNumberOfMuons = 0;
 	for ( pat::MuonCollection::const_iterator patMuon = _patMuons->begin();patMuon != _patMuons->end(); ++patMuon ) {
 	  theNumberOfMuons++;
 	  int theNumberOfTaus = 0;
 	  for ( pat::TauCollection::const_iterator patTau = _patTaus->begin();patTau != _patTaus->end(); ++patTau ) {
 	    theNumberOfTaus++;
-	    if ((passRecoTauCuts((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1))) &&
-		(passRecoMuonCuts((*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1))) &&
-		(passTopologyCuts((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1),(*(_patMETs->begin()))))) {
-	      if(_SmearTheTau) {
-		if(_SmearTheMuon) {
-		  _hMuonPtVsTauPt[NpdfID]->Fill(smearedMuonMomentumVector.at(theNumberOfMuons-1).pt(),smearedTauMomentumVector.at(theNumberOfTaus-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hMuonTauDeltaR[NpdfID]->Fill(reco::deltaR(smearedTauMomentumVector.at(theNumberOfTaus-1), smearedMuonMomentumVector.at(theNumberOfMuons-1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hMuonTauDeltaPtDivSumPt[NpdfID]->Fill((smearedTauMomentumVector.at(theNumberOfTaus-1).pt() - smearedMuonMomentumVector.at(theNumberOfMuons-1).pt()) / (smearedTauMomentumVector.at(theNumberOfTaus-1).pt() + smearedMuonMomentumVector.at(theNumberOfMuons-1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hMuonTauCosDphi[NpdfID]->Fill(cos(TMath::Abs(normalizedPhi(smearedMuonMomentumVector.at(theNumberOfMuons-1).phi() - smearedTauMomentumVector.at(theNumberOfTaus-1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  reco::Candidate::LorentzVector Temp_LorentzVect(
-								  (*(_patMETs->begin())).px() + patMuon->px() - smearedMuonMomentumVector.at(theNumberOfMuons-1).px() + patTau->px() - smearedTauMomentumVector.at(theNumberOfTaus-1).px() + deltaForMEx,
-								  (*(_patMETs->begin())).py() + patMuon->py() - smearedMuonMomentumVector.at(theNumberOfMuons-1).py() + patTau->py() - smearedTauMomentumVector.at(theNumberOfTaus-1).py() + deltaForMEy,
-								  (*(_patMETs->begin())).pz(),
-								  TMath::Sqrt( (((*(_patMETs->begin())).px() + deltaForMEx + patMuon->px() - smearedMuonMomentumVector.at(theNumberOfMuons-1).px() + patTau->px() - smearedTauMomentumVector.at(theNumberOfTaus-1).px()) *
-										((*(_patMETs->begin())).px() + deltaForMEx + patMuon->px() - smearedMuonMomentumVector.at(theNumberOfMuons-1).px() + patTau->px() - smearedTauMomentumVector.at(theNumberOfTaus-1).px())) +
-									       (((*(_patMETs->begin())).py() + deltaForMEy + patMuon->py() - smearedMuonMomentumVector.at(theNumberOfMuons-1).py() + patTau->py() - smearedTauMomentumVector.at(theNumberOfTaus-1).py()) *
-										((*(_patMETs->begin())).py() + deltaForMEy + patMuon->py() - smearedMuonMomentumVector.at(theNumberOfMuons-1).py() + patTau->py() - smearedTauMomentumVector.at(theNumberOfTaus-1).py())) ));
-		  _hMuonMetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedMuonMomentumVector.at(theNumberOfMuons-1).phi() - Temp_LorentzVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hMuonMetDeltaPhiVsMuonTauCosDphi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedMuonMomentumVector.at(theNumberOfMuons-1).phi() - Temp_LorentzVect.phi())), cos(TMath::Abs(normalizedPhi(smearedMuonMomentumVector.at(theNumberOfMuons-1).phi() - smearedTauMomentumVector.at(theNumberOfTaus-1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hTauMetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedTauMomentumVector.at(theNumberOfTaus-1).phi() - Temp_LorentzVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		} else {
-		  _hMuonPtVsTauPt[NpdfID]->Fill(patMuon->pt(),smearedTauMomentumVector.at(theNumberOfTaus-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hMuonTauDeltaR[NpdfID]->Fill(reco::deltaR(smearedTauMomentumVector.at(theNumberOfTaus-1), patMuon->p4()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hMuonTauDeltaPtDivSumPt[NpdfID]->Fill((smearedTauMomentumVector.at(theNumberOfTaus-1).pt() - patMuon->pt()) / (smearedTauMomentumVector.at(theNumberOfTaus-1).pt() + patMuon->pt()),isrgluon_weight * isrgamma_weight * fsr_weight);
-		  _hMuonTauCosDphi[NpdfID]->Fill(cos(TMath::Abs(normalizedPhi(patMuon->phi() - smearedTauMomentumVector.at(theNumberOfTaus-1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  reco::Candidate::LorentzVector Temp_LorentzVect(
-								  (*(_patMETs->begin())).px() + patMuon->px() - patMuon->px() + patTau->px() - smearedTauMomentumVector.at(theNumberOfTaus-1).px() + deltaForMEx,
-								  (*(_patMETs->begin())).py() + patMuon->py() - patMuon->py() + patTau->py() - smearedTauMomentumVector.at(theNumberOfTaus-1).py() + deltaForMEy,
-								  (*(_patMETs->begin())).pz(),
-								  TMath::Sqrt( (((*(_patMETs->begin())).px() + deltaForMEx + patMuon->px() - patMuon->px() + patTau->px() - smearedTauMomentumVector.at(theNumberOfTaus-1).px()) *
-										((*(_patMETs->begin())).px() + deltaForMEx + patMuon->px() - patMuon->px() + patTau->px() - smearedTauMomentumVector.at(theNumberOfTaus-1).px())) +
-									       (((*(_patMETs->begin())).py() + deltaForMEy + patMuon->py() - patMuon->py() + patTau->py() - smearedTauMomentumVector.at(theNumberOfTaus-1).py()) *
-										((*(_patMETs->begin())).py() + deltaForMEy + patMuon->py() - patMuon->py() + patTau->py() - smearedTauMomentumVector.at(theNumberOfTaus-1).py())) ));
-		  _hMuonMetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(patMuon->phi() - Temp_LorentzVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hMuonMetDeltaPhiVsMuonTauCosDphi[NpdfID]->Fill(TMath::Abs(normalizedPhi(patMuon->phi() - Temp_LorentzVect.phi())), cos(TMath::Abs(normalizedPhi(patMuon->phi() - smearedTauMomentumVector.at(theNumberOfTaus-1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hTauMetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedTauMomentumVector.at(theNumberOfTaus-1).phi() - Temp_LorentzVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		}
-	      } else {
-		if(_SmearTheMuon) {
-		  _hMuonPtVsTauPt[NpdfID]->Fill(smearedMuonMomentumVector.at(theNumberOfMuons-1).pt(),patTau->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hMuonTauDeltaR[NpdfID]->Fill(reco::deltaR(patTau->p4(), smearedMuonMomentumVector.at(theNumberOfMuons-1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hMuonTauDeltaPtDivSumPt[NpdfID]->Fill((patTau->pt() - smearedMuonMomentumVector.at(theNumberOfMuons-1).pt()) / (patTau->pt() + smearedMuonMomentumVector.at(theNumberOfMuons-1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hMuonTauCosDphi[NpdfID]->Fill(cos(TMath::Abs(normalizedPhi(smearedMuonMomentumVector.at(theNumberOfMuons-1).phi() - patTau->phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  reco::Candidate::LorentzVector Temp_LorentzVect(
-								  (*(_patMETs->begin())).px() + patMuon->px() - smearedMuonMomentumVector.at(theNumberOfMuons-1).px() + deltaForMEx,
-								  (*(_patMETs->begin())).py() + patMuon->py() - smearedMuonMomentumVector.at(theNumberOfMuons-1).py() + deltaForMEy,
-								  (*(_patMETs->begin())).pz(),
-								  TMath::Sqrt( (((*(_patMETs->begin())).px() + deltaForMEx + patMuon->px() - smearedMuonMomentumVector.at(theNumberOfMuons-1).px()) *
-										((*(_patMETs->begin())).px() + deltaForMEx + patMuon->px() - smearedMuonMomentumVector.at(theNumberOfMuons-1).px())) +
-									       (((*(_patMETs->begin())).py() + deltaForMEy + patMuon->py() - smearedMuonMomentumVector.at(theNumberOfMuons-1).py()) *
-										((*(_patMETs->begin())).py() + deltaForMEy + patMuon->py() - smearedMuonMomentumVector.at(theNumberOfMuons-1).py())) ));
-		  _hMuonMetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedMuonMomentumVector.at(theNumberOfMuons-1).phi() - Temp_LorentzVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hMuonMetDeltaPhiVsMuonTauCosDphi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedMuonMomentumVector.at(theNumberOfMuons-1).phi() - Temp_LorentzVect.phi())), cos(TMath::Abs(normalizedPhi(smearedMuonMomentumVector.at(theNumberOfMuons-1).phi() - patTau->phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hTauMetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(patTau->phi() - Temp_LorentzVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		} else {
-		  _hMuonPtVsTauPt[NpdfID]->Fill(patMuon->pt(),patTau->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hMuonTauDeltaR[NpdfID]->Fill(reco::deltaR(patTau->p4(), patMuon->p4()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hMuonTauDeltaPtDivSumPt[NpdfID]->Fill((patTau->pt() - patMuon->pt()) / (patTau->pt() + patMuon->pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hMuonTauCosDphi[NpdfID]->Fill(cos(TMath::Abs(normalizedPhi(patMuon->phi() - patTau->phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hMuonMetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(patMuon->phi() - (*(_patMETs->begin())).phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hMuonMetDeltaPhiVsMuonTauCosDphi[NpdfID]->Fill(TMath::Abs(normalizedPhi(patMuon->phi() - (*(_patMETs->begin())).phi())), cos(TMath::Abs(normalizedPhi(patMuon->phi() - patTau->phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hTauMetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(patTau->phi() - (*(_patMETs->begin())).phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		}
-	      }
-	      if(CalculateThe4Momentum((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1),(*(_patMETs->begin()))).first) {_hReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1),(*(_patMETs->begin()))).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	      else {_hNotReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1),(*(_patMETs->begin()))).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	      _hMuonMetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauMetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    if ((passRecoTauCuts((*patTau),theNumberOfTaus-1)) &&
+		(passRecoMuonCuts((*patMuon),theNumberOfMuons-1)) &&
+		(passTopologyCuts((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1))) {
+              //--- Best Lepton Pt
+              if(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt() > maximumLeptonPt) {maximumLeptonPt = smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt();}
+              //--- Best Lepton Eta
+              if(fabs(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).eta()) < fabs(minimumLeptonEta)) {minimumLeptonEta = smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).eta();}
+              //--- Best Lepton Track Iso
+              if(patMuon->trackIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonTrackIsoTrkThreshold).first < minimumLeptonTrackIso) {minimumLeptonTrackIso = patMuon->trackIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonTrackIsoTrkThreshold).first;}
+              //--- Best Lepton Ecal Iso
+              if(patMuon->ecalIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonEcalIsoRecHitThreshold).first < minimumLeptonEcalIso) {minimumLeptonEcalIso = patMuon->ecalIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonEcalIsoRecHitThreshold).first;}
+              //--- Best Pion Veto
+	      if(muon::caloCompatibility(*patMuon) > maximumCaloComp) {maximumCaloComp = muon::caloCompatibility(*patMuon);}
+	      if(muon::segmentCompatibility(*patMuon) > maximumSegComp) {maximumSegComp = muon::segmentCompatibility(*patMuon);}
+              if(((_RecoMuonCaloCompCoefficient * muon::caloCompatibility(*patMuon)) + 
+                  (_RecoMuonSegmCompCoefficient * muon::segmentCompatibility(*patMuon))) > maximumPionVeto) 
+                {maximumPionVeto = (_RecoMuonCaloCompCoefficient * muon::caloCompatibility(*patMuon)) + 
+                                   (_RecoMuonSegmCompCoefficient *muon::segmentCompatibility(*patMuon));}
+              //--- Best Lepton Ip
+	      const reco::Vertex& thePrimaryEventVertex = (*(_primaryEventVertexCollection)->begin());
+	      if ( patMuon->track().isNonnull() ) {
+                if(fabs(patMuon->track()->dxy(thePrimaryEventVertex.position())) < fabs(minimumIp)) {minimumIp = patMuon->track()->dxy(thePrimaryEventVertex.position());}
+              }
+              //--- Best Tau Pt
+              if(smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt() > maximumTauPt){
+                if(reco::deltaR(maxPtMuonVector, smearedTauMomentumVector.at(theNumberOfTaus-1)) > _DiTauDeltaRCut)
+                  {maximumTauPt = smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt();}
+              }
+              //--- Best Tau Eta
+              if(fabs(smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).eta()) < fabs(minimumTauEta)) {minimumTauEta = smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).eta();}
+              //--- Best Tau Seed Pt, H3x3OverP, and lead track Nhits
+              if (patTau->isCaloTau()) {
+                if( (patTau->leadTrack().isNonnull()) ) {
+                  if(patTau->leadTrack()->pt() > maximumTauSeedPt) {maximumTauSeedPt = patTau->leadTrack()->pt();}
+                  if(patTau->hcal3x3OverPLead() < minimumTauH3x3OverP) {minimumTauH3x3OverP = patTau->hcal3x3OverPLead();}
+                  if(patTau->leadTrack()->recHitsSize() < minimumTauLeadNhits) {minimumTauLeadNhits = patTau->leadTrack()->recHitsSize();}
+                }
+                if (_UseRecoTauDiscrByIsolationFlag) {
+                  if(patTau->isolationTracksPtSum() < minimumTauTrackIso) {minimumTauTrackIso = patTau->isolationTracksPtSum();}
+                  if(patTau->isolationECALhitsEtSum() < minimumTauEcalIso) {minimumTauEcalIso = patTau->isolationECALhitsEtSum();}
+                } else {
+                  if(CalculateTauTrackIsolation(*patTau).second < minimumTauTrackIso) {minimumTauTrackIso = CalculateTauTrackIsolation(*patTau).second;}
+                  if(CalculateTauEcalIsolation(*patTau).second < minimumTauEcalIso) {minimumTauEcalIso = CalculateTauEcalIsolation(*patTau).second;}
+                }
+              } else {
+                if( (patTau->leadPFChargedHadrCand().isNonnull()) ) {
+                  if(patTau->leadPFChargedHadrCand()->pt() > maximumTauSeedPt) {maximumTauSeedPt = patTau->leadPFChargedHadrCand()->pt();}
+                  if(patTau->hcal3x3OverPLead() < minimumTauH3x3OverP) {minimumTauH3x3OverP = patTau->hcal3x3OverPLead();}
+	          if( (patTau->leadPFChargedHadrCand()->trackRef().isNonnull()) ) {
+                    if(patTau->leadPFChargedHadrCand()->trackRef()->recHitsSize() < minimumTauLeadNhits) {minimumTauLeadNhits = patTau->leadPFChargedHadrCand()->trackRef()->recHitsSize();}
+                  }
+                }
+                if (_UseRecoTauDiscrByIsolationFlag) {
+                  if(patTau->isolationPFChargedHadrCandsPtSum() < minimumTauTrackIso) {minimumTauTrackIso = patTau->isolationPFChargedHadrCandsPtSum();}
+                  if(patTau->isolationPFGammaCandsEtSum() < minimumTauEcalIso) {minimumTauEcalIso = patTau->isolationPFGammaCandsEtSum();}
+                } else {
+                  if(CalculateTauTrackIsolation(*patTau).second < minimumTauTrackIso) {minimumTauTrackIso = CalculateTauTrackIsolation(*patTau).second;}
+                  if(CalculateTauEcalIsolation(*patTau).second < minimumTauEcalIso) {minimumTauEcalIso = CalculateTauEcalIsolation(*patTau).second;}
+                }
+              }
+              //--- Best Lepton+Tau DeltaR
+              if(reco::deltaR(smearedTauMomentumVector.at(theNumberOfTaus-1), smearedMuonMomentumVector.at(theNumberOfMuons-1)) > maximumdR) {maximumdR = reco::deltaR(smearedTauMomentumVector.at(theNumberOfTaus-1), smearedMuonMomentumVector.at(theNumberOfMuons-1));}
+              //--- Best Lepton+Tau CosDphi
+              if(cos(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).phi() - smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).phi()))) < mimimumCosDphi) {mimimumCosDphi = cos(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).phi() - smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).phi())));}
+	      _hMuonPtVsTauPt[NpdfID]->Fill(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt(),smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hMuonTauDeltaR[NpdfID]->Fill(reco::deltaR(smearedTauMomentumVector.at(theNumberOfTaus-1), smearedMuonMomentumVector.at(theNumberOfMuons-1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hMuonTauDeltaPtDivSumPt[NpdfID]->Fill((smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt() - smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt()) / (smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt() + smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hMuonTauDeltaPt[NpdfID]->Fill((smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt() - smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hMuonTauCosDphi[NpdfID]->Fill(cos(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).phi() - smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hMuonMetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).phi() - theMETVector.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hMuonMetDeltaPhiVsMuonTauCosDphi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).phi() - theMETVector.phi())), cos(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).phi() - smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hTauMetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).phi() - theMETVector.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      if(CalculateThe4Momentum((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1).first) {_hReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+	      else {_hNotReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+              //--- Best Lepton+Met Transverse mass
+	      if(CalculateLeptonMetMt((*patMuon),theNumberOfMuons-1) > maximumLeptonMetMt) {maximumLeptonMetMt = CalculateLeptonMetMt((*patMuon),theNumberOfMuons-1);}
+	      _hMuonMetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patMuon),theNumberOfMuons-1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hTauMetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patTau),theNumberOfTaus-1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+              //--- Best Lepton+Tau OSLS
 	      if(_UseTauSeedTrackForDiTauDiscrByOSLS) {
 		if (patTau->isCaloTau()) {
 		  if( (patTau->leadTrack().isNonnull()) ) {
 		    _hMuonTauOSLS[NpdfID]->Fill(patMuon->charge() * patTau->leadTrack()->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+                    if(patMuon->charge() * patTau->leadTrack()->charge() < minimumOSLS) {minimumOSLS = patMuon->charge() * patTau->leadTrack()->charge();}
 		  }
 		} else {
 		  if( (patTau->leadPFChargedHadrCand().isNonnull()) ) {
 		    _hMuonTauOSLS[NpdfID]->Fill(patMuon->charge() * patTau->leadPFChargedHadrCand()->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+                    if(patMuon->charge() * patTau->leadPFChargedHadrCand()->charge() < minimumOSLS) {minimumOSLS = patMuon->charge() * patTau->leadPFChargedHadrCand()->charge();}
 		  }
 		}
-	      } else {_hMuonTauOSLS[NpdfID]->Fill(patMuon->charge() * patTau->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	      _hPZeta[NpdfID]->Fill(CalculatePZeta((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hPZetaVis[NpdfID]->Fill(CalculatePZetaVis((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hZeta2D[NpdfID]->Fill(CalculatePZetaVis((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1),(*(_patMETs->begin()))),CalculatePZeta((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hZeta1D[NpdfID]->Fill((_PZetaCutCoefficient * CalculatePZeta((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1),(*(_patMETs->begin())))) + 
-				     (_PZetaVisCutCoefficient * CalculatePZetaVis((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patMuon),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons-1),(*(_patMETs->begin())))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      } else {
+                _hMuonTauOSLS[NpdfID]->Fill(patMuon->charge() * patTau->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+                if(patMuon->charge() * patTau->charge() < minimumOSLS) {minimumOSLS = patMuon->charge() * patTau->charge();}
+              }
+	      _hPZeta[NpdfID]->Fill(CalculatePZeta((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hPZetaVis[NpdfID]->Fill(CalculatePZetaVis((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hZeta2D[NpdfID]->Fill(CalculatePZetaVis((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1),CalculatePZeta((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hZeta1D[NpdfID]->Fill((_PZetaCutCoefficient * CalculatePZeta((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1)) + 
+				     (_PZetaVisCutCoefficient * CalculatePZetaVis((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+              //--- Best Lepton+Tau+Met Zeta
+	      if( (_PZetaCutCoefficient * CalculatePZeta((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1)) + 
+                  (_PZetaVisCutCoefficient * CalculatePZetaVis((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1)) > maximumZeta ) {
+                maximumZeta = (_PZetaCutCoefficient * CalculatePZeta((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1)) + 
+                              (_PZetaVisCutCoefficient * CalculatePZetaVis((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1));
+              }
 	    }
 	  }
 	}
+	_hBestMuonPt[NpdfID]->Fill(maximumLeptonPt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestMuonEta[NpdfID]->Fill(minimumLeptonEta,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestMuonTrackIso[NpdfID]->Fill(minimumLeptonTrackIso,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestMuonEcalIso[NpdfID]->Fill(minimumLeptonEcalIso,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestMuonTauDeltaR[NpdfID]->Fill(maximumdR,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestMuonCaloCompatibility[NpdfID]->Fill(maximumCaloComp,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestMuonSegmentCompatibility[NpdfID]->Fill(maximumSegComp,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestMuonAntiPion[NpdfID]->Fill(maximumPionVeto,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestMuonIp[NpdfID]->Fill(minimumIp,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestTauJetPt[NpdfID]->Fill(maximumTauPt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestTauJetEta[NpdfID]->Fill(minimumTauEta,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _hBestTauJetSeedTrackPt[NpdfID]->Fill(maximumTauSeedPt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _hBestTauJetSumPtIsoTracks[NpdfID]->Fill(minimumTauTrackIso,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _hBestTauJetSumPtIsoGammas[NpdfID]->Fill(minimumTauEcalIso,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestMuonTauCosDphi[NpdfID]->Fill(mimimumCosDphi,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestTauJetH3x3OverP[NpdfID]->Fill(minimumTauH3x3OverP,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestTauJetSeedTrackNhits[NpdfID]->Fill(minimumTauLeadNhits,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _hBestMuonMetMt[NpdfID]->Fill(maximumLeptonMetMt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _hBestZeta1D[NpdfID]->Fill(maximumZeta,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _hBestMuonTauOSLS[NpdfID]->Fill(minimumOSLS,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
       }
       if( ((_AnalyzeElectronForLeg1) && (_AnalyzeTauForLeg2)) || ((_AnalyzeElectronForLeg2) && (_AnalyzeTauForLeg1)) ) {
+        double minimumHoverE = 9999.9;
+        double minimumEESigmaIEtaIEta = 9999.9;
+        double minimumEBSigmaIEtaIEta = 9999.9;
+        double minimumEEDEta = 9999.9;
+        double minimumEBDEta = 9999.9;
+        double minimumEEDPhi = 9999.9;
+        double minimumEBDPhi = 9999.9;
+        double maximumEB2x2Over5x5 = 0.0;
+        double maximumEB1x2Over5x5 = 0.0;
+        double minimumMissingHits = 9999.9;
 	int theNumberOfElectrons = 0;
 	for ( pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin();patElectron != _patElectrons->end(); ++patElectron ) {
 	  theNumberOfElectrons++;
 	  int theNumberOfTaus = 0;
 	  for ( pat::TauCollection::const_iterator patTau = _patTaus->begin();patTau != _patTaus->end(); ++patTau ) {
 	    theNumberOfTaus++;
-	    if ((passRecoTauCuts((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1))) &&
-		(passRecoElectronCuts((*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1))) &&
-		(passTopologyCuts((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1),(*(_patMETs->begin()))))) {
-	      if(_SmearTheTau) {
-		if(_SmearTheElectron) {
-                  _hElectronIsZee[NpdfID]->Fill(isZee(smearedElectronMomentumVector.at(theNumberOfElectrons-1)).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hElectronPtVsTauPt[NpdfID]->Fill(smearedElectronMomentumVector.at(theNumberOfElectrons-1).pt(),smearedTauMomentumVector.at(theNumberOfTaus-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hElectronTauDeltaR[NpdfID]->Fill(reco::deltaR(smearedTauMomentumVector.at(theNumberOfTaus-1), smearedElectronMomentumVector.at(theNumberOfElectrons-1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hElectronTauDeltaPtDivSumPt[NpdfID]->Fill((smearedTauMomentumVector.at(theNumberOfTaus-1).pt() - smearedElectronMomentumVector.at(theNumberOfElectrons-1).pt()) / (smearedTauMomentumVector.at(theNumberOfTaus-1).pt() + smearedElectronMomentumVector.at(theNumberOfElectrons-1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hElectronTauCosDphi[NpdfID]->Fill(cos(TMath::Abs(normalizedPhi(smearedElectronMomentumVector.at(theNumberOfElectrons-1).phi() - smearedTauMomentumVector.at(theNumberOfTaus-1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  reco::Candidate::LorentzVector Temp_LorentzVect(
-								  (*(_patMETs->begin())).px() + patElectron->px() - smearedElectronMomentumVector.at(theNumberOfElectrons-1).px() + patTau->px() - smearedTauMomentumVector.at(theNumberOfTaus-1).px() + deltaForMEx,
-								  (*(_patMETs->begin())).py() + patElectron->py() - smearedElectronMomentumVector.at(theNumberOfElectrons-1).py() + patTau->py() - smearedTauMomentumVector.at(theNumberOfTaus-1).py() + deltaForMEy,
-								  (*(_patMETs->begin())).pz(),
-								  TMath::Sqrt( (((*(_patMETs->begin())).px() + deltaForMEx + patElectron->px() - smearedElectronMomentumVector.at(theNumberOfElectrons-1).px() + patTau->px() - smearedTauMomentumVector.at(theNumberOfTaus-1).px()) *
-										((*(_patMETs->begin())).px() + deltaForMEx + patElectron->px() - smearedElectronMomentumVector.at(theNumberOfElectrons-1).px() + patTau->px() - smearedTauMomentumVector.at(theNumberOfTaus-1).px())) +
-									       (((*(_patMETs->begin())).py() + deltaForMEy + patElectron->py() - smearedElectronMomentumVector.at(theNumberOfElectrons-1).py() + patTau->py() - smearedTauMomentumVector.at(theNumberOfTaus-1).py()) *
-										((*(_patMETs->begin())).py() + deltaForMEy + patElectron->py() - smearedElectronMomentumVector.at(theNumberOfElectrons-1).py() + patTau->py() - smearedTauMomentumVector.at(theNumberOfTaus-1).py())) ));
-		  _hElectronMetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedElectronMomentumVector.at(theNumberOfElectrons-1).phi() - Temp_LorentzVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hElectronMetDeltaPhiVsElectronTauCosDphi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedElectronMomentumVector.at(theNumberOfElectrons-1).phi() - Temp_LorentzVect.phi())), cos(TMath::Abs(normalizedPhi(smearedElectronMomentumVector.at(theNumberOfElectrons-1).phi() - smearedTauMomentumVector.at(theNumberOfTaus-1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hTauMetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedTauMomentumVector.at(theNumberOfTaus-1).phi() - Temp_LorentzVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		} else {
-                  _hElectronIsZee[NpdfID]->Fill(isZee(patElectron->p4()).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hElectronPtVsTauPt[NpdfID]->Fill(patElectron->pt(),smearedTauMomentumVector.at(theNumberOfTaus-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hElectronTauDeltaR[NpdfID]->Fill(reco::deltaR(smearedTauMomentumVector.at(theNumberOfTaus-1), patElectron->p4()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hElectronTauDeltaPtDivSumPt[NpdfID]->Fill((smearedTauMomentumVector.at(theNumberOfTaus-1).pt() - patElectron->pt()) / (smearedTauMomentumVector.at(theNumberOfTaus-1).pt() + patElectron->pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hElectronTauCosDphi[NpdfID]->Fill(cos(TMath::Abs(normalizedPhi(patElectron->phi() - smearedTauMomentumVector.at(theNumberOfTaus-1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  reco::Candidate::LorentzVector Temp_LorentzVect(
-								  (*(_patMETs->begin())).px() + patElectron->px() - patElectron->px() + patTau->px() - smearedTauMomentumVector.at(theNumberOfTaus-1).px() + deltaForMEx,
-								  (*(_patMETs->begin())).py() + patElectron->py() - patElectron->py() + patTau->py() - smearedTauMomentumVector.at(theNumberOfTaus-1).py() + deltaForMEy,
-								  (*(_patMETs->begin())).pz(),
-								  TMath::Sqrt( (((*(_patMETs->begin())).px() + deltaForMEx + patElectron->px() - patElectron->px() + patTau->px() - smearedTauMomentumVector.at(theNumberOfTaus-1).px()) *
-										((*(_patMETs->begin())).px() + deltaForMEx + patElectron->px() - patElectron->px() + patTau->px() - smearedTauMomentumVector.at(theNumberOfTaus-1).px())) +
-									       (((*(_patMETs->begin())).py() + deltaForMEy + patElectron->py() - patElectron->py() + patTau->py() - smearedTauMomentumVector.at(theNumberOfTaus-1).py()) *
-										((*(_patMETs->begin())).py() + deltaForMEy + patElectron->py() - patElectron->py() + patTau->py() - smearedTauMomentumVector.at(theNumberOfTaus-1).py())) ));
-		  _hElectronMetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(patElectron->phi() - Temp_LorentzVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hElectronMetDeltaPhiVsElectronTauCosDphi[NpdfID]->Fill(TMath::Abs(normalizedPhi(patElectron->phi() - Temp_LorentzVect.phi())), cos(TMath::Abs(normalizedPhi(patElectron->phi() - smearedTauMomentumVector.at(theNumberOfTaus-1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight);
-		  _hTauMetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedTauMomentumVector.at(theNumberOfTaus-1).phi() - Temp_LorentzVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		}
-	      } else {
-		if(_SmearTheElectron) {
-                  _hElectronIsZee[NpdfID]->Fill(isZee(smearedElectronMomentumVector.at(theNumberOfElectrons-1)).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hElectronPtVsTauPt[NpdfID]->Fill(smearedElectronMomentumVector.at(theNumberOfElectrons-1).pt(),patTau->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hElectronTauDeltaR[NpdfID]->Fill(reco::deltaR(patTau->p4(), smearedElectronMomentumVector.at(theNumberOfElectrons-1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hElectronTauDeltaPtDivSumPt[NpdfID]->Fill((patTau->pt() - smearedElectronMomentumVector.at(theNumberOfElectrons-1).pt()) / (patTau->pt() + smearedElectronMomentumVector.at(theNumberOfElectrons-1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hElectronTauCosDphi[NpdfID]->Fill(cos(TMath::Abs(normalizedPhi(smearedElectronMomentumVector.at(theNumberOfElectrons-1).phi() - patTau->phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  reco::Candidate::LorentzVector Temp_LorentzVect(
-								  (*(_patMETs->begin())).px() + patElectron->px() - smearedElectronMomentumVector.at(theNumberOfElectrons-1).px() + deltaForMEx,
-								  (*(_patMETs->begin())).py() + patElectron->py() - smearedElectronMomentumVector.at(theNumberOfElectrons-1).py() + deltaForMEy,
-								  (*(_patMETs->begin())).pz(),
-								  TMath::Sqrt( (((*(_patMETs->begin())).px() + deltaForMEx + patElectron->px() - smearedElectronMomentumVector.at(theNumberOfElectrons-1).px()) *
-										((*(_patMETs->begin())).px() + deltaForMEx + patElectron->px() - smearedElectronMomentumVector.at(theNumberOfElectrons-1).px())) +
-									       (((*(_patMETs->begin())).py() + deltaForMEy + patElectron->py() - smearedElectronMomentumVector.at(theNumberOfElectrons-1).py()) *
-										((*(_patMETs->begin())).py() + deltaForMEy + patElectron->py() - smearedElectronMomentumVector.at(theNumberOfElectrons-1).py())) ));
-		  _hElectronMetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedElectronMomentumVector.at(theNumberOfElectrons-1).phi() - Temp_LorentzVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hElectronMetDeltaPhiVsElectronTauCosDphi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedElectronMomentumVector.at(theNumberOfElectrons-1).phi() - Temp_LorentzVect.phi())), cos(TMath::Abs(normalizedPhi(smearedElectronMomentumVector.at(theNumberOfElectrons-1).phi() - patTau->phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hTauMetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(patTau->phi() - Temp_LorentzVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		} else {
-                  _hElectronIsZee[NpdfID]->Fill(isZee(patElectron->p4()).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hElectronPtVsTauPt[NpdfID]->Fill(patElectron->pt(),patTau->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hElectronTauDeltaR[NpdfID]->Fill(reco::deltaR(patTau->p4(), patElectron->p4()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hElectronTauDeltaPtDivSumPt[NpdfID]->Fill((patTau->pt() - patElectron->pt()) / (patTau->pt() + patElectron->pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hElectronTauCosDphi[NpdfID]->Fill(cos(TMath::Abs(normalizedPhi(patElectron->phi() - patTau->phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hElectronMetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(patElectron->phi() - (*(_patMETs->begin())).phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hElectronMetDeltaPhiVsElectronTauCosDphi[NpdfID]->Fill(TMath::Abs(normalizedPhi(patElectron->phi() - (*(_patMETs->begin())).phi())), cos(TMath::Abs(normalizedPhi(patElectron->phi() - patTau->phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		  _hTauMetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(patTau->phi() - (*(_patMETs->begin())).phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		}
-	      }
-	      if(CalculateThe4Momentum((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1),(*(_patMETs->begin()))).first) {_hReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1),(*(_patMETs->begin()))).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	      else {_hNotReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1),(*(_patMETs->begin()))).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	      _hElectronMetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTauMetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    if ((passRecoTauCuts((*patTau),theNumberOfTaus-1)) &&
+		(passRecoElectronCuts((*patElectron),theNumberOfElectrons-1)) &&
+		(passTopologyCuts((*patTau),theNumberOfTaus-1,(*patElectron),theNumberOfElectrons-1))) {
+              if(_UseHeepInfo) {
+                heep::Ele theHeepElec(*patElectron);
+                if(theHeepElec.hOverE() < minimumHoverE) {minimumHoverE = theHeepElec.hOverE();}
+                if(patElectron->isEE()) {
+                  if(theHeepElec.sigmaIEtaIEta() < minimumEESigmaIEtaIEta) {minimumEESigmaIEtaIEta = theHeepElec.sigmaIEtaIEta();}
+                  if(fabs(theHeepElec.dEtaIn()) < fabs(minimumEEDEta)) {minimumEEDEta = theHeepElec.dEtaIn();}
+                  if(fabs(theHeepElec.dPhiIn()) < fabs(minimumEEDPhi)) {minimumEEDPhi = theHeepElec.dPhiIn();}
+                }
+                if(patElectron->isEB()) {
+                  if(theHeepElec.sigmaIEtaIEta() < minimumEBSigmaIEtaIEta) {minimumEBSigmaIEtaIEta = theHeepElec.sigmaIEtaIEta();}
+                  if(fabs(theHeepElec.dEtaIn()) < fabs(minimumEBDEta)) {minimumEBDEta = theHeepElec.dEtaIn();}
+                  if(fabs(theHeepElec.dPhiIn()) < fabs(minimumEBDPhi)) {minimumEBDPhi = theHeepElec.dPhiIn();}
+                  if((theHeepElec.scE2x5Max() / theHeepElec.scE5x5()) > maximumEB2x2Over5x5) {maximumEB2x2Over5x5 = theHeepElec.scE2x5Max() / theHeepElec.scE5x5();}
+                  if((theHeepElec.scE1x5() / theHeepElec.scE5x5()) > maximumEB1x2Over5x5) {maximumEB1x2Over5x5 = theHeepElec.scE1x5() / theHeepElec.scE5x5();}
+                }
+              } else {
+                if(patElectron->hadronicOverEm() < minimumHoverE) {minimumHoverE = patElectron->hadronicOverEm();}
+                if(patElectron->isEE()) {
+                  if(patElectron->scSigmaIEtaIEta() < minimumEESigmaIEtaIEta) {minimumEESigmaIEtaIEta = patElectron->scSigmaIEtaIEta();}
+                  if(fabs(patElectron->deltaEtaSuperClusterTrackAtVtx()) < fabs(minimumEEDEta)) {minimumEEDEta = patElectron->deltaEtaSuperClusterTrackAtVtx();}
+                  if(fabs(patElectron->deltaPhiSuperClusterTrackAtVtx()) < fabs(minimumEEDPhi)) {minimumEEDPhi = patElectron->deltaPhiSuperClusterTrackAtVtx();}
+                }
+                if(patElectron->isEB()) {
+                  if(patElectron->scSigmaIEtaIEta() < minimumEBSigmaIEtaIEta) {minimumEBSigmaIEtaIEta = patElectron->scSigmaIEtaIEta();}
+                  if(fabs(patElectron->deltaEtaSuperClusterTrackAtVtx()) < fabs(minimumEBDEta)) {minimumEBDEta = patElectron->deltaEtaSuperClusterTrackAtVtx();}
+                  if(fabs(patElectron->deltaPhiSuperClusterTrackAtVtx()) < fabs(minimumEBDPhi)) {minimumEBDPhi = patElectron->deltaPhiSuperClusterTrackAtVtx();}
+                  if((patElectron->scE2x5Max() / patElectron->scE5x5()) > maximumEB2x2Over5x5) {maximumEB2x2Over5x5 = patElectron->scE2x5Max() / patElectron->scE5x5();}
+                  if((patElectron->scE1x5() / patElectron->scE5x5()) > maximumEB1x2Over5x5) {maximumEB1x2Over5x5 = patElectron->scE1x5() / patElectron->scE5x5();}
+                }
+              }
+              const Track* elTrack = (const reco::Track*)(patElectron->gsfTrack().get());
+              const HitPattern& pInner = elTrack->trackerExpectedHitsInner();
+              if(pInner.numberOfHits() < minimumMissingHits) {minimumMissingHits = pInner.numberOfHits();}
+              if(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).pt() > maximumLeptonPt) {maximumLeptonPt = smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).pt();}
+              if(fabs(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).eta()) < fabs(minimumLeptonEta)) {minimumLeptonEta = smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).eta();}
+              if(reco::deltaR(smearedTauMomentumVector.at(theNumberOfTaus-1), smearedElectronMomentumVector.at(theNumberOfElectrons-1)) > maximumdR) {maximumdR = reco::deltaR(smearedTauMomentumVector.at(theNumberOfTaus-1), smearedElectronMomentumVector.at(theNumberOfElectrons-1));}
+              if(patElectron->dr04TkSumPt() < minimumLeptonTrackIso) {minimumLeptonTrackIso = patElectron->dr04TkSumPt();}
+              if(patElectron->dr04EcalRecHitSumEt() < minimumLeptonEcalIso) {minimumLeptonEcalIso = patElectron->dr04EcalRecHitSumEt();}
+              if(smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt() > maximumTauPt) {
+                if(reco::deltaR(maxEtElectronVector, smearedTauMomentumVector.at(theNumberOfElectrons-1))>_DiTauDeltaRCut)
+                  {maximumTauPt = smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt();}
+              }
+              if(fabs(smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).eta()) < fabs(minimumTauEta)) {minimumTauEta = smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).eta();}
+              if (patTau->isCaloTau()) {
+                if( (patTau->leadTrack().isNonnull()) ) {
+                  if(patTau->leadTrack()->pt() > maximumTauSeedPt) {maximumTauSeedPt = patTau->leadTrack()->pt();}
+                  if(patTau->hcal3x3OverPLead() < minimumTauH3x3OverP) {minimumTauH3x3OverP = patTau->hcal3x3OverPLead();}
+                  if(patTau->leadTrack()->recHitsSize() < minimumTauLeadNhits) {minimumTauLeadNhits = patTau->leadTrack()->recHitsSize();}
+                }
+                if (_UseRecoTauDiscrByIsolationFlag) {
+                  if(patTau->isolationTracksPtSum() < minimumTauTrackIso) {minimumTauTrackIso = patTau->isolationTracksPtSum();}
+                  if(patTau->isolationECALhitsEtSum() < minimumTauEcalIso) {minimumTauEcalIso = patTau->isolationECALhitsEtSum();}
+                } else {
+                  if(CalculateTauTrackIsolation(*patTau).second < minimumTauTrackIso) {minimumTauTrackIso = CalculateTauTrackIsolation(*patTau).second;}
+                  if(CalculateTauEcalIsolation(*patTau).second < minimumTauEcalIso) {minimumTauEcalIso = CalculateTauEcalIsolation(*patTau).second;}
+                }
+              } else {
+                if( (patTau->leadPFChargedHadrCand().isNonnull()) ) {
+                  if(patTau->leadPFChargedHadrCand()->pt() > maximumTauSeedPt) {maximumTauSeedPt = patTau->leadPFChargedHadrCand()->pt();}
+                  if(patTau->hcal3x3OverPLead() < minimumTauH3x3OverP) {minimumTauH3x3OverP = patTau->hcal3x3OverPLead();}
+	          if( (patTau->leadPFChargedHadrCand()->trackRef().isNonnull()) ) {
+                    if(patTau->leadPFChargedHadrCand()->trackRef()->recHitsSize() < minimumTauLeadNhits) {minimumTauLeadNhits = patTau->leadPFChargedHadrCand()->trackRef()->recHitsSize();}
+                  }
+                }
+                if (_UseRecoTauDiscrByIsolationFlag) {
+                  if(patTau->isolationPFChargedHadrCandsPtSum() < minimumTauTrackIso) {minimumTauTrackIso = patTau->isolationPFChargedHadrCandsPtSum();}
+                  if(patTau->isolationPFGammaCandsEtSum() < minimumTauEcalIso) {minimumTauEcalIso = patTau->isolationPFGammaCandsEtSum();}
+                } else {
+                  if(CalculateTauTrackIsolation(*patTau).second < minimumTauTrackIso) {minimumTauTrackIso = CalculateTauTrackIsolation(*patTau).second;}
+                  if(CalculateTauEcalIsolation(*patTau).second < minimumTauEcalIso) {minimumTauEcalIso = CalculateTauEcalIsolation(*patTau).second;}
+                }
+              }
+              if(cos(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).phi() - smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).phi()))) < mimimumCosDphi) {mimimumCosDphi = cos(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).phi() - smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).phi())));}
+              _hElectronIsZee[NpdfID]->Fill(isZee(smearedElectronMomentumVector.at(theNumberOfElectrons-1)).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+              _hElectronPtVsTauPt[NpdfID]->Fill(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).pt(),smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hElectronTauDeltaR[NpdfID]->Fill(reco::deltaR(smearedTauMomentumVector.at(theNumberOfTaus-1), smearedElectronMomentumVector.at(theNumberOfElectrons-1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hElectronTauDeltaPtDivSumPt[NpdfID]->Fill((smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt() - smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).pt()) / (smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt() + smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hElectronTauDeltaPt[NpdfID]->Fill((smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt() - smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hElectronTauCosDphi[NpdfID]->Fill(cos(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).phi() - smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hElectronMetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).phi() - theMETVector.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hElectronMetDeltaPhiVsElectronTauCosDphi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).phi() - theMETVector.phi())), cos(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons-1).phi() - smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hTauMetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).phi() - theMETVector.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      if(CalculateThe4Momentum((*patTau),theNumberOfTaus-1,(*patElectron),theNumberOfElectrons-1).first) {_hReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patTau),theNumberOfTaus-1,(*patElectron),theNumberOfElectrons-1).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+	      else {_hNotReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patTau),theNumberOfTaus-1,(*patElectron),theNumberOfElectrons-1).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+	      if(CalculateLeptonMetMt((*patElectron),theNumberOfElectrons-1) > maximumLeptonMetMt) {maximumLeptonMetMt = CalculateLeptonMetMt((*patElectron),theNumberOfElectrons-1);}
+	      _hElectronMetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patElectron),theNumberOfElectrons-1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hTauMetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patTau),theNumberOfTaus-1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	      if(_UseTauSeedTrackForDiTauDiscrByOSLS) {
 		if (patTau->isCaloTau()) {
 		  if( (patTau->leadTrack().isNonnull()) ) {
 		    _hElectronTauOSLS[NpdfID]->Fill(patElectron->charge() * patTau->leadTrack()->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+                    if((patElectron->charge() * patTau->leadTrack()->charge()) < minimumOSLS) {minimumOSLS = patElectron->charge() * patTau->leadTrack()->charge();}
 		  }
 		} else {
 		  if( (patTau->leadPFChargedHadrCand().isNonnull()) ) {
 		    _hElectronTauOSLS[NpdfID]->Fill(patElectron->charge() * patTau->leadPFChargedHadrCand()->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+                    if((patElectron->charge() * patTau->leadPFChargedHadrCand()->charge()) < minimumOSLS) {minimumOSLS = patElectron->charge() * patTau->leadPFChargedHadrCand()->charge();}
 		  }
 		}
-	      } else {_hElectronTauOSLS[NpdfID]->Fill(patElectron->charge() * patTau->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	      _hPZeta[NpdfID]->Fill(CalculatePZeta((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hPZetaVis[NpdfID]->Fill(CalculatePZetaVis((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hZeta2D[NpdfID]->Fill(CalculatePZetaVis((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1),(*(_patMETs->begin()))),CalculatePZeta((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hZeta1D[NpdfID]->Fill((_PZetaCutCoefficient * CalculatePZeta((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1),(*(_patMETs->begin())))) + (_PZetaVisCutCoefficient * CalculatePZetaVis((*patTau),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus-1),(*patElectron),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons-1),(*(_patMETs->begin())))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      } else {
+                _hElectronTauOSLS[NpdfID]->Fill(patElectron->charge() * patTau->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+                if((patElectron->charge() * patTau->charge()) < minimumOSLS) {minimumOSLS = patElectron->charge() * patTau->charge();}
+              }
+	      _hPZeta[NpdfID]->Fill(CalculatePZeta((*patTau),theNumberOfTaus-1,(*patElectron),theNumberOfElectrons-1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hPZetaVis[NpdfID]->Fill(CalculatePZetaVis((*patTau),theNumberOfTaus-1,(*patElectron),theNumberOfElectrons-1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hZeta2D[NpdfID]->Fill(CalculatePZetaVis((*patTau),theNumberOfTaus-1,(*patElectron),theNumberOfElectrons-1),CalculatePZeta((*patTau),theNumberOfTaus-1,(*patElectron),theNumberOfElectrons-1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hZeta1D[NpdfID]->Fill((_PZetaCutCoefficient * CalculatePZeta((*patTau),theNumberOfTaus-1,(*patElectron),theNumberOfElectrons-1)) + (_PZetaVisCutCoefficient * CalculatePZetaVis((*patTau),theNumberOfTaus-1,(*patElectron),theNumberOfElectrons-1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+              //--- Best Lepton+Tau+Met Zeta
+	      if( (_PZetaCutCoefficient * CalculatePZeta((*patTau),theNumberOfTaus-1,(*patElectron),theNumberOfElectrons-1)) + 
+                  (_PZetaVisCutCoefficient * CalculatePZetaVis((*patTau),theNumberOfTaus-1,(*patElectron),theNumberOfElectrons-1)) > maximumZeta ) {
+                maximumZeta = (_PZetaCutCoefficient * CalculatePZeta((*patTau),theNumberOfTaus-1,(*patElectron),theNumberOfElectrons-1)) + 
+                              (_PZetaVisCutCoefficient * CalculatePZetaVis((*patTau),theNumberOfTaus-1,(*patElectron),theNumberOfElectrons-1));
+              }
 	    }
 	  }
 	}
+	_hBestElectronPt[NpdfID]->Fill(maximumLeptonPt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestElectronEta[NpdfID]->Fill(minimumLeptonEta,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestElectronTrackIso[NpdfID]->Fill(minimumLeptonTrackIso,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestElectronEcalIso[NpdfID]->Fill(minimumLeptonEcalIso,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestElectronTauDeltaR[NpdfID]->Fill(maximumdR,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestTauJetPt[NpdfID]->Fill(maximumTauPt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestTauJetEta[NpdfID]->Fill(minimumTauEta,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _hBestTauJetSeedTrackPt[NpdfID]->Fill(maximumTauSeedPt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _hBestTauJetSumPtIsoTracks[NpdfID]->Fill(minimumTauTrackIso,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _hBestTauJetSumPtIsoGammas[NpdfID]->Fill(minimumTauEcalIso,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestElectronHoverEm[NpdfID]->Fill(minimumHoverE,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestElectronEESigmaIEtaIEta[NpdfID]->Fill(minimumEESigmaIEtaIEta,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestElectronEEDEta[NpdfID]->Fill(minimumEEDEta,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestElectronEEDPhi[NpdfID]->Fill(minimumEEDPhi,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestElectronEBSigmaIEtaIEta[NpdfID]->Fill(minimumEBSigmaIEtaIEta,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestElectronEBDEta[NpdfID]->Fill(minimumEBDEta,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestElectronEBDPhi[NpdfID]->Fill(minimumEBDPhi,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestElectronEB2by5Over5by5[NpdfID]->Fill(maximumEB2x2Over5x5,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestElectronEB1by5Over5by5[NpdfID]->Fill(maximumEB1x2Over5x5,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestElectronMissingHits[NpdfID]->Fill(minimumMissingHits,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestElectronTauCosDphi[NpdfID]->Fill(mimimumCosDphi,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestTauJetH3x3OverP[NpdfID]->Fill(minimumTauH3x3OverP,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hBestTauJetSeedTrackNhits[NpdfID]->Fill(minimumTauLeadNhits,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _hBestElectronMetMt[NpdfID]->Fill(maximumLeptonMetMt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _hBestZeta1D[NpdfID]->Fill(maximumZeta,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _hBestElectronTauOSLS[NpdfID]->Fill(minimumOSLS,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
       }
       if( ((_AnalyzeMuonForLeg1) && (_AnalyzeMuonForLeg2)) ) {
 	int theNumberOfMuons1 = 0;
@@ -3642,43 +2815,27 @@ void HiMassTauAnalysis::fillHistograms() {
 	  int theNumberOfMuons2 = 0;
 	  for ( pat::MuonCollection::const_iterator patMuon2 = _patMuons->begin();patMuon2 != _patMuons->end(); ++patMuon2 ) {
 	    theNumberOfMuons2++;
-	    if ((passRecoMuonCuts((*patMuon1),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons1 - 1))) && 
-		(passRecoMuonCuts((*patMuon2),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons2 - 1))) && 
-		(passTopologyCuts((*patMuon1),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons1 - 1),(*patMuon2),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons2 - 1),(*(_patMETs->begin()))))) {
-	      if(_SmearTheMuon) {
-		_hMuon1PtVsMuon2Pt[NpdfID]->Fill(smearedMuonMomentumVector.at(theNumberOfMuons1 - 1).pt(),smearedMuonMomentumVector.at(theNumberOfMuons2 - 1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hMuon1Muon2DeltaR[NpdfID]->Fill(reco::deltaR(smearedMuonMomentumVector.at(theNumberOfMuons1 - 1), smearedMuonMomentumVector.at(theNumberOfMuons2 - 1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hMuon1Muon2DeltaPtDivSumPt[NpdfID]->Fill((smearedMuonMomentumVector.at(theNumberOfMuons1 - 1).pt() - smearedMuonMomentumVector.at(theNumberOfMuons2 - 1).pt()) / (smearedMuonMomentumVector.at(theNumberOfMuons1 - 1).pt() + smearedMuonMomentumVector.at(theNumberOfMuons2 - 1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hMuon1Muon2CosDphi[NpdfID]->Fill(cos(TMath::Abs(normalizedPhi(smearedMuonMomentumVector.at(theNumberOfMuons1 - 1).phi() - smearedMuonMomentumVector.at(theNumberOfMuons2 - 1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		reco::Candidate::LorentzVector Temp_LorentzVect(
-								(*(_patMETs->begin())).px() + patMuon1->px() - smearedMuonMomentumVector.at(theNumberOfMuons1 - 1).px() + patMuon2->px() - smearedMuonMomentumVector.at(theNumberOfMuons2 - 1).px() + deltaForMEx,
-								(*(_patMETs->begin())).py() + patMuon1->py() - smearedMuonMomentumVector.at(theNumberOfMuons1 - 1).py() + patMuon2->py() - smearedMuonMomentumVector.at(theNumberOfMuons2 - 1).py() + deltaForMEy,
-								(*(_patMETs->begin())).pz(),
-								TMath::Sqrt( (((*(_patMETs->begin())).px() + deltaForMEx + patMuon1->px() - smearedMuonMomentumVector.at(theNumberOfMuons1 - 1).px() + patMuon2->px() - smearedMuonMomentumVector.at(theNumberOfMuons2 - 1).px()) *
-									      ((*(_patMETs->begin())).px() + deltaForMEx + patMuon1->px() - smearedMuonMomentumVector.at(theNumberOfMuons1 - 1).px() + patMuon2->px() - smearedMuonMomentumVector.at(theNumberOfMuons2 - 1).px())) +
-									     (((*(_patMETs->begin())).py() + deltaForMEy + patMuon1->py() - smearedMuonMomentumVector.at(theNumberOfMuons1 - 1).py() + patMuon2->py() - smearedMuonMomentumVector.at(theNumberOfMuons2 - 1).py()) *
-									      ((*(_patMETs->begin())).py() + deltaForMEy + patMuon1->py() - smearedMuonMomentumVector.at(theNumberOfMuons1 - 1).py() + patMuon2->py() - smearedMuonMomentumVector.at(theNumberOfMuons2 - 1).py())) ));
-		_hMuon1MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedMuonMomentumVector.at(theNumberOfMuons1 - 1).phi() - Temp_LorentzVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hMuon2MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedMuonMomentumVector.at(theNumberOfMuons2 - 1).phi() - Temp_LorentzVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hMuon1MetDeltaPhiVsMuon1Muon2CosDphi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedMuonMomentumVector.at(theNumberOfMuons1 - 1).phi() - Temp_LorentzVect.phi())), cos(TMath::Abs(normalizedPhi(smearedMuonMomentumVector.at(theNumberOfMuons1 - 1).phi() - smearedMuonMomentumVector.at(theNumberOfMuons2 - 1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      } else {
-		_hMuon1PtVsMuon2Pt[NpdfID]->Fill(patMuon1->pt(),patMuon2->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hMuon1Muon2DeltaR[NpdfID]->Fill(reco::deltaR(patMuon1->p4(), patMuon2->p4()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hMuon1Muon2DeltaPtDivSumPt[NpdfID]->Fill((patMuon1->pt() - patMuon2->pt()) / (patMuon1->pt() + patMuon2->pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hMuon1Muon2CosDphi[NpdfID]->Fill(cos(TMath::Abs(normalizedPhi(patMuon1->phi() - patMuon2->phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hMuon1MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(patMuon1->phi() - (*(_patMETs->begin())).phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hMuon2MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(patMuon2->phi() - (*(_patMETs->begin())).phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hMuon1MetDeltaPhiVsMuon1Muon2CosDphi[NpdfID]->Fill(TMath::Abs(normalizedPhi(patMuon1->phi() - (*(_patMETs->begin())).phi())), cos(TMath::Abs(normalizedPhi(patMuon1->phi() - patMuon2->phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      }
-	      if(CalculateThe4Momentum((*patMuon1),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons1 - 1),(*patMuon2),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons2 - 1),(*(_patMETs->begin()))).first) {_hReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patMuon1),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons1 - 1),(*patMuon2),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons2 - 1),(*(_patMETs->begin()))).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	      else {_hNotReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patMuon1),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons1 - 1),(*patMuon2),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons2 - 1),(*(_patMETs->begin()))).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	      _hMuon1MetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patMuon1),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons1 - 1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hMuon2MetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patMuon2),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons2 - 1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    if ((passRecoMuonCuts((*patMuon1),theNumberOfMuons1 - 1)) && 
+		(passRecoMuonCuts((*patMuon2),theNumberOfMuons2 - 1)) && 
+		(passTopologyCuts((*patMuon1),theNumberOfMuons1 - 1,(*patMuon2),theNumberOfMuons2 - 1)) &&
+                (theNumberOfMuons2 >= theNumberOfMuons1)) {
+              _hMuon1PtVsMuon2Pt[NpdfID]->Fill(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons1 - 1).pt(),smearedMuonPtEtaPhiMVector.at(theNumberOfMuons2 - 1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hMuon1Muon2DeltaR[NpdfID]->Fill(reco::deltaR(smearedMuonMomentumVector.at(theNumberOfMuons1 - 1), smearedMuonMomentumVector.at(theNumberOfMuons2 - 1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hMuon1Muon2DeltaPtDivSumPt[NpdfID]->Fill((smearedMuonPtEtaPhiMVector.at(theNumberOfMuons1 - 1).pt() - smearedMuonPtEtaPhiMVector.at(theNumberOfMuons2 - 1).pt()) / (smearedMuonPtEtaPhiMVector.at(theNumberOfMuons1 - 1).pt() + smearedMuonPtEtaPhiMVector.at(theNumberOfMuons2 - 1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hMuon1Muon2DeltaPt[NpdfID]->Fill((smearedMuonPtEtaPhiMVector.at(theNumberOfMuons1 - 1).pt() - smearedMuonPtEtaPhiMVector.at(theNumberOfMuons2 - 1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hMuon1Muon2CosDphi[NpdfID]->Fill(cos(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons1 - 1).phi() - smearedMuonPtEtaPhiMVector.at(theNumberOfMuons2 - 1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hMuon1MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons1 - 1).phi() - theMETVector.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hMuon2MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons2 - 1).phi() - theMETVector.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hMuon1MetDeltaPhiVsMuon1Muon2CosDphi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons1 - 1).phi() - theMETVector.phi())), cos(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons1 - 1).phi() - smearedMuonPtEtaPhiMVector.at(theNumberOfMuons2 - 1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      if(CalculateThe4Momentum((*patMuon1),theNumberOfMuons1 - 1,(*patMuon2),theNumberOfMuons2 - 1).first) {_hReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patMuon1),theNumberOfMuons1 - 1,(*patMuon2),theNumberOfMuons2 - 1).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+	      else {_hNotReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patMuon1),theNumberOfMuons1 - 1,(*patMuon2),theNumberOfMuons2 - 1).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+	      _hMuon1MetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patMuon1),theNumberOfMuons1 - 1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hMuon2MetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patMuon2),theNumberOfMuons2 - 1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	      _hMuon1Muon2OSLS[NpdfID]->Fill(patMuon1->charge() * patMuon2->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hPZeta[NpdfID]->Fill(CalculatePZeta((*patMuon1),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons1 - 1),(*patMuon2),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons2 - 1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hPZetaVis[NpdfID]->Fill(CalculatePZetaVis((*patMuon1),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons1 - 1),(*patMuon2),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons2 - 1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hZeta2D[NpdfID]->Fill(CalculatePZetaVis((*patMuon1),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons1 - 1),(*patMuon2),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons2 - 1),(*(_patMETs->begin()))),CalculatePZeta((*patMuon1),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons1 - 1),(*patMuon2),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons2 - 1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hZeta1D[NpdfID]->Fill((_PZetaCutCoefficient * CalculatePZeta((*patMuon1),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons1 - 1),(*patMuon2),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons2 - 1),(*(_patMETs->begin())))) + (_PZetaVisCutCoefficient * CalculatePZetaVis((*patMuon1),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons1 - 1),(*patMuon2),_SmearTheMuon,smearedMuonMomentumVector.at(theNumberOfMuons2 - 1),(*(_patMETs->begin())))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hPZeta[NpdfID]->Fill(CalculatePZeta((*patMuon1),theNumberOfMuons1 - 1,(*patMuon2),theNumberOfMuons2 - 1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hPZetaVis[NpdfID]->Fill(CalculatePZetaVis((*patMuon1),theNumberOfMuons1 - 1,(*patMuon2),theNumberOfMuons2 - 1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hZeta2D[NpdfID]->Fill(CalculatePZetaVis((*patMuon1),theNumberOfMuons1 - 1,(*patMuon2),theNumberOfMuons2 - 1),CalculatePZeta((*patMuon1),theNumberOfMuons1 - 1,(*patMuon2),theNumberOfMuons2 - 1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hZeta1D[NpdfID]->Fill((_PZetaCutCoefficient * CalculatePZeta((*patMuon1),theNumberOfMuons1 - 1,(*patMuon2),theNumberOfMuons2 - 1)) + (_PZetaVisCutCoefficient * CalculatePZetaVis((*patMuon1),theNumberOfMuons1 - 1,(*patMuon2),theNumberOfMuons2 - 1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    }
 	  }
 	}
@@ -3690,43 +2847,27 @@ void HiMassTauAnalysis::fillHistograms() {
 	  int theNumberOfElectrons2 = 0;
 	  for ( pat::ElectronCollection::const_iterator patElectron2 = _patElectrons->begin();patElectron2 != _patElectrons->end(); ++patElectron2 ) {
 	    theNumberOfElectrons2++;
-	    if ((passRecoElectronCuts((*patElectron1),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1))) && 
-		(passRecoElectronCuts((*patElectron2),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1))) && 
-		(passTopologyCuts((*patElectron1),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1),(*patElectron2),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1),(*(_patMETs->begin()))))) {
-	      if(_SmearTheElectron) {
-		_hElectron1PtVsElectron2Pt[NpdfID]->Fill(smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1).pt(),smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hElectron1Electron2DeltaR[NpdfID]->Fill(reco::deltaR(smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1), smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hElectron1Electron2DeltaPtDivSumPt[NpdfID]->Fill((smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1).pt() - smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1).pt()) / (smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1).pt() + smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hElectron1Electron2CosDphi[NpdfID]->Fill(cos(TMath::Abs(normalizedPhi(smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1).phi() - smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		reco::Candidate::LorentzVector Temp_LorentzVect(
-								(*(_patMETs->begin())).px() + patElectron1->px() - smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1).px() + patElectron2->px() - smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1).px() + deltaForMEx,
-								(*(_patMETs->begin())).py() + patElectron1->py() - smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1).py() + patElectron2->py() - smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1).py() + deltaForMEy,
-								(*(_patMETs->begin())).pz(),
-								TMath::Sqrt( (((*(_patMETs->begin())).px() + deltaForMEx + patElectron1->px() - smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1).px() + patElectron2->px() - smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1).px()) *
-									      ((*(_patMETs->begin())).px() + deltaForMEx + patElectron1->px() - smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1).px() + patElectron2->px() - smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1).px())) +
-									     (((*(_patMETs->begin())).py() + deltaForMEy + patElectron1->py() - smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1).py() + patElectron2->py() - smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1).py()) *
-									      ((*(_patMETs->begin())).py() + deltaForMEy + patElectron1->py() - smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1).py() + patElectron2->py() - smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1).py())) ));
-		_hElectron1MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1).phi() - Temp_LorentzVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hElectron2MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1).phi() - Temp_LorentzVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hElectron1MetDeltaPhiVsElectron1Electron2CosDphi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1).phi() - Temp_LorentzVect.phi())), cos(TMath::Abs(normalizedPhi(smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1).phi() - smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      } else {
-		_hElectron1PtVsElectron2Pt[NpdfID]->Fill(patElectron1->pt(),patElectron2->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hElectron1Electron2DeltaR[NpdfID]->Fill(reco::deltaR(patElectron1->p4(), patElectron2->p4()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hElectron1Electron2DeltaPtDivSumPt[NpdfID]->Fill((patElectron1->pt() - patElectron2->pt()) / (patElectron1->pt() + patElectron2->pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hElectron1Electron2CosDphi[NpdfID]->Fill(cos(TMath::Abs(normalizedPhi(patElectron1->phi() - patElectron2->phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hElectron1MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(patElectron1->phi() - (*(_patMETs->begin())).phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hElectron2MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(patElectron2->phi() - (*(_patMETs->begin())).phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hElectron1MetDeltaPhiVsElectron1Electron2CosDphi[NpdfID]->Fill(TMath::Abs(normalizedPhi(patElectron1->phi() - (*(_patMETs->begin())).phi())), cos(TMath::Abs(normalizedPhi(patElectron1->phi() - patElectron2->phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      }
-	      if(CalculateThe4Momentum((*patElectron1),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1),(*patElectron2),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1),(*(_patMETs->begin()))).first) {_hReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patElectron1),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1),(*patElectron2),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1),(*(_patMETs->begin()))).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	      else {_hNotReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patElectron1),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1),(*patElectron2),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1),(*(_patMETs->begin()))).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	      _hElectron1MetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patElectron1),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hElectron2MetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patElectron2),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    if ((passRecoElectronCuts((*patElectron1),theNumberOfElectrons1 - 1)) && 
+		(passRecoElectronCuts((*patElectron2),theNumberOfElectrons2 - 1)) && 
+		(passTopologyCuts((*patElectron1),theNumberOfElectrons1 - 1,(*patElectron2),theNumberOfElectrons2 - 1)) &&
+                (theNumberOfElectrons2 >= theNumberOfElectrons1)) {
+	      _hElectron1PtVsElectron2Pt[NpdfID]->Fill(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons1 - 1).pt(),smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons2 - 1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hElectron1Electron2DeltaR[NpdfID]->Fill(reco::deltaR(smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1), smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hElectron1Electron2DeltaPtDivSumPt[NpdfID]->Fill((smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons1 - 1).pt() - smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons2 - 1).pt()) / (smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons1 - 1).pt() + smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons2 - 1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hElectron1Electron2DeltaPt[NpdfID]->Fill((smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons1 - 1).pt() - smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons2 - 1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hElectron1Electron2CosDphi[NpdfID]->Fill(cos(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons1 - 1).phi() - smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons2 - 1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hElectron1MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons1 - 1).phi() - theMETVector.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hElectron2MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons2 - 1).phi() - theMETVector.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hElectron1MetDeltaPhiVsElectron1Electron2CosDphi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons1 - 1).phi() - theMETVector.phi())), cos(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons1 - 1).phi() - smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons2 - 1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      if(CalculateThe4Momentum((*patElectron1),theNumberOfElectrons1 - 1,(*patElectron2),theNumberOfElectrons2 - 1).first) {_hReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patElectron1),theNumberOfElectrons1 - 1,(*patElectron2),theNumberOfElectrons2 - 1).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+	      else {_hNotReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patElectron1),theNumberOfElectrons1 - 1,(*patElectron2),theNumberOfElectrons2 - 1).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+	      _hElectron1MetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patElectron1),theNumberOfElectrons1 - 1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hElectron2MetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patElectron2),theNumberOfElectrons2 - 1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	      _hElectron1Electron2OSLS[NpdfID]->Fill(patElectron1->charge() * patElectron2->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hPZeta[NpdfID]->Fill(CalculatePZeta((*patElectron1),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1),(*patElectron2),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hPZetaVis[NpdfID]->Fill(CalculatePZetaVis((*patElectron1),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1),(*patElectron2),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hZeta2D[NpdfID]->Fill(CalculatePZetaVis((*patElectron1),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1),(*patElectron2),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1),(*(_patMETs->begin()))),CalculatePZeta((*patElectron1),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1),(*patElectron2),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hZeta1D[NpdfID]->Fill((_PZetaCutCoefficient * CalculatePZeta((*patElectron1),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1),(*patElectron2),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1),(*(_patMETs->begin())))) + (_PZetaVisCutCoefficient * CalculatePZetaVis((*patElectron1),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1),(*patElectron2),_SmearTheElectron,smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1),(*(_patMETs->begin())))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hPZeta[NpdfID]->Fill(CalculatePZeta((*patElectron1),theNumberOfElectrons1 - 1,(*patElectron2),theNumberOfElectrons2 - 1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hPZetaVis[NpdfID]->Fill(CalculatePZetaVis((*patElectron1),theNumberOfElectrons1 - 1,(*patElectron2),theNumberOfElectrons2 - 1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hZeta2D[NpdfID]->Fill(CalculatePZetaVis((*patElectron1),theNumberOfElectrons1 - 1,(*patElectron2),theNumberOfElectrons2 - 1),CalculatePZeta((*patElectron1),theNumberOfElectrons1 - 1,(*patElectron2),theNumberOfElectrons2 - 1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hZeta1D[NpdfID]->Fill((_PZetaCutCoefficient * CalculatePZeta((*patElectron1),theNumberOfElectrons1 - 1,(*patElectron2),theNumberOfElectrons2 - 1)) + (_PZetaVisCutCoefficient * CalculatePZetaVis((*patElectron1),theNumberOfElectrons1 - 1,(*patElectron2),theNumberOfElectrons2 - 1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    }
 	  }
 	}
@@ -3738,86 +2879,81 @@ void HiMassTauAnalysis::fillHistograms() {
 	  int theNumberOfTaus2 = 0;
 	  for ( pat::TauCollection::const_iterator patTau2 = _patTaus->begin();patTau2 != _patTaus->end(); ++patTau2 ) {
 	    theNumberOfTaus2++;
-	    if ((passRecoTauCuts((*patTau1),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus1 - 1))) &&
-		(passRecoTauCuts((*patTau2),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus2 - 1))) &&
-		(passTopologyCuts((*patTau1),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus1 - 1),(*patTau2),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus2 - 1),(*(_patMETs->begin()))))) {
-	      if(_SmearTheTau) {
-		_hTau1PtVsTau2Pt[NpdfID]->Fill(smearedTauMomentumVector.at(theNumberOfTaus1 - 1).pt(),smearedTauMomentumVector.at(theNumberOfTaus2 - 1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hTau1Tau2DeltaR[NpdfID]->Fill(reco::deltaR(smearedTauMomentumVector.at(theNumberOfTaus1 - 1), smearedTauMomentumVector.at(theNumberOfTaus2 - 1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hTau1Tau2DeltaPtDivSumPt[NpdfID]->Fill((smearedTauMomentumVector.at(theNumberOfTaus1 - 1).pt() - smearedTauMomentumVector.at(theNumberOfTaus2 - 1).pt()) / (smearedTauMomentumVector.at(theNumberOfTaus1 - 1).pt() + smearedTauMomentumVector.at(theNumberOfTaus2 - 1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		if(_UseTauSeedTrackForDiTauDiscrByOSLS) {
-		  if (patTau1->isCaloTau()) {
-		    if( (patTau1->leadTrack().isNonnull()) && (patTau2->leadTrack().isNonnull()) ) {
-		      _hTau1Tau2OSLS[NpdfID]->Fill(patTau1->leadTrack()->charge() * patTau2->leadTrack()->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		    }
-		  } else {
-		    if( (patTau1->leadPFChargedHadrCand().isNonnull()) && (patTau2->leadPFChargedHadrCand().isNonnull()) ) {
-		      _hTau1Tau2OSLS[NpdfID]->Fill(patTau1->leadPFChargedHadrCand()->charge() * patTau2->leadPFChargedHadrCand()->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		    }
+	    if ((passRecoTauCuts((*patTau1),theNumberOfTaus1 - 1)) &&
+		(passRecoTauCuts((*patTau2),theNumberOfTaus2 - 1)) &&
+		(passTopologyCuts((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1)) &&
+                (theNumberOfTaus2 >= theNumberOfTaus1)) {
+	      _hTau1PtVsTau2Pt[NpdfID]->Fill(smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).pt(),smearedTauPtEtaPhiMVector.at(theNumberOfTaus2 - 1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hTau1Tau2DeltaR[NpdfID]->Fill(reco::deltaR(smearedTauMomentumVector.at(theNumberOfTaus1 - 1), smearedTauMomentumVector.at(theNumberOfTaus2 - 1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hTau1Tau2DeltaPtDivSumPt[NpdfID]->Fill((smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).pt() - smearedTauPtEtaPhiMVector.at(theNumberOfTaus2 - 1).pt()) / (smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).pt() + smearedTauPtEtaPhiMVector.at(theNumberOfTaus2 - 1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hTau1Tau2DeltaPt[NpdfID]->Fill((smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).pt() - smearedTauPtEtaPhiMVector.at(theNumberOfTaus2 - 1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      if(_UseTauSeedTrackForDiTauDiscrByOSLS) {
+		if (patTau1->isCaloTau()) {
+		  if( (patTau1->leadTrack().isNonnull()) && (patTau2->leadTrack().isNonnull()) ) {
+		    _hTau1Tau2OSLS[NpdfID]->Fill(patTau1->leadTrack()->charge() * patTau2->leadTrack()->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 		  }
-		} else {_hTau1Tau2OSLS[NpdfID]->Fill(patTau1->charge() * patTau2->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-		reco::Candidate::LorentzVector Temp_LorentzVect(
-								(*(_patMETs->begin())).px() + patTau1->px() - smearedTauMomentumVector.at(theNumberOfTaus1 - 1).px() + patTau2->px() - smearedTauMomentumVector.at(theNumberOfTaus2 - 1).px() + deltaForMEx,
-								(*(_patMETs->begin())).py() + patTau1->py() - smearedTauMomentumVector.at(theNumberOfTaus1 - 1).py() + patTau2->py() - smearedTauMomentumVector.at(theNumberOfTaus2 - 1).py() + deltaForMEy,
-								(*(_patMETs->begin())).pz(),
-								TMath::Sqrt( (((*(_patMETs->begin())).px() + deltaForMEx + patTau1->px() - smearedTauMomentumVector.at(theNumberOfTaus1 - 1).px() + patTau2->px() - smearedTauMomentumVector.at(theNumberOfTaus2 - 1).px()) *
-									      ((*(_patMETs->begin())).px() + deltaForMEx + patTau1->px() - smearedTauMomentumVector.at(theNumberOfTaus1 - 1).px() + patTau2->px() - smearedTauMomentumVector.at(theNumberOfTaus2 - 1).px())) +
-									     (((*(_patMETs->begin())).py() + deltaForMEy + patTau1->py() - smearedTauMomentumVector.at(theNumberOfTaus1 - 1).py() + patTau2->py() - smearedTauMomentumVector.at(theNumberOfTaus2 - 1).py()) *
-									      ((*(_patMETs->begin())).py() + deltaForMEy + patTau1->py() - smearedTauMomentumVector.at(theNumberOfTaus1 - 1).py() + patTau2->py() - smearedTauMomentumVector.at(theNumberOfTaus2 - 1).py())) ));
-		_hTau1Tau2CosDphi[NpdfID]->Fill(cos(TMath::Abs(normalizedPhi(smearedTauMomentumVector.at(theNumberOfTaus1 - 1).phi() - smearedTauMomentumVector.at(theNumberOfTaus2 - 1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hTau1MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedTauMomentumVector.at(theNumberOfTaus1 - 1).phi() -  Temp_LorentzVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hTau2MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedTauMomentumVector.at(theNumberOfTaus2 - 1).phi() -  Temp_LorentzVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hTau1MetDeltaPhiVsTau1Tau2CosDphi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedTauMomentumVector.at(theNumberOfTaus1 - 1).phi() -  Temp_LorentzVect.phi())), cos(TMath::Abs(normalizedPhi(smearedTauMomentumVector.at(theNumberOfTaus1 - 1).phi() - smearedTauMomentumVector.at(theNumberOfTaus2 - 1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      } else {
-		_hTau1PtVsTau2Pt[NpdfID]->Fill(patTau1->pt(),patTau2->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hTau1Tau2DeltaR[NpdfID]->Fill(reco::deltaR(patTau1->p4(), patTau2->p4()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hTau1Tau2DeltaPtDivSumPt[NpdfID]->Fill((patTau1->pt() - patTau2->pt()) / (patTau1->pt() + patTau2->pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		if(_UseTauSeedTrackForDiTauDiscrByOSLS) {
-		  if (patTau1->isCaloTau()) {
-		    if( (patTau1->leadTrack().isNonnull()) && (patTau2->leadTrack().isNonnull()) ) {
-		      _hTau1Tau2OSLS[NpdfID]->Fill(patTau1->leadTrack()->charge() * patTau2->leadTrack()->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		    }
-		  } else {
-		    if( (patTau1->leadPFChargedHadrCand().isNonnull()) && (patTau2->leadPFChargedHadrCand().isNonnull()) ) {
-		      _hTau1Tau2OSLS[NpdfID]->Fill(patTau1->leadPFChargedHadrCand()->charge() * patTau2->leadPFChargedHadrCand()->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		    }
+		} else {
+		  if( (patTau1->leadPFChargedHadrCand().isNonnull()) && (patTau2->leadPFChargedHadrCand().isNonnull()) ) {
+		    _hTau1Tau2OSLS[NpdfID]->Fill(patTau1->leadPFChargedHadrCand()->charge() * patTau2->leadPFChargedHadrCand()->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 		  }
-		} else {_hTau1Tau2OSLS[NpdfID]->Fill(patTau1->charge() * patTau2->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-		_hTau1Tau2CosDphi[NpdfID]->Fill(cos(TMath::Abs(normalizedPhi(patTau1->phi() - patTau2->phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hTau1MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(patTau1->phi() - (*(_patMETs->begin())).phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hTau2MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(patTau2->phi() - (*(_patMETs->begin())).phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-		_hTau1MetDeltaPhiVsTau1Tau2CosDphi[NpdfID]->Fill(TMath::Abs(normalizedPhi(patTau1->phi() - (*(_patMETs->begin())).phi())), cos(TMath::Abs(normalizedPhi(patTau1->phi() - patTau2->phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      }
-	      if(CalculateThe4Momentum((*patTau1),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus1 - 1),(*patTau2),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus2 - 1),(*(_patMETs->begin()))).first) {_hReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patTau1),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus1 - 1),(*patTau2),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus2 - 1),(*(_patMETs->begin()))).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	      else {_hNotReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patTau1),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus1 - 1),(*patTau2),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus2 - 1),(*(_patMETs->begin()))).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
-	      _hTau1MetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patTau1),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus1 - 1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hTau2MetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patTau2),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus2 - 1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hPZeta[NpdfID]->Fill(CalculatePZeta((*patTau1),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus1 - 1),(*patTau2),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus2 - 1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hPZetaVis[NpdfID]->Fill(CalculatePZetaVis((*patTau1),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus1 - 1),(*patTau2),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus2 - 1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hZeta2D[NpdfID]->Fill(CalculatePZetaVis((*patTau1),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus1 - 1),(*patTau2),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus2 - 1),(*(_patMETs->begin()))),CalculatePZeta((*patTau1),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus1 - 1),(*patTau2),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus2 - 1),(*(_patMETs->begin()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	      _hZeta1D[NpdfID]->Fill((_PZetaCutCoefficient * CalculatePZeta((*patTau1),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus1 - 1),(*patTau2),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus2 - 1),(*(_patMETs->begin())))) + (_PZetaVisCutCoefficient * CalculatePZetaVis((*patTau1),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus1 - 1),(*patTau2),_SmearTheTau,smearedTauMomentumVector.at(theNumberOfTaus2 - 1),(*(_patMETs->begin())))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+		}
+	      } else {_hTau1Tau2OSLS[NpdfID]->Fill(patTau1->charge() * patTau2->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+	      _hTau1Tau2CosDphi[NpdfID]->Fill(cos(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).phi() - smearedTauPtEtaPhiMVector.at(theNumberOfTaus2 - 1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hTau1MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).phi() -  theMETVector.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hTau2MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus2 - 1).phi() -  theMETVector.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hTau1MetDeltaPhiVsTau1Tau2CosDphi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).phi() -  theMETVector.phi())), cos(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).phi() - smearedTauPtEtaPhiMVector.at(theNumberOfTaus2 - 1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      if(CalculateThe4Momentum((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1).first) {_hReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+	      else {_hNotReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+	      _hTau1MetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patTau1),theNumberOfTaus1 - 1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hTau2MetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patTau2),theNumberOfTaus2 - 1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hPZeta[NpdfID]->Fill(CalculatePZeta((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hPZetaVis[NpdfID]->Fill(CalculatePZetaVis((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hZeta2D[NpdfID]->Fill(CalculatePZetaVis((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1),CalculatePZeta((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      _hZeta1D[NpdfID]->Fill((_PZetaCutCoefficient * CalculatePZeta((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1)) + (_PZetaVisCutCoefficient * CalculatePZetaVis((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    }
 	  }
 	}
       }
     }
+    int numberJets1 = 0;
+    for ( pat::JetCollection::const_iterator patJet1 = _patJets->begin();patJet1 != _patJets->end(); ++patJet1 ) {
+      numberJets1++;
+      if( (numberJets1 == theLeadingJetIndex) && (passRecoFirstLeadingJetCuts((*patJet1),numberJets1 - 1)) ) {
+        int numberJets2 = 0;
+        for ( pat::JetCollection::const_iterator patJet2 = _patJets->begin();patJet2 != _patJets->end(); ++patJet2 ) {
+          numberJets2++;
+          if( (numberJets2 == theSecondLeadingJetIndex) && (passRecoSecondLeadingJetCuts((*patJet2),numberJets2 - 1)) ) {
+            if(passSusyTopologyCuts(numberJets1 - 1,numberJets2 - 1)) {
+              double dphi1;
+              double dphi2;
+              double r1;
+              double r2;
+              double alpha;
+              dphi1 = TMath::Abs(normalizedPhi(smearedJetPtEtaPhiMVector.at(numberJets1 - 1).phi() - theMETVector.phi()));
+              dphi2 = TMath::Abs(normalizedPhi(smearedJetPtEtaPhiMVector.at(numberJets2 - 1).phi() - theMETVector.phi()));
+              r1 = sqrt( pow(dphi1,2.0) + pow((TMath::Pi() - dphi2),2.0) );
+              r2 = sqrt( pow(dphi2,2.0) + pow((TMath::Pi() - dphi1),2.0) );
+              double px = smearedJetMomentumVector.at(numberJets1 - 1).px() + smearedJetMomentumVector.at(numberJets2 - 1).px();
+              double py = smearedJetMomentumVector.at(numberJets1 - 1).py() + smearedJetMomentumVector.at(numberJets2 - 1).py();
+              double pz = smearedJetMomentumVector.at(numberJets1 - 1).pz() + smearedJetMomentumVector.at(numberJets2 - 1).pz();
+              double e = smearedJetMomentumVector.at(numberJets1 - 1).energy() + smearedJetMomentumVector.at(numberJets2 - 1).energy();
+              reco::Candidate::LorentzVector Susy_LorentzVect(px, py, pz, e);
+              if(Susy_LorentzVect.M() > 0) {alpha = smearedJetPtEtaPhiMVector.at(numberJets2 - 1).pt() / Susy_LorentzVect.M();}
+              else {alpha = 999999999.0;}
+              _hR1[NpdfID]->Fill(r1,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+              _hR2[NpdfID]->Fill(r2,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+              _hDphi1[NpdfID]->Fill(dphi1,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+              _hDphi2[NpdfID]->Fill(dphi2,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+              _hAlpha[NpdfID]->Fill(alpha,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+            }
+          }
+        }
+      }
+    }
   }
 }
 
-pair<const pat::Tau*, const pat::Electron*> HiMassTauAnalysis::getPATComponents(const reco::CompositeCandidate& theCandiate){
-  const Candidate* theTauCand = theCandiate.daughter("tau");
-  const Candidate* theElectronCand = theCandiate.daughter("electron");
-  const pat::Tau* theTau = dynamic_cast<const pat::Tau*>(theTauCand);
-  const pat::Electron* theElectron = dynamic_cast<const pat::Electron*>(theElectronCand);
-  if(theTau == 0 && theTauCand->hasMasterClonePtr())  theTau = dynamic_cast<const pat::Tau*>(&*(theTauCand->masterClonePtr()));
-  if(theElectron == 0 && theElectronCand->hasMasterClonePtr()) theElectron = dynamic_cast<const pat::Electron*>(&*(theElectronCand->masterClonePtr()));
-  pair<const pat::Tau*, const pat::Electron*> thePatComponents = make_pair<const pat::Tau*, const pat::Electron*>(theTau, theElectron);
-  return thePatComponents;
-}
-
-// ---------------
 void HiMassTauAnalysis::getCollections(const Event& iEvent, const EventSetup& iSetup) {
-//  if (_DoProduceNtuple) { iEvent.getByLabel(_RecoDiTauSource, _patDiTaus); }
   iEvent.getByLabel(_RecoTauSource, _patTaus);
   iEvent.getByLabel(_RecoMuonSource, _patMuons);
   if(_GenParticleSource.label() != "") { iEvent.getByLabel(_GenParticleSource, _genParticles); }
@@ -3826,6 +2962,9 @@ void HiMassTauAnalysis::getCollections(const Event& iEvent, const EventSetup& iS
   iEvent.getByLabel(_RecoMetSource, _patMETs);
   iEvent.getByLabel(_RecoVertexSource, _primaryEventVertexCollection);
   iEvent.getByLabel(_RecoTriggerSource, _triggerResults);
+  iEvent.getByLabel( "hltTriggerSummaryAOD", handleTriggerEvent );
+//  iEvent.getByLabel(_RecoParticleFlowSource, _pflow);
+  iEvent.getByLabel("hpsPFTauProducer", _hpsTau);
 /*
   iEvent.getByLabel("muons", _recoMuonsForMetCorrections);
   iEvent.getByLabel("muonMETValueMapProducer", "muCorrData", vm_muCorrData_h);
@@ -3845,15 +2984,11 @@ pair<bool, pair<float, float> > HiMassTauAnalysis::isZee(reco::Candidate::Lorent
   pair<float, float> theMassPtAsymmPair;
   // if mass is within 3 sigmas of z or pt asymmetry is small set to true.				     
   for(pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin(); patElectron != _patElectrons->end(); ++patElectron){
-    reco::Candidate::LorentzVector Electron;
-    
-    if(_SmearTheElectron){Electron = smearedElectronMomentumVector.at(i); i++;}
-    else{Electron = patElectron->p4();}
-   
-    if(reco::deltaR(theObject, Electron) < _DiTauDeltaRCut) continue;
-    if(theObject == Electron)continue;
-    reco::Candidate::LorentzVector The_LorentzVect = theObject + Electron;
-    zeePtAsymmetry = (theObject.pt() - Electron.pt())/(theObject.pt() + Electron.pt());
+    i++;
+    if(reco::deltaR(theObject, smearedElectronMomentumVector.at(i - 1)) < _DiTauDeltaRCut) continue;
+    if(theObject == smearedElectronMomentumVector.at(i - 1))continue;
+    reco::Candidate::LorentzVector The_LorentzVect = theObject + smearedElectronMomentumVector.at(i - 1);
+    zeePtAsymmetry = (theObject.pt() - smearedElectronPtEtaPhiMVector.at(i - 1).pt())/(theObject.pt() + smearedElectronPtEtaPhiMVector.at(i - 1).pt());
     theMassPtAsymmPair = make_pair<float, float>(The_LorentzVect.M(), zeePtAsymmetry);
     
     if(The_LorentzVect.M() < (zeeMass + 3.*zeeWidht) && The_LorentzVect.M() > (zeeMass - 3.*zeeWidht))massWindow = true;
@@ -3870,7 +3005,6 @@ pair<bool, pair<float, float> > HiMassTauAnalysis::isZee(reco::Candidate::Lorent
 //-----Matching to generator level objects
 // get the pdg id of the gen particle closest in DeltaR to the reco/pat object
 pair<unsigned int, unsigned int> HiMassTauAnalysis::getMatchedPdgId(float pt, float eta, float phi, int charge){
-//pair<unsigned int, unsigned int> HiMassTauAnalysis::getMatchedPdgId(float pt, int charge){
   pair<unsigned int, unsigned int> theTrackAndMotherPdgId;
   float minDeltaPt = 1000.;
   float minDeltaR = 0.2;
@@ -3890,8 +3024,7 @@ pair<unsigned int, unsigned int> HiMassTauAnalysis::getMatchedPdgId(float pt, fl
   return theTrackAndMotherPdgId;
 }
 
-//-----Matching to generator level objects
-//-----Electrons
+//-----Matching Electrons to generator level objects
 pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::matchToGen(const pat::Electron& theObject) {
   bool isGenMatched = false;
   reco::Candidate::LorentzVector theGenObject(0,0,0,0);
@@ -3923,8 +3056,7 @@ pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::matchToGen(const p
   return GenMatchedInformation;
 }
 
-//-----Matching to generator level objects
-//-----Muons
+//-----Matching Muons to generator level objects
 pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::matchToGen(const pat::Muon& theObject) {
   bool isGenMatched = false;
   reco::Candidate::LorentzVector theGenObject(0,0,0,0);
@@ -3956,8 +3088,7 @@ pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::matchToGen(const p
   return GenMatchedInformation;
 }
 
-//-----Matching to generator level objects
-//-----Taus
+//-----Matching Taus to generator level objects
 pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::matchToGen(const pat::Tau& theObject) {
   bool isGenMatched = false;
   reco::Candidate::LorentzVector theGenObject(0,0,0,0);
@@ -4002,1170 +3133,381 @@ pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::matchToGen(const p
 }
 
 //-----Calculate zeta variables
-double HiMassTauAnalysis::CalculatePZeta(const pat::Tau& patTau, bool smearT, reco::Candidate::LorentzVector smearedLVT, const pat::Muon& patMuon, bool smearM, reco::Candidate::LorentzVector smearedLVM, const pat::MET& patMET) {
-  if(smearT) {
-    if(smearM) {
-      double zetaX = cos(smearedLVT.phi()) + cos(smearedLVM.phi());
-      double zetaY = sin(smearedLVT.phi()) + sin(smearedLVM.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = smearedLVT.px() + smearedLVM.px();
-      double visPy = smearedLVT.py() + smearedLVM.py();
-      double px = visPx + (patMET.px() + deltaForMEx + patMuon.px() - smearedLVM.px() + patTau.px() - smearedLVT.px());
-      double py = visPy + (patMET.py() + deltaForMEy + patMuon.py() - smearedLVM.py() + patTau.py() - smearedLVT.py());
-      double pZeta = px*zetaX + py*zetaY;
-      return pZeta;
-    } else {
-      double zetaX = cos(smearedLVT.phi()) + cos(patMuon.phi());
-      double zetaY = sin(smearedLVT.phi()) + sin(patMuon.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = smearedLVT.px() + patMuon.px();
-      double visPy = smearedLVT.py() + patMuon.py();
-      double px = visPx + (patMET.px() + deltaForMEx + patTau.px() - smearedLVT.px());
-      double py = visPy + (patMET.py() + deltaForMEy + patTau.py() - smearedLVT.py());
-      double pZeta = px*zetaX + py*zetaY;
-      return pZeta;
-    }
-  } else {
-    if(smearM) {
-      double zetaX = cos(patTau.phi()) + cos(smearedLVM.phi());
-      double zetaY = sin(patTau.phi()) + sin(smearedLVM.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = patTau.px() + smearedLVM.px();
-      double visPy = patTau.py() + smearedLVM.py();
-      double px = visPx + (patMET.px() + deltaForMEx + patMuon.px() - smearedLVM.px());
-      double py = visPy + (patMET.py() + deltaForMEy + patMuon.py() - smearedLVM.py());
-      double pZeta = px*zetaX + py*zetaY;
-      return pZeta;
-    } else {
-      double zetaX = cos(patTau.phi()) + cos(patMuon.phi());
-      double zetaY = sin(patTau.phi()) + sin(patMuon.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = patTau.px() + patMuon.px();
-      double visPy = patTau.py() + patMuon.py();
-      double px = visPx + patMET.px() + deltaForMEx;
-      double py = visPy + patMET.py() + deltaForMEy;
-      double pZeta = px*zetaX + py*zetaY;
-      return pZeta;
-    }
-  }
+double HiMassTauAnalysis::CalculatePZeta(const pat::Tau& patTau, int nobjT, const pat::Muon& patMuon, int nobjM) {
+  double zetaX = cos(smearedTauPtEtaPhiMVector.at(nobjT).phi()) + cos(smearedMuonPtEtaPhiMVector.at(nobjM).phi());
+  double zetaY = sin(smearedTauPtEtaPhiMVector.at(nobjT).phi()) + sin(smearedMuonPtEtaPhiMVector.at(nobjM).phi());
+  double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
+  if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
+  double visPx = smearedTauMomentumVector.at(nobjT).px() + smearedMuonMomentumVector.at(nobjM).px();
+  double visPy = smearedTauMomentumVector.at(nobjT).py() + smearedMuonMomentumVector.at(nobjM).py();
+  double px = visPx + theMETVector.px();
+  double py = visPy + theMETVector.py();
+  double pZeta = px*zetaX + py*zetaY;
+  return pZeta;
 }
-double HiMassTauAnalysis::CalculatePZeta(const pat::Tau& patTau, bool smearT, reco::Candidate::LorentzVector smearedLVT, const pat::Electron& patElectron, bool smearM, reco::Candidate::LorentzVector smearedLVM, const pat::MET& patMET) {
-  if(smearT) {
-    if(smearM) {
-      double zetaX = cos(smearedLVT.phi()) + cos(smearedLVM.phi());
-      double zetaY = sin(smearedLVT.phi()) + sin(smearedLVM.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = smearedLVT.px() + smearedLVM.px();
-      double visPy = smearedLVT.py() + smearedLVM.py();
-      double px = visPx + (patMET.px() + deltaForMEx + patElectron.px() - smearedLVM.px() + patTau.px() - smearedLVT.px());
-      double py = visPy + (patMET.py() + deltaForMEy + patElectron.py() - smearedLVM.py() + patTau.py() - smearedLVT.py());
-      double pZeta = px*zetaX + py*zetaY;
-      return pZeta;
-    } else {
-      double zetaX = cos(smearedLVT.phi()) + cos(patElectron.phi());
-      double zetaY = sin(smearedLVT.phi()) + sin(patElectron.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = smearedLVT.px() + patElectron.px();
-      double visPy = smearedLVT.py() + patElectron.py();
-      double px = visPx + (patMET.px() + deltaForMEx + patTau.px() - smearedLVT.px());
-      double py = visPy + (patMET.py() + deltaForMEy + patTau.py() - smearedLVT.py());
-      double pZeta = px*zetaX + py*zetaY;
-      return pZeta;
-    }
-  } else {
-    if(smearM) {
-      double zetaX = cos(patTau.phi()) + cos(smearedLVM.phi());
-      double zetaY = sin(patTau.phi()) + sin(smearedLVM.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = patTau.px() + smearedLVM.px();
-      double visPy = patTau.py() + smearedLVM.py();
-      double px = visPx + (patMET.px() + deltaForMEx + patElectron.px() - smearedLVM.px());
-      double py = visPy + (patMET.py() + deltaForMEy + patElectron.py() - smearedLVM.py());
-      double pZeta = px*zetaX + py*zetaY;
-      return pZeta;
-    } else {
-      double zetaX = cos(patTau.phi()) + cos(patElectron.phi());
-      double zetaY = sin(patTau.phi()) + sin(patElectron.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = patTau.px() + patElectron.px();
-      double visPy = patTau.py() + patElectron.py();
-      double px = visPx + patMET.px() + deltaForMEx;
-      double py = visPy + patMET.py() + deltaForMEy;
-      double pZeta = px*zetaX + py*zetaY;
-      return pZeta;
-    }
-  }
+double HiMassTauAnalysis::CalculatePZeta(const pat::Tau& patTau, int nobjT, const pat::Electron& patElectron, int nobjM) {
+  double zetaX = cos(smearedTauPtEtaPhiMVector.at(nobjT).phi()) + cos(smearedElectronPtEtaPhiMVector.at(nobjM).phi());
+  double zetaY = sin(smearedTauPtEtaPhiMVector.at(nobjT).phi()) + sin(smearedElectronPtEtaPhiMVector.at(nobjM).phi());
+  double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
+  if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
+  double visPx = smearedTauMomentumVector.at(nobjT).px() + smearedElectronMomentumVector.at(nobjM).px();
+  double visPy = smearedTauMomentumVector.at(nobjT).py() + smearedElectronMomentumVector.at(nobjM).py();
+  double px = visPx + theMETVector.px();
+  double py = visPy + theMETVector.py();
+  double pZeta = px*zetaX + py*zetaY;
+  return pZeta;
 }
-double HiMassTauAnalysis::CalculatePZeta(const pat::Electron& patElectron, bool smearE, reco::Candidate::LorentzVector smearedLVE, const pat::Muon& patMuon, bool smearM, reco::Candidate::LorentzVector smearedLVM, const pat::MET& patMET) {
-  if(smearE) {
-    if(smearM) {
-      double zetaX = cos(smearedLVM.phi()) + cos(smearedLVE.phi());
-      double zetaY = sin(smearedLVM.phi()) + sin(smearedLVE.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = smearedLVM.px() + smearedLVE.px();
-      double visPy = smearedLVM.py() + smearedLVE.py();
-      double px = visPx + (patMET.px() + deltaForMEx + patMuon.px() - smearedLVM.px() + patElectron.px() - smearedLVE.px());
-      double py = visPy + (patMET.py() + deltaForMEy + patMuon.py() - smearedLVM.py() + patElectron.py() - smearedLVE.py());
-      double pZeta = px*zetaX + py*zetaY;
-      return pZeta;
-    } else {
-      double zetaX = cos(patMuon.phi()) + cos(smearedLVE.phi());
-      double zetaY = sin(patMuon.phi()) + sin(smearedLVE.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = patMuon.px() + smearedLVE.px();
-      double visPy = patMuon.py() + smearedLVE.py();
-      double px = visPx + (patMET.px() + deltaForMEx + patElectron.px() - smearedLVE.px());
-      double py = visPy + (patMET.py() + deltaForMEy + patElectron.py() - smearedLVE.py());
-      double pZeta = px*zetaX + py*zetaY;
-      return pZeta;
-    }
-  } else {
-    if(smearM) {
-      double zetaX = cos(smearedLVM.phi()) + cos(patElectron.phi());
-      double zetaY = sin(smearedLVM.phi()) + sin(patElectron.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = smearedLVM.px() + patElectron.px();
-      double visPy = smearedLVM.py() + patElectron.py();
-      double px = visPx + (patMET.px() + deltaForMEx + patMuon.px() - smearedLVM.px());
-      double py = visPy + (patMET.py() + deltaForMEy + patMuon.py() - smearedLVM.py());
-      double pZeta = px*zetaX + py*zetaY;
-      return pZeta;
-    } else {
-      double zetaX = cos(patMuon.phi()) + cos(patElectron.phi());
-      double zetaY = sin(patMuon.phi()) + sin(patElectron.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = patMuon.px() + patElectron.px();
-      double visPy = patMuon.py() + patElectron.py();
-      double px = visPx + patMET.px() + deltaForMEx;
-      double py = visPy + patMET.py() + deltaForMEy;
-      double pZeta = px*zetaX + py*zetaY;
-      return pZeta;
-    }
-  }
+double HiMassTauAnalysis::CalculatePZeta(const pat::Electron& patElectron, int nobjE, const pat::Muon& patMuon, int nobjM) {
+  double zetaX = cos(smearedMuonPtEtaPhiMVector.at(nobjM).phi()) + cos(smearedElectronPtEtaPhiMVector.at(nobjE).phi());
+  double zetaY = sin(smearedMuonPtEtaPhiMVector.at(nobjM).phi()) + sin(smearedElectronPtEtaPhiMVector.at(nobjE).phi());
+  double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
+  if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
+  double visPx = smearedMuonMomentumVector.at(nobjM).px() + smearedElectronMomentumVector.at(nobjE).px();
+  double visPy = smearedMuonMomentumVector.at(nobjM).py() + smearedElectronMomentumVector.at(nobjE).py();
+  double px = visPx + theMETVector.px();
+  double py = visPy + theMETVector.py();
+  double pZeta = px*zetaX + py*zetaY;
+  return pZeta;
 }
-double HiMassTauAnalysis::CalculatePZeta(const pat::Muon& patMuon1, bool smear1, reco::Candidate::LorentzVector smearedLV1, const pat::Muon& patMuon2, bool smear2, reco::Candidate::LorentzVector smearedLV2, const pat::MET& patMET) {
-  if(smear1) {
-    double zetaX = cos(smearedLV1.phi()) + cos(smearedLV2.phi());
-    double zetaY = sin(smearedLV1.phi()) + sin(smearedLV2.phi());
-    double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-    if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-    double visPx = smearedLV1.px() + smearedLV2.px();
-    double visPy = smearedLV1.py() + smearedLV2.py();
-    double px = visPx + (patMET.px() + deltaForMEx + patMuon1.px() - smearedLV1.px() + patMuon2.px() - smearedLV2.px());
-    double py = visPy + (patMET.py() + deltaForMEy + patMuon1.py() - smearedLV1.py() + patMuon2.py() - smearedLV2.py());
-    double pZeta = px*zetaX + py*zetaY;
-    return pZeta;
-  } else {
-    double zetaX = cos(patMuon1.phi()) + cos(patMuon2.phi());
-    double zetaY = sin(patMuon1.phi()) + sin(patMuon2.phi());
-    double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-    if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-    double visPx = patMuon1.px() + patMuon2.px();
-    double visPy = patMuon1.py() + patMuon2.py();
-    double px = visPx + patMET.px() + deltaForMEx;
-    double py = visPy + patMET.py() + deltaForMEy;
-    double pZeta = px*zetaX + py*zetaY;
-    return pZeta;
-  }
+double HiMassTauAnalysis::CalculatePZeta(const pat::Muon& patMuon1, int nobj1, const pat::Muon& patMuon2, int nobj2) {
+  double zetaX = cos(smearedMuonPtEtaPhiMVector.at(nobj1).phi()) + cos(smearedMuonPtEtaPhiMVector.at(nobj2).phi());
+  double zetaY = sin(smearedMuonPtEtaPhiMVector.at(nobj1).phi()) + sin(smearedMuonPtEtaPhiMVector.at(nobj2).phi());
+  double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
+  if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
+  double visPx = smearedMuonMomentumVector.at(nobj1).px() + smearedMuonMomentumVector.at(nobj2).px();
+  double visPy = smearedMuonMomentumVector.at(nobj1).py() + smearedMuonMomentumVector.at(nobj2).py();
+  double px = visPx + theMETVector.px();
+  double py = visPy + theMETVector.py();
+  double pZeta = px*zetaX + py*zetaY;
+  return pZeta;
 }
-double HiMassTauAnalysis::CalculatePZeta(const pat::Electron& patElectron1,  bool smear1, reco::Candidate::LorentzVector smearedLV1, const pat::Electron& patElectron2,  bool smear2, reco::Candidate::LorentzVector smearedLV2, const pat::MET& patMET) {
-  if(smear1) {
-    double zetaX = cos(smearedLV1.phi()) + cos(smearedLV2.phi());
-    double zetaY = sin(smearedLV1.phi()) + sin(smearedLV2.phi());
-    double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-    if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-    double visPx = smearedLV1.px() + smearedLV2.px();
-    double visPy = smearedLV1.py() + smearedLV2.py();
-    double px = visPx + (patMET.px() + deltaForMEx + patElectron1.px() - smearedLV1.px() + patElectron2.px() - smearedLV2.px());
-    double py = visPy + (patMET.py() + deltaForMEy + patElectron1.py() - smearedLV1.py() + patElectron2.py() - smearedLV2.py());
-    double pZeta = px*zetaX + py*zetaY;
-    return pZeta;
-  } else {
-    double zetaX = cos(patElectron1.phi()) + cos(patElectron2.phi());
-    double zetaY = sin(patElectron1.phi()) + sin(patElectron2.phi());
-    double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-    if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-    double visPx = patElectron1.px() + patElectron2.px();
-    double visPy = patElectron1.py() + patElectron2.py();
-    double px = visPx + patMET.px() + deltaForMEx;
-    double py = visPy + patMET.py() + deltaForMEy;
-    double pZeta = px*zetaX + py*zetaY;
-    return pZeta;
-  }
+double HiMassTauAnalysis::CalculatePZeta(const pat::Electron& patElectron1,  int nobj1, const pat::Electron& patElectron2,  int nobj2) {
+  double zetaX = cos(smearedElectronPtEtaPhiMVector.at(nobj1).phi()) + cos(smearedElectronPtEtaPhiMVector.at(nobj2).phi());
+  double zetaY = sin(smearedElectronPtEtaPhiMVector.at(nobj1).phi()) + sin(smearedElectronPtEtaPhiMVector.at(nobj2).phi());
+  double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
+  if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
+  double visPx = smearedElectronMomentumVector.at(nobj1).px() + smearedElectronMomentumVector.at(nobj2).px();
+  double visPy = smearedElectronMomentumVector.at(nobj1).py() + smearedElectronMomentumVector.at(nobj2).py();
+  double px = visPx + theMETVector.px();
+  double py = visPy + theMETVector.py();
+  double pZeta = px*zetaX + py*zetaY;
+  return pZeta;
 }
-double HiMassTauAnalysis::CalculatePZeta(const pat::Tau& patTau1,  bool smear1, reco::Candidate::LorentzVector smearedLV1, const pat::Tau& patTau2,  bool smear2, reco::Candidate::LorentzVector smearedLV2, const pat::MET& patMET) {
-  if(smear1) {
-    double zetaX = cos(smearedLV1.phi()) + cos(smearedLV2.phi());
-    double zetaY = sin(smearedLV1.phi()) + sin(smearedLV2.phi());
-    double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-    if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-    double visPx = smearedLV1.px() + smearedLV2.px();
-    double visPy = smearedLV1.py() + smearedLV2.py();
-    double px = visPx + (patMET.px() + deltaForMEx + patTau1.px() - smearedLV1.px() + patTau2.px() - smearedLV2.px());
-    double py = visPy + (patMET.py() + deltaForMEy + patTau1.py() - smearedLV1.py() + patTau2.py() - smearedLV2.py());
-    double pZeta = px*zetaX + py*zetaY;
-    return pZeta;
-  } else {
-    double zetaX = cos(patTau1.phi()) + cos(patTau2.phi());
-    double zetaY = sin(patTau1.phi()) + sin(patTau2.phi());
-    double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-    if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-    double visPx = patTau1.px() + patTau2.px();
-    double visPy = patTau1.py() + patTau2.py();
-    double px = visPx + patMET.px() + deltaForMEx;
-    double py = visPy + patMET.py() + deltaForMEy;
-    double pZeta = px*zetaX + py*zetaY;
-    return pZeta;
-  }
+double HiMassTauAnalysis::CalculatePZeta(const pat::Tau& patTau1,  int nobj1, const pat::Tau& patTau2,  int nobj2) {
+  double zetaX = cos(smearedTauPtEtaPhiMVector.at(nobj1).phi()) + cos(smearedTauPtEtaPhiMVector.at(nobj2).phi());
+  double zetaY = sin(smearedTauPtEtaPhiMVector.at(nobj1).phi()) + sin(smearedTauPtEtaPhiMVector.at(nobj2).phi());
+  double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
+  if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
+  double visPx = smearedTauMomentumVector.at(nobj1).px() + smearedTauMomentumVector.at(nobj2).px();
+  double visPy = smearedTauMomentumVector.at(nobj1).py() + smearedTauMomentumVector.at(nobj2).py();
+  double px = visPx + theMETVector.px();
+  double py = visPy + theMETVector.py();
+  double pZeta = px*zetaX + py*zetaY;
+  return pZeta;
 }
-double HiMassTauAnalysis::CalculatePZetaVis(const pat::Tau& patTau, bool smearT, reco::Candidate::LorentzVector smearedLVT, const pat::Muon& patMuon, bool smearM, reco::Candidate::LorentzVector smearedLVM, const pat::MET& patMET) {
-  if(smearT) {
-    if(smearM) {
-      double zetaX = cos(smearedLVT.phi()) + cos(smearedLVM.phi());
-      double zetaY = sin(smearedLVT.phi()) + sin(smearedLVM.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = smearedLVT.px() + smearedLVM.px();
-      double visPy = smearedLVT.py() + smearedLVM.py();
-      double pZetaVis = visPx*zetaX + visPy*zetaY;
-      return pZetaVis;
-    } else {
-      double zetaX = cos(smearedLVT.phi()) + cos(patMuon.phi());
-      double zetaY = sin(smearedLVT.phi()) + sin(patMuon.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = smearedLVT.px() + patMuon.px();
-      double visPy = smearedLVT.py() + patMuon.py();
-      double pZetaVis = visPx*zetaX + visPy*zetaY;
-      return pZetaVis;
-    }
-  } else {
-    if(smearM) {
-      double zetaX = cos(patTau.phi()) + cos(smearedLVM.phi());
-      double zetaY = sin(patTau.phi()) + sin(smearedLVM.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = patTau.px() + smearedLVM.px();
-      double visPy = patTau.py() + smearedLVM.py();
-      double pZetaVis = visPx*zetaX + visPy*zetaY;
-      return pZetaVis;
-    } else {
-      double zetaX = cos(patTau.phi()) + cos(patMuon.phi());
-      double zetaY = sin(patTau.phi()) + sin(patMuon.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = patTau.px() + patMuon.px();
-      double visPy = patTau.py() + patMuon.py();
-      double pZetaVis = visPx*zetaX + visPy*zetaY;
-      return pZetaVis;
-    }
-  }
+double HiMassTauAnalysis::CalculatePZetaVis(const pat::Tau& patTau, int nobjT, const pat::Muon& patMuon, int nobjM) {
+  double zetaX = cos(smearedTauPtEtaPhiMVector.at(nobjT).phi()) + cos(smearedMuonPtEtaPhiMVector.at(nobjM).phi());
+  double zetaY = sin(smearedTauPtEtaPhiMVector.at(nobjT).phi()) + sin(smearedMuonPtEtaPhiMVector.at(nobjM).phi());
+  double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
+  if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
+  double visPx = smearedTauMomentumVector.at(nobjT).px() + smearedMuonMomentumVector.at(nobjM).px();
+  double visPy = smearedTauMomentumVector.at(nobjT).py() + smearedMuonMomentumVector.at(nobjM).py();
+  double pZetaVis = visPx*zetaX + visPy*zetaY;
+  return pZetaVis;
 }
-double HiMassTauAnalysis::CalculatePZetaVis(const pat::Tau& patTau, bool smearT, reco::Candidate::LorentzVector smearedLVT, const pat::Electron& patElectron, bool smearM, reco::Candidate::LorentzVector smearedLVM, const pat::MET& patMET) {
-  if(smearT) {
-    if(smearM) {
-      double zetaX = cos(smearedLVT.phi()) + cos(smearedLVM.phi());
-      double zetaY = sin(smearedLVT.phi()) + sin(smearedLVM.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = smearedLVT.px() + smearedLVM.px();
-      double visPy = smearedLVT.py() + smearedLVM.py();
-      double pZetaVis = visPx*zetaX + visPy*zetaY;
-      return pZetaVis;
-    } else {
-      double zetaX = cos(smearedLVT.phi()) + cos(patElectron.phi());
-      double zetaY = sin(smearedLVT.phi()) + sin(patElectron.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = smearedLVT.px() + patElectron.px();
-      double visPy = smearedLVT.py() + patElectron.py();
-      double pZetaVis = visPx*zetaX + visPy*zetaY;
-      return pZetaVis;
-    }
-  } else {
-    if(smearM) {
-      double zetaX = cos(patTau.phi()) + cos(smearedLVM.phi());
-      double zetaY = sin(patTau.phi()) + sin(smearedLVM.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = patTau.px() + smearedLVM.px();
-      double visPy = patTau.py() + smearedLVM.py();
-      double pZetaVis = visPx*zetaX + visPy*zetaY;
-      return pZetaVis;
-    } else {
-      double zetaX = cos(patTau.phi()) + cos(patElectron.phi());
-      double zetaY = sin(patTau.phi()) + sin(patElectron.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = patTau.px() + patElectron.px();
-      double visPy = patTau.py() + patElectron.py();
-      double pZetaVis = visPx*zetaX + visPy*zetaY;
-      return pZetaVis;
-    }
-  }
+double HiMassTauAnalysis::CalculatePZetaVis(const pat::Tau& patTau, int nobjT, const pat::Electron& patElectron, int nobjM) {
+  double zetaX = cos(smearedTauPtEtaPhiMVector.at(nobjT).phi()) + cos(smearedElectronPtEtaPhiMVector.at(nobjM).phi());
+  double zetaY = sin(smearedTauPtEtaPhiMVector.at(nobjT).phi()) + sin(smearedElectronPtEtaPhiMVector.at(nobjM).phi());
+  double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
+  if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
+  double visPx = smearedTauMomentumVector.at(nobjT).px() + smearedElectronMomentumVector.at(nobjM).px();
+  double visPy = smearedTauMomentumVector.at(nobjT).py() + smearedElectronMomentumVector.at(nobjM).py();
+  double pZetaVis = visPx*zetaX + visPy*zetaY;
+  return pZetaVis;
 }
-double HiMassTauAnalysis::CalculatePZetaVis(const pat::Electron& patElectron, bool smearE, reco::Candidate::LorentzVector smearedLVE, const pat::Muon& patMuon, bool smearM, reco::Candidate::LorentzVector smearedLVM, const pat::MET& patMET) {
-  if(smearE) {
-    if(smearM) {
-      double zetaX = cos(smearedLVM.phi()) + cos(smearedLVE.phi());
-      double zetaY = sin(smearedLVM.phi()) + sin(smearedLVE.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = smearedLVM.px() + smearedLVE.px();
-      double visPy = smearedLVM.py() + smearedLVE.py();
-      double pZetaVis = visPx*zetaX + visPy*zetaY;
-      return pZetaVis;
-    } else {
-      double zetaX = cos(patMuon.phi()) + cos(smearedLVE.phi());
-      double zetaY = sin(patMuon.phi()) + sin(smearedLVE.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = patMuon.px() + smearedLVE.px();
-      double visPy = patMuon.py() + smearedLVE.py();
-      double pZetaVis = visPx*zetaX + visPy*zetaY;
-      return pZetaVis;
-    }
-  } else {
-    if(smearM) {
-      double zetaX = cos(smearedLVM.phi()) + cos(patElectron.phi());
-      double zetaY = sin(smearedLVM.phi()) + sin(patElectron.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = smearedLVM.px() + patElectron.px();
-      double visPy = smearedLVM.py() + patElectron.py();
-      double pZetaVis = visPx*zetaX + visPy*zetaY;
-      return pZetaVis;
-    } else {
-      double zetaX = cos(patMuon.phi()) + cos(patElectron.phi());
-      double zetaY = sin(patMuon.phi()) + sin(patElectron.phi());
-      double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-      if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-      double visPx = patMuon.px() + patElectron.px();
-      double visPy = patMuon.py() + patElectron.py();
-      double pZetaVis = visPx*zetaX + visPy*zetaY;
-      return pZetaVis;
-    }
-  }
+double HiMassTauAnalysis::CalculatePZetaVis(const pat::Electron& patElectron, int nobjE, const pat::Muon& patMuon, int nobjM) {
+  double zetaX = cos(smearedMuonPtEtaPhiMVector.at(nobjM).phi()) + cos(smearedElectronPtEtaPhiMVector.at(nobjE).phi());
+  double zetaY = sin(smearedMuonPtEtaPhiMVector.at(nobjM).phi()) + sin(smearedElectronPtEtaPhiMVector.at(nobjE).phi());
+  double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
+  if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
+  double visPx = smearedMuonMomentumVector.at(nobjM).px() + smearedElectronMomentumVector.at(nobjE).px();
+  double visPy = smearedMuonMomentumVector.at(nobjM).py() + smearedElectronMomentumVector.at(nobjE).py();
+  double pZetaVis = visPx*zetaX + visPy*zetaY;
+  return pZetaVis;
 }
-double HiMassTauAnalysis::CalculatePZetaVis(const pat::Muon& patMuon1, bool smear1, reco::Candidate::LorentzVector smearedLV1, const pat::Muon& patMuon2, bool smear2, reco::Candidate::LorentzVector smearedLV2, const pat::MET& patMET) {
-  if(smear1) {
-    double zetaX = cos(smearedLV1.phi()) + cos(smearedLV2.phi());
-    double zetaY = sin(smearedLV1.phi()) + sin(smearedLV2.phi());
-    double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-    if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-    double visPx = smearedLV1.px() + smearedLV2.px();
-    double visPy = smearedLV1.py() + smearedLV2.py();
-    double pZetaVis = visPx*zetaX + visPy*zetaY;
-    return pZetaVis;
-  } else {
-    double zetaX = cos(patMuon1.phi()) + cos(patMuon2.phi());
-    double zetaY = sin(patMuon1.phi()) + sin(patMuon2.phi());
-    double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-    if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-    double visPx = patMuon1.px() + patMuon2.px();
-    double visPy = patMuon1.py() + patMuon2.py();
-    double pZetaVis = visPx*zetaX + visPy*zetaY;
-    return pZetaVis;
-  }
+double HiMassTauAnalysis::CalculatePZetaVis(const pat::Muon& patMuon1, int nobj1, const pat::Muon& patMuon2, int nobj2) {
+  double zetaX = cos(smearedMuonPtEtaPhiMVector.at(nobj1).phi()) + cos(smearedMuonPtEtaPhiMVector.at(nobj2).phi());
+  double zetaY = sin(smearedMuonPtEtaPhiMVector.at(nobj1).phi()) + sin(smearedMuonPtEtaPhiMVector.at(nobj2).phi());
+  double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
+  if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
+  double visPx = smearedMuonMomentumVector.at(nobj1).px() + smearedMuonMomentumVector.at(nobj2).px();
+  double visPy = smearedMuonMomentumVector.at(nobj1).py() + smearedMuonMomentumVector.at(nobj2).py();
+  double pZetaVis = visPx*zetaX + visPy*zetaY;
+  return pZetaVis;
 }
-double HiMassTauAnalysis::CalculatePZetaVis(const pat::Electron& patElectron1, bool smear1, reco::Candidate::LorentzVector smearedLV1, const pat::Electron& patElectron2, bool smear2, reco::Candidate::LorentzVector smearedLV2, const pat::MET& patMET) {
-  if(smear1) {
-    double zetaX = cos(smearedLV1.phi()) + cos(smearedLV2.phi());
-    double zetaY = sin(smearedLV1.phi()) + sin(smearedLV2.phi());
-    double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-    if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-    double visPx = smearedLV1.px() + smearedLV2.px();
-    double visPy = smearedLV1.py() + smearedLV2.py();
-    double pZetaVis = visPx*zetaX + visPy*zetaY;
-    return pZetaVis;
-  } else {
-    double zetaX = cos(patElectron1.phi()) + cos(patElectron2.phi());
-    double zetaY = sin(patElectron1.phi()) + sin(patElectron2.phi());
-    double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-    if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-    double visPx = patElectron1.px() + patElectron2.px();
-    double visPy = patElectron1.py() + patElectron2.py();
-    double pZetaVis = visPx*zetaX + visPy*zetaY;
-    return pZetaVis;
-  }
+double HiMassTauAnalysis::CalculatePZetaVis(const pat::Electron& patElectron1, int nobj1, const pat::Electron& patElectron2, int nobj2) {
+  double zetaX = cos(smearedElectronPtEtaPhiMVector.at(nobj1).phi()) + cos(smearedElectronPtEtaPhiMVector.at(nobj2).phi());
+  double zetaY = sin(smearedElectronPtEtaPhiMVector.at(nobj1).phi()) + sin(smearedElectronPtEtaPhiMVector.at(nobj2).phi());
+  double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
+  if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
+  double visPx = smearedElectronMomentumVector.at(nobj1).px() + smearedElectronMomentumVector.at(nobj2).px();
+  double visPy = smearedElectronMomentumVector.at(nobj1).py() + smearedElectronMomentumVector.at(nobj2).py();
+  double pZetaVis = visPx*zetaX + visPy*zetaY;
+  return pZetaVis;
 }
-double HiMassTauAnalysis::CalculatePZetaVis(const pat::Tau& patTau1, bool smear1, reco::Candidate::LorentzVector smearedLV1, const pat::Tau& patTau2, bool smear2, reco::Candidate::LorentzVector smearedLV2, const pat::MET& patMET) {
-  if(smear1) {
-    double zetaX = cos(smearedLV1.phi()) + cos(smearedLV2.phi());
-    double zetaY = sin(smearedLV1.phi()) + sin(smearedLV2.phi());
-    double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-    if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-    double visPx = smearedLV1.px() + smearedLV2.px();
-    double visPy = smearedLV1.py() + smearedLV2.py();
-    double pZetaVis = visPx*zetaX + visPy*zetaY;
-    return pZetaVis;
-  } else {
-    double zetaX = cos(patTau1.phi()) + cos(patTau2.phi());
-    double zetaY = sin(patTau1.phi()) + sin(patTau2.phi());
-    double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
-    if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
-    double visPx = patTau1.px() + patTau2.px();
-    double visPy = patTau1.py() + patTau2.py();
-    double pZetaVis = visPx*zetaX + visPy*zetaY;
-    return pZetaVis;
-  }
+double HiMassTauAnalysis::CalculatePZetaVis(const pat::Tau& patTau1, int nobj1, const pat::Tau& patTau2, int nobj2) {
+  double zetaX = cos(smearedTauPtEtaPhiMVector.at(nobj1).phi()) + cos(smearedTauPtEtaPhiMVector.at(nobj2).phi());
+  double zetaY = sin(smearedTauPtEtaPhiMVector.at(nobj1).phi()) + sin(smearedTauPtEtaPhiMVector.at(nobj2).phi());
+  double zetaR = TMath::Sqrt(zetaX*zetaX + zetaY*zetaY);
+  if ( zetaR > 0. ) { zetaX /= zetaR; zetaY /= zetaR; }
+  double visPx = smearedTauMomentumVector.at(nobj1).px() + smearedTauMomentumVector.at(nobj2).px();
+  double visPy = smearedTauMomentumVector.at(nobj1).py() + smearedTauMomentumVector.at(nobj2).py();
+  double pZetaVis = visPx*zetaX + visPy*zetaY;
+  return pZetaVis;
 }
 
 //-----Calculate mass reco variables
-pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::CalculateThe4Momentum(const pat::Tau& patTau, bool smearT, reco::Candidate::LorentzVector smearedLVT, const pat::Electron& patElectron, bool smearE, reco::Candidate::LorentzVector smearedLVE, const pat::MET& patMET) {
-  if(smearT) {
-    if(smearE) {
-      double MEpx = patMET.px() + deltaForMEx + patElectron.px() - smearedLVE.px() + patTau.px() - smearedLVT.px();
-      double MEpy = patMET.py() + deltaForMEy + patElectron.py() - smearedLVE.py() + patTau.py() - smearedLVT.py();
-      if(_UseVectorSumOfVisProductsAndMetMassReco) {
-        double px = smearedLVT.px() + smearedLVE.px() + MEpx;
-        double py = smearedLVT.py() + smearedLVE.py() + MEpy;
-        double pz = smearedLVT.pz() + smearedLVE.pz();
-        double e = smearedLVT.energy() + smearedLVE.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-        reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      } else if(_UseCollinerApproxMassReco) {
-        double x1_numerator = (smearedLVT.px() * smearedLVE.py()) - (smearedLVE.px() * smearedLVT.py());
-        double x1_denominator = (smearedLVE.py() * (smearedLVT.px() + MEpx)) - (smearedLVE.px() * (smearedLVT.py() + MEpy));
-        double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
-        double x2_numerator = x1_numerator;
-        double x2_denominator = (smearedLVT.px() * (smearedLVE.py() + MEpy)) - (smearedLVT.py() * (smearedLVE.px() + MEpx));
-        double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
-        if ( (x1 > 0. && x1 < 1.) &&
-             (x2 > 0. && x2 < 1.) ) {
-          reco::Candidate::LorentzVector The_LorentzVect = (smearedLVT / x1) + (smearedLVE / x2);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-          return MassRecoInformation;
-        } else {
-          double px = smearedLVT.px() + smearedLVE.px() + MEpx;
-          double py = smearedLVT.py() + smearedLVE.py() + MEpy;
-          double pz = smearedLVT.pz() + smearedLVE.pz();
-          double e = smearedLVT.energy() + smearedLVE.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-          reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
-          return MassRecoInformation;
-        }
-      } else {
-        reco::Candidate::LorentzVector The_LorentzVect = smearedLVT + smearedLVE;
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      }
+pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::CalculateThe4Momentum(const pat::Tau& patTau, int nobjT, const pat::Electron& patElectron, int nobjE) {
+  if(_UseVectorSumOfVisProductsAndMetMassReco) {
+    double px = smearedTauMomentumVector.at(nobjT).px() + smearedElectronMomentumVector.at(nobjE).px() + theMETVector.px();
+    double py = smearedTauMomentumVector.at(nobjT).py() + smearedElectronMomentumVector.at(nobjE).py() + theMETVector.py();
+    double pz = smearedTauMomentumVector.at(nobjT).pz() + smearedElectronMomentumVector.at(nobjE).pz();
+    double e = smearedTauMomentumVector.at(nobjT).energy() + smearedElectronMomentumVector.at(nobjE).energy() + TMath::Sqrt((theMETVector.px() * theMETVector.px()) + (theMETVector.py() * theMETVector.py()));
+    reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
+    pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
+    return MassRecoInformation;
+  } else if(_UseCollinerApproxMassReco) {
+    double x1_numerator = (smearedTauMomentumVector.at(nobjT).px() * smearedElectronMomentumVector.at(nobjE).py()) - (smearedElectronMomentumVector.at(nobjE).px() * smearedTauMomentumVector.at(nobjT).py());
+    double x1_denominator = (smearedElectronMomentumVector.at(nobjE).py() * (smearedTauMomentumVector.at(nobjT).px() + theMETVector.px())) - (smearedElectronMomentumVector.at(nobjE).px() * (smearedTauMomentumVector.at(nobjT).py() + theMETVector.py()));
+    double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
+    double x2_numerator = x1_numerator;
+    double x2_denominator = (smearedTauMomentumVector.at(nobjT).px() * (smearedElectronMomentumVector.at(nobjE).py() + theMETVector.py())) - (smearedTauMomentumVector.at(nobjT).py() * (smearedElectronMomentumVector.at(nobjE).px() + theMETVector.px()));
+    double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
+    if ( (x1 > 0. && x1 < 1.) &&
+	 (x2 > 0. && x2 < 1.) ) {
+      reco::Candidate::LorentzVector The_LorentzVect = (smearedTauMomentumVector.at(nobjT) / x1) + (smearedElectronMomentumVector.at(nobjE) / x2);
+      pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
+      return MassRecoInformation;
     } else {
-      double MEpx = patMET.px() + deltaForMEx + patTau.px() - smearedLVT.px();
-      double MEpy = patMET.py() + deltaForMEy + patTau.py() - smearedLVT.py();
-      if(_UseVectorSumOfVisProductsAndMetMassReco) {
-        double px = smearedLVT.px() + patElectron.px() + MEpx;
-        double py = smearedLVT.py() + patElectron.py() + MEpy;
-        double pz = smearedLVT.pz() + patElectron.pz();
-        double e = smearedLVT.energy() + patElectron.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-        reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      } else if(_UseCollinerApproxMassReco) {
-        double x1_numerator = (smearedLVT.px() * patElectron.py()) - (patElectron.px() * smearedLVT.py());
-        double x1_denominator = (patElectron.py() * (smearedLVT.px() + MEpx)) - (patElectron.px() * (smearedLVT.py() + MEpy));
-        double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
-        double x2_numerator = x1_numerator;
-        double x2_denominator = (smearedLVT.px() * (patElectron.py() + MEpy)) - (smearedLVT.py() * (patElectron.px() + MEpx));
-        double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
-        if ( (x1 > 0. && x1 < 1.) &&
-             (x2 > 0. && x2 < 1.) ) {
-          reco::Candidate::LorentzVector The_LorentzVect = (smearedLVT / x1) + (patElectron.p4() / x2);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-          return MassRecoInformation;
-        } else {
-          double px = smearedLVT.px() + patElectron.px() + MEpx;
-          double py = smearedLVT.py() + patElectron.py() + MEpy;
-          double pz = smearedLVT.pz() + patElectron.pz();
-          double e = smearedLVT.energy() + patElectron.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-          reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
-          return MassRecoInformation;
-        }
-      } else {
-        reco::Candidate::LorentzVector The_LorentzVect = smearedLVT + patElectron.p4();
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      }
+      double px = smearedTauMomentumVector.at(nobjT).px() + smearedElectronMomentumVector.at(nobjE).px() + theMETVector.px();
+      double py = smearedTauMomentumVector.at(nobjT).py() + smearedElectronMomentumVector.at(nobjE).py() + theMETVector.py();
+      double pz = smearedTauMomentumVector.at(nobjT).pz() + smearedElectronMomentumVector.at(nobjE).pz();
+      double e = smearedTauMomentumVector.at(nobjT).energy() + smearedElectronMomentumVector.at(nobjE).energy() + TMath::Sqrt((theMETVector.px() * theMETVector.px()) + (theMETVector.py() * theMETVector.py()));
+      reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
+      pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
+      return MassRecoInformation;
     }
   } else {
-    if(smearE) {
-      double MEpx = patMET.px() + deltaForMEx + patElectron.px() - smearedLVE.px();
-      double MEpy = patMET.py() + deltaForMEy + patElectron.py() - smearedLVE.py();
-      if(_UseVectorSumOfVisProductsAndMetMassReco) {
-        double px = patTau.px() + smearedLVE.px() + MEpx;
-        double py = patTau.py() + smearedLVE.py() + MEpy;
-        double pz = patTau.pz() + smearedLVE.pz();
-        double e = patTau.energy() + smearedLVE.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-        reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      } else if(_UseCollinerApproxMassReco) {
-        double x1_numerator = (patTau.px() * smearedLVE.py()) - (smearedLVE.px() * patTau.py());
-        double x1_denominator = (smearedLVE.py() * (patTau.px() + MEpx)) - (smearedLVE.px() * (patTau.py() + MEpy));
-        double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
-        double x2_numerator = x1_numerator;
-        double x2_denominator = (patTau.px() * (smearedLVE.py() + MEpy)) - (patTau.py() * (smearedLVE.px() + MEpx));
-        double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
-        if ( (x1 > 0. && x1 < 1.) &&
-             (x2 > 0. && x2 < 1.) ) {
-          reco::Candidate::LorentzVector The_LorentzVect = (patTau.p4() / x1) + (smearedLVE / x2);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-          return MassRecoInformation;
-        } else {
-          double px = patTau.px() + smearedLVE.px() + MEpx;
-          double py = patTau.py() + smearedLVE.py() + MEpy;
-          double pz = patTau.pz() + smearedLVE.pz();
-          double e = patTau.energy() + smearedLVE.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-          reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
-          return MassRecoInformation;
-        }
-      } else {
-        reco::Candidate::LorentzVector The_LorentzVect = patTau.p4() + smearedLVE;
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      }
-    } else {
-      if(_UseVectorSumOfVisProductsAndMetMassReco) {
-        double px = patTau.px() + patElectron.px() + patMET.px() + deltaForMEx;
-        double py = patTau.py() + patElectron.py() + patMET.py() + deltaForMEy;
-        double pz = patTau.pz() + patElectron.pz();
-        double e = patTau.energy() + patElectron.energy() + TMath::Sqrt(((patMET.px() + deltaForMEx) * (patMET.px() + deltaForMEx)) + ((patMET.py() + deltaForMEy) * (patMET.py() + deltaForMEy)));
-        reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      } else if(_UseCollinerApproxMassReco) {
-        double x1_numerator = (patTau.px() * patElectron.py()) - (patElectron.px() * patTau.py());
-        double x1_denominator = (patElectron.py() * (patTau.px() + patMET.px() + deltaForMEx)) - (patElectron.px() * (patTau.py() + patMET.py() + deltaForMEy));
-        double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
-        double x2_numerator = x1_numerator;
-        double x2_denominator = (patTau.px() * (patElectron.py() + patMET.py() + deltaForMEy)) - (patTau.py() * (patElectron.px() + patMET.px() + deltaForMEx));
-        double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
-        if ( (x1 > 0. && x1 < 1.) &&
-             (x2 > 0. && x2 < 1.) ) {
-          reco::Candidate::LorentzVector The_LorentzVect = (patTau.p4() / x1) + (patElectron.p4() / x2);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-          return MassRecoInformation;
-        } else {
-          double px = patTau.px() + patElectron.px() + patMET.px() + deltaForMEx;
-          double py = patTau.py() + patElectron.py() + patMET.py() + deltaForMEy;
-          double pz = patTau.pz() + patElectron.pz();
-          double e = patTau.energy() + patElectron.energy() + TMath::Sqrt(((patMET.px() + deltaForMEx) * (patMET.px() + deltaForMEx)) + ((patMET.py() + deltaForMEy) * (patMET.py() + deltaForMEy)));
-          reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
-          return MassRecoInformation;
-        }
-      } else {
-        reco::Candidate::LorentzVector The_LorentzVect = patTau.p4() + patElectron.p4();
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      }
-    }
+    reco::Candidate::LorentzVector The_LorentzVect = smearedTauMomentumVector.at(nobjT) + smearedElectronMomentumVector.at(nobjE);
+    pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
+    return MassRecoInformation;
   }
 }
-pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::CalculateThe4Momentum(const pat::Tau& patTau, bool smearT, reco::Candidate::LorentzVector smearedLVT, const pat::Muon& patMuon, bool smearE, reco::Candidate::LorentzVector smearedLVE, const pat::MET& patMET) {
-  if(smearT) {
-    if(smearE) {
-      double MEpx = patMET.px() + deltaForMEx + patMuon.px() - smearedLVE.px() + patTau.px() - smearedLVT.px();
-      double MEpy = patMET.py() + deltaForMEy + patMuon.py() - smearedLVE.py() + patTau.py() - smearedLVT.py();
-      if(_UseVectorSumOfVisProductsAndMetMassReco) {
-        double px = smearedLVT.px() + smearedLVE.px() + MEpx;
-        double py = smearedLVT.py() + smearedLVE.py() + MEpy;
-        double pz = smearedLVT.pz() + smearedLVE.pz();
-        double e = smearedLVT.energy() + smearedLVE.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-        reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      } else if(_UseCollinerApproxMassReco) {
-        double x1_numerator = (smearedLVT.px() * smearedLVE.py()) - (smearedLVE.px() * smearedLVT.py());
-        double x1_denominator = (smearedLVE.py() * (smearedLVT.px() + MEpx)) - (smearedLVE.px() * (smearedLVT.py() + MEpy));
-        double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
-        double x2_numerator = x1_numerator;
-        double x2_denominator = (smearedLVT.px() * (smearedLVE.py() + MEpy)) - (smearedLVT.py() * (smearedLVE.px() + MEpx));
-        double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
-        if ( (x1 > 0. && x1 < 1.) &&
-             (x2 > 0. && x2 < 1.) ) {
-          reco::Candidate::LorentzVector The_LorentzVect = (smearedLVT / x1) + (smearedLVE / x2);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-          return MassRecoInformation;
-        } else {
-          double px = smearedLVT.px() + smearedLVE.px() + MEpx;
-          double py = smearedLVT.py() + smearedLVE.py() + MEpy;
-          double pz = smearedLVT.pz() + smearedLVE.pz();
-          double e = smearedLVT.energy() + smearedLVE.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-          reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
-          return MassRecoInformation;
-        }
-      } else {
-        reco::Candidate::LorentzVector The_LorentzVect = smearedLVT + smearedLVE;
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      }
+pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::CalculateThe4Momentum(const pat::Tau& patTau, int nobjT, const pat::Muon& patMuon, int nobjE) {
+  if(_UseVectorSumOfVisProductsAndMetMassReco) {
+    double px = smearedTauMomentumVector.at(nobjT).px() + smearedMuonMomentumVector.at(nobjE).px() + theMETVector.px();
+    double py = smearedTauMomentumVector.at(nobjT).py() + smearedMuonMomentumVector.at(nobjE).py() + theMETVector.py();
+    double pz = smearedTauMomentumVector.at(nobjT).pz() + smearedMuonMomentumVector.at(nobjE).pz();
+    double e = smearedTauMomentumVector.at(nobjT).energy() + smearedMuonMomentumVector.at(nobjE).energy() + TMath::Sqrt((theMETVector.px() * theMETVector.px()) + (theMETVector.py() * theMETVector.py()));
+    reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
+    pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
+    return MassRecoInformation;
+  } else if(_UseCollinerApproxMassReco) {
+    double x1_numerator = (smearedTauMomentumVector.at(nobjT).px() * smearedMuonMomentumVector.at(nobjE).py()) - (smearedMuonMomentumVector.at(nobjE).px() * smearedTauMomentumVector.at(nobjT).py());
+    double x1_denominator = (smearedMuonMomentumVector.at(nobjE).py() * (smearedTauMomentumVector.at(nobjT).px() + theMETVector.px())) - (smearedMuonMomentumVector.at(nobjE).px() * (smearedTauMomentumVector.at(nobjT).py() + theMETVector.py()));
+    double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
+    double x2_numerator = x1_numerator;
+    double x2_denominator = (smearedTauMomentumVector.at(nobjT).px() * (smearedMuonMomentumVector.at(nobjE).py() + theMETVector.py())) - (smearedTauMomentumVector.at(nobjT).py() * (smearedMuonMomentumVector.at(nobjE).px() + theMETVector.px()));
+    double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
+    if ( (x1 > 0. && x1 < 1.) &&
+	 (x2 > 0. && x2 < 1.) ) {
+      reco::Candidate::LorentzVector The_LorentzVect = (smearedTauMomentumVector.at(nobjT) / x1) + (smearedMuonMomentumVector.at(nobjE) / x2);
+      pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
+      return MassRecoInformation;
     } else {
-      double MEpx = patMET.px() + deltaForMEx + patTau.px() - smearedLVT.px();
-      double MEpy = patMET.py() + deltaForMEy + patTau.py() - smearedLVT.py();
-      if(_UseVectorSumOfVisProductsAndMetMassReco) {
-        double px = smearedLVT.px() + patMuon.px() + MEpx;
-        double py = smearedLVT.py() + patMuon.py() + MEpy;
-        double pz = smearedLVT.pz() + patMuon.pz();
-        double e = smearedLVT.energy() + patMuon.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-        reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      } else if(_UseCollinerApproxMassReco) {
-        double x1_numerator = (smearedLVT.px() * patMuon.py()) - (patMuon.px() * smearedLVT.py());
-        double x1_denominator = (patMuon.py() * (smearedLVT.px() + MEpx)) - (patMuon.px() * (smearedLVT.py() + MEpy));
-        double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
-        double x2_numerator = x1_numerator;
-        double x2_denominator = (smearedLVT.px() * (patMuon.py() + MEpy)) - (smearedLVT.py() * (patMuon.px() + MEpx));
-        double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
-        if ( (x1 > 0. && x1 < 1.) &&
-             (x2 > 0. && x2 < 1.) ) {
-          reco::Candidate::LorentzVector The_LorentzVect = (smearedLVT / x1) + (patMuon.p4() / x2);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-          return MassRecoInformation;
-        } else {
-          double px = smearedLVT.px() + patMuon.px() + MEpx;
-          double py = smearedLVT.py() + patMuon.py() + MEpy;
-          double pz = smearedLVT.pz() + patMuon.pz();
-          double e = smearedLVT.energy() + patMuon.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-          reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
-          return MassRecoInformation;
-        }
-      } else {
-        reco::Candidate::LorentzVector The_LorentzVect = smearedLVT + patMuon.p4();
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      }
+      double px = smearedTauMomentumVector.at(nobjT).px() + smearedMuonMomentumVector.at(nobjE).px() + theMETVector.px();
+      double py = smearedTauMomentumVector.at(nobjT).py() + smearedMuonMomentumVector.at(nobjE).py() + theMETVector.py();
+      double pz = smearedTauMomentumVector.at(nobjT).pz() + smearedMuonMomentumVector.at(nobjE).pz();
+      double e = smearedTauMomentumVector.at(nobjT).energy() + smearedMuonMomentumVector.at(nobjE).energy() + TMath::Sqrt((theMETVector.px() * theMETVector.px()) + (theMETVector.py() * theMETVector.py()));
+      reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
+      pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
+      return MassRecoInformation;
     }
   } else {
-    if(smearE) {
-      double MEpx = patMET.px() + deltaForMEx + patMuon.px() - smearedLVE.px();
-      double MEpy = patMET.py() + deltaForMEy + patMuon.py() - smearedLVE.py();
-      if(_UseVectorSumOfVisProductsAndMetMassReco) {
-        double px = patTau.px() + smearedLVE.px() + MEpx;
-        double py = patTau.py() + smearedLVE.py() + MEpy;
-        double pz = patTau.pz() + smearedLVE.pz();
-        double e = patTau.energy() + smearedLVE.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-        reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      } else if(_UseCollinerApproxMassReco) {
-        double x1_numerator = (patTau.px() * smearedLVE.py()) - (smearedLVE.px() * patTau.py());
-        double x1_denominator = (smearedLVE.py() * (patTau.px() + MEpx)) - (smearedLVE.px() * (patTau.py() + MEpy));
-        double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
-        double x2_numerator = x1_numerator;
-        double x2_denominator = (patTau.px() * (smearedLVE.py() + MEpy)) - (patTau.py() * (smearedLVE.px() + MEpx));
-        double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
-        if ( (x1 > 0. && x1 < 1.) &&
-             (x2 > 0. && x2 < 1.) ) {
-          reco::Candidate::LorentzVector The_LorentzVect = (patTau.p4() / x1) + (smearedLVE / x2);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-          return MassRecoInformation;
-        } else {
-          double px = patTau.px() + smearedLVE.px() + MEpx;
-          double py = patTau.py() + smearedLVE.py() + MEpy;
-          double pz = patTau.pz() + smearedLVE.pz();
-          double e = patTau.energy() + smearedLVE.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-          reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
-          return MassRecoInformation;
-        }
-      } else {
-        reco::Candidate::LorentzVector The_LorentzVect = patTau.p4() + smearedLVE;
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      }
-    } else {
-      if(_UseVectorSumOfVisProductsAndMetMassReco) {
-        double px = patTau.px() + patMuon.px() + patMET.px() + deltaForMEx;
-        double py = patTau.py() + patMuon.py() + patMET.py() + deltaForMEy;
-        double pz = patTau.pz() + patMuon.pz();
-        double e = patTau.energy() + patMuon.energy() + TMath::Sqrt(((patMET.px() + deltaForMEx) * (patMET.px() + deltaForMEx)) + ((patMET.py() + deltaForMEy) * (patMET.py() + deltaForMEy)));
-        reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      } else if(_UseCollinerApproxMassReco) {
-        double x1_numerator = (patTau.px() * patMuon.py()) - (patMuon.px() * patTau.py());
-        double x1_denominator = (patMuon.py() * (patTau.px() + patMET.px() + deltaForMEx)) - (patMuon.px() * (patTau.py() + patMET.py() + deltaForMEy));
-        double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
-        double x2_numerator = x1_numerator;
-        double x2_denominator = (patTau.px() * (patMuon.py() + patMET.py() + deltaForMEy)) - (patTau.py() * (patMuon.px() + patMET.px() + deltaForMEx));
-        double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
-        if ( (x1 > 0. && x1 < 1.) &&
-             (x2 > 0. && x2 < 1.) ) {
-          reco::Candidate::LorentzVector The_LorentzVect = (patTau.p4() / x1) + (patMuon.p4() / x2);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-          return MassRecoInformation;
-        } else {
-          double px = patTau.px() + patMuon.px() + patMET.px() + deltaForMEx;
-          double py = patTau.py() + patMuon.py() + patMET.py() + deltaForMEy;
-          double pz = patTau.pz() + patMuon.pz();
-          double e = patTau.energy() + patMuon.energy() + TMath::Sqrt(((patMET.px() + deltaForMEx) * (patMET.px() + deltaForMEx)) + ((patMET.py() + deltaForMEy) * (patMET.py() + deltaForMEy)));
-          reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
-          return MassRecoInformation;
-        }
-      } else {
-        reco::Candidate::LorentzVector The_LorentzVect = patTau.p4() + patMuon.p4();
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      }
-    }
+    reco::Candidate::LorentzVector The_LorentzVect = smearedTauMomentumVector.at(nobjT) + smearedMuonMomentumVector.at(nobjE);
+    pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
+    return MassRecoInformation;
   }
 }
-pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::CalculateThe4Momentum(const pat::Electron& patElectron, bool smearE, reco::Candidate::LorentzVector smearedLVE, const pat::Muon& patMuon, bool smearM, reco::Candidate::LorentzVector smearedLVM, const pat::MET& patMET) {
-  if(smearE) {
-    if(smearM) {
-      double MEpx = patMET.px() + deltaForMEx + patElectron.px() - smearedLVE.px() + patMuon.px() - smearedLVM.px();
-      double MEpy = patMET.py() + deltaForMEy + patElectron.py() - smearedLVE.py() + patMuon.py() - smearedLVM.py();
-      if(_UseVectorSumOfVisProductsAndMetMassReco) {
-        double px = smearedLVE.px() + smearedLVM.px() + MEpx;
-        double py = smearedLVE.py() + smearedLVM.py() + MEpy;
-        double pz = smearedLVE.pz() + smearedLVM.pz();
-        double e = smearedLVE.energy() + smearedLVM.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-        reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      } else if(_UseCollinerApproxMassReco) {
-        double x1_numerator = (smearedLVE.px() * smearedLVM.py()) - (smearedLVM.px() * smearedLVE.py());
-        double x1_denominator = (smearedLVM.py() * (smearedLVE.px() + MEpx)) - (smearedLVM.px() * (smearedLVE.py() + MEpy));
-        double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
-        double x2_numerator = x1_numerator;
-        double x2_denominator = (smearedLVE.px() * (smearedLVM.py() + MEpy)) - (smearedLVE.py() * (smearedLVM.px() + MEpx));
-        double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
-        if ( (x1 > 0. && x1 < 1.) &&
-             (x2 > 0. && x2 < 1.) ) {
-          reco::Candidate::LorentzVector The_LorentzVect = (smearedLVE / x1) + (smearedLVM / x2);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-          return MassRecoInformation;
-        } else {
-          double px = smearedLVE.px() + smearedLVM.px() + MEpx;
-          double py = smearedLVE.py() + smearedLVM.py() + MEpy;
-          double pz = smearedLVE.pz() + smearedLVM.pz();
-          double e = smearedLVE.energy() + smearedLVM.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-          reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
-          return MassRecoInformation;
-        }
-      } else {
-        reco::Candidate::LorentzVector The_LorentzVect = smearedLVE + smearedLVM;
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      }
+pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::CalculateThe4Momentum(const pat::Electron& patElectron, int nobjE, const pat::Muon& patMuon, int nobjM) {
+  if(_UseVectorSumOfVisProductsAndMetMassReco) {
+    double px = smearedElectronMomentumVector.at(nobjE).px() + smearedMuonMomentumVector.at(nobjM).px() + theMETVector.px();
+    double py = smearedElectronMomentumVector.at(nobjE).py() + smearedMuonMomentumVector.at(nobjM).py() + theMETVector.py();
+    double pz = smearedElectronMomentumVector.at(nobjE).pz() + smearedMuonMomentumVector.at(nobjM).pz();
+    double e = smearedElectronMomentumVector.at(nobjE).energy() + smearedMuonMomentumVector.at(nobjM).energy() + TMath::Sqrt((theMETVector.px() * theMETVector.px()) + (theMETVector.py() * theMETVector.py()));
+    reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
+    pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
+    return MassRecoInformation;
+  } else if(_UseCollinerApproxMassReco) {
+    double x1_numerator = (smearedElectronMomentumVector.at(nobjE).px() * smearedMuonMomentumVector.at(nobjM).py()) - (smearedMuonMomentumVector.at(nobjM).px() * smearedElectronMomentumVector.at(nobjE).py());
+    double x1_denominator = (smearedMuonMomentumVector.at(nobjM).py() * (smearedElectronMomentumVector.at(nobjE).px() + theMETVector.px())) - (smearedMuonMomentumVector.at(nobjM).px() * (smearedElectronMomentumVector.at(nobjE).py() + theMETVector.py()));
+    double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
+    double x2_numerator = x1_numerator;
+    double x2_denominator = (smearedElectronMomentumVector.at(nobjE).px() * (smearedMuonMomentumVector.at(nobjM).py() + theMETVector.py())) - (smearedElectronMomentumVector.at(nobjE).py() * (smearedMuonMomentumVector.at(nobjM).px() + theMETVector.px()));
+    double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
+    if ( (x1 > 0. && x1 < 1.) &&
+	 (x2 > 0. && x2 < 1.) ) {
+      reco::Candidate::LorentzVector The_LorentzVect = (smearedElectronMomentumVector.at(nobjE) / x1) + (smearedMuonMomentumVector.at(nobjM) / x2);
+      pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
+      return MassRecoInformation;
     } else {
-      double MEpx = patMET.px() + deltaForMEx + patElectron.px() - smearedLVE.px();
-      double MEpy = patMET.py() + deltaForMEy + patElectron.py() - smearedLVE.py();
-      if(_UseVectorSumOfVisProductsAndMetMassReco) {
-        double px = smearedLVE.px() + patMuon.px() + MEpx;
-        double py = smearedLVE.py() + patMuon.py() + MEpy;
-        double pz = smearedLVE.pz() + patMuon.pz();
-        double e = smearedLVE.energy() + patMuon.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-        reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      } else if(_UseCollinerApproxMassReco) {
-        double x1_numerator = (smearedLVE.px() * patMuon.py()) - (patMuon.px() * smearedLVE.py());
-        double x1_denominator = (patMuon.py() * (smearedLVE.px() + MEpx)) - (patMuon.px() * (smearedLVE.py() + MEpy));
-        double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
-        double x2_numerator = x1_numerator;
-        double x2_denominator = (smearedLVE.px() * (patMuon.py() + MEpy)) - (smearedLVE.py() * (patMuon.px() + MEpx));
-        double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
-        if ( (x1 > 0. && x1 < 1.) &&
-             (x2 > 0. && x2 < 1.) ) {
-          reco::Candidate::LorentzVector The_LorentzVect = (smearedLVE / x1) + (patMuon.p4() / x2);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-          return MassRecoInformation;
-        } else {
-          double px = smearedLVE.px() + patMuon.px() + MEpx;
-          double py = smearedLVE.py() + patMuon.py() + MEpy;
-          double pz = smearedLVE.pz() + patMuon.pz();
-          double e = smearedLVE.energy() + patMuon.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-          reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
-          return MassRecoInformation;
-        }
-      } else {
-        reco::Candidate::LorentzVector The_LorentzVect = smearedLVE + patMuon.p4();
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      }
+      double px = smearedElectronMomentumVector.at(nobjE).px() + smearedMuonMomentumVector.at(nobjM).px() + theMETVector.px();
+      double py = smearedElectronMomentumVector.at(nobjE).py() + smearedMuonMomentumVector.at(nobjM).py() + theMETVector.py();
+      double pz = smearedElectronMomentumVector.at(nobjE).pz() + smearedMuonMomentumVector.at(nobjM).pz();
+      double e = smearedElectronMomentumVector.at(nobjE).energy() + smearedMuonMomentumVector.at(nobjM).energy() + TMath::Sqrt((theMETVector.px() * theMETVector.px()) + (theMETVector.py() * theMETVector.py()));
+      reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
+      pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
+      return MassRecoInformation;
     }
   } else {
-    if(smearM) {
-      double MEpx = patMET.px() + deltaForMEx + patMuon.px() - smearedLVM.px();
-      double MEpy = patMET.py() + deltaForMEy + patMuon.py() - smearedLVM.py();
-      if(_UseVectorSumOfVisProductsAndMetMassReco) {
-        double px = patElectron.px() + smearedLVM.px() + MEpx;
-        double py = patElectron.py() + smearedLVM.py() + MEpy;
-        double pz = patElectron.pz() + smearedLVM.pz();
-        double e = patElectron.energy() + smearedLVM.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-        reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      } else if(_UseCollinerApproxMassReco) {
-        double x1_numerator = (patElectron.px() * smearedLVM.py()) - (smearedLVM.px() * patElectron.py());
-        double x1_denominator = (smearedLVM.py() * (patElectron.px() + MEpx)) - (smearedLVM.px() * (patElectron.py() + MEpy));
-        double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
-        double x2_numerator = x1_numerator;
-        double x2_denominator = (patElectron.px() * (smearedLVM.py() + MEpy)) - (patElectron.py() * (smearedLVM.px() + MEpx));
-        double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
-        if ( (x1 > 0. && x1 < 1.) &&
-             (x2 > 0. && x2 < 1.) ) {
-          reco::Candidate::LorentzVector The_LorentzVect = (patElectron.p4() / x1) + (smearedLVM / x2);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-          return MassRecoInformation;
-        } else {
-          double px = patElectron.px() + smearedLVM.px() + MEpx;
-          double py = patElectron.py() + smearedLVM.py() + MEpy;
-          double pz = patElectron.pz() + smearedLVM.pz();
-          double e = patElectron.energy() + smearedLVM.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-          reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
-          return MassRecoInformation;
-        }
-      } else {
-        reco::Candidate::LorentzVector The_LorentzVect = patElectron.p4() + smearedLVM;
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      }
-    } else {
-      if(_UseVectorSumOfVisProductsAndMetMassReco) {
-        double px = patElectron.px() + patMuon.px() + patMET.px() + deltaForMEx;
-        double py = patElectron.py() + patMuon.py() + patMET.py() + deltaForMEy;
-        double pz = patElectron.pz() + patMuon.pz();
-        double e = patElectron.energy() + patMuon.energy() + TMath::Sqrt(((patMET.px() + deltaForMEx) * (patMET.px() + deltaForMEx)) + ((patMET.py() + deltaForMEy) * (patMET.py() + deltaForMEy)));
-        reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      } else if(_UseCollinerApproxMassReco) {
-        double x1_numerator = (patElectron.px() * patMuon.py()) - (patMuon.px() * patElectron.py());
-        double x1_denominator = (patMuon.py() * (patElectron.px() + patMET.px() + deltaForMEx)) - (patMuon.px() * (patElectron.py() + patMET.py() + deltaForMEy));
-        double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
-        double x2_numerator = x1_numerator;
-        double x2_denominator = (patElectron.px() * (patMuon.py() + patMET.py() + deltaForMEy)) - (patElectron.py() * (patMuon.px() + patMET.px() + deltaForMEx));
-        double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
-        if ( (x1 > 0. && x1 < 1.) &&
-             (x2 > 0. && x2 < 1.) ) {
-          reco::Candidate::LorentzVector The_LorentzVect = (patElectron.p4() / x1) + (patMuon.p4() / x2);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-          return MassRecoInformation;
-        } else {
-          double px = patElectron.px() + patMuon.px() + patMET.px() + deltaForMEx;
-          double py = patElectron.py() + patMuon.py() + patMET.py() + deltaForMEy;
-          double pz = patElectron.pz() + patMuon.pz();
-          double e = patElectron.energy() + patMuon.energy() + TMath::Sqrt(((patMET.px() + deltaForMEx) * (patMET.px() + deltaForMEx)) + ((patMET.py() + deltaForMEy) * (patMET.py() + deltaForMEy)));
-          reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-          pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
-          return MassRecoInformation;
-        }
-      } else {
-        reco::Candidate::LorentzVector The_LorentzVect = patElectron.p4() + patMuon.p4();
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      }
-    }
+    reco::Candidate::LorentzVector The_LorentzVect = smearedElectronMomentumVector.at(nobjE) + smearedMuonMomentumVector.at(nobjM);
+    pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
+    return MassRecoInformation;
   }
 }
-pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::CalculateThe4Momentum(const pat::Muon& patMuon1, bool smear1, reco::Candidate::LorentzVector smearedLV1, const pat::Muon& patMuon2, bool smear2, reco::Candidate::LorentzVector smearedLV2, const pat::MET& patMET) {
-  if(smear1) {
-    double MEpx = patMET.px() + deltaForMEx + patMuon1.px() - smearedLV1.px() + patMuon2.px() - smearedLV2.px();
-    double MEpy = patMET.py() + deltaForMEy + patMuon1.py() - smearedLV1.py() + patMuon2.py() - smearedLV2.py();
-    if(_UseVectorSumOfVisProductsAndMetMassReco) {
-      double px = smearedLV1.px() + smearedLV2.px() + MEpx;
-      double py = smearedLV1.py() + smearedLV2.py() + MEpy;
-      double pz = smearedLV1.pz() + smearedLV2.pz();
-      double e = smearedLV1.energy() + smearedLV2.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-      reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
+pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::CalculateThe4Momentum(const pat::Muon& patMuon1, int nobj1, const pat::Muon& patMuon2, int nobj2) {
+  if(_UseVectorSumOfVisProductsAndMetMassReco) {
+    double px = smearedMuonMomentumVector.at(nobj1).px() + smearedMuonMomentumVector.at(nobj2).px() + theMETVector.px();
+    double py = smearedMuonMomentumVector.at(nobj1).py() + smearedMuonMomentumVector.at(nobj2).py() + theMETVector.py();
+    double pz = smearedMuonMomentumVector.at(nobj1).pz() + smearedMuonMomentumVector.at(nobj2).pz();
+    double e = smearedMuonMomentumVector.at(nobj1).energy() + smearedMuonMomentumVector.at(nobj2).energy() + TMath::Sqrt((theMETVector.px() * theMETVector.px()) + (theMETVector.py() * theMETVector.py()));
+    reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
+    pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
+    return MassRecoInformation;
+  } else if(_UseCollinerApproxMassReco) {
+    double x1_numerator = (smearedMuonMomentumVector.at(nobj1).px() * smearedMuonMomentumVector.at(nobj2).py()) - (smearedMuonMomentumVector.at(nobj2).px() * smearedMuonMomentumVector.at(nobj1).py());
+    double x1_denominator = (smearedMuonMomentumVector.at(nobj2).py() * (smearedMuonMomentumVector.at(nobj1).px() + theMETVector.px())) - (smearedMuonMomentumVector.at(nobj2).px() * (smearedMuonMomentumVector.at(nobj1).py() + theMETVector.py()));
+    double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
+    double x2_numerator = x1_numerator;
+    double x2_denominator = (smearedMuonMomentumVector.at(nobj1).px() * (smearedMuonMomentumVector.at(nobj2).py() + theMETVector.py())) - (smearedMuonMomentumVector.at(nobj1).py() * (smearedMuonMomentumVector.at(nobj2).px() + theMETVector.px()));
+    double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
+    if ( (x1 > 0. && x1 < 1.) &&
+	 (x2 > 0. && x2 < 1.) ) {
+      reco::Candidate::LorentzVector The_LorentzVect = (smearedMuonMomentumVector.at(nobj1) / x1) + (smearedMuonMomentumVector.at(nobj2) / x2);
       pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
       return MassRecoInformation;
-    } else if(_UseCollinerApproxMassReco) {
-      double x1_numerator = (smearedLV1.px() * smearedLV2.py()) - (smearedLV2.px() * smearedLV1.py());
-      double x1_denominator = (smearedLV2.py() * (smearedLV1.px() + MEpx)) - (smearedLV2.px() * (smearedLV1.py() + MEpy));
-      double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
-      double x2_numerator = x1_numerator;
-      double x2_denominator = (smearedLV1.px() * (smearedLV2.py() + MEpy)) - (smearedLV1.py() * (smearedLV2.px() + MEpx));
-      double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
-      if ( (x1 > 0. && x1 < 1.) &&
-           (x2 > 0. && x2 < 1.) ) {
-        reco::Candidate::LorentzVector The_LorentzVect = (smearedLV1 / x1) + (smearedLV2 / x2);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      } else {
-        double px = smearedLV1.px() + smearedLV2.px() + MEpx;
-        double py = smearedLV1.py() + smearedLV2.py() + MEpy;
-        double pz = smearedLV1.pz() + smearedLV2.pz();
-        double e = smearedLV1.energy() + smearedLV2.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-        reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
-        return MassRecoInformation;
-      }
     } else {
-      reco::Candidate::LorentzVector The_LorentzVect = smearedLV1 + smearedLV2;
-      pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
+      double px = smearedMuonMomentumVector.at(nobj1).px() + smearedMuonMomentumVector.at(nobj2).px() + theMETVector.px();
+      double py = smearedMuonMomentumVector.at(nobj1).py() + smearedMuonMomentumVector.at(nobj2).py() + theMETVector.py();
+      double pz = smearedMuonMomentumVector.at(nobj1).pz() + smearedMuonMomentumVector.at(nobj2).pz();
+      double e = smearedMuonMomentumVector.at(nobj1).energy() + smearedMuonMomentumVector.at(nobj2).energy() + TMath::Sqrt((theMETVector.px() * theMETVector.px()) + (theMETVector.py() * theMETVector.py()));
+      reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
+      pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
       return MassRecoInformation;
     }
   } else {
-    if(_UseVectorSumOfVisProductsAndMetMassReco) {
-      double px = patMuon1.px() + patMuon2.px() + patMET.px() + deltaForMEx;
-      double py = patMuon1.py() + patMuon2.py() + patMET.py() + deltaForMEy;
-      double pz = patMuon1.pz() + patMuon2.pz();
-      double e = patMuon1.energy() + patMuon2.energy() + TMath::Sqrt(((patMET.px() + deltaForMEx) * (patMET.px() + deltaForMEx)) + ((patMET.py() + deltaForMEy) * (patMET.py() + deltaForMEy)));
-      reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-      pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-      return MassRecoInformation;
-    } else if(_UseCollinerApproxMassReco) {
-      double x1_numerator = (patMuon1.px() * patMuon2.py()) - (patMuon2.px() * patMuon1.py());
-      double x1_denominator = (patMuon2.py() * (patMuon1.px() + patMET.px() + deltaForMEx)) - (patMuon2.px() * (patMuon1.py() + patMET.py() + deltaForMEy));
-      double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
-      double x2_numerator = x1_numerator;
-      double x2_denominator = (patMuon1.px() * (patMuon2.py() + patMET.py() + deltaForMEy)) - (patMuon1.py() * (patMuon2.px() + patMET.px() + deltaForMEx));
-      double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
-      if ( (x1 > 0. && x1 < 1.) &&
-           (x2 > 0. && x2 < 1.) ) {
-        reco::Candidate::LorentzVector The_LorentzVect = (patMuon1.p4() / x1) + (patMuon2.p4() / x2);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      } else {
-        double px = patMuon1.px() + patMuon2.px() + patMET.px() + deltaForMEx;
-        double py = patMuon1.py() + patMuon2.py() + patMET.py() + deltaForMEy;
-        double pz = patMuon1.pz() + patMuon2.pz();
-        double e = patMuon1.energy() + patMuon2.energy() + TMath::Sqrt(((patMET.px() + deltaForMEx) * (patMET.px() + deltaForMEx)) + ((patMET.py() + deltaForMEy) * (patMET.py() + deltaForMEy)));
-        reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
-        return MassRecoInformation;
-      }
-    } else {
-      reco::Candidate::LorentzVector The_LorentzVect = patMuon1.p4() + patMuon2.p4();
-      pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-      return MassRecoInformation;
-    }
+    reco::Candidate::LorentzVector The_LorentzVect = smearedMuonMomentumVector.at(nobj1) + smearedMuonMomentumVector.at(nobj2);
+    pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
+    return MassRecoInformation;
   }
 }
-pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::CalculateThe4Momentum(const pat::Electron& patElectron1, bool smear1, reco::Candidate::LorentzVector smearedLV1, const pat::Electron& patElectron2, bool smear2, reco::Candidate::LorentzVector smearedLV2, const pat::MET& patMET) {
-  if(smear1) {
-    double MEpx = patMET.px() + deltaForMEx + patElectron1.px() - smearedLV1.px() + patElectron2.px() - smearedLV2.px();
-    double MEpy = patMET.py() + deltaForMEy + patElectron1.py() - smearedLV1.py() + patElectron2.py() - smearedLV2.py();
-    if(_UseVectorSumOfVisProductsAndMetMassReco) {
-      double px = smearedLV1.px() + smearedLV2.px() + MEpx;
-      double py = smearedLV1.py() + smearedLV2.py() + MEpy;
-      double pz = smearedLV1.pz() + smearedLV2.pz();
-      double e = smearedLV1.energy() + smearedLV2.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-      reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
+pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::CalculateThe4Momentum(const pat::Electron& patElectron1, int nobj1, const pat::Electron& patElectron2, int nobj2) {
+  if(_UseVectorSumOfVisProductsAndMetMassReco) {
+    double px = smearedElectronMomentumVector.at(nobj1).px() + smearedElectronMomentumVector.at(nobj2).px() + theMETVector.px();
+    double py = smearedElectronMomentumVector.at(nobj1).py() + smearedElectronMomentumVector.at(nobj2).py() + theMETVector.py();
+    double pz = smearedElectronMomentumVector.at(nobj1).pz() + smearedElectronMomentumVector.at(nobj2).pz();
+    double e = smearedElectronMomentumVector.at(nobj1).energy() + smearedElectronMomentumVector.at(nobj2).energy() + TMath::Sqrt((theMETVector.px() * theMETVector.px()) + (theMETVector.py() * theMETVector.py()));
+    reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
+    pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
+    return MassRecoInformation;
+  } else if(_UseCollinerApproxMassReco) {
+    double x1_numerator = (smearedElectronMomentumVector.at(nobj1).px() * smearedElectronMomentumVector.at(nobj2).py()) - (smearedElectronMomentumVector.at(nobj2).px() * smearedElectronMomentumVector.at(nobj1).py());
+    double x1_denominator = (smearedElectronMomentumVector.at(nobj2).py() * (smearedElectronMomentumVector.at(nobj1).px() + theMETVector.px())) - (smearedElectronMomentumVector.at(nobj2).px() * (smearedElectronMomentumVector.at(nobj1).py() + theMETVector.py()));
+    double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
+    double x2_numerator = x1_numerator;
+    double x2_denominator = (smearedElectronMomentumVector.at(nobj1).px() * (smearedElectronMomentumVector.at(nobj2).py() + theMETVector.py())) - (smearedElectronMomentumVector.at(nobj1).py() * (smearedElectronMomentumVector.at(nobj2).px() + theMETVector.px()));
+    double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
+    if ( (x1 > 0. && x1 < 1.) &&
+	 (x2 > 0. && x2 < 1.) ) {
+      reco::Candidate::LorentzVector The_LorentzVect = (smearedElectronMomentumVector.at(nobj1) / x1) + (smearedElectronMomentumVector.at(nobj2) / x2);
       pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
       return MassRecoInformation;
-    } else if(_UseCollinerApproxMassReco) {
-      double x1_numerator = (smearedLV1.px() * smearedLV2.py()) - (smearedLV2.px() * smearedLV1.py());
-      double x1_denominator = (smearedLV2.py() * (smearedLV1.px() + MEpx)) - (smearedLV2.px() * (smearedLV1.py() + MEpy));
-      double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
-      double x2_numerator = x1_numerator;
-      double x2_denominator = (smearedLV1.px() * (smearedLV2.py() + MEpy)) - (smearedLV1.py() * (smearedLV2.px() + MEpx));
-      double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
-      if ( (x1 > 0. && x1 < 1.) &&
-           (x2 > 0. && x2 < 1.) ) {
-        reco::Candidate::LorentzVector The_LorentzVect = (smearedLV1 / x1) + (smearedLV2 / x2);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      } else {
-        double px = smearedLV1.px() + smearedLV2.px() + MEpx;
-        double py = smearedLV1.py() + smearedLV2.py() + MEpy;
-        double pz = smearedLV1.pz() + smearedLV2.pz();
-        double e = smearedLV1.energy() + smearedLV2.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-        reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
-        return MassRecoInformation;
-      }
     } else {
-      reco::Candidate::LorentzVector The_LorentzVect = smearedLV1 + smearedLV2;
-      pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
+      double px = smearedElectronMomentumVector.at(nobj1).px() + smearedElectronMomentumVector.at(nobj2).px() + theMETVector.px();
+      double py = smearedElectronMomentumVector.at(nobj1).py() + smearedElectronMomentumVector.at(nobj2).py() + theMETVector.py();
+      double pz = smearedElectronMomentumVector.at(nobj1).pz() + smearedElectronMomentumVector.at(nobj2).pz();
+      double e = smearedElectronMomentumVector.at(nobj1).energy() + smearedElectronMomentumVector.at(nobj2).energy() + TMath::Sqrt((theMETVector.px() * theMETVector.px()) + (theMETVector.py() * theMETVector.py()));
+      reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
+      pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
       return MassRecoInformation;
     }
   } else {
-    if(_UseVectorSumOfVisProductsAndMetMassReco) {
-      double px = patElectron1.px() + patElectron2.px() + patMET.px() + deltaForMEx;
-      double py = patElectron1.py() + patElectron2.py() + patMET.py() + deltaForMEy;
-      double pz = patElectron1.pz() + patElectron2.pz();
-      double e = patElectron1.energy() + patElectron2.energy() + TMath::Sqrt(((patMET.px() + deltaForMEx) * (patMET.px() + deltaForMEx)) + ((patMET.py() + deltaForMEy) * (patMET.py() + deltaForMEy)));
-      reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-      pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-      return MassRecoInformation;
-    } else if(_UseCollinerApproxMassReco) {
-      double x1_numerator = (patElectron1.px() * patElectron2.py()) - (patElectron2.px() * patElectron1.py());
-      double x1_denominator = (patElectron2.py() * (patElectron1.px() + patMET.px() + deltaForMEx)) - (patElectron2.px() * (patElectron1.py() + patMET.py() + deltaForMEy));
-      double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
-      double x2_numerator = x1_numerator;
-      double x2_denominator = (patElectron1.px() * (patElectron2.py() + patMET.py() + deltaForMEy)) - (patElectron1.py() * (patElectron2.px() + patMET.px() + deltaForMEx));
-      double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
-      if ( (x1 > 0. && x1 < 1.) &&
-           (x2 > 0. && x2 < 1.) ) {
-        reco::Candidate::LorentzVector The_LorentzVect = (patElectron1.p4() / x1) + (patElectron2.p4() / x2);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      } else {
-        double px = patElectron1.px() + patElectron2.px() + patMET.px() + deltaForMEx;
-        double py = patElectron1.py() + patElectron2.py() + patMET.py() + deltaForMEy;
-        double pz = patElectron1.pz() + patElectron2.pz();
-        double e = patElectron1.energy() + patElectron2.energy() + TMath::Sqrt(((patMET.px() + deltaForMEx) * (patMET.px() + deltaForMEx)) + ((patMET.py() + deltaForMEy) * (patMET.py() + deltaForMEy)));
-        reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
-        return MassRecoInformation;
-      }
-    } else {
-      reco::Candidate::LorentzVector The_LorentzVect = patElectron1.p4() + patElectron2.p4();
-      pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-      return MassRecoInformation;
-    }
+    reco::Candidate::LorentzVector The_LorentzVect = smearedElectronMomentumVector.at(nobj1) + smearedElectronMomentumVector.at(nobj2);
+    pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
+    return MassRecoInformation;
   }
 }
-pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::CalculateThe4Momentum(const pat::Tau& patTau1, bool smear1, reco::Candidate::LorentzVector smearedLV1, const pat::Tau& patTau2, bool smear2, reco::Candidate::LorentzVector smearedLV2, const pat::MET& patMET) {
-  if(smear1) {
-    double MEpx = patMET.px() + deltaForMEx + patTau1.px() - smearedLV1.px() + patTau2.px() - smearedLV2.px();
-    double MEpy = patMET.py() + deltaForMEy + patTau1.py() - smearedLV1.py() + patTau2.py() - smearedLV2.py();
-    if(_UseVectorSumOfVisProductsAndMetMassReco) {
-      double px = smearedLV1.px() + smearedLV2.px() + MEpx;
-      double py = smearedLV1.py() + smearedLV2.py() + MEpy;
-      double pz = smearedLV1.pz() + smearedLV2.pz();
-      double e = smearedLV1.energy() + smearedLV2.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-      reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
+pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::CalculateThe4Momentum(const pat::Tau& patTau1, int nobj1, const pat::Tau& patTau2, int nobj2) {
+  if(_UseVectorSumOfVisProductsAndMetMassReco) {
+    double px = smearedTauMomentumVector.at(nobj1).px() + smearedTauMomentumVector.at(nobj2).px() + theMETVector.px();
+    double py = smearedTauMomentumVector.at(nobj1).py() + smearedTauMomentumVector.at(nobj2).py() + theMETVector.py();
+    double pz = smearedTauMomentumVector.at(nobj1).pz() + smearedTauMomentumVector.at(nobj2).pz();
+    double e = smearedTauMomentumVector.at(nobj1).energy() + smearedTauMomentumVector.at(nobj2).energy() + TMath::Sqrt((theMETVector.px() * theMETVector.px()) + (theMETVector.py() * theMETVector.py()));
+    reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
+    pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
+    return MassRecoInformation;
+  } else if(_UseCollinerApproxMassReco) {
+    double x1_numerator = (smearedTauMomentumVector.at(nobj1).px() * smearedTauMomentumVector.at(nobj2).py()) - (smearedTauMomentumVector.at(nobj2).px() * smearedTauMomentumVector.at(nobj1).py());
+    double x1_denominator = (smearedTauMomentumVector.at(nobj2).py() * (smearedTauMomentumVector.at(nobj1).px() + theMETVector.px())) - (smearedTauMomentumVector.at(nobj2).px() * (smearedTauMomentumVector.at(nobj1).py() + theMETVector.py()));
+    double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
+    double x2_numerator = x1_numerator;
+    double x2_denominator = (smearedTauMomentumVector.at(nobj1).px() * (smearedTauMomentumVector.at(nobj2).py() + theMETVector.py())) - (smearedTauMomentumVector.at(nobj1).py() * (smearedTauMomentumVector.at(nobj2).px() + theMETVector.px()));
+    double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
+    if ( (x1 > 0. && x1 < 1.) &&
+	 (x2 > 0. && x2 < 1.) ) {
+      reco::Candidate::LorentzVector The_LorentzVect = (smearedTauMomentumVector.at(nobj1) / x1) + (smearedTauMomentumVector.at(nobj2) / x2);
       pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
       return MassRecoInformation;
-    } else if(_UseCollinerApproxMassReco) {
-      double x1_numerator = (smearedLV1.px() * smearedLV2.py()) - (smearedLV2.px() * smearedLV1.py());
-      double x1_denominator = (smearedLV2.py() * (smearedLV1.px() + MEpx)) - (smearedLV2.px() * (smearedLV1.py() + MEpy));
-      double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
-      double x2_numerator = x1_numerator;
-      double x2_denominator = (smearedLV1.px() * (smearedLV2.py() + MEpy)) - (smearedLV1.py() * (smearedLV2.px() + MEpx));
-      double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
-      if ( (x1 > 0. && x1 < 1.) &&
-           (x2 > 0. && x2 < 1.) ) {
-        reco::Candidate::LorentzVector The_LorentzVect = (smearedLV1 / x1) + (smearedLV2 / x2);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      } else {
-        double px = smearedLV1.px() + smearedLV2.px() + MEpx;
-        double py = smearedLV1.py() + smearedLV2.py() + MEpy;
-        double pz = smearedLV1.pz() + smearedLV2.pz();
-        double e = smearedLV1.energy() + smearedLV2.energy() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-        reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
-        return MassRecoInformation;
-      }
     } else {
-      reco::Candidate::LorentzVector The_LorentzVect = smearedLV1 + smearedLV2;
-      pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
+      double px = smearedTauMomentumVector.at(nobj1).px() + smearedTauMomentumVector.at(nobj2).px() + theMETVector.px();
+      double py = smearedTauMomentumVector.at(nobj1).py() + smearedTauMomentumVector.at(nobj2).py() + theMETVector.py();
+      double pz = smearedTauMomentumVector.at(nobj1).pz() + smearedTauMomentumVector.at(nobj2).pz();
+      double e = smearedTauMomentumVector.at(nobj1).energy() + smearedTauMomentumVector.at(nobj2).energy() + TMath::Sqrt((theMETVector.px() * theMETVector.px()) + (theMETVector.py() * theMETVector.py()));
+      reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
+      pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
       return MassRecoInformation;
     }
   } else {
-    if(_UseVectorSumOfVisProductsAndMetMassReco) {
-      double px = patTau1.px() + patTau2.px() + patMET.px() + deltaForMEx;
-      double py = patTau1.py() + patTau2.py() + patMET.py() + deltaForMEy;
-      double pz = patTau1.pz() + patTau2.pz();
-      double e = patTau1.energy() + patTau2.energy() + TMath::Sqrt(((patMET.px() + deltaForMEx) * (patMET.px() + deltaForMEx)) + ((patMET.py() + deltaForMEy) * (patMET.py() + deltaForMEy)));
-      reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-      pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-      return MassRecoInformation;
-    } else if(_UseCollinerApproxMassReco) {
-      double x1_numerator = (patTau1.px() * patTau2.py()) - (patTau2.px() * patTau1.py());
-      double x1_denominator = (patTau2.py() * (patTau1.px() + patMET.px() + deltaForMEx)) - (patTau2.px() * (patTau1.py() + patMET.py() + deltaForMEy));
-      double x1 = ( x1_denominator != 0. ) ? x1_numerator/x1_denominator : -1.;
-      double x2_numerator = x1_numerator;
-      double x2_denominator = (patTau1.px() * (patTau2.py() + patMET.py() + deltaForMEy)) - (patTau1.py() * (patTau2.px() + patMET.px() + deltaForMEx));
-      double x2 = ( x2_denominator != 0. ) ? x2_numerator/x2_denominator : -1.;
-      if ( (x1 > 0. && x1 < 1.) &&
-           (x2 > 0. && x2 < 1.) ) {
-        reco::Candidate::LorentzVector The_LorentzVect = (patTau1.p4() / x1) + (patTau2.p4() / x2);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-        return MassRecoInformation;
-      } else {
-        double px = patTau1.px() + patTau2.px() + patMET.px() + deltaForMEx;
-        double py = patTau1.py() + patTau2.py() + patMET.py() + deltaForMEy;
-        double pz = patTau1.pz() + patTau2.pz();
-        double e = patTau1.energy() + patTau2.energy() + TMath::Sqrt(((patMET.px() + deltaForMEx) * (patMET.px() + deltaForMEx)) + ((patMET.py() + deltaForMEy) * (patMET.py() + deltaForMEy)));
-        reco::Candidate::LorentzVector The_LorentzVect(px, py, pz, e);
-        pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(false,The_LorentzVect);
-        return MassRecoInformation;
-      }
-    } else {
-      reco::Candidate::LorentzVector The_LorentzVect = patTau1.p4() + patTau2.p4();
-      pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
-      return MassRecoInformation;
-    }
+    reco::Candidate::LorentzVector The_LorentzVect = smearedTauMomentumVector.at(nobj1) + smearedTauMomentumVector.at(nobj2);
+    pair<bool, reco::Candidate::LorentzVector> MassRecoInformation(true,The_LorentzVect);
+    return MassRecoInformation;
   }
 }
 
 //-----Calculate lepton+met transverse mass
-double HiMassTauAnalysis::CalculateLeptonMetMt(const pat::Muon& patMuon, bool smear, reco::Candidate::LorentzVector smearedLV, const pat::MET& patMET) {
-  if(smear) {
-    double MEpx = patMET.px() + deltaForMEx + patMuon.px() - smearedLV.px();
-    double MEpy = patMET.py() + deltaForMEy + patMuon.py() - smearedLV.py();
-    double px = smearedLV.px() + MEpx;
-    double py = smearedLV.py() + MEpy;
-    double et = smearedLV.Et() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-    double mt2 = et*et - (px*px + py*py);
-    if ( mt2 < 0 ) { return -1.; }
-    else { return sqrt(mt2); }
-  } else {
-    double px = patMuon.px() + patMET.px() + deltaForMEx;
-    double py = patMuon.py() + patMET.py() + deltaForMEy;
-    double et = patMuon.et() + TMath::Sqrt(((patMET.px() + deltaForMEx) * (patMET.px() + deltaForMEx)) + ((patMET.py() + deltaForMEy) * (patMET.py() + deltaForMEy)));
-    double mt2 = et*et - (px*px + py*py);
-    if ( mt2 < 0 ) { return -1.; }
-    else { return sqrt(mt2); }
-  }
+double HiMassTauAnalysis::CalculateLeptonMetMt(const pat::Muon& patMuon, int nobj) {
+  double px = smearedMuonMomentumVector.at(nobj).px() + theMETVector.px();
+  double py = smearedMuonMomentumVector.at(nobj).py() + theMETVector.py();
+  double et = smearedMuonMomentumVector.at(nobj).Et() + TMath::Sqrt((theMETVector.px() * theMETVector.px()) + (theMETVector.py() * theMETVector.py()));
+  double mt2 = et*et - (px*px + py*py);
+  if ( mt2 < 0 ) { return -1.; }
+  else { return sqrt(mt2); }
 }
-double HiMassTauAnalysis::CalculateLeptonMetMt(const pat::Electron& patElectron, bool smear, reco::Candidate::LorentzVector smearedLV, const pat::MET& patMET) {
-  if(smear) {
-    double MEpx = patMET.px() + deltaForMEx + patElectron.px() - smearedLV.px();
-    double MEpy = patMET.py() + deltaForMEy + patElectron.py() - smearedLV.py();
-    double px = smearedLV.px() + MEpx;
-    double py = smearedLV.py() + MEpy;
-    double et = smearedLV.Et() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-    double mt2 = et*et - (px*px + py*py);
-    if ( mt2 < 0 ) { return -1.; }
-    else { return sqrt(mt2); }
-  } else {
-    double px = patElectron.px() + patMET.px() + deltaForMEx;
-    double py = patElectron.py() + patMET.py() + deltaForMEy;
-    double et = patElectron.et() + TMath::Sqrt(((patMET.px() + deltaForMEx) * (patMET.px() + deltaForMEx)) + ((patMET.py() + deltaForMEy) * (patMET.py() + deltaForMEy)));
-    double mt2 = et*et - (px*px + py*py);
-    if ( mt2 < 0 ) { return -1.; }
-    else { return sqrt(mt2); }
-  }
+double HiMassTauAnalysis::CalculateLeptonMetMt(const pat::Electron& patElectron, int nobj) {
+  double px = smearedElectronMomentumVector.at(nobj).px() + theMETVector.px();
+  double py = smearedElectronMomentumVector.at(nobj).py() + theMETVector.py();
+  double et = smearedElectronMomentumVector.at(nobj).Et() + TMath::Sqrt((theMETVector.px() * theMETVector.px()) + (theMETVector.py() * theMETVector.py()));
+  double mt2 = et*et - (px*px + py*py);
+  if ( mt2 < 0 ) { return -1.; }
+  else { return sqrt(mt2); }
 }
-double HiMassTauAnalysis::CalculateLeptonMetMt(const pat::Tau& patTau, bool smear, reco::Candidate::LorentzVector smearedLV, const pat::MET& patMET) {
-  if(smear) {
-    double MEpx = patMET.px() + deltaForMEx + patTau.px() - smearedLV.px();
-    double MEpy = patMET.py() + deltaForMEy + patTau.py() - smearedLV.py();
-    double px = smearedLV.px() + MEpx;
-    double py = smearedLV.py() + MEpy;
-    double et = smearedLV.Et() + TMath::Sqrt((MEpx * MEpx) + (MEpy * MEpy));
-    double mt2 = et*et - (px*px + py*py);
-    if ( mt2 < 0 ) { return -1.; }
-    else { return sqrt(mt2); }
-  } else {
-    double px = patTau.px() + patMET.px() + deltaForMEx;
-    double py = patTau.py() + patMET.py() + deltaForMEy;
-    double et = patTau.et() + TMath::Sqrt(((patMET.px() + deltaForMEx) * (patMET.px() + deltaForMEx)) + ((patMET.py() + deltaForMEy) * (patMET.py() + deltaForMEy)));
-    double mt2 = et*et - (px*px + py*py);
-    if ( mt2 < 0 ) { return -1.; }
-    else { return sqrt(mt2); }
-  }
+double HiMassTauAnalysis::CalculateLeptonMetMt(const pat::Tau& patTau, int nobj) {
+  double px = smearedTauMomentumVector.at(nobj).px() + theMETVector.px();
+  double py = smearedTauMomentumVector.at(nobj).py() + theMETVector.py();
+  double et = smearedTauMomentumVector.at(nobj).Et() + TMath::Sqrt((theMETVector.px() * theMETVector.px()) + (theMETVector.py() * theMETVector.py()));
+  double mt2 = et*et - (px*px + py*py);
+  if ( mt2 < 0 ) { return -1.; }
+  else { return sqrt(mt2); }
 }
 
 //-----Calculate met correction
@@ -5200,6 +3542,7 @@ double HiMassTauAnalysis::CorrectTheMet(const pat::Tau& patTau) {
 
 //-----Calculate Tau Isolation Quantities
 pair<int, double> HiMassTauAnalysis::CalculateTauTrackIsolation(const pat::Tau& patTau) {
+  const reco::Vertex& thePrimaryEventVertex = (*(_primaryEventVertexCollection)->begin());
   int nIsoTrks=0;
   double sumPtIsoTrks=0;
   if (patTau.isCaloTau()) {
@@ -5216,7 +3559,9 @@ pair<int, double> HiMassTauAnalysis::CalculateTauTrackIsolation(const pat::Tau& 
     if (patTau.leadPFChargedHadrCand().isNonnull()) { 
       PFCandidateRefVector TauIsolTracks = patTau.isolationPFChargedHadrCands();
       for(PFCandidateRefVector::const_iterator iTrk=TauIsolTracks.begin();iTrk!=TauIsolTracks.end();++iTrk) {
-        if((reco::deltaR((**iTrk).eta(),(**iTrk).phi(),patTau.leadPFChargedHadrCand()->eta(),patTau.leadPFChargedHadrCand()->phi())<_RecoTauIsoDeltaRCone) && ((**iTrk).pt()>_RecoTauTrackIsoTrkThreshold)) {
+        if((reco::deltaR((**iTrk).eta(),(**iTrk).phi(),patTau.leadPFChargedHadrCand()->eta(),patTau.leadPFChargedHadrCand()->phi())<_RecoTauIsoDeltaRCone) && ((**iTrk).pt()>_RecoTauTrackIsoTrkThreshold)
+           && ((**iTrk).trackRef()->recHitsSize() > 8) && ((**iTrk).trackRef().isNonnull()) && (fabs((**iTrk).trackRef()->dxy(thePrimaryEventVertex.position())) < 0.03) 
+           && (fabs((**iTrk).trackRef()->dz(thePrimaryEventVertex.position())) < 0.2) ) {
           nIsoTrks++;
           sumPtIsoTrks = sumPtIsoTrks + (**iTrk).pt();
         }
@@ -5243,7 +3588,8 @@ pair<int, double> HiMassTauAnalysis::CalculateTauTrackIsolation(const pat::Tau& 
     if (patTau.leadPFChargedHadrCand().isNonnull()) { 
       PFCandidateRefVector TauIsolTracks = patTau.isolationPFChargedHadrCands();
       for(PFCandidateRefVector::const_iterator iTrk=TauIsolTracks.begin();iTrk!=TauIsolTracks.end();++iTrk) {
-        if((reco::deltaR((**iTrk).eta(),(**iTrk).phi(),patTau.leadPFChargedHadrCand()->eta(),patTau.leadPFChargedHadrCand()->phi())< deltaRCone) &&((**iTrk).pt()> trkMinPt)) {
+        if((reco::deltaR((**iTrk).eta(),(**iTrk).phi(),patTau.leadPFChargedHadrCand()->eta(),patTau.leadPFChargedHadrCand()->phi())< deltaRCone) &&((**iTrk).pt()> trkMinPt)
+           && ((**iTrk).trackRef()->recHitsSize() > 8) ) {
           nIsoTrks++;
           sumPtIsoTrks = sumPtIsoTrks + (**iTrk).pt();
         }
@@ -5493,8 +3839,74 @@ reco::Candidate::LorentzVector HiMassTauAnalysis::CalculateTauSignalTracksAndGam
   return TheSignalTracksAndGammas_LorentzVect;
 }
 
+//-----Calculate Mass from Tau signal track AND pi0 constituents
+pair<reco::Candidate::LorentzVector,int> HiMassTauAnalysis::CalculateTauSignalTracksAndPiZerosMass(const pat::Tau& patTau) {
+//reco::Candidate::LorentzVector HiMassTauAnalysis::CalculateTauSignalTracksAndPiZerosMass(const pat::Tau& patTau) {
+//  double px=0;
+//  double py=0;
+//  double pz=0;
+//  double e=0;
+  int npi0 = 0;
+  reco::Candidate::LorentzVector TheSignalTracksAndPiZeros_LorentzVect(0.,0.,0.,0.);
+  if (patTau.isCaloTau()) {
+  } else {
+    if (patTau.leadPFChargedHadrCand().isNonnull()) {
+      for ( reco::PFTauCollection::const_iterator hpsTau = _hpsTau->begin(); hpsTau != _hpsTau->end(); ++hpsTau ) {
+        const std::vector<RecoTauPiZero> &signalpizeros = hpsTau->signalPiZeroCandidates();
+        const std::vector<RecoTauPiZero> &isopizeros = hpsTau->isolationPiZeroCandidates();
+        if((int)(signalpizeros.size()) > 0) {
+          for(int nsigpi0s=0; nsigpi0s < (int)(signalpizeros.size()); nsigpi0s++) {
+            const RecoTauPiZero &signalpizero = signalpizeros.at(nsigpi0s);
+            if( reco::deltaR(patTau.leadPFChargedHadrCand()->p4(),signalpizero.p4()) < (5.0 / patTau.leadPFChargedHadrCand()->et()) ) {
+//            std::cout << "tau #" << nsigpi0s+1 << " signal pi0 px  = " << signalpizero.px() << std::endl;
+//            std::cout << "tau #" << nsigpi0s+1 << " signal pi0 energy = " << signalpizero.energy() << std::endl;
+              TheSignalTracksAndPiZeros_LorentzVect += signalpizero.p4();
+              npi0++;
+            }
+          }
+        }
+        if((int)(isopizeros.size()) > 0) {
+          for(int nisopi0s=0; nisopi0s < (int)(isopizeros.size()); nisopi0s++) {
+            const RecoTauPiZero &isopizero = isopizeros.at(nisopi0s);
+            if( reco::deltaR(patTau.leadPFChargedHadrCand()->p4(),isopizero.p4()) < (5.0 / patTau.leadPFChargedHadrCand()->et()) ) {
+//            std::cout << "tau #" << nisopi0s+1 << " signal pi0 px  = " << isopizero.px() << std::endl;
+//            std::cout << "tau #" << nisopi0s+1 << " signal pi0 energy = " << isopizero.energy() << std::endl;
+              TheSignalTracksAndPiZeros_LorentzVect += isopizero.p4();
+              npi0++;
+            }
+          }
+        }
+      }
+    }
+  }
+  pair<reco::Candidate::LorentzVector,int> TheSignalTracksAndPiZerosInfo(TheSignalTracksAndPiZeros_LorentzVect, npi0);
+  return TheSignalTracksAndPiZerosInfo;
+}
+
+/*
+//-----Calculate Lepton Isolation Quantities
+pair<int, double> HiMassTauAnalysis::CalculateLeptonTrackIsolation(const pat::Muon& patMuon) {
+  int nIsoTrks=0;
+  double sumPtIsoTrks=0;
+
+  for( unsigned ipfcand=0; ipfcand < _pflow->size(); ++ipfcand ) {
+    const reco::PFCandidate& cand = (*_pflow)[ipfcand];
+    if(cand.particleId()!=reco::PFCandidate::e)
+  }
+
+  for(PFCandidateRefVector::const_iterator iTrk=TauIsolTracks.begin();iTrk!=TauIsolTracks.end();++iTrk) {
+    if((reco::deltaR((**iTrk).eta(),(**iTrk).phi(),patTau.leadPFChargedHadrCand()->eta(),patTau.leadPFChargedHadrCand()->phi())<_RecoTauIsoDeltaRCone) && ((**iTrk).pt()>_RecoTauTrackIsoTrkThreshold)) {
+      nIsoTrks++;
+      sumPtIsoTrks = sumPtIsoTrks + (**iTrk).pt();
+    }
+  }
+  pair<int, double> LeptonIsoTrksInformation(nIsoTrks,sumPtIsoTrks);
+  return LeptonIsoTrksInformation;
+}
+*/
+
 //-----Smear the light leptons (for studies of systematic uncertanties)
-reco::Candidate::LorentzVector HiMassTauAnalysis::SmearLightLepton(const pat::Muon& patMuon) {
+pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> HiMassTauAnalysis::SmearLightLepton(const pat::Muon& patMuon) {
   double smearedPt;
   double smearedEta;
   double smearedPhi;
@@ -5511,46 +3923,85 @@ reco::Candidate::LorentzVector HiMassTauAnalysis::SmearLightLepton(const pat::Mu
         smearedPhi = (unsmearedMomentum.phi() * _MuonPhiScaleOffset) + ((patMuon.phi() -  unsmearedMomentum.phi()) * _MuonPhiSigmaOffset);
       } else {smearedPhi  = patMuon.phi();}
       math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(smearedPt, smearedEta, smearedPhi, unsmearedMomentum.mass());
-      reco::Candidate::LorentzVector smearedMomentum(smearedPtEtaPhiMVector.px(), smearedPtEtaPhiMVector.py(), smearedPtEtaPhiMVector.pz(), smearedPtEtaPhiMVector.energy());
-      return smearedMomentum;
+      reco::Candidate::LorentzVector smearedMomentum(smearedPtEtaPhiMVector.px(), smearedPtEtaPhiMVector.py(), smearedPtEtaPhiMVector.pz(), patMuon.energy());
+      pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
+      theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+      return theSmearedMomentumPair;
     } else {
+      math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(patMuon.pt(), patMuon.eta(), patMuon.phi(), patMuon.mass());
       reco::Candidate::LorentzVector smearedMomentum = patMuon.p4();
-      return smearedMomentum;
+      pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
+      theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+      return theSmearedMomentumPair;
     }
   } else {
+    math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(patMuon.pt(), patMuon.eta(), patMuon.phi(), patMuon.mass());
     reco::Candidate::LorentzVector smearedMomentum = patMuon.p4();
-    return smearedMomentum;
+    pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
+    theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+    return theSmearedMomentumPair;
   }
 }
-reco::Candidate::LorentzVector HiMassTauAnalysis::SmearLightLepton(const pat::Electron& patElectron) {
+pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> HiMassTauAnalysis::SmearLightLepton(const pat::Electron& patElectron) {
   double smearedPt;
+  double smearedEt;
   double smearedEta;
+  double smearedScEta;
   double smearedPhi;
   if(_GenParticleSource.label() != "") {
     if(matchToGen(patElectron).first) {
       reco::Candidate::LorentzVector unsmearedMomentum = matchToGen(patElectron).second; 
-      if(_SmearThePt) {
-        smearedPt = (unsmearedMomentum.pt() * _ElectronPtScaleOffset) + ((patElectron.pt() -  unsmearedMomentum.pt()) * _ElectronPtSigmaOffset);
-      } else {smearedPt  = patElectron.pt();}
-      if(_SmearTheEta) {
-        smearedEta = (unsmearedMomentum.eta() * _ElectronEtaScaleOffset) + ((patElectron.eta() -  unsmearedMomentum.eta()) * _ElectronEtaSigmaOffset);
-      } else {smearedEta  = patElectron.eta();}
-      if(_SmearThePhi) {
-        smearedPhi = (unsmearedMomentum.phi() * _ElectronPhiScaleOffset) + ((patElectron.phi() -  unsmearedMomentum.phi()) * _ElectronPhiSigmaOffset);
-      } else {smearedPhi  = patElectron.phi();}
-      math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(smearedPt, smearedEta, smearedPhi, unsmearedMomentum.mass());
-      reco::Candidate::LorentzVector smearedMomentum(smearedPtEtaPhiMVector.px(), smearedPtEtaPhiMVector.py(), smearedPtEtaPhiMVector.pz(), smearedPtEtaPhiMVector.energy());
-      return smearedMomentum;
+      if(_UseHeepInfo) {
+        heep::Ele theHeepElec(patElectron);
+        if(_SmearThePt) {
+	  smearedEt = (unsmearedMomentum.energy() * sin(unsmearedMomentum.theta()) * _ElectronPtScaleOffset) + ((theHeepElec.et() -  (unsmearedMomentum.energy() * sin(unsmearedMomentum.theta()))) * _ElectronPtSigmaOffset);
+	  smearedPt = (unsmearedMomentum.pt() * _ElectronPtScaleOffset) + ((patElectron.pt() -  unsmearedMomentum.pt()) * _ElectronPtSigmaOffset);
+	} else {smearedEt  = theHeepElec.et(); smearedPt  = patElectron.pt();}
+	if(_SmearTheEta) {
+	  smearedScEta = (unsmearedMomentum.eta() * _ElectronEtaScaleOffset) + ((theHeepElec.scEta() -  unsmearedMomentum.eta()) * _ElectronEtaSigmaOffset);
+	  smearedEta = (unsmearedMomentum.eta() * _ElectronEtaScaleOffset) + ((patElectron.eta() -  unsmearedMomentum.eta()) * _ElectronEtaSigmaOffset);
+	} else {smearedScEta  = theHeepElec.scEta(); smearedEta  = patElectron.eta();}
+	if(_SmearThePhi) {
+	  smearedPhi = (unsmearedMomentum.phi() * _ElectronPhiScaleOffset) + ((patElectron.phi() -  unsmearedMomentum.phi()) * _ElectronPhiSigmaOffset);
+	} else {smearedPhi  = patElectron.phi();}
+	math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(smearedPt, smearedEta, smearedPhi, unsmearedMomentum.mass());
+	math::PtEtaPhiMLorentzVector smearedEtEtaPhiMVector(smearedEt, smearedScEta, smearedPhi, unsmearedMomentum.mass());
+	reco::Candidate::LorentzVector smearedMomentum(smearedPtEtaPhiMVector.px(), smearedPtEtaPhiMVector.py(), smearedPtEtaPhiMVector.pz(), patElectron.energy());
+	pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
+	theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedEtEtaPhiMVector);
+	return theSmearedMomentumPair;
+      } else {
+        if(_SmearThePt) {
+	  smearedPt = (unsmearedMomentum.pt() * _ElectronPtScaleOffset) + ((patElectron.pt() -  unsmearedMomentum.pt()) * _ElectronPtSigmaOffset);
+	} else {smearedPt  = patElectron.pt();}
+	if(_SmearTheEta) {
+	  smearedEta = (unsmearedMomentum.eta() * _ElectronEtaScaleOffset) + ((patElectron.eta() -  unsmearedMomentum.eta()) * _ElectronEtaSigmaOffset);
+	} else {smearedEta  = patElectron.eta();}
+	if(_SmearThePhi) {
+	  smearedPhi = (unsmearedMomentum.phi() * _ElectronPhiScaleOffset) + ((patElectron.phi() -  unsmearedMomentum.phi()) * _ElectronPhiSigmaOffset);
+	} else {smearedPhi  = patElectron.phi();}
+	math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(smearedPt, smearedEta, smearedPhi, unsmearedMomentum.mass());
+	reco::Candidate::LorentzVector smearedMomentum(smearedPtEtaPhiMVector.px(), smearedPtEtaPhiMVector.py(), smearedPtEtaPhiMVector.pz(), patElectron.energy());
+	pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
+	theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+	return theSmearedMomentumPair;
+      }
     } else {
+      math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(patElectron.pt(), patElectron.eta(), patElectron.phi(), patElectron.mass());
       reco::Candidate::LorentzVector smearedMomentum = patElectron.p4();
-      return smearedMomentum;
+      pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
+      theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+      return theSmearedMomentumPair;
     }
   } else {
+    math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(patElectron.pt(), patElectron.eta(), patElectron.phi(), patElectron.mass());
     reco::Candidate::LorentzVector smearedMomentum = patElectron.p4();
-    return smearedMomentum;
+    pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
+    theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+    return theSmearedMomentumPair;
   }
 }
-reco::Candidate::LorentzVector HiMassTauAnalysis::SmearTau(const pat::Tau& patTau) {
+pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> HiMassTauAnalysis::SmearTau(const pat::Tau& patTau) {
   double smearedPt;
   double smearedEta;
   double smearedPhi;
@@ -5567,24 +4018,35 @@ reco::Candidate::LorentzVector HiMassTauAnalysis::SmearTau(const pat::Tau& patTa
         smearedPhi = (unsmearedMomentum.phi() * _TauPhiScaleOffset) + ((patTau.phi() -  unsmearedMomentum.phi()) * _TauPhiSigmaOffset);
       } else {smearedPhi  = patTau.phi();}
       math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(smearedPt, smearedEta, smearedPhi, unsmearedMomentum.mass());
-      reco::Candidate::LorentzVector smearedMomentum(smearedPtEtaPhiMVector.px(), smearedPtEtaPhiMVector.py(), smearedPtEtaPhiMVector.pz(), smearedPtEtaPhiMVector.energy());
-      return smearedMomentum;
+      reco::Candidate::LorentzVector smearedMomentum(smearedPtEtaPhiMVector.px(), smearedPtEtaPhiMVector.py(), smearedPtEtaPhiMVector.pz(), patTau.energy());
+      pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
+      theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+      return theSmearedMomentumPair;
     } else {
+      math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(patTau.pt(), patTau.eta(), patTau.phi(), patTau.mass());
       reco::Candidate::LorentzVector smearedMomentum = patTau.p4();
-      return smearedMomentum;
+      pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
+      theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+      return theSmearedMomentumPair;
     }
   } else {
+    math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(patTau.pt(), patTau.eta(), patTau.phi(), patTau.mass());
     reco::Candidate::LorentzVector smearedMomentum = patTau.p4();
-    return smearedMomentum;
+    pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
+    theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+    return theSmearedMomentumPair;
   }
 }
-reco::Candidate::LorentzVector HiMassTauAnalysis::SmearJet(const pat::Jet& patJet) {
+pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> HiMassTauAnalysis::SmearJet(const pat::Jet& patJet) {
   bool isRealJet = true;
   reco::Candidate::LorentzVector tempJetVector;
+  math::PtEtaPhiMLorentzVector tempPtEtaPhiMVector;
   if(_UseCorrectedJet) {
     tempJetVector = patJet.p4();
+    math::PtEtaPhiMLorentzVector tempPtEtaPhiMVector(patJet.pt(), patJet.eta(), patJet.phi(), patJet.mass());
   } else {
     tempJetVector = patJet.correctedJet("raw","").p4();
+    math::PtEtaPhiMLorentzVector tempPtEtaPhiMVector(patJet.correctedJet("raw","").pt(), patJet.correctedJet("raw","").eta(), patJet.correctedJet("raw","").phi(), patJet.correctedJet("raw","").mass());
   }
   if(_GenParticleSource.label() != "") {
     for ( pat::MuonCollection::const_iterator patMuon = _patMuons->begin(); patMuon != _patMuons->end(); ++patMuon ) {
@@ -5598,14 +4060,23 @@ reco::Candidate::LorentzVector HiMassTauAnalysis::SmearJet(const pat::Jet& patJe
     }
     if(isRealJet) {
       reco::Candidate::LorentzVector smearedMomentum = _JetEnergyScaleOffset * tempJetVector;
-      return smearedMomentum;
+      math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(smearedMomentum.pt(), smearedMomentum.eta(), smearedMomentum.phi(), smearedMomentum.mass());
+      pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
+      theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+      return theSmearedMomentumPair;
     } else {
       reco::Candidate::LorentzVector smearedMomentum = tempJetVector;
-      return smearedMomentum;
+      math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector = tempPtEtaPhiMVector;
+      pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
+      theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+      return theSmearedMomentumPair;
     }
   } else {
     reco::Candidate::LorentzVector smearedMomentum = tempJetVector;
-    return smearedMomentum;
+    math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector = tempPtEtaPhiMVector;
+    pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
+    theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+    return theSmearedMomentumPair;
   }
 }
 
@@ -5716,12 +4187,16 @@ void HiMassTauAnalysis::bookHistograms() {
       _hTauJetEnergy[NpdfCounter]                     = fs->make<TH1F>(("TauJetEnergy_"+j.str()).c_str(), ("TauJetEnergy_"+j.str()).c_str(), 200, 0., 500.);
       _hTauJetPt[NpdfCounter]                         = fs->make<TH1F>(("TauJetPt_"+j.str()).c_str(),     ("TauJetPt_"+j.str()).c_str(),     200, 0., 500.);
       _hTauJetEta[NpdfCounter]                        = fs->make<TH1F>(("TauJetEta_"+j.str()).c_str(),    ("TauJetEta_"+j.str()).c_str(),    72, -3.6, +3.6);
+      _hBestTauJetPt[NpdfCounter]                     = fs->make<TH1F>(("BestTauJetPt_"+j.str()).c_str(),     ("BestTauJetPt_"+j.str()).c_str(),     200, 0., 500.);
+      _hBestTauJetEta[NpdfCounter]                    = fs->make<TH1F>(("BestTauJetEta_"+j.str()).c_str(),    ("BestTauJetEta_"+j.str()).c_str(),    72, -3.6, +3.6);
       _hTauJetPhi[NpdfCounter]                        = fs->make<TH1F>(("TauJetPhi_"+j.str()).c_str(),    ("TauJetPhi_"+j.str()).c_str(),    36, -TMath::Pi(), +TMath::Pi());
       _hTauJetNumSignalTracks[NpdfCounter]            = fs->make<TH1F>(("TauJetNumSignalTracks_"+j.str()).c_str(),           ("TauJetNumSignalTracks_"+j.str()).c_str(), 10, 0, 10);
       _hTauJetNumSignalGammas[NpdfCounter]            = fs->make<TH1F>(("TauJetNumSignalGammas_"+j.str()).c_str(),           ("TauJetNumSignalGammas_"+j.str()).c_str(), 10, 0, 10);
       _hTauJetSeedTrackPt[NpdfCounter]                = fs->make<TH1F>(("TauJetSeedTrackPt_"+j.str()).c_str(),               ("TauJetSeedTrackPt_"+j.str()).c_str(),     200, 0., 500.);
+      _hBestTauJetSeedTrackPt[NpdfCounter]            = fs->make<TH1F>(("BestTauJetSeedTrackPt_"+j.str()).c_str(),           ("BestTauJetSeedTrackPt_"+j.str()).c_str(),     200, 0., 500.);
       _hTauJetSeedTrackIpSignificance[NpdfCounter]    = fs->make<TH1F>(("TauJetSeedTrackIpSignificance_"+j.str()).c_str(),   ("TauJetSeedTrackIpSignificance_"+j.str()).c_str(), 100, 0., 100.);
       _hTauJetSeedTrackNhits[NpdfCounter]             = fs->make<TH1F>(("TauJetSeedTrackNhits_"+j.str()).c_str(),            ("TauJetSeedTrackNhits_"+j.str()).c_str(), 40, 0., 40.);
+      _hBestTauJetSeedTrackNhits[NpdfCounter]             = fs->make<TH1F>(("BestTauJetSeedTrackNhits_"+j.str()).c_str(),            ("BestTauJetSeedTrackNhits_"+j.str()).c_str(), 40, 0., 40.);
       _hTauJetSeedTrackChi2[NpdfCounter]              = fs->make<TH1F>(("TauJetSeedTrackChi2_"+j.str()).c_str(),             ("TauJetSeedTrackChi2_"+j.str()).c_str(), 50, 0., 100.);
       _hTauJetCharge[NpdfCounter]                     = fs->make<TH1F>(("TauJetCharge_"+j.str()).c_str(),                    ("TauJetCharge_"+j.str()).c_str(), 5, 0., 5.);
       _hTauJetSignalTracksMass[NpdfCounter]           = fs->make<TH1F>(("TauJetSignalTracksMass_"+j.str()).c_str(),          ("TauJetSignalTracksMass_"+j.str()).c_str(), 50, 0., 5.);
@@ -5732,12 +4207,16 @@ void HiMassTauAnalysis::bookHistograms() {
       _hTauJetNumIsoCands[NpdfCounter]                = fs->make<TH1F>(("TauJetNumIsoCands_"+j.str()).c_str(),               ("TauJetNumIsoCands_"+j.str()).c_str(), 10, 0, 10);
       _hTauJetSumPtIsoTracks[NpdfCounter]             = fs->make<TH1F>(("TauJetSumPtIsoTracks_"+j.str()).c_str(),            ("TauJetSumPtIsoTracks_"+j.str()).c_str(), 100, 0, 50);
       _hTauJetSumPtIsoGammas[NpdfCounter]             = fs->make<TH1F>(("TauJetSumPtIsoGammas_"+j.str()).c_str(),            ("TauJetSumPtIsoGammas_"+j.str()).c_str(), 100, 0, 50);
+      _hBestTauJetSumPtIsoTracks[NpdfCounter]         = fs->make<TH1F>(("BestTauJetSumPtIsoTracks_"+j.str()).c_str(),        ("BestTauJetSumPtIsoTracks_"+j.str()).c_str(), 100, 0, 50);
+      _hBestTauJetSumPtIsoGammas[NpdfCounter]         = fs->make<TH1F>(("BestTauJetSumPtIsoGammas_"+j.str()).c_str(),        ("BestTauJetSumPtIsoGammas_"+j.str()).c_str(), 100, 0, 50);
       _hTauJetSumPtIso[NpdfCounter]                   = fs->make<TH1F>(("TauJetSumPtIso_"+j.str()).c_str(),                  ("TauJetSumPtIso_"+j.str()).c_str(), 100, 0, 50);
       _hTauJetGenTauDeltaPhi[NpdfCounter]             = fs->make<TH1F>(("TauJetGenTauDeltaPhi_"+j.str()).c_str(),            ("TauJetGenTauDeltaPhi_"+j.str()).c_str(), 800, -0.2, 0.2);
       _hTauJetGenTauDeltaEta[NpdfCounter]             = fs->make<TH1F>(("TauJetGenTauDeltaEta_"+j.str()).c_str(),            ("TauJetGenTauDeltaEta_"+j.str()).c_str(), 800, -0.2, 0.2);
       _hTauJetGenTauDeltaPt[NpdfCounter]              = fs->make<TH1F>(("TauJetGenTauDeltaPt_"+j.str()).c_str(),             ("TauJetGenTauDeltaPt_"+j.str()).c_str(), 500, -5, 5);
       _hTauJetSignalTracksMass1prong[NpdfCounter]     = fs->make<TH1F>(("TauJetSignalTracksMass1prong_"+j.str()).c_str(),    ("TauJetSignalTracksMass1prong_"+j.str()).c_str(), 50, 0., 5.);
       _hTauJetSignalTracksAndGammasMass1prong[NpdfCounter] = fs->make<TH1F>(("TauJetSignalTracksAndGammasMass1prong_"+j.str()).c_str(), ("TauJetSignalTracksAndGammasMass1prong_"+j.str()).c_str(), 50, 0., 5.);
+      _hTauJetSignalTracksAndPiZerosMass1prong[NpdfCounter] = fs->make<TH1F>(("TauJetSignalTracksAndPiZerosMass1prong_"+j.str()).c_str(), ("TauJetSignalTracksAndPiZerosMass1prong_"+j.str()).c_str(), 50, 0., 5.);
+      _hTauJetNumSignalPiZeros1prong[NpdfCounter] = fs->make<TH1F>(("TauJetNumSignalPiZeros1prong_"+j.str()).c_str(), ("TauJetNumSignalPiZeros1prong_"+j.str()).c_str(), 10, 0., 10.);
       _hTauJetSignalTracksMass3prong[NpdfCounter]          = fs->make<TH1F>(("TauJetSignalTracksMass3prong_"+j.str()).c_str(),          ("TauJetSignalTracksMass3prong_"+j.str()).c_str(), 50, 0., 5.);
       _hTauJetSignalTracksAndGammasMass3prong[NpdfCounter] = fs->make<TH1F>(("TauJetSignalTracksAndGammasMass3prong_"+j.str()).c_str(), ("TauJetSignalTracksAndGammasMass3prong_"+j.str()).c_str(), 50, 0., 5.);
       _hTauJetMass1Prong0Gamma[NpdfCounter]                = fs->make<TH1F>(("TauJetMass1Prong0Gamma_"+j.str()).c_str(),                ("TauJetMass1Prong0Gamma_"+j.str()).c_str(), 100, 0., 5.);
@@ -5746,6 +4225,8 @@ void HiMassTauAnalysis::bookHistograms() {
       _hTauJetMass3Prong0Gamma[NpdfCounter]                = fs->make<TH1F>(("TauJetMass3Prong0Gamma_"+j.str()).c_str(),                ("TauJetMass3Prong0Gamma_"+j.str()).c_str(), 100, 0., 5.);
       _hTauJetMass3Prong1Gamma[NpdfCounter]                = fs->make<TH1F>(("TauJetMass3Prong1Gamma_"+j.str()).c_str(),                ("TauJetMass3Prong1Gamma_"+j.str()).c_str(), 100, 0., 5.);
       _hTauJetMass3Prong2orMoreGamma[NpdfCounter]          = fs->make<TH1F>(("TauJetMass3Prong2orMoreGamma_"+j.str()).c_str(),          ("TauJetMass3Prong2orMoreGamma_"+j.str()).c_str(), 100, 0., 5.);
+      _hTauJetH3x3OverP[NpdfCounter]          = fs->make<TH1F>(("TauJetH3x3OverP_"+j.str()).c_str(),          ("TauJetH3x3OverP_"+j.str()).c_str(), 100, 0., 1.);
+      _hBestTauJetH3x3OverP[NpdfCounter]          = fs->make<TH1F>(("BestTauJetH3x3OverP_"+j.str()).c_str(),          ("BestTauJetH3x3OverP_"+j.str()).c_str(), 100, 0., 1.);
     }
     
     //--- book reconstruction level histograms 
@@ -5754,20 +4235,27 @@ void HiMassTauAnalysis::bookHistograms() {
       _hMuonEnergy[NpdfCounter]                  = fs->make<TH1F>(("MuonEnergy_"+j.str()).c_str(),              ("MuonEnergy_"+j.str()).c_str(), 200, 0., 500.);
       _hMuonPt[NpdfCounter]                      = fs->make<TH1F>(("MuonPt_"+j.str()).c_str(),                  ("MuonPt_"+j.str()).c_str(),  200, 0., 500.);
       _hMuonEta[NpdfCounter]                     = fs->make<TH1F>(("MuonEta_"+j.str()).c_str(),                 ("MuonEta_"+j.str()).c_str(), 72, -3.6, +3.6);
+      _hBestMuonPt[NpdfCounter]                  = fs->make<TH1F>(("BestMuonPt_"+j.str()).c_str(),              ("BestMuonPt_"+j.str()).c_str(),  200, 0., 500.);
+      _hBestMuonEta[NpdfCounter]                 = fs->make<TH1F>(("BestMuonEta_"+j.str()).c_str(),             ("BestMuonEta_"+j.str()).c_str(), 72, -3.6, +3.6);
       _hMuonPhi[NpdfCounter]                     = fs->make<TH1F>(("MuonPhi_"+j.str()).c_str(),                 ("MuonPhi_"+j.str()).c_str(), 36, -TMath::Pi(), +TMath::Pi());
       _hMuonTrackIso[NpdfCounter]                = fs->make<TH1F>(("MuonTrackIso_"+j.str()).c_str(),            ("MuonTrackIso_"+j.str()).c_str(), 100, 0, 50);
       _hMuonEcalIso[NpdfCounter]                 = fs->make<TH1F>(("MuonEcalIso_"+j.str()).c_str(),             ("MuonEcalIso_"+j.str()).c_str(), 100, 0, 50);
+      _hBestMuonTrackIso[NpdfCounter]            = fs->make<TH1F>(("BestMuonTrackIso_"+j.str()).c_str(),        ("BestMuonTrackIso_"+j.str()).c_str(), 100, 0, 50);
+      _hBestMuonEcalIso[NpdfCounter]             = fs->make<TH1F>(("BestMuonEcalIso_"+j.str()).c_str(),         ("BestMuonEcalIso_"+j.str()).c_str(), 100, 0, 50);
       _hMuonIso[NpdfCounter]                     = fs->make<TH1F>(("MuonIso_"+j.str()).c_str(),                 ("MuonIso_"+j.str()).c_str(), 100, 0, 50);
       _hMuonIp[NpdfCounter]                      = fs->make<TH1F>(("MuonIp_"+j.str()).c_str(),                  ("MuonIp_"+j.str()).c_str(), 500, -1, +1);
+      _hBestMuonIp[NpdfCounter]                  = fs->make<TH1F>(("BestMuonIp_"+j.str()).c_str(),              ("BestMuonIp_"+j.str()).c_str(), 500, -1, +1);
       _hMuonIpSignificance[NpdfCounter]          = fs->make<TH1F>(("MuonIpSignificance_"+j.str()).c_str(),      ("MuonIpSignificance_"+j.str()).c_str(), 100, 0., 100.);
       _hMuonGenMuonDeltaPhi[NpdfCounter]         = fs->make<TH1F>(("MuonGenMuonDeltaPhi_"+j.str()).c_str(),     ("MuonGenMuonDeltaPhi_"+j.str()).c_str(), 800, -0.2, 0.2);
       _hMuonGenMuonDeltaEta[NpdfCounter]         = fs->make<TH1F>(("MuonGenMuonDeltaEta_"+j.str()).c_str(),     ("MuonGenMuonDeltaEta_"+j.str()).c_str(), 800, -0.2, 0.2);
       _hMuonGenMuonDeltaPt[NpdfCounter]          = fs->make<TH1F>(("MuonGenMuonDeltaPt_"+j.str()).c_str(),      ("MuonGenMuonDeltaPt_"+j.str()).c_str(), 500, -5, 5);
       _hMuonCaloCompatibility[NpdfCounter]       = fs->make<TH1F>(("MuonCaloCompatibility_"+j.str()).c_str(),   ("MuonCaloCompatibility_"+j.str()).c_str(), 102, 0.0, 1.02);
       _hMuonSegmentCompatibility[NpdfCounter]    = fs->make<TH1F>(("MuonSegmentCompatibility_"+j.str()).c_str(),("MuonSegmentCompatibility_"+j.str()).c_str(), 102, 0.0, 1.02);
+      _hBestMuonCaloCompatibility[NpdfCounter]       = fs->make<TH1F>(("BestMuonCaloCompatibility_"+j.str()).c_str(),   ("BestMuonCaloCompatibility_"+j.str()).c_str(), 102, 0.0, 1.02);
+      _hBestMuonSegmentCompatibility[NpdfCounter]    = fs->make<TH1F>(("BestMuonSegmentCompatibility_"+j.str()).c_str(),("BestMuonSegmentCompatibility_"+j.str()).c_str(), 102, 0.0, 1.02);
       _hMuonAntiPion[NpdfCounter]                = fs->make<TH1F>(("MuonAntiPion_"+j.str()).c_str(),            ("MuonAntiPion_"+j.str()).c_str(), 202, 0.0, 2.02);
-      _hMuonCaloCompatibilityVsSegmentCompatibility[NpdfCounter] = fs->make<TH2F>(("MuonCaloCompatibilityVsSegmentCompatibility_"+j.str()).c_str(), ("MuonCaloCompatibilityVsSegmentCompatibility_"+j.str()).c_str(), 102, 0, 1.02, 102, 0, 1.02);
-      
+      _hBestMuonAntiPion[NpdfCounter]            = fs->make<TH1F>(("BestMuonAntiPion_"+j.str()).c_str(),        ("BestMuonAntiPion_"+j.str()).c_str(), 202, 0.0, 2.02);
+      _hMuonCaloCompatibilityVsSegmentCompatibility[NpdfCounter] = fs->make<TH2F>(("MuonCaloCompatibilityVsSegmentCompatibility_"+j.str()).c_str(), ("MuonCaloCompatibilityVsSegmentCompatibility_"+j.str()).c_str(), 102, 0, 1.02, 102, 0, 1.02);      
     }
     
     if (_FillRecoElectronHists) {
@@ -5775,9 +4263,13 @@ void HiMassTauAnalysis::bookHistograms() {
       _hElectronEnergy[NpdfCounter]              = fs->make<TH1F>(("ElectronEnergy_"+j.str()).c_str(),             ("ElectronEnergy_"+j.str()).c_str(), 200, 0., 500.);
       _hElectronPt[NpdfCounter]                  = fs->make<TH1F>(("ElectronPt_"+j.str()).c_str(),                 ("ElectronPt_"+j.str()).c_str(), 200, 0., 500.);
       _hElectronEta[NpdfCounter]                 = fs->make<TH1F>(("ElectronEta_"+j.str()).c_str(),                ("ElectronEta_"+j.str()).c_str(), 72, -3.6, +3.6);
+      _hBestElectronPt[NpdfCounter]              = fs->make<TH1F>(("BestElectronPt_"+j.str()).c_str(),             ("BestElectronPt_"+j.str()).c_str(), 200, 0., 500.);
+      _hBestElectronEta[NpdfCounter]             = fs->make<TH1F>(("BestElectronEta_"+j.str()).c_str(),            ("BestElectronEta_"+j.str()).c_str(), 72, -3.6, +3.6);
       _hElectronPhi[NpdfCounter]                 = fs->make<TH1F>(("ElectronPhi_"+j.str()).c_str(),                ("ElectronPhi_"+j.str()).c_str(), 36, -TMath::Pi(), +TMath::Pi());
       _hElectronTrackIso[NpdfCounter]            = fs->make<TH1F>(("ElectronTrackIso_"+j.str()).c_str(),           ("ElectronTrackIso_"+j.str()).c_str(), 100, 0, 50);
       _hElectronEcalIso[NpdfCounter]             = fs->make<TH1F>(("ElectronEcalIso_"+j.str()).c_str(),            ("ElectronEcalIso_"+j.str()).c_str(), 100, 0, 50);
+      _hBestElectronTrackIso[NpdfCounter]        = fs->make<TH1F>(("BestElectronTrackIso_"+j.str()).c_str(),       ("BestElectronTrackIso_"+j.str()).c_str(), 100, 0, 50);
+      _hBestElectronEcalIso[NpdfCounter]         = fs->make<TH1F>(("BestElectronEcalIso_"+j.str()).c_str(),        ("BestElectronEcalIso_"+j.str()).c_str(), 100, 0, 50);
       _hElectronIp[NpdfCounter]                  = fs->make<TH1F>(("ElectronIp_"+j.str()).c_str(),                 ("ElectronIp_"+j.str()).c_str(), 500, -1, +1);
       _hElectronEoverP[NpdfCounter]              = fs->make<TH1F>(("ElectronEoverP_"+j.str()).c_str(),             ("ElectronEoverP_"+j.str()).c_str(), 60, 0, +3);
       _hElectronHoverEm[NpdfCounter]             = fs->make<TH1F>(("ElectronHoverEm_"+j.str()).c_str(),            ("ElectronHoverEm_"+j.str()).c_str(), 300, 0, +3);
@@ -5788,6 +4280,26 @@ void HiMassTauAnalysis::bookHistograms() {
       _hElectronEcalDriven[NpdfCounter]          = fs->make<TH1F>(("ElectronEcalDriven_"+j.str()).c_str(),         ("ElectronEcalDriven_"+j.str()).c_str(), 2, 0., 2.);
       _hElectronTrackerDriven[NpdfCounter]       = fs->make<TH1F>(("ElectronTrackerDriven_"+j.str()).c_str(),      ("ElectronTrackerDriven_"+j.str()).c_str(), 2, 0., 2.);
       _hElectronIsZee[NpdfCounter]               = fs->make<TH1F>(("ElectronIsZee_"+j.str()).c_str(),              ("ElectronIsZee_"+j.str()).c_str(), 2, 0., 2.);
+      _hElectronHoverEm[NpdfCounter]             = fs->make<TH1F>(("ElectronHoverEm_"+j.str()).c_str(),            ("ElectronHoverEm_"+j.str()).c_str(), 100, 0., 0.5);
+      _hElectronEESigmaIEtaIEta[NpdfCounter]     = fs->make<TH1F>(("ElectronEESigmaIEtaIEta_"+j.str()).c_str(),    ("ElectronEESigmaIEtaIEta_"+j.str()).c_str(), 100, 0., 0.05);
+      _hElectronEEDEta[NpdfCounter]              = fs->make<TH1F>(("ElectronEEDEta_"+j.str()).c_str(),             ("ElectronEEDEta_"+j.str()).c_str(), 100, -0.05, 0.05);
+      _hElectronEEDPhi[NpdfCounter]              = fs->make<TH1F>(("ElectronEEDPhi_"+j.str()).c_str(),             ("ElectronEEDPhi_"+j.str()).c_str(), 100, -0.2, 0.2);
+      _hElectronEBSigmaIEtaIEta[NpdfCounter]     = fs->make<TH1F>(("ElectronEBSigmaIEtaIEta_"+j.str()).c_str(),    ("ElectronEBSigmaIEtaIEta_"+j.str()).c_str(), 100, 0., 0.05);
+      _hElectronEBDEta[NpdfCounter]              = fs->make<TH1F>(("ElectronEBDEta_"+j.str()).c_str(),             ("ElectronEBDEta_"+j.str()).c_str(), 100, -0.05, 0.05);
+      _hElectronEBDPhi[NpdfCounter]              = fs->make<TH1F>(("ElectronEBDPhi_"+j.str()).c_str(),             ("ElectronEBDPhi_"+j.str()).c_str(), 100, -0.2, 0.2);
+      _hElectronEB2by5Over5by5[NpdfCounter]      = fs->make<TH1F>(("ElectronEB2by5Over5by5_"+j.str()).c_str(),     ("ElectronEB2by5Over5by5_"+j.str()).c_str(), 100, 0., 1.);
+      _hElectronEB1by5Over5by5[NpdfCounter]      = fs->make<TH1F>(("ElectronEB1by5Over5by5_"+j.str()).c_str(),     ("ElectronEB1by5Over5by5_"+j.str()).c_str(), 100, 0., 1.);
+      _hElectronMissingHits[NpdfCounter]         = fs->make<TH1F>(("ElectronMissingHits_"+j.str()).c_str(),        ("ElectronMissingHits_"+j.str()).c_str(), 10, 0., 10.);
+      _hBestElectronHoverEm[NpdfCounter]             = fs->make<TH1F>(("BestElectronHoverEm_"+j.str()).c_str(),            ("BestElectronHoverEm_"+j.str()).c_str(), 100, 0., 0.5);
+      _hBestElectronEESigmaIEtaIEta[NpdfCounter]     = fs->make<TH1F>(("BestElectronEESigmaIEtaIEta_"+j.str()).c_str(),    ("BestElectronEESigmaIEtaIEta_"+j.str()).c_str(), 100, 0., 0.05);
+      _hBestElectronEEDEta[NpdfCounter]              = fs->make<TH1F>(("BestElectronEEDEta_"+j.str()).c_str(),             ("BestElectronEEDEta_"+j.str()).c_str(), 100, -0.05, 0.05);
+      _hBestElectronEEDPhi[NpdfCounter]              = fs->make<TH1F>(("BestElectronEEDPhi_"+j.str()).c_str(),             ("BestElectronEEDPhi_"+j.str()).c_str(), 100, -0.2, 0.2);
+      _hBestElectronEBSigmaIEtaIEta[NpdfCounter]     = fs->make<TH1F>(("BestElectronEBSigmaIEtaIEta_"+j.str()).c_str(),    ("BestElectronEBSigmaIEtaIEta_"+j.str()).c_str(), 100, 0., 0.05);
+      _hBestElectronEBDEta[NpdfCounter]              = fs->make<TH1F>(("BestElectronEBDEta_"+j.str()).c_str(),             ("BestElectronEBDEta_"+j.str()).c_str(), 100, -0.05, 0.05);
+      _hBestElectronEBDPhi[NpdfCounter]              = fs->make<TH1F>(("BestElectronEBDPhi_"+j.str()).c_str(),             ("BestElectronEBDPhi_"+j.str()).c_str(), 100, -0.2, 0.2);
+      _hBestElectronEB2by5Over5by5[NpdfCounter]      = fs->make<TH1F>(("BestElectronEB2by5Over5by5_"+j.str()).c_str(),     ("BestElectronEB2by5Over5by5_"+j.str()).c_str(), 100, 0., 1.);
+      _hBestElectronEB1by5Over5by5[NpdfCounter]      = fs->make<TH1F>(("BestElectronEB1by5Over5by5_"+j.str()).c_str(),     ("BestElectronEB1by5Over5by5_"+j.str()).c_str(), 100, 0., 1.);
+      _hBestElectronMissingHits[NpdfCounter]         = fs->make<TH1F>(("BestElectronMissingHits_"+j.str()).c_str(),        ("BestElectronMissingHits_"+j.str()).c_str(), 10, 0., 10.);
     }
     
     if (_FillRecoJetHists) {
@@ -5799,17 +4311,26 @@ void HiMassTauAnalysis::bookHistograms() {
       _hBJetDiscrByTrackCounting[NpdfCounter]    = fs->make<TH1F>(("BJetDiscrByTrackCounting_"+j.str()).c_str(), ("BJetDiscrByTrackCounting_"+j.str()).c_str(), 400, -20, 20);
       _hBJetDiscrBySimpleSecondaryV[NpdfCounter] = fs->make<TH1F>(("BJetDiscrBySimpleSecondaryV_"+j.str()).c_str(), ("BJetDiscrBySimpleSecondaryV_"+j.str()).c_str(), 400, -20, 20);
       _hBJetDiscrByCombinedSecondaryV[NpdfCounter] = fs->make<TH1F>(("BJetDiscrByCombinedSecondaryV_"+j.str()).c_str(), ("BJetDiscrByCombinedSecondaryV_"+j.str()).c_str(), 400, -20, 20);
+      _hFirstLeadingJetPt[NpdfCounter]       = fs->make<TH1F>(("FirstLeadingJetPt_"+j.str()).c_str(),     ("FirstLeadingJetPt_"+j.str()).c_str(), 200, 0., 1000.);
+      _hSecondLeadingJetPt[NpdfCounter]       = fs->make<TH1F>(("SecondLeadingJetPt_"+j.str()).c_str(),     ("SecondLeadingJetPt_"+j.str()).c_str(), 200, 0., 1000.);
+      _hMHT[NpdfCounter]                    = fs->make<TH1F>(("MHT_"+j.str()).c_str(),                    ("MHT_"+j.str()).c_str(), 100, 0, 1000);
+      _hHT[NpdfCounter]                    = fs->make<TH1F>(("HT_"+j.str()).c_str(),                    ("HT_"+j.str()).c_str(), 100, 0, 1000);
     }
     
     if (_FillTopologyHists) {
       if( ((_AnalyzeMuonForLeg1) && (_AnalyzeTauForLeg2)) || ((_AnalyzeMuonForLeg2) && (_AnalyzeTauForLeg1)) ) {
 	_hMuonPtVsTauPt[NpdfCounter]                   = fs->make<TH2F>(("MuonPtVsTauPt_"+j.str()).c_str(),   ("MuonPtVsTauPt_"+j.str()).c_str(), 100, 0, 500, 100, 0, 500);
 	_hMuonTauDeltaR[NpdfCounter]                   = fs->make<TH1F>(("MuonTauDeltaR_"+j.str()).c_str(),   ("MuonTauDeltaR_"+j.str()).c_str(), 100, 0, 5.);
+	_hBestMuonTauDeltaR[NpdfCounter]               = fs->make<TH1F>(("BestMuonTauDeltaR_"+j.str()).c_str(),   ("BestMuonTauDeltaR_"+j.str()).c_str(), 100, 0, 5.);
 	_hMuonTauDeltaPtDivSumPt[NpdfCounter]          = fs->make<TH1F>(("MuonTauDeltaPtDivSumPt_"+j.str()).c_str(), ("MuonTauDeltaPtDivSumPt_"+j.str()).c_str(), 100, -5, 5.);
+	_hMuonTauDeltaPt[NpdfCounter]                  = fs->make<TH1F>(("MuonTauDeltaPt_"+j.str()).c_str(), ("MuonTauDeltaPt_"+j.str()).c_str(), 100, 0, 1000);
 	_hMuonMetMt[NpdfCounter]                       = fs->make<TH1F>(("MuonMetMt_"+j.str()).c_str(),       ("MuonMetMt_"+j.str()).c_str(), 100, 0, 500);
+	_hBestMuonMetMt[NpdfCounter]                   = fs->make<TH1F>(("BestMuonMetMt_"+j.str()).c_str(),       ("BestMuonMetMt_"+j.str()).c_str(), 100, 0, 500);
 	_hTauMetMt[NpdfCounter]                        = fs->make<TH1F>(("TauMetMt_"+j.str()).c_str(),        ("TauMetMt_"+j.str()).c_str(), 100, 0, 500);
 	_hMuonTauOSLS[NpdfCounter]                     = fs->make<TH1F>(("MuonTauOSLS_"+j.str()).c_str(),     ("MuonTauOSLS_"+j.str()).c_str(), 20, -10, 10);
+	_hBestMuonTauOSLS[NpdfCounter]                 = fs->make<TH1F>(("BestMuonTauOSLS_"+j.str()).c_str(),     ("BestMuonTauOSLS_"+j.str()).c_str(), 20, -10, 10);
 	_hMuonTauCosDphi[NpdfCounter]                  = fs->make<TH1F>(("MuonTauCosDphi_"+j.str()).c_str(),  ("MuonTauCosDphi_"+j.str()).c_str(), 220, -1.1, 1.1);
+	_hBestMuonTauCosDphi[NpdfCounter]                  = fs->make<TH1F>(("BestMuonTauCosDphi_"+j.str()).c_str(),  ("BestMuonTauCosDphi_"+j.str()).c_str(), 220, -1.1, 1.1);
 	_hMuonMetDeltaPhi[NpdfCounter]                 = fs->make<TH1F>(("MuonMetDeltaPhi_"+j.str()).c_str(), ("MuonMetDeltaPhi_"+j.str()).c_str(), 72, 0, +TMath::Pi());
 	_hTauMetDeltaPhi[NpdfCounter]                  = fs->make<TH1F>(("TauMetDeltaPhi_"+j.str()).c_str(), ("TauMetDeltaPhi_"+j.str()).c_str(), 72, 0, +TMath::Pi());
 	_hMuonMetDeltaPhiVsMuonTauCosDphi[NpdfCounter] = fs->make<TH2F>(("MuonMetDeltaPhiVsMuonTauCosDphi_"+j.str()).c_str(), ("MuonMetDeltaPhiVsMuonTauCosDphi_"+j.str()).c_str(), 72, 0, +TMath::Pi(), 220, -1.1, 1.1);
@@ -5817,11 +4338,16 @@ void HiMassTauAnalysis::bookHistograms() {
       if( ((_AnalyzeElectronForLeg1) && (_AnalyzeTauForLeg2)) || ((_AnalyzeElectronForLeg2) && (_AnalyzeTauForLeg1)) ) {
 	_hElectronPtVsTauPt[NpdfCounter]          = fs->make<TH2F>(("ElectronPtVsTauPt_"+j.str()).c_str(),          ("ElectronPtVsTauPt_"+j.str()).c_str(), 100, 0, 500, 100, 0, 500);
 	_hElectronTauDeltaR[NpdfCounter]          = fs->make<TH1F>(("ElectronTauDeltaR_"+j.str()).c_str(),          ("ElectronTauDeltaR_"+j.str()).c_str(), 100, 0, 5.);
+	_hBestElectronTauDeltaR[NpdfCounter]      = fs->make<TH1F>(("BestElectronTauDeltaR_"+j.str()).c_str(),          ("BestElectronTauDeltaR_"+j.str()).c_str(), 100, 0, 5.);
 	_hElectronTauDeltaPtDivSumPt[NpdfCounter] = fs->make<TH1F>(("ElectronTauDeltaPtDivSumPt_"+j.str()).c_str(), ("ElectronTauDeltaPtDivSumPt_"+j.str()).c_str(), 100, -5, 5.);
+	_hElectronTauDeltaPt[NpdfCounter]         = fs->make<TH1F>(("ElectronTauDeltaPt_"+j.str()).c_str(), ("ElectronTauDeltaPt_"+j.str()).c_str(), 100, 0, 1000);
 	_hElectronMetMt[NpdfCounter]              = fs->make<TH1F>(("ElectronMetMt_"+j.str()).c_str(),              ("ElectronMetMt_"+j.str()).c_str(), 100, 0, 500);
+	_hBestElectronMetMt[NpdfCounter]          = fs->make<TH1F>(("BestElectronMetMt_"+j.str()).c_str(),              ("BestElectronMetMt_"+j.str()).c_str(), 100, 0, 500);
 	_hTauMetMt[NpdfCounter]                   = fs->make<TH1F>(("TauMetMt_"+j.str()).c_str(),                   ("TauMetMt_"+j.str()).c_str(), 100, 0, 500);
 	_hElectronTauOSLS[NpdfCounter]            = fs->make<TH1F>(("ElectronTauOSLS_"+j.str()).c_str(),            ("ElectronTauOSLS_"+j.str()).c_str(), 20, -10, 10);
+	_hBestElectronTauOSLS[NpdfCounter]        = fs->make<TH1F>(("BestElectronTauOSLS_"+j.str()).c_str(),            ("BestElectronTauOSLS_"+j.str()).c_str(), 20, -10, 10);
 	_hElectronTauCosDphi[NpdfCounter]         = fs->make<TH1F>(("ElectronTauCosDphi_"+j.str()).c_str(),         ("ElectronTauCosDphi_"+j.str()).c_str(), 220, -1.1, 1.1);
+	_hBestElectronTauCosDphi[NpdfCounter]         = fs->make<TH1F>(("BestElectronTauCosDphi_"+j.str()).c_str(),         ("BestElectronTauCosDphi_"+j.str()).c_str(), 220, -1.1, 1.1);
 	_hElectronMetDeltaPhi[NpdfCounter]        = fs->make<TH1F>(("ElectronMetDeltaPhi_"+j.str()).c_str(),        ("ElectronMetDeltaPhi_"+j.str()).c_str(), 72, 0, +TMath::Pi());
 	_hTauMetDeltaPhi[NpdfCounter]             = fs->make<TH1F>(("TauMetDeltaPhi_"+j.str()).c_str(),             ("TauMetDeltaPhi_"+j.str()).c_str(), 72, 0, +TMath::Pi());
 	_hElectronMetDeltaPhiVsElectronTauCosDphi[NpdfCounter] = fs->make<TH2F>(("ElectronMetDeltaPhiVsElectronTauCosDphi_"+j.str()).c_str(), ("ElectronMetDeltaPhiVsElectronTauCosDphi_"+j.str()).c_str(), 72, 0, +TMath::Pi(), 220, -1.1, 1.1);
@@ -5830,6 +4356,7 @@ void HiMassTauAnalysis::bookHistograms() {
 	_hElectronPtVsMuonPt[NpdfCounter]          = fs->make<TH2F>(("ElectronPtVsMuonPt_"+j.str()).c_str(),          ("ElectronPtVsMuonPt_"+j.str()).c_str(), 100, 0, 500, 100, 0, 500);
 	_hElectronMuonDeltaR[NpdfCounter]          = fs->make<TH1F>(("ElectronMuonDeltaR_"+j.str()).c_str(),          ("ElectronMuonDeltaR_"+j.str()).c_str(), 100, 0, 5.);
 	_hElectronMuonDeltaPtDivSumPt[NpdfCounter] = fs->make<TH1F>(("ElectronMuonDeltaPtDivSumPt_"+j.str()).c_str(), ("ElectronMuonDeltaPtDivSumPt_"+j.str()).c_str(), 100, -5, 5.);
+	_hElectronMuonDeltaPt[NpdfCounter]         = fs->make<TH1F>(("ElectronMuonDeltaPt_"+j.str()).c_str(), ("ElectronMuonDeltaPt_"+j.str()).c_str(), 100, 0, 1000);
 	_hElectronMetMt[NpdfCounter]               = fs->make<TH1F>(("ElectronMetMt_"+j.str()).c_str(),               ("ElectronMetMt_"+j.str()).c_str(), 100, 0, 500);
 	_hMuonMetMt[NpdfCounter]                   = fs->make<TH1F>(("MuonMetMt_"+j.str()).c_str(),                   ("MuonMetMt_"+j.str()).c_str(), 100, 0, 500);
 	_hElectronMuonOSLS[NpdfCounter]            = fs->make<TH1F>(("ElectronMuonOSLS_"+j.str()).c_str(),            ("ElectronMuonOSLS_"+j.str()).c_str(), 20, -10, 10);
@@ -5842,6 +4369,7 @@ void HiMassTauAnalysis::bookHistograms() {
 	_hTau1PtVsTau2Pt[NpdfCounter]          = fs->make<TH2F>(("Tau1PtVsTau2Pt_"+j.str()).c_str(),          ("Tau1PtVsTau2Pt_"+j.str()).c_str(), 100, 0, 500, 100, 0, 500);
 	_hTau1Tau2DeltaR[NpdfCounter]          = fs->make<TH1F>(("Tau1Tau2DeltaR_"+j.str()).c_str(),          ("Tau1Tau2DeltaR_"+j.str()).c_str(), 100, 0, 5.);
 	_hTau1Tau2DeltaPtDivSumPt[NpdfCounter] = fs->make<TH1F>(("Tau1Tau2DeltaPtDivSumPt_"+j.str()).c_str(), ("Tau1Tau2DeltaPtDivSumPt_"+j.str()).c_str(), 100, -5, 5.);
+	_hTau1Tau2DeltaPt[NpdfCounter]         = fs->make<TH1F>(("Tau1Tau2DeltaPt_"+j.str()).c_str(), ("Tau1Tau2DeltaPt_"+j.str()).c_str(), 100, 0, 1000);
 	_hTau1MetMt[NpdfCounter]               = fs->make<TH1F>(("Tau1MetMt_"+j.str()).c_str(),               ("Tau1MetMt_"+j.str()).c_str(), 100, 0, 500);
 	_hTau2MetMt[NpdfCounter]               = fs->make<TH1F>(("Tau2MetMt_"+j.str()).c_str(),               ("Tau2MetMt_"+j.str()).c_str(), 100, 0, 500);
 	_hTau1Tau2OSLS[NpdfCounter]            = fs->make<TH1F>(("Tau1Tau2OSLS_"+j.str()).c_str(),            ("Tau1Tau2OSLS_"+j.str()).c_str(), 20, -10, 10);
@@ -5854,6 +4382,7 @@ void HiMassTauAnalysis::bookHistograms() {
 	_hMuon1PtVsMuon2Pt[NpdfCounter]          = fs->make<TH2F>(("Muon1PtVsMuon2Pt_"+j.str()).c_str(),          ("Muon1PtVsMuon2Pt_"+j.str()).c_str(), 100, 0, 500, 100, 0, 500);
 	_hMuon1Muon2DeltaR[NpdfCounter]          = fs->make<TH1F>(("Muon1Muon2DeltaR_"+j.str()).c_str(),          ("Muon1Muon2DeltaR_"+j.str()).c_str(), 100, 0, 5.);
 	_hMuon1Muon2DeltaPtDivSumPt[NpdfCounter] = fs->make<TH1F>(("Muon1Muon2DeltaPtDivSumPt_"+j.str()).c_str(), ("Muon1Muon2DeltaPtDivSumPt_"+j.str()).c_str(), 100, -5, 5.);
+	_hMuon1Muon2DeltaPt[NpdfCounter]         = fs->make<TH1F>(("Muon1Muon2DeltaPt_"+j.str()).c_str(), ("Muon1Muon2DeltaPt_"+j.str()).c_str(), 100, 0, 1000);
 	_hMuon1MetMt[NpdfCounter]                = fs->make<TH1F>(("Muon1MetMt_"+j.str()).c_str(),                ("Muon1MetMt_"+j.str()).c_str(), 100, 0, 500);
 	_hMuon2MetMt[NpdfCounter]                = fs->make<TH1F>(("Muon2MetMt_"+j.str()).c_str(),                ("Muon2MetMt_"+j.str()).c_str(), 100, 0, 500);
 	_hMuon1Muon2OSLS[NpdfCounter]            = fs->make<TH1F>(("Muon1Muon2OSLS_"+j.str()).c_str(),            ("Muon1Muon2OSLS_"+j.str()).c_str(), 20, -10, 10);
@@ -5866,6 +4395,7 @@ void HiMassTauAnalysis::bookHistograms() {
 	_hElectron1PtVsElectron2Pt[NpdfCounter]          = fs->make<TH2F>(("Electron1PtVsElectron2Pt_"+j.str()).c_str(), ("Electron1PtVsElectron2Pt_"+j.str()).c_str(), 100, 0, 500, 100, 0, 500);
 	_hElectron1Electron2DeltaR[NpdfCounter]          = fs->make<TH1F>(("Electron1Electron2DeltaR_"+j.str()).c_str(), ("Electron1Electron2DeltaR_"+j.str()).c_str(), 100, 0, 5.);
 	_hElectron1Electron2DeltaPtDivSumPt[NpdfCounter] = fs->make<TH1F>(("Electron1Electron2DeltaPtDivSumPt_"+j.str()).c_str(), ("Electron1Electron2DeltaPtDivSumPt_"+j.str()).c_str(), 100, -5, 5.);
+	_hElectron1Electron2DeltaPt[NpdfCounter]         = fs->make<TH1F>(("Electron1Electron2DeltaPt_"+j.str()).c_str(), ("Electron1Electron2DeltaPt_"+j.str()).c_str(), 100, 0, 1000);
 	_hElectron1MetMt[NpdfCounter]            = fs->make<TH1F>(("Electron1MetMt_"+j.str()).c_str(),            ("Electron1MetMt_"+j.str()).c_str(), 100, 0, 500);
 	_hElectron2MetMt[NpdfCounter]            = fs->make<TH1F>(("Electron2MetMt_"+j.str()).c_str(),            ("Electron2MetMt_"+j.str()).c_str(), 100, 0, 500);
 	_hElectron1Electron2OSLS[NpdfCounter]    = fs->make<TH1F>(("Electron1Electron2OSLS_"+j.str()).c_str(),    ("Electron1Electron2OSLS_"+j.str()).c_str(), 20, -10, 10);
@@ -5886,7 +4416,13 @@ void HiMassTauAnalysis::bookHistograms() {
       _hPZetaVis[NpdfCounter]               = fs->make<TH1F>(("PZetaVis_"+j.str()).c_str(),               ("PZetaVis_"+j.str()).c_str(), 100, 0, 100);
       _hZeta2D[NpdfCounter]                 = fs->make<TH2F>(("Zeta2D_"+j.str()).c_str(),                 ("Zeta2D_"+j.str()).c_str(), 100, 0, 100, 200, -100, 100);
       _hZeta1D[NpdfCounter]                 = fs->make<TH1F>(("Zeta1D_"+j.str()).c_str(),                 ("Zeta1D_"+j.str()).c_str(), 50, -100, 100);
+      _hBestZeta1D[NpdfCounter]             = fs->make<TH1F>(("BestZeta1D_"+j.str()).c_str(),             ("BestZeta1D_"+j.str()).c_str(), 50, -100, 100);
       _hMet[NpdfCounter]                    = fs->make<TH1F>(("Met_"+j.str()).c_str(),                    ("Met_"+j.str()).c_str(), 100, 0, 1000);
+      _hR1[NpdfCounter] 		    = fs->make<TH1F>(("R1_"+j.str()).c_str(), ("R1_"+j.str()).c_str(), 60, 0, 6);
+      _hR2[NpdfCounter] = fs->make<TH1F>(("R2_"+j.str()).c_str(), ("R2_"+j.str()).c_str(), 60, 0, 6);
+      _hDphi1[NpdfCounter] = fs->make<TH1F>(("Dphi1_"+j.str()).c_str(), ("Dphi1_"+j.str()).c_str(), 36, -TMath::Pi(), +TMath::Pi());
+      _hDphi2[NpdfCounter] = fs->make<TH1F>(("Dphi2_"+j.str()).c_str(), ("Dphi2_"+j.str()).c_str(), 36, -TMath::Pi(), +TMath::Pi());
+      _hAlpha[NpdfCounter] = fs->make<TH1F>(("Alpha_"+j.str()).c_str(), ("Alpha_"+j.str()).c_str(), 50, 0, 2);
     }
     j.str("");
   }
@@ -5976,7 +4512,6 @@ void HiMassTauAnalysis::endJob() {
     }
     std::cout << "End of PDF weight systematics summary (Numerator)" << std::endl;
   }
-
 }
 
 HiMassTauAnalysis::~HiMassTauAnalysis() { }
