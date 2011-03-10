@@ -613,6 +613,10 @@ private:
   std::map<unsigned int, TH1*> _hBestMuonMetMt;
   std::map<unsigned int, TH1*> _hNotReconstructableMass;
   std::map<unsigned int, TH1*> _hReconstructableMass;
+  std::map<unsigned int, TH1*> _hNotReconstructableMassOS;
+  std::map<unsigned int, TH1*> _hReconstructableMassOS;
+  std::map<unsigned int, TH1*> _hNotReconstructableMassLS;
+  std::map<unsigned int, TH1*> _hReconstructableMassLS;
   std::map<unsigned int, TH1*> _hPZeta;
   std::map<unsigned int, TH1*> _hPZetaVis;
   std::map<unsigned int, TH2*> _hZeta2D;

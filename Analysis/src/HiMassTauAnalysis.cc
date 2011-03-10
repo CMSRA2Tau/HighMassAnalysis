@@ -2894,7 +2894,14 @@ void HiMassTauAnalysis::fillHistograms() {
 		  }
 		} else {
 		  if( (patTau1->leadPFChargedHadrCand().isNonnull()) && (patTau2->leadPFChargedHadrCand().isNonnull()) ) {
-		    _hTau1Tau2OSLS[NpdfID]->Fill(patTau1->leadPFChargedHadrCand()->charge() * patTau2->leadPFChargedHadrCand()->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+                    _hTau1Tau2OSLS[NpdfID]->Fill(patTau1->leadPFChargedHadrCand()->charge() * patTau2->leadPFChargedHadrCand()->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+                    if((patTau1->leadPFChargedHadrCand()->charge() * patTau2->leadPFChargedHadrCand()->charge())<0) {
+	              if(CalculateThe4Momentum((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1).first) {_hReconstructableMassOS[NpdfID]->Fill(CalculateThe4Momentum((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+	              else {_hNotReconstructableMassOS[NpdfID]->Fill(CalculateThe4Momentum((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+                    } else {
+	              if(CalculateThe4Momentum((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1).first) {_hReconstructableMassLS[NpdfID]->Fill(CalculateThe4Momentum((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+	              else {_hNotReconstructableMassLS[NpdfID]->Fill(CalculateThe4Momentum((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+                    }
 		  }
 		}
 	      } else {_hTau1Tau2OSLS[NpdfID]->Fill(patTau1->charge() * patTau2->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
@@ -4412,6 +4419,10 @@ void HiMassTauAnalysis::bookHistograms() {
       */
       _hNotReconstructableMass[NpdfCounter] = fs->make<TH1F>(("NotReconstructableMass_"+j.str()).c_str(), ("NotReconstructableMass_"+j.str()).c_str(), 150, 0, 1500);
       _hReconstructableMass[NpdfCounter]    = fs->make<TH1F>(("ReconstructableMass_"+j.str()).c_str(),    ("ReconstructableMass_"+j.str()).c_str(), 150, 0, 1500);
+      _hNotReconstructableMassOS[NpdfCounter] = fs->make<TH1F>(("NotReconstructableMassOS_"+j.str()).c_str(), ("NotReconstructableMassOS_"+j.str()).c_str(), 150, 0, 1500);
+      _hReconstructableMassOS[NpdfCounter]    = fs->make<TH1F>(("ReconstructableMassOS_"+j.str()).c_str(),    ("ReconstructableMassOS_"+j.str()).c_str(), 150, 0, 1500);
+      _hNotReconstructableMassLS[NpdfCounter] = fs->make<TH1F>(("NotReconstructableMassLS_"+j.str()).c_str(), ("NotReconstructableMassLS_"+j.str()).c_str(), 150, 0, 1500);
+      _hReconstructableMassLS[NpdfCounter]    = fs->make<TH1F>(("ReconstructableMassLS_"+j.str()).c_str(),    ("ReconstructableMassLS_"+j.str()).c_str(), 150, 0, 1500);
       _hPZeta[NpdfCounter]                  = fs->make<TH1F>(("PZeta_"+j.str()).c_str(),                  ("PZeta_"+j.str()).c_str(), 200, -100, 100);
       _hPZetaVis[NpdfCounter]               = fs->make<TH1F>(("PZetaVis_"+j.str()).c_str(),               ("PZetaVis_"+j.str()).c_str(), 100, 0, 100);
       _hZeta2D[NpdfCounter]                 = fs->make<TH2F>(("Zeta2D_"+j.str()).c_str(),                 ("Zeta2D_"+j.str()).c_str(), 100, 0, 100, 200, -100, 100);
