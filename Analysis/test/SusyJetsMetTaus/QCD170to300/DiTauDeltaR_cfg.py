@@ -61,8 +61,8 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
 											# selectedLayer1ShrinkingConeHighEffPFTaus
 											# selectedLayer1ShrinkingConePFTaus
 											# selectedLayer1FixedConePFTaus
-    RecoTauEtaCut = cms.double(999.1),							# require tau |eta|<=X
-    RecoTauPtMinCut = cms.double(0.),							# require tau pt>=X
+    RecoTauEtaCut = cms.double(2.1),							# require tau |eta|<=X
+    RecoTauPtMinCut = cms.double(15.),							# require tau pt>=X
     RecoTauPtMaxCut = cms.double(9999.),						# require tau pt<=X
     DoRecoTauDiscrByLeadTrack = cms.bool(False), 					# if true, tau is required to pass a lead track pt cut
     UseRecoTauDiscrByLeadTrackFlag = cms.bool(True), 					# if true, default seed track discriminator is used
@@ -203,7 +203,7 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     TriggerRequirements = cms.vstring('HLT_Mu9'),					# trigger path name
 
     #-----Susy Topology Inputs
-    DoSUSYDiscrByMHT = cms.bool(False),
+    DoSUSYDiscrByMHT = cms.bool(True),
     MhtCut = cms.double(150.0),
     DoSUSYDiscrByR1 = cms.bool(False),
     R1MinCut = cms.double(0.85),
@@ -301,15 +301,15 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     RecoTriggersNmin = cms.int32(0),							# require event to pass >=X trigger paths defined above
     RecoVertexNmin = cms.int32(0),							# require event to have >=X vertices passing specified cuts
     RecoVertexNmax = cms.int32(1000),							# require event to have <=X vertices passing specified cuts
-    RecoLeg1Nmin = cms.int32(0),							# require event to have >=X leg1 objects passing specified cuts
+    RecoLeg1Nmin = cms.int32(2),							# require event to have >=X leg1 objects passing specified cuts
     RecoLeg1Nmax = cms.int32(1000),							# require event to have <=X leg1 objects passing specified cuts
-    RecoLeg2Nmin = cms.int32(0),							# require event to have >=X leg2 objects passing specified cuts
+    RecoLeg2Nmin = cms.int32(2),							# require event to have >=X leg2 objects passing specified cuts
     RecoLeg2Nmax = cms.int32(1000),							# require event to have <=X leg2 objects passing specified cuts
     RecoJetNmin = cms.int32(1),								# require event to have >=X "jets" passing specified cuts
     RecoJetNmax = cms.int32(1000),						        # require event to have <=X "jets" passing specified cuts
     RecoFirstLeadingJetNmin = cms.int32(1),
     RecoSecondLeadingJetNmin = cms.int32(1),
-    SusyCombinationsNmin = cms.int32(0),
+    SusyCombinationsNmin = cms.int32(1),
     CombinationsNmin = cms.int32(1),							# require event to have >=X leg1+leg2+met combinations 
 											# passing specified cuts
     CombinationsNmax = cms.int32(1000),							# require event to have <=X leg1+leg2+met combinations
