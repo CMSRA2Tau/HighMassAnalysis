@@ -10,4 +10,4 @@ global channel
 
 signal = False
 data = False
-channel = "eta"
+channel = "tautau"
