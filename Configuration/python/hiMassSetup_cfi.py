@@ -9,5 +9,5 @@ global data
 global channel
 
 signal = False
-data = False
+data = True
 channel = "tautau"
