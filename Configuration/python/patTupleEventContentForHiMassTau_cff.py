@@ -3,28 +3,36 @@ import FWCore.ParameterSet.Config as cms
 from PhysicsTools.PatAlgos.patEventContent_cff import *
 from Configuration.EventContent.EventContent_cff import *
 
-#--------------------------------------------------------------------------------
-# per default, drop everything that is not specifically kept
-#--------------------------------------------------------------------------------
-
-patTupleEventContent = cms.PSet(
-    outputCommands = cms.untracked.vstring('drop *')
-)
-
-#--------------------------------------------------------------------------------
-# keep PAT layer 1 objects
-#--------------------------------------------------------------------------------
-
-patTupleEventContent.outputCommands.extend(patEventContentNoCleaning)
-patTupleEventContent.outputCommands.extend(patExtraAodEventContent)
-patTupleEventContent.outputCommands.extend(patTriggerEventContent)
-
-#--------------------------------------------------------------------------------
-# keep collections of additional collections
-#--------------------------------------------------------------------------------
-
-patTupleEventContent.outputCommands.extend(
-    [
+patTupleEventContent = [
+    'keep *_selectedPatPhotons*_*_*',
+    'keep *_selectedPatElectrons*_*_*',
+    'keep *_selectedPatMuons*_*_*',
+    'keep *_selectedPatTaus*_*_*',
+    'keep *_selectedPatJets*_*_*',
+    'drop *_selectedPatJets_pfCandidates_*', ## drop for default patJets which are CaloJets
+    'drop *_*PF_caloTowers_*',
+    'drop *_*JPT_pfCandidates_*',
+    'drop *_*Calo_pfCandidates_*',
+    'keep *_patMETs*_*_*',
+    'keep *_selectedPatPFParticles*_*_*',
+    'keep *_selectedPatTrackCands*_*_*',
+    'keep recoGenParticles_genParticles*_*_*',
+    'keep GenEventInfoProduct_*_*_*',
+    'keep GenRunInfoProduct_*_*_*',
+    'keep recoTracks_generalTracks*_*_*',
+    'keep *_towerMaker_*_*',
+    'keep *_offlineBeamSpot_*_*',
+    'keep *_offlinePrimaryVertices*_*_*',
+    'keep edmTriggerResults_TriggerResults*_*_*',
+    'keep *_hltTriggerSummaryAOD_*_*',
+    'keep L1GlobalTriggerReadoutRecord_gtDigis_*_*',
+    'keep edmConditionsIn*Block_conditionsInEdm_*_*',
+    'keep patTriggerAlgorithms_patTrigger_*_*',
+    'keep patTriggerConditions_patTrigger_*_*',
+    'keep patTriggerObjects_patTrigger_*_*',
+    'keep patTriggerFilters_patTrigger_*_*',
+    'keep patTriggerPaths_patTrigger_*_*',
+    'keep *_patTriggerEvent_*_*',
     'keep *_TriggerResults_*_*',
     'keep *_hcalnoise_*_*',
     'keep recoPFCandidate*_particleFlow__*',
@@ -40,6 +48,7 @@ patTupleEventContent.outputCommands.extend(
     'keep *_selectedLayer1ShrinkingConePFTaus_*_*',
     'keep *_selectedLayer1HPSPFTaus_*_*',
     'keep patJets_patJetsAK5PF_*_*',
+    'keep patJets_*_*_*',
     'keep *_layer1PFMETs_*_*',
     'keep *_layer1METsPF_*_*',
     'keep *_patMETs_*_*',
@@ -59,36 +68,17 @@ patTupleEventContent.outputCommands.extend(
     'keep *_ak5PFJetsLegacyHPSPiZeros_*_*',
     'keep *_ak5PFJetsLegacyTaNCPiZeros_*_*',
     'keep *_ak5PFJetsRecoTauPiZeros_*_*',
-    'keep *_hpsPFTauProducer_*_*'
-    ]
-)
-
-#--------------------------------------------------------------------------------
-# keep collections of selected PAT layer 1 particles
-#--------------------------------------------------------------------------------
-
-patTupleEventContent.outputCommands.extend(
-    [ 'keep *_selectedPatElectrons_*_*',
-      'keep *_heepPatElectrons_*_*',
-      'keep *_selectedPatMuons_*_*',
-      'keep *_selectedPatJets_*_*' ]
-)
-
-#--------------------------------------------------------------------------------
-# keep generator level tau-jets
-#--------------------------------------------------------------------------------
-
-patTupleEventContent.outputCommands.extend(
-    [ 'keep *_tauGenJets*_*_*', ]
-)
-
-#--------------------------------------------------------------------------------
-# 
-#--------------------------------------------------------------------------------
-patTupleEventContent.outputCommands.extend(HLTriggerRECO.outputCommands)
-
-patTupleEventContent.outputCommands.extend(
-    [ 'drop CaloTowers*_*_*_*',
-      'drop patPhotons_*_*_*',
-      'drop *_selectedLayer1Taus_*_*' ]
-)
+    'keep *_hpsPFTauProducer_*_*',
+    'keep *_selectedPatElectrons_*_*',
+    'keep *_heepPatElectrons_*_*',
+    'keep *_selectedPatMuons_*_*',
+    'keep *_selectedPatJets_*_*',
+    'keep *_tauGenJets*_*_*',
+    'keep *_hltL1GtObjectMap_*_*',
+    'keep edmTriggerResults_*_*_*',
+    'keep triggerTriggerEvent_*_*_*',
+    'drop *_hlt*_*_*',
+    'drop CaloTowers*_*_*_*',
+    'drop patPhotons_*_*_*',
+    'drop *_selectedLayer1Taus_*_*',
+]

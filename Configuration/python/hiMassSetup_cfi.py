@@ -9,5 +9,5 @@ global data
 global channel
 
 signal = False
-data = True
-channel = "mutau"
+data = False
+channel = "eta"
