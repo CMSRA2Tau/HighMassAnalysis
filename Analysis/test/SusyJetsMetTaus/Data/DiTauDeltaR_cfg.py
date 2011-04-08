@@ -102,7 +102,7 @@ process.TFileService = cms.Service("TFileService",
 process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
 
     #-----Generator level Inputs
-    GenParticleSource = cms.untracked.InputTag('genParticles'),				# gen particle collection
+    GenParticleSource = cms.untracked.InputTag(''),				# gen particle collection
 
     #-----Inputs to determine which channel to analyze
     AnalyzeTauForLeg1		= cms.bool(True),					# if true, taus will be used for leg1
@@ -255,7 +255,7 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     RecoVertexTrackWeight = cms.double(0.5),						# weight used to define "good" tracks used to reconstruct vertex
 
     #-----Trigger Inputs
-    RecoTriggerSource = cms.InputTag("TriggerResults","","REDIGI311X"),			# trigger collection
+    RecoTriggerSource = cms.InputTag("TriggerResults","","HLT"),			# trigger collection
     TriggerRequirements = cms.vstring('HLT_Mu9'),					# trigger path name
 
     #-----Susy Topology Inputs
@@ -445,5 +445,5 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
 )
 
 process.p = cms.Path(
-  process.analyzeHiMassTau
+  process.HBHENoiseFilter * process.analyzeHiMassTau
 )

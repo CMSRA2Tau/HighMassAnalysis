@@ -9,33 +9,89 @@ process.load('FWCore.MessageService.MessageLogger_cfi')
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32( 100 )
+    input = cms.untracked.int32( -1 )
 )
 process.source = cms.Source("PoolSource",
     skipEvents = cms.untracked.uint32(0),
     fileNames = cms.untracked.vstring(
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_9_1_QHD.root',
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_99_1_0NF.root',
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_98_1_W3x.root',
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_97_1_YBs.root',
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_96_1_WEO.root',
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_95_1_eV4.root',
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_94_1_LH2.root',
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_93_1_02b.root',
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_92_1_rFp.root',
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_91_1_WxJ.root',
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_90_1_N2z.root',
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_8_1_240.root',
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_89_1_vbw.root',
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_88_1_zNL.root',
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_87_1_458.root',
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_86_1_NbT.root',
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_85_1_n1b.root',
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_84_1_ckq.root',
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_83_1_AXR.root',
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_82_1_e5I.root',
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_81_1_f64.root',
-        '/store/user/lpctau/HighMassTau/gurrola/LM2_SUSY_sftsht_7TeV-pythia6/LM2386TauTauSkimPat/7366c4ea4e829434dfceaf4d02b68f46/skimPat_80_1_agi.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_9_1_eDP.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_8_1_XW1.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_7_1_YAl.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_6_1_IrK.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_5_1_qSm.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_4_1_88I.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_3_1_PN6.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_39_1_BpV.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_38_1_MkR.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_37_1_Z52.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_36_1_mua.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_35_1_qFj.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_34_1_3PF.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_33_1_TiI.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_32_1_2Pm.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_31_1_bnP.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_30_1_U1x.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_2_1_0IS.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_29_1_GTQ.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_28_1_5vH.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_27_1_s2v.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_26_1_Oew.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_25_1_5wi.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_24_1_pEC.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_23_1_kuT.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_22_1_guM.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_21_1_x9z.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_20_1_QMf.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_1_1_xdO.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_19_1_ZsA.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_18_1_O53.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_17_1_LcG.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_16_1_JT9.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_15_1_gnK.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_14_1_3BD.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_13_1_UWg.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_12_1_qmf.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_11_1_P5n.root',
+        
+'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_10_1_RjW.root'
 ) 
 )
 
@@ -64,16 +120,16 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     RecoTauEtaCut = cms.double(2.1),							# require tau |eta|<=X
     RecoTauPtMinCut = cms.double(15.),							# require tau pt>=X
     RecoTauPtMaxCut = cms.double(9999.),						# require tau pt<=X
-    DoRecoTauDiscrByLeadTrack = cms.bool(False), 					# if true, tau is required to pass a lead track pt cut
+    DoRecoTauDiscrByLeadTrack = cms.bool(True), 					# if true, tau is required to pass a lead track pt cut
     UseRecoTauDiscrByLeadTrackFlag = cms.bool(True), 					# if true, default seed track discriminator is used
                                                      					# if false, seed track cut will be recalculated using the parameters below
     RecoTauDiscrByLeadTrack = cms.untracked.string('leadingTrackPtCut'),		# name of the lead track discriminator flag
-    DoRecoTauDiscrByLeadTrackNhits = cms.bool(False),					# if true, tau leading track is required to have >= X hits
+    DoRecoTauDiscrByLeadTrackNhits = cms.bool(True),					# if true, tau leading track is required to have >= X hits
     RecoTauLeadTrackMinHits = cms.int32(12),						# tau leading track hits >= X
-    DoRecoTauDiscrByH3x3OverP = cms.bool(False),					# if true, tau will be required
+    DoRecoTauDiscrByH3x3OverP = cms.bool(True),					# if true, tau will be required
 											# to pass H(3x3)/P(lead) cut
     RecoTauH3x3OverP = cms.double(0.03),						# H(3x3)/P(lead) > X
-    DoRecoTauDiscrByIsolation = cms.bool(False), 					# if true, isolation will be applied
+    DoRecoTauDiscrByIsolation = cms.bool(True), 					# if true, isolation will be applied
     UseRecoTauDiscrByIsolationFlag = cms.bool(False), 					# if true, the default isolation discriminator is used
                                                       					# if false, isolation is recalculated using the parameters below
     RecoTauDiscrByIsolation = cms.untracked.string('byIsolation'),			# name of the isolation discriminator flag
@@ -87,9 +143,9 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     RecoTauEcalNisoMax = cms.int32(0),							# number of isolation candidates <=X
     RecoTauTrackIsoSumPtMaxCutValue = cms.double(1.0),					# sum pt of tracks & gammas < X
     RecoTauTrackIsoSumPtMinCutValue = cms.double(0.0),					# sum pt of tracks & gammas >= X
-    RecoTauEcalIsoSumPtMaxCutValue = cms.double(1.0),					# sum pt of tracks & gammas < X
+    RecoTauEcalIsoSumPtMaxCutValue = cms.double(10000.0),					# sum pt of tracks & gammas < X
     RecoTauEcalIsoSumPtMinCutValue = cms.double(0.0),					# sum pt of tracks & gammas >= X
-    RecoTauDiscrByProngType = cms.string('NONE'),  		 			# if '1or3', taus will be required to have 1 || 3 prongs
+    RecoTauDiscrByProngType = cms.string('1or3'),  		 			# if '1or3', taus will be required to have 1 || 3 prongs
 											# if '1', taus will be required to have 1 prongs
 											# if '3', taus will be required to have 3 prongs
 											# if anything else is used, no prong cuts are applied
@@ -104,7 +160,7 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
 											# discriminator veto will be applied
     RecoTauDiscrAgainstElectron = cms.untracked.string('againstElectron'),		# name of electron veto discriminator flag
     DoRecoTauDiscrByCrackCut = cms.bool(False),						# if true, taus that fall on the cracks will not be considered
-    DoRecoTauDiscrAgainstMuon = cms.bool(False), 					# if true, muon veto will be applied
+    DoRecoTauDiscrAgainstMuon = cms.bool(True), 					# if true, muon veto will be applied
     RecoTauDiscrAgainstMuon = cms.untracked.string('againstMuon'),			# name of muon veto discriminator flag
 
     #-----Reco Muon Inputs
@@ -170,7 +226,7 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     DoRecoElectronDiscrByTrackerDrivenSeed = cms.bool(False),				# if true, require electron to be tracker driven
 
     #-----Reco Jet Inputs
-    RecoJetSource                       = cms.InputTag('selectedPatJets'),              # jet collection
+    RecoJetSource                       = cms.InputTag('patJetsPF'),              # jet collection
     RecoJetEtaMinCut                    = cms.double(0.0),                              # require jet |eta|>=X
     RecoJetEtaMaxCut                    = cms.double(999.5),                            # require jet |eta|<=X
     RecoJetPtCut                        = cms.double(15.0),                             # require jet pt>=X
@@ -199,12 +255,12 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     RecoVertexTrackWeight = cms.double(0.5),						# weight used to define "good" tracks used to reconstruct vertex
 
     #-----Trigger Inputs
-    RecoTriggerSource = cms.InputTag("TriggerResults","","HLT"),			# trigger collection
+    RecoTriggerSource = cms.InputTag("TriggerResults","","REDIGI311X"),			# trigger collection
     TriggerRequirements = cms.vstring('HLT_Mu9'),					# trigger path name
 
     #-----Susy Topology Inputs
     DoSUSYDiscrByMHT = cms.bool(True),
-    MhtCut = cms.double(150.0),
+    MhtCut = cms.double(175.0),
     DoSUSYDiscrByR1 = cms.bool(False),
     R1MinCut = cms.double(0.85),
     R1MaxCut = cms.double(999.0),
@@ -312,7 +368,7 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     SusyCombinationsNmin = cms.int32(1),
     CombinationsNmin = cms.int32(1),							# require event to have >=X leg1+leg2+met combinations 
 											# passing specified cuts
-    CombinationsNmax = cms.int32(1000),							# require event to have <=X leg1+leg2+met combinations
+    CombinationsNmax = cms.int32(10000),							# require event to have <=X leg1+leg2+met combinations
 											# passing specified cuts
 
     EventSelectionSequence = cms.vstring('RecoTriggersNmin','RecoVertexNmin','RecoVertexNmax','RecoLeg1Nmin','RecoLeg1Nmax','RecoLeg2Nmin','RecoLeg2Nmax',
@@ -350,7 +406,7 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     SmearThePt = cms.bool(False),
     SmearTheEta = cms.bool(False),
     SmearThePhi = cms.bool(False),
-    CalculatePUSystematics = cms.bool(True),
+    CalculatePUSystematics = cms.bool(False),
     BosonPtBinEdges = cms.untracked.vdouble(
                0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9.
             , 10., 11., 12., 13., 14., 15., 16., 17., 18., 19.
