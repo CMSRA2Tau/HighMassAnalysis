@@ -103,6 +103,26 @@ process.source = cms.Source("PoolSource",
     #skipBadFiles = cms.untracked.bool(True) 
 )
 
+process.load("CondCore.DBCommon.CondDBCommon_cfi")
+process.jec = cms.ESSource("PoolDBESSource",
+      DBParameters = cms.PSet(
+        messageLevel = cms.untracked.int32(0)
+        ),
+      timetype = cms.string('runnumber'),
+      toGet = cms.VPSet(
+          cms.PSet(
+                record = cms.string('JetCorrectionsRecord'),
+                tag    = cms.string('JetCorrectorParametersCollection_Jec10V3_AK5PF'),
+                label  = cms.untracked.string('AK5PF')),
+          cms.PSet(
+                record = cms.string('JetCorrectionsRecord'),
+                tag    = cms.string('JetCorrectorParametersCollection_Jec10V3_AK5Calo'),
+                label  = cms.untracked.string('AK5Calo')),
+      ),
+      connect = cms.string('sqlite_file:Jec10V3.db')
+)
+process.es_prefer_jec = cms.ESPrefer('PoolDBESSource','jec')
+
 process.scrapingVeto = cms.EDFilter("FilterOutScraping",
                                      applyfilter = cms.untracked.bool(True),
                                      debugOn = cms.untracked.bool(False),
@@ -116,19 +136,18 @@ addPfMET(process, 'PF')
 
 # include particle flow based jets
 from PhysicsTools.PatAlgos.tools.jetTools import *
-addJetCollection(process,cms.InputTag('ak5PFJets'),
-                 'AK5', 'PF',
-                 doJTA        = True,
-                 doBTagging   = True,
-#                 jetCorrLabel = ('AK5PF', cms.vstring(['L2Relative', 'L3Absolute', 'L2L3Residual'])),
-                 jetCorrLabel = None,
-                 doType1MET   = False,
-                 doL1Cleaning = False,                 
-                 doL1Counters = False,
-                 genJetCollection=cms.InputTag("ak5GenJets"),
-                 doJetID      = False
-                 )
-
+addJetCollection(process,
+                cms.InputTag('ak5PFJets'),         # Jet collection;must be already in the event when patLayer0 sequence is executed
+                'AK5', 'PF',
+                doJTA=True,            # Run Jet-Track association & JetCharge
+                doBTagging=True,       # Run b-tagging
+                jetCorrLabel=('AK5PF', ['L1FastJet', 'L2Relative','L3Absolute']),
+                doType1MET=False,
+                doL1Cleaning=False,
+                doL1Counters=False,
+                genJetCollection = cms.InputTag(""),
+                doJetID = False
+                )
 
 from PhysicsTools.PatAlgos.tools.electronTools import *
 #addElectronUserIsolation(process,["Tracker"])
