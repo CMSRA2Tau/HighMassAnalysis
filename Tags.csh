@@ -17,3 +17,5 @@ cvs co -d HighMassAnalysis/Configuration -r for413_05122011 UserCode/AlfredoGurr
 cvs co -d HighMassAnalysis/Skimming -r for413_05112011  UserCode/AlfredoGurrola/HighMassAnalysis/Skimming
 cvs co -d JEC UserCode/KKousour/data/Jec10V3.db
 mv JEC/Jec10V3.db HighMassAnalysis/Configuration/test/Data_TauTauSkim
+scram build -c
+scram b -j8
