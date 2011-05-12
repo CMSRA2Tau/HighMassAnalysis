@@ -192,6 +192,10 @@ if(channel == "tautau"):
   process.hltFilter = cms.Sequence(
      process.tautauHLTFilter
   )
+if(channel == "susy"):
+  process.hltFilter = cms.Sequence(
+     process.SusyHLTFilter
+  )
 
 if(data):
   process.p = cms.Path(
