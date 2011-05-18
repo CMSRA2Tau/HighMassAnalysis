@@ -67,6 +67,7 @@ produceAndDiscriminateShrinkingConePFTausCustomized = cms.Sequence(
 
 produceThePatCands = cms.Sequence(
     recoElectronIsolation *
+    eIdSequence *
     ic5PFJetTracksAssociatorAtVertex *
     ak5PFJetTracksAssociatorAtVertex *
     recoTauAK5PFJets08Region*
