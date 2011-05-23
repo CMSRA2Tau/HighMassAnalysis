@@ -10,4 +10,4 @@ global channel
 
 signal = False
 data = True
-channel = "tautau"
+channel = "susy"

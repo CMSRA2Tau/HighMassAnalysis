@@ -48,7 +48,14 @@ from RecoMET.METProducers.genMetCalo_cfi import *
 # define sequence for gen jet production
 from PhysicsTools.JetMCAlgos.TauGenJets_cfi import *
 
-produceAndDiscriminateShrinkingConePFTausCustomized = cms.Sequence(
+produceAndDiscriminatePFTausCustomized = cms.Sequence(
+      ic5PFJetTracksAssociatorAtVertex *
+      ak5PFJetTracksAssociatorAtVertex *
+      recoTauAK5PFJets08Region*
+      recoTauPileUpVertices*
+      pfRecoTauTagInfoProducer *
+      ak5PFJetsRecoTauPiZeros *
+      ak5PFJetsLegacyTaNCPiZeros *
       shrinkingConePFTauProducer*
       shrinkingConePFTauDecayModeProducer*
       shrinkingConePFTauDecayModeIndexProducer*
@@ -62,24 +69,27 @@ produceAndDiscriminateShrinkingConePFTausCustomized = cms.Sequence(
       shrinkingConePFTauDiscriminationByTrackIsolationUsingLeadingPion*
       shrinkingConePFTauDiscriminationByECALIsolationUsingLeadingPion*
       shrinkingConePFTauDiscriminationAgainstElectron*
-      shrinkingConePFTauDiscriminationAgainstMuon
+      shrinkingConePFTauDiscriminationAgainstMuon*
+      ak5PFJetsLegacyHPSPiZeros *
+      combinatoricRecoTaus *
+      produceAndDiscriminateHPSPFTaus
 )
 
 produceThePatCands = cms.Sequence(
     recoElectronIsolation *
     eIdSequence *
-    ic5PFJetTracksAssociatorAtVertex *
-    ak5PFJetTracksAssociatorAtVertex *
-    recoTauAK5PFJets08Region*
-    recoTauPileUpVertices*
-    pfRecoTauTagInfoProducer *
-    ak5PFJetsRecoTauPiZeros *
-    ak5PFJetsLegacyTaNCPiZeros *
-    produceAndDiscriminateShrinkingConePFTausCustomized *
+#    ic5PFJetTracksAssociatorAtVertex *
+#    ak5PFJetTracksAssociatorAtVertex *
+#    recoTauAK5PFJets08Region*
+#    recoTauPileUpVertices*
+#    pfRecoTauTagInfoProducer *
+#    ak5PFJetsRecoTauPiZeros *
+#    ak5PFJetsLegacyTaNCPiZeros *
+#    produceAndDiscriminateShrinkingConePFTausCustomized *
 #    produceShrinkingConeDiscriminationByTauNeuralClassifier *
-    ak5PFJetsLegacyHPSPiZeros *
-    combinatoricRecoTaus *
-    produceAndDiscriminateHPSPFTaus *
+#    ak5PFJetsLegacyHPSPiZeros *
+#    combinatoricRecoTaus *
+#    produceAndDiscriminateHPSPFTaus *
     patCustomizedCandidates *
     selectedPatCustomizedCandidates 
     )

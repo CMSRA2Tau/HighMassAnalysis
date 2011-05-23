@@ -309,14 +309,25 @@ heepPatElectrons = cms.EDProducer("HEEPAttStatusToPAT",
 
 # --------------------Modifications for jets--------------------
 
+from JetMETCorrections.Configuration.DefaultJEC_cff import *
+from RecoJets.Configuration.RecoPFJets_cff import *
+
+ak5CaloL1Offset.useCondDB = False
+ak5PFL1Offset.useCondDB = False
+ak5JPTL1Offset.useCondDB = False
+
+ak5PFL1Fastjet.useCondDB = False
+ak5CaloL1Fastjet.useCondDB = False
+ak5JPTL1Fastjet.useCondDB = False
+
 # modified jet corrections for calojets
 patJetCorrFactorsCalo = copy.deepcopy(patJetCorrFactors)
-patJetCorrFactorsCalo.levels = ['L1Offset', 'L2Relative', 'L3Absolute']
+patJetCorrFactorsCalo.levels = ['L1FastJet', 'L2Relative', 'L3Absolute']
 # modified jet corrections for pfjets
 patJetCorrFactorsPF = copy.deepcopy(patJetCorrFactors)
 patJetCorrFactorsPF.src = cms.InputTag("ak5PFJets")
 patJetCorrFactorsPF.payload = cms.string('AK5PF')
-patJetCorrFactorsPF.levels = ['L1Offset', 'L2Relative', 'L3Absolute']
+patJetCorrFactorsPF.levels = ['L1FastJet', 'L2Relative', 'L3Absolute']
 
 # jet charge association for pfjets
 patJetChargePF = copy.deepcopy(patJetCharge)
@@ -517,11 +528,11 @@ if(data):
     patMuons     +
     makeCustomizedPatTaus      +
     patPhotons   +
-    makeCustomizedPatJets      +
-#    patMETs + 
     kt6PFJets + # needed for L1FastJet corrections
     ak5PFJetsC + # jet clustering with a given value of Rho_EtaMax for L1FastJet
     ak5PFJetsL2L3 + # compute JEC
+    makeCustomizedPatJets      +
+#    patMETs + 
     metJESCorPFAK5 + # compute typeI pfmet ak5PFL2L3
     metJES10CorPFAK5 + # compute typeI pfmet ak5PFL1FastL2L3
     patMETsPF +
@@ -534,11 +545,11 @@ else:
     makePatMuons     +
     makeCustomizedPatTaus      +
     makePatPhotons   +
-    makeCustomizedPatJetsForMC      +
-#    patMETs + 
     kt6PFJets + # needed for L1FastJet corrections
     ak5PFJetsC + # jet clustering with a given value of Rho_EtaMax for L1FastJet
     ak5PFJetsL2L3 + # compute JEC
+    makeCustomizedPatJetsForMC      +
+#    patMETs + 
     metJESCorPFAK5 + # compute typeI pfmet ak5PFL2L3
     metJES10CorPFAK5 + # compute typeI pfmet ak5PFL1FastL2L3
     patMETsPF +
