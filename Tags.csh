@@ -1,6 +1,6 @@
-cvs co -r RecoTauDAVerticesPatch_V5 RecoTauTag/RecoTau 
-cvs co -r RecoTauDAVerticesPatch_V5 RecoTauTag/TauTagTools
-cvs co -r RecoTauDAVerticesPatch_V5 RecoTauTag/Configuration
+cvs co -r V01-02-00 RecoTauTag/RecoTau 
+cvs co -r V01-02-00 RecoTauTag/TauTagTools
+cvs co -r V01-02-00 RecoTauTag/Configuration
 cvs co -r -d SHarper/HEEPAnalyzer UserCode/SHarper/HEEPAnalyzer
 cvs co -r V03-01-21  CondFormats/JetMETObjects
 cvs co -r V02-02-03  JetMETCorrections/Algorithms
