@@ -35,10 +35,20 @@
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "CLHEP/Random/RandGauss.h"
 #include "CommonTools/CandUtils/interface/Booster.h"
+#include "DataFormats/METReco/interface/GenMET.h"
+#include "DataFormats/METReco/interface/GenMETCollection.h"
 #include <Math/VectorUtil.h>
 
 #include "DataFormats/HLTReco/interface/TriggerObject.h"
 #include "DataFormats/HLTReco/interface/TriggerEvent.h"
+
+#include "DataFormats/Common/interface/Handle.h"
+#include "TrackingTools/TransientTrack/interface/TrackTransientTrack.h"
+#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
+#include "TrackingTools/Records/interface/TransientTrackRecord.h"
+#include "CLHEP/Units/GlobalPhysicalConstants.h"
+#include "CommonTools/Statistics/interface/ChiSquaredProbability.h"
+
 
 #include <TH1.h>
 #include <TH2.h>
@@ -270,6 +280,12 @@ private:
   double _JetMuonMatchingDeltaR;
   double _JetElectronMatchingDeltaR;
   double _JetTauMatchingDeltaR;
+  double _SecondLeadingJetMuonMatchingDeltaR;
+  double _SecondLeadingJetElectronMatchingDeltaR;
+  double _SecondLeadingJetTauMatchingDeltaR;
+  double _FirstLeadingJetMuonMatchingDeltaR;
+  double _FirstLeadingJetElectronMatchingDeltaR;
+  double _FirstLeadingJetTauMatchingDeltaR;
   double _JetBTaggingTCHEcut;
   double _RecoFirstLeadingJetPt;
   double _RecoFirstLeadingJetEtaMinCut;
@@ -281,6 +297,12 @@ private:
   bool _RemoveJetOverlapWithMuons;
   bool _RemoveJetOverlapWithElectrons;
   bool _RemoveJetOverlapWithTaus;
+  bool _RemoveSecondLeadingJetOverlapWithMuons;
+  bool _RemoveSecondLeadingJetOverlapWithElectrons;
+  bool _RemoveSecondLeadingJetOverlapWithTaus;
+  bool _RemoveFirstLeadingJetOverlapWithMuons;
+  bool _RemoveFirstLeadingJetOverlapWithElectrons;
+  bool _RemoveFirstLeadingJetOverlapWithTaus;
   bool _ApplyJetBTagging;
   bool _DoDiscrByFirstLeadingJet;
   bool _DoDiscrBySecondLeadingJet;
@@ -454,6 +476,7 @@ private:
   std::map<unsigned int, TH1*> _hBestTauJetSumPtIsoTracks;
   std::map<unsigned int, TH1*> _hBestTauJetSumPtIsoGammas;
   std::map<unsigned int, TH1*> _hTauJetSumPtIso;
+  std::map<unsigned int, TH1*> _hTauJetNumberDensity;
   std::map<unsigned int, TH1*> _hTauJetGenTauDeltaPhi;
   std::map<unsigned int, TH1*> _hTauJetGenTauDeltaEta;
   std::map<unsigned int, TH1*> _hTauJetGenTauDeltaPt;
@@ -623,6 +646,7 @@ private:
   std::map<unsigned int, TH1*> _hZeta1D;
   std::map<unsigned int, TH1*> _hBestZeta1D;
   std::map<unsigned int, TH1*> _hMet;
+  std::map<unsigned int, TH1*> _hMetResolution;
   std::map<unsigned int, TH1*> _hElectronIsZee;
 
   std::map<unsigned int, TH1*> _hR1;
@@ -649,9 +673,10 @@ private:
   Handle< reco::VertexCollection > _primaryEventVertexCollection;
   edm::Handle< edm::TriggerResults > _triggerResults;
   edm::Handle< trigger::TriggerEvent > handleTriggerEvent;
-//  Handle< reco::PFCandidateCollection > _pflow;
+  Handle< reco::PFCandidateCollection > _pflow;
 
   Handle< reco::PFTauCollection > _hpsTau;
+  Handle< reco::GenMETCollection > genTrue;
 
 /*
   Handle< edm::View<reco::Muon> >   _recoMuonsForMetCorrections;

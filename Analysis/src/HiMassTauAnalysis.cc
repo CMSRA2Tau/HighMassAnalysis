@@ -149,10 +149,22 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
   _RecoFirstLeadingJetPt = iConfig.getParameter<double>("RecoFirstLeadingJetPt");
   _RecoFirstLeadingJetEtaMinCut = iConfig.getParameter<double>("RecoFirstLeadingJetEtaMinCut");
   _RecoFirstLeadingJetEtaMaxCut = iConfig.getParameter<double>("RecoFirstLeadingJetEtaMaxCut");
+  _RemoveFirstLeadingJetOverlapWithMuons = iConfig.getParameter<bool>("RemoveFirstLeadingJetOverlapWithMuons");
+  _FirstLeadingJetMuonMatchingDeltaR = iConfig.getParameter<double>("FirstLeadingJetMuonMatchingDeltaR");
+  _RemoveFirstLeadingJetOverlapWithElectrons = iConfig.getParameter<bool>("RemoveFirstLeadingJetOverlapWithElectrons");
+  _FirstLeadingJetElectronMatchingDeltaR = iConfig.getParameter<double>("FirstLeadingJetElectronMatchingDeltaR");
+  _RemoveFirstLeadingJetOverlapWithTaus = iConfig.getParameter<bool>("RemoveFirstLeadingJetOverlapWithTaus");
+  _FirstLeadingJetTauMatchingDeltaR = iConfig.getParameter<double>("FirstLeadingJetTauMatchingDeltaR");
   _DoDiscrBySecondLeadingJet = iConfig.getParameter<bool>("DoDiscrBySecondLeadingJet");
   _RecoSecondLeadingJetPt = iConfig.getParameter<double>("RecoSecondLeadingJetPt");
   _RecoSecondLeadingJetEtaMinCut = iConfig.getParameter<double>("RecoSecondLeadingJetEtaMinCut");
   _RecoSecondLeadingJetEtaMaxCut = iConfig.getParameter<double>("RecoSecondLeadingJetEtaMaxCut");
+  _RemoveSecondLeadingJetOverlapWithMuons = iConfig.getParameter<bool>("RemoveSecondLeadingJetOverlapWithMuons");
+  _SecondLeadingJetMuonMatchingDeltaR = iConfig.getParameter<double>("SecondLeadingJetMuonMatchingDeltaR");
+  _RemoveSecondLeadingJetOverlapWithElectrons = iConfig.getParameter<bool>("RemoveSecondLeadingJetOverlapWithElectrons");
+  _SecondLeadingJetElectronMatchingDeltaR = iConfig.getParameter<double>("SecondLeadingJetElectronMatchingDeltaR");
+  _RemoveSecondLeadingJetOverlapWithTaus = iConfig.getParameter<bool>("RemoveSecondLeadingJetOverlapWithTaus");
+  _SecondLeadingJetTauMatchingDeltaR = iConfig.getParameter<double>("SecondLeadingJetTauMatchingDeltaR");
 
   //-----Vertex Inputs
   _RecoVertexSource = iConfig.getParameter<InputTag>("RecoVertexSource");
@@ -232,11 +244,16 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
   _TauToGenMatchingDeltaR = iConfig.getParameter<double>("TauToGenMatchingDeltaR");
 
   //-----ntuple Inputs
-  _DoProduceNtuple = iConfig.getParameter<bool>("DoProduceNtuple");
-  _NtupleTreeName = (iConfig.getUntrackedParameter<std::string>("NtupleTreeName"));
+//  _DoProduceNtuple = iConfig.getParameter<bool>("DoProduceNtuple");
+//  _NtupleTreeName = (iConfig.getUntrackedParameter<std::string>("NtupleTreeName"));
+
+  _DoProduceNtuple = false;
 
   //-----Fill Histograms?
-  _FillRecoVertexHists = iConfig.getParameter<bool>("FillRecoVertexHists");
+//  _FillRecoVertexHists = iConfig.getParameter<bool>("FillRecoVertexHists");
+
+  _FillRecoVertexHists = true;
+
   _FillGenTauHists = iConfig.getParameter<bool>("FillGenTauHists");
   _FillRecoTauHists = iConfig.getParameter<bool>("FillRecoTauHists");
   _FillRecoMuonHists = iConfig.getParameter<bool>("FillRecoMuonHists");
@@ -477,6 +494,9 @@ void HiMassTauAnalysis::clearVectors(){
 
 // ------------ method called to for each event  ------------
 void HiMassTauAnalysis::analyze(const Event& iEvent, const EventSetup& iSetup) {
+
+//  edm::ESHandle<TransientTrackBuilder> theB;
+//  iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder",theB);
 
   //------Number of events analyzed (denominator)
   _totalEvents++;
@@ -1331,7 +1351,7 @@ bool HiMassTauAnalysis::passRecoTriggerCuts(const Event& iEvent) {
     unsigned int index = TheTriggerNames.triggerIndex(*TheTriggerPath);
     if(index < TheTriggerNames.size()) {if(_triggerResults->accept(index)) {return true;}}
     else {
-      std::cout << "### HiMassTauAnalysis - CONFIGURATION ERROR:  Specified trigger " << (*TheTriggerPath) << " is not found/defined!!!!" << std::endl;
+//      std::cout << "### HiMassTauAnalysis - CONFIGURATION ERROR:  Specified trigger " << (*TheTriggerPath) << " is not found/defined!!!!" << std::endl;
 //      std::cout << "Please use one of the following triggers :" << std::endl;
       for(edm::TriggerNames::Strings::const_iterator triggerName = TheTriggerNames.triggerNames().begin();
           triggerName != TheTriggerNames.triggerNames().end(); ++triggerName ) {
@@ -1422,6 +1442,9 @@ bool HiMassTauAnalysis::passRecoTauCuts(const pat::Tau& patTau,int nobj) {
     }
   }
   // ----Require 1 or 3 prongs
+  if (_RecoTauDiscrByProngType == "1or3") {if ( (patTau.tauID("byDecayModeFinding") < 0.5) ) {return false;}}
+  else {}
+/*
   if (_RecoTauDiscrByProngType == "1or3") {
     if (patTau.isCaloTau()) {
       if((patTau.signalTracks().size() == 1) ||(patTau.signalTracks().size() == 3)) {}
@@ -1447,6 +1470,7 @@ bool HiMassTauAnalysis::passRecoTauCuts(const pat::Tau& patTau,int nobj) {
       else {return false;}
     }
   } else {}
+*/
 /*
   // ----Signal constituents invariant mass cuts
   if (_DoRecoTauDiscrBySignalTracksAndGammasMass) {
@@ -1532,6 +1556,7 @@ bool HiMassTauAnalysis::passRecoMuonCuts(const pat::Muon& patMuon,int nobj) {
   if (_DoRecoMuonDiscrByPionVeto) {
     if( ((_RecoMuonCaloCompCoefficient * muon::caloCompatibility(patMuon)) + (_RecoMuonSegmCompCoefficient * muon::segmentCompatibility(patMuon))) <= _RecoMuonAntiPionCut ) {return false;}
   }
+/*
   if(_RecoTriggersNmin > 0) {
     bool matchedToTrigger = false;
     const trigger::TriggerObjectCollection & toc(handleTriggerEvent->getObjects());
@@ -1561,6 +1586,7 @@ bool HiMassTauAnalysis::passRecoMuonCuts(const pat::Muon& patMuon,int nobj) {
 //    std::cout << "number of trigs = " << nMuHLT << std::endl;
     if(!(matchedToTrigger)) {return false;}
   }
+*/
   return true;
 }
 
@@ -1581,6 +1607,7 @@ bool HiMassTauAnalysis::passRecoElectronCuts(const pat::Electron& patElectron,in
   if (smearedElectronPtEtaPhiMVector.at(nobj).pt()<_RecoElectronPtMinCut) {return false;}
   if (smearedElectronPtEtaPhiMVector.at(nobj).pt()>_RecoElectronPtMaxCut) {return false;}
   // ----Isolation requirement
+/*
   if (_DoRecoElectronDiscrByTrackIsolation) {
 //    if ( (patElectron.trackIsoDeposit()->depositAndCountWithin(_RecoElectronTrackIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoElectronTrackIsoTrkThreshold).first >= _RecoElectronTrackIsoSumPtCutValue) ) {return false;}
 //    if(patElectron.trackIso() > _RecoElectronTrackIsoSumPtCutValue) {return false;}
@@ -1593,13 +1620,16 @@ bool HiMassTauAnalysis::passRecoElectronCuts(const pat::Electron& patElectron,in
     if(patElectron.dr04EcalRecHitSumEt() > _RecoElectronEcalIsoSumPtMaxCutValue) {return false;}
     if(patElectron.dr04EcalRecHitSumEt() < _RecoElectronEcalIsoSumPtMinCutValue) {return false;}
   }
+*/
   // ----Impact parameter requirement
+/*
   if (_DoRecoElectronDiscrByIp) {
     const reco::Vertex& thePrimaryEventVertex = (*(_primaryEventVertexCollection)->begin());
 //    if ( patElectron.gsfTrack().isNonnull() ) {if ( (fabs(patElectron.gsfTrack()->dxy(thePrimaryEventVertex.position())) >= _RecoElectronIpCut) ) {return false;}}
     if ( patElectron.track().isNonnull() ) {if ( (fabs(patElectron.track()->dxy(thePrimaryEventVertex.position())) >= _RecoElectronIpCut) ) {return false;}}
     else {return false;}
   }
+*/
   // ----E over p requirement
   if (_DoRecoElectronDiscrByEoverP) { if((patElectron.eSuperClusterOverP()>_RecoElectronEoverPMax) || (patElectron.eSuperClusterOverP()<_RecoElectronEoverPMin)) {return false;} }
   // ----Electromagnetic energy fraction requirement
@@ -1633,6 +1663,7 @@ bool HiMassTauAnalysis::passRecoElectronCuts(const pat::Electron& patElectron,in
       if(patElectron.isEB()) { if(fabs(patElectron.deltaPhiSuperClusterTrackAtVtx()) > _RecoElectronEBDPhiIn) {return false;} }
     }
   }
+/*
   if (_DoRecoElectronDiscrBySCE2by5Over5by5) {
     if(_UseHeepInfo) {
       if(!(heep::CutCodes::passCuts(cutResult, "e2x5Over5x5"))) {return false;}
@@ -1644,7 +1675,26 @@ bool HiMassTauAnalysis::passRecoElectronCuts(const pat::Electron& patElectron,in
       }
     }
   }
-  if (_DoRecoElectronDiscrByMissingHits) { if(pInner.numberOfHits() >= _RecoElectronMissingHits) {return false;} }
+*/
+//  if (_DoRecoElectronDiscrByMissingHits) { if(pInner.numberOfHits() >= _RecoElectronMissingHits) {return false;} }
+
+  if (_DoRecoElectronDiscrBySCE2by5Over5by5) {
+    if( (patElectron.electronID("eidLooseOnlyID") == 15) ) { }
+    else {return false;}
+  }
+  if (_DoRecoElectronDiscrByMissingHits) {
+    if( (patElectron.electronID("eidLooseOnlyConversionRejection") == 15) ) { }
+    else {return false;}
+  }
+  if ( (_DoRecoElectronDiscrByTrackIsolation) && (_DoRecoElectronDiscrByEcalIsolation) ) {
+    if( (patElectron.electronID("eidLooseOnlyIso") == 15) ) { }
+    else {return false;}
+  }
+  if (_DoRecoElectronDiscrByIp) {
+    if( (patElectron.electronID("eidLooseOnlyIP") == 15) ) { }
+    else {return false;}
+  }
+
   return true;
 }
 
@@ -1693,6 +1743,33 @@ bool HiMassTauAnalysis::passRecoFirstLeadingJetCuts(const pat::Jet& patJet,int n
     if (fabs(smearedJetPtEtaPhiMVector.at(nobj).eta())>_RecoFirstLeadingJetEtaMaxCut) {return false;}
     if (fabs(smearedJetPtEtaPhiMVector.at(nobj).eta())<_RecoFirstLeadingJetEtaMinCut) {return false;}
     if (smearedJetPtEtaPhiMVector.at(nobj).pt()<_RecoFirstLeadingJetPt) {return false;}
+    if (_RemoveFirstLeadingJetOverlapWithMuons) {
+      int theNumberOfMuons = 0;
+      for ( pat::MuonCollection::const_iterator patMuon = _patMuons->begin(); patMuon != _patMuons->end(); ++patMuon ) {
+        theNumberOfMuons++;
+        if( (passRecoMuonCuts((*patMuon),theNumberOfMuons-1)) ) {
+          if(reco::deltaR(smearedJetMomentumVector.at(nobj), smearedMuonMomentumVector.at(theNumberOfMuons-1)) < _FirstLeadingJetMuonMatchingDeltaR) {return false;}
+        }
+      }
+    }
+    if (_RemoveFirstLeadingJetOverlapWithElectrons) {
+      int theNumberOfElectrons = 0;
+      for ( pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin(); patElectron != _patElectrons->end(); ++patElectron ) {
+        theNumberOfElectrons++;
+        if( (passRecoElectronCuts((*patElectron),theNumberOfElectrons-1)) ) {
+          if(reco::deltaR(smearedJetMomentumVector.at(nobj), smearedElectronMomentumVector.at(theNumberOfElectrons-1)) < _FirstLeadingJetElectronMatchingDeltaR) {return false;}
+        }
+      }
+    }
+    if (_RemoveFirstLeadingJetOverlapWithTaus) {
+      int theNumberOfTaus = 0;
+      for ( pat::TauCollection::const_iterator patTau = _patTaus->begin(); patTau != _patTaus->end(); ++patTau ) {
+        theNumberOfTaus++;
+        if( (passRecoTauCuts((*patTau),theNumberOfTaus-1)) ) {
+          if(reco::deltaR(smearedJetMomentumVector.at(nobj), smearedTauMomentumVector.at(theNumberOfTaus-1)) < _FirstLeadingJetTauMatchingDeltaR) {return false;}
+        }
+      }
+    }
   }
   return true;
 }
@@ -1704,6 +1781,33 @@ bool HiMassTauAnalysis::passRecoSecondLeadingJetCuts(const pat::Jet& patJet,int 
     if (fabs(smearedJetPtEtaPhiMVector.at(nobj).eta())>_RecoSecondLeadingJetEtaMaxCut) {return false;}
     if (fabs(smearedJetPtEtaPhiMVector.at(nobj).eta())<_RecoSecondLeadingJetEtaMinCut) {return false;}
     if (smearedJetPtEtaPhiMVector.at(nobj).pt()<_RecoSecondLeadingJetPt) {return false;}
+    if (_RemoveSecondLeadingJetOverlapWithMuons) {
+      int theNumberOfMuons = 0;
+      for ( pat::MuonCollection::const_iterator patMuon = _patMuons->begin(); patMuon != _patMuons->end(); ++patMuon ) {
+        theNumberOfMuons++;
+        if( (passRecoMuonCuts((*patMuon),theNumberOfMuons-1)) ) {
+          if(reco::deltaR(smearedJetMomentumVector.at(nobj), smearedMuonMomentumVector.at(theNumberOfMuons-1)) < _SecondLeadingJetMuonMatchingDeltaR) {return false;}
+        }
+      }
+    }
+    if (_RemoveSecondLeadingJetOverlapWithElectrons) {
+      int theNumberOfElectrons = 0;
+      for ( pat::ElectronCollection::const_iterator patElectron = _patElectrons->begin(); patElectron != _patElectrons->end(); ++patElectron ) {
+        theNumberOfElectrons++;
+        if( (passRecoElectronCuts((*patElectron),theNumberOfElectrons-1)) ) {
+          if(reco::deltaR(smearedJetMomentumVector.at(nobj), smearedElectronMomentumVector.at(theNumberOfElectrons-1)) < _SecondLeadingJetElectronMatchingDeltaR) {return false;}
+        }
+      }
+    }
+    if (_RemoveSecondLeadingJetOverlapWithTaus) {
+      int theNumberOfTaus = 0;
+      for ( pat::TauCollection::const_iterator patTau = _patTaus->begin(); patTau != _patTaus->end(); ++patTau ) {
+        theNumberOfTaus++;
+        if( (passRecoTauCuts((*patTau),theNumberOfTaus-1)) ) {
+          if(reco::deltaR(smearedJetMomentumVector.at(nobj), smearedTauMomentumVector.at(theNumberOfTaus-1)) < _SecondLeadingJetTauMatchingDeltaR) {return false;}
+        }
+      }
+    }
   }
   return true;
 }
@@ -2278,6 +2382,7 @@ void HiMassTauAnalysis::fillHistograms() {
 	    _hTauJetSumPtIso[NpdfID]->Fill(CalculateTauTrackIsolation(*patTau).second + CalculateTauEcalIsolation(*patTau).second,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
           }
 	} else {
+          const reco::Vertex& thePrimaryEventVertex = (*(_primaryEventVertexCollection)->begin());
 	  _hTauJetNumSignalTracks[NpdfID]->Fill(patTau->signalPFChargedHadrCands().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  _hTauJetNumSignalGammas[NpdfID]->Fill(CalculateNumberSignalTauGammas(*patTau),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  _hTauJetCharge[NpdfID]->Fill(fabs(patTau->charge()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
@@ -2323,6 +2428,16 @@ void HiMassTauAnalysis::fillHistograms() {
 	    _hTauJetSumPtIsoTracks[NpdfID]->Fill(CalculateTauTrackIsolation(*patTau).second,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hTauJetSumPtIsoGammas[NpdfID]->Fill(CalculateTauEcalIsolation(*patTau).second,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hTauJetSumPtIso[NpdfID]->Fill(CalculateTauTrackIsolation(*patTau).second + CalculateTauEcalIsolation(*patTau).second,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+            if (patTau->leadPFChargedHadrCand().isNonnull()) {
+              for( unsigned ipfcand=0; ipfcand < _pflow->size(); ++ipfcand ) {
+                const reco::PFCandidate& cand = (*_pflow)[ipfcand];
+                if((cand.pt()>1.) && (cand.particleId()==1) && (cand.trackRef()->recHitsSize() > 8) && 
+                   (cand.trackRef().isNonnull()) && (fabs(cand.trackRef()->dxy(thePrimaryEventVertex.position())) < 0.03) && 
+                   (fabs(cand.trackRef()->dz(thePrimaryEventVertex.position())) < 0.2) ) {
+ 	          _hTauJetNumberDensity[NpdfID]->Fill(reco::deltaR(cand.eta(),cand.phi(),patTau->leadPFChargedHadrCand()->eta(),patTau->leadPFChargedHadrCand()->phi()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+                }
+              }
+            }
           }
 	}
 	if(_GenParticleSource.label() != "") {
@@ -2504,6 +2619,9 @@ void HiMassTauAnalysis::fillHistograms() {
     double maximumLeptonMetMt = 0.0;
     if (_FillTopologyHists) {
       _hMet[NpdfID]->Fill(theMETVector.pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+//      const GenMETCollection *genmetcol = genTrue.product();
+//      const GenMET *genMetTrue = &(genmetcol->front());
+//      _hMetResolution[NpdfID]->Fill((theMETVector.pt() - genMetTrue->pt()) / genMetTrue->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
       if( ((_AnalyzeMuonForLeg1) && (_AnalyzeTauForLeg2)) || ((_AnalyzeMuonForLeg2) && (_AnalyzeTauForLeg1)) ) {
         double minimumIp = 999.9;
         double maximumSegComp = 0.0;
@@ -2998,8 +3116,9 @@ void HiMassTauAnalysis::getCollections(const Event& iEvent, const EventSetup& iS
   iEvent.getByLabel(_RecoVertexSource, _primaryEventVertexCollection);
   iEvent.getByLabel(_RecoTriggerSource, _triggerResults);
   iEvent.getByLabel( "hltTriggerSummaryAOD", handleTriggerEvent );
-//  iEvent.getByLabel(_RecoParticleFlowSource, _pflow);
+  iEvent.getByLabel("particleFlow", _pflow);
   iEvent.getByLabel("hpsPFTauProducer", _hpsTau);
+//  iEvent.getByLabel("genMetTrue", genTrue);
 /*
   iEvent.getByLabel("muons", _recoMuonsForMetCorrections);
   iEvent.getByLabel("muonMETValueMapProducer", "muCorrData", vm_muCorrData_h);
@@ -3065,7 +3184,8 @@ pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::matchToGen(const p
   reco::Candidate::LorentzVector theGenObject(0,0,0,0);
   associatedGenParticles = theObject.genParticleRefs();
   for(std::vector<reco::GenParticleRef>::const_iterator it = associatedGenParticles.begin(); it != associatedGenParticles.end(); ++it){
-    if ( it->ref().isNonnull() && it->ref().isValid() ) {
+//    if ( it->ref().isNonnull() && it->ref().isValid() ) {
+    if ( it->isNonnull() && it->isAvailable() ) {
       const reco::GenParticleRef& genParticle = (*it);
       if (abs(genParticle->pdgId()) == 11) {
         if(genParticle->mother(0)->pdgId() == genParticle->pdgId()) {
@@ -3097,7 +3217,8 @@ pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::matchToGen(const p
   reco::Candidate::LorentzVector theGenObject(0,0,0,0);
   associatedGenParticles = theObject.genParticleRefs();
   for(std::vector<reco::GenParticleRef>::const_iterator it = associatedGenParticles.begin(); it != associatedGenParticles.end(); ++it){
-    if ( it->ref().isNonnull() && it->ref().isValid() ) {
+//    if ( it->ref().isNonnull() && it->ref().isValid() ) {
+    if ( it->isNonnull() && it->isAvailable() ) {
       const reco::GenParticleRef& genParticle = (*it);
       if (abs(genParticle->pdgId()) == 13) {
         if(genParticle->mother(0)->pdgId() == genParticle->pdgId()) {
@@ -4195,7 +4316,7 @@ void HiMassTauAnalysis::bookHistograms() {
     if (_FillRecoVertexHists) {
       _hVertexZposition[NpdfCounter] = fs->make<TH1F>(("VertexZposition_"+j.str()).c_str(), ("VertexZposition_"+j.str()).c_str(), 50, -50., 50.);
       _hVertexNTracks[NpdfCounter]   = fs->make<TH1F>(("VertexNTracks_"+j.str()).c_str(),   ("VertexNTracks_"+j.str()).c_str(),   100, 0., 100.);
-      _hNVertices[NpdfCounter]       = fs->make<TH1F>(("NVertices_"+j.str()).c_str(),       ("NVertices_"+j.str()).c_str(),       10, 0., 10.);
+      _hNVertices[NpdfCounter]       = fs->make<TH1F>(("NVertices_"+j.str()).c_str(),       ("NVertices_"+j.str()).c_str(),       20, 0., 20.);
     }
     
     //--- book generator level histograms
@@ -4245,6 +4366,7 @@ void HiMassTauAnalysis::bookHistograms() {
       _hBestTauJetSumPtIsoTracks[NpdfCounter]         = fs->make<TH1F>(("BestTauJetSumPtIsoTracks_"+j.str()).c_str(),        ("BestTauJetSumPtIsoTracks_"+j.str()).c_str(), 100, 0, 50);
       _hBestTauJetSumPtIsoGammas[NpdfCounter]         = fs->make<TH1F>(("BestTauJetSumPtIsoGammas_"+j.str()).c_str(),        ("BestTauJetSumPtIsoGammas_"+j.str()).c_str(), 100, 0, 50);
       _hTauJetSumPtIso[NpdfCounter]                   = fs->make<TH1F>(("TauJetSumPtIso_"+j.str()).c_str(),                  ("TauJetSumPtIso_"+j.str()).c_str(), 100, 0, 50);
+      _hTauJetNumberDensity[NpdfCounter]              = fs->make<TH1F>(("TauJetNumberDensity_"+j.str()).c_str(),                  ("TauJetNumberDensity_"+j.str()).c_str(), 500, 0, 10);
       _hTauJetGenTauDeltaPhi[NpdfCounter]             = fs->make<TH1F>(("TauJetGenTauDeltaPhi_"+j.str()).c_str(),            ("TauJetGenTauDeltaPhi_"+j.str()).c_str(), 800, -0.2, 0.2);
       _hTauJetGenTauDeltaEta[NpdfCounter]             = fs->make<TH1F>(("TauJetGenTauDeltaEta_"+j.str()).c_str(),            ("TauJetGenTauDeltaEta_"+j.str()).c_str(), 800, -0.2, 0.2);
       _hTauJetGenTauDeltaPt[NpdfCounter]              = fs->make<TH1F>(("TauJetGenTauDeltaPt_"+j.str()).c_str(),             ("TauJetGenTauDeltaPt_"+j.str()).c_str(), 500, -5, 5);
@@ -4457,6 +4579,7 @@ void HiMassTauAnalysis::bookHistograms() {
       _hZeta1D[NpdfCounter]                 = fs->make<TH1F>(("Zeta1D_"+j.str()).c_str(),                 ("Zeta1D_"+j.str()).c_str(), 50, -100, 100);
       _hBestZeta1D[NpdfCounter]             = fs->make<TH1F>(("BestZeta1D_"+j.str()).c_str(),             ("BestZeta1D_"+j.str()).c_str(), 50, -100, 100);
       _hMet[NpdfCounter]                    = fs->make<TH1F>(("Met_"+j.str()).c_str(),                    ("Met_"+j.str()).c_str(), 100, 0, 1000);
+      _hMetResolution[NpdfCounter]          = fs->make<TH1F>(("MetResolution_"+j.str()).c_str(),                    ("MetResolution_"+j.str()).c_str(), 500, -5, 5);
       _hR1[NpdfCounter] 		    = fs->make<TH1F>(("R1_"+j.str()).c_str(), ("R1_"+j.str()).c_str(), 60, 0, 6);
       _hR2[NpdfCounter] = fs->make<TH1F>(("R2_"+j.str()).c_str(), ("R2_"+j.str()).c_str(), 60, 0, 6);
       _hDphi1[NpdfCounter] = fs->make<TH1F>(("Dphi1_"+j.str()).c_str(), ("Dphi1_"+j.str()).c_str(), 36, -TMath::Pi(), +TMath::Pi());
