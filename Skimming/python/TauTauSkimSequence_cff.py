@@ -5,9 +5,9 @@ from HighMassAnalysis.Skimming.tauSelector_cfi import *
 TauTauPairs = cms.EDProducer("DeltaRMinCandCombiner",
   decay = cms.string('selectedPFTaus@+ selectedPFTaus@-'),
   checkCharge = cms.bool(False),
-  cut = cms.string( ''),
+  cut = cms.string( 'daughter(0).pt > 15 && daughter(1).pt > 15 && abs(daughter(0).eta) < 2.1 && abs(daughter(1).eta) < 2.1'),
   name = cms.string('TauTauCandidates'),
-  deltaRMin = cms.double(0.7)
+  deltaRMin = cms.double(0.3)
 )
 
 selectedTauTauPairs = cms.EDFilter("CandViewCountFilter",
