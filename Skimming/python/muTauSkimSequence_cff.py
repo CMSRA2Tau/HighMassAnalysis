@@ -8,7 +8,7 @@ muTauPairs = cms.EDProducer("DeltaRMinCandCombiner",
   checkCharge = cms.bool(False),
   cut = cms.string( ''),
   name = cms.string('muTauCandidates'),
-  deltaRMin = cms.double(0.7)
+  deltaRMin = cms.double(0.3)
 )
 
 selectedMuTauPairs = cms.EDFilter("CandViewCountFilter",
