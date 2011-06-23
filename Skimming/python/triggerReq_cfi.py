@@ -40,6 +40,10 @@ mutauHLTFilter = hlt.triggerResultsFilter.clone(
       'HLT_IsoMu12_LooseIsoPFTau10*',
       'HLT_Mu15_LooseIsoPFTau20',
       'HLT_Mu15_LooseIsoPFTau20*',
+      'HLT_IsoMu15_LooseIsoPFTau15',
+      'HLT_IsoMu15_LooseIsoPFTau15*',
+      'HLT_IsoMu15_LooseIsoPFTau20',
+      'HLT_IsoMu15_LooseIsoPFTau20*',
     ),
     l1tResults = '',
     throw = False
