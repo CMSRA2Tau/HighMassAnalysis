@@ -9,7 +9,7 @@ cvs co -r V03-02-07  JetMETCorrections/Configuration
 cvs co -r V08-06-16 PhysicsTools/PatAlgos
 cvs co -r V04-04-04 JetMETCorrections/Type1MET
 cvs co -d HighMassAnalysis/Configuration -r for423_06222011 UserCode/AlfredoGurrola/HighMassAnalysis/Configuration
-cvs co -d HighMassAnalysis/Skimming -r for423_06222011_b  UserCode/AlfredoGurrola/HighMassAnalysis/Skimming
+cvs co -d HighMassAnalysis/Skimming -r for423_06222011_c  UserCode/AlfredoGurrola/HighMassAnalysis/Skimming
 cvs co -d HighMassAnalysis/Analysis -r forSusy_423_06222011_b UserCode/AlfredoGurrola/HighMassAnalysis/Analysis
 scram build -c
 scram b -j8
