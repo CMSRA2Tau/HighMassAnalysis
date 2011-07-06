@@ -309,6 +309,7 @@ private:
 
   double sumpxForMht;
   double sumpyForMht;
+  double phiForMht;
   double sumptForHt;
   double leadingjetpt;
   double secondleadingjetpt;
@@ -320,6 +321,10 @@ private:
   double _RecoVertexMaxZposition;
   double _RecoVertexTrackWeight;
   int _RecoVertexMinTracks;
+  bool _DoPUrewieghting;
+  string _DataHistos;
+  string  _MCHistos;
+
 
   //-----Trigger Inputs
   InputTag _RecoTriggerSource;
@@ -373,12 +378,15 @@ private:
   bool _DoSUSYDiscrByAlpha;
   double _AlphaMinCut;
   double _AlphaMaxCut;
-  bool _DoSUSYDiscrByDphi1;
-  double _Dphi1MinCut;
-  double _Dphi1MaxCut;
-  bool _DoSUSYDiscrByDphi2;
-  double _Dphi2MinCut;
-  double _Dphi2MaxCut;
+//  bool _DoSUSYDiscrByDphi1;
+//  double _Dphi1MinCut;
+//  double _Dphi1MaxCut;
+//  bool _DoSUSYDiscrByDphi2;
+//  double _Dphi2MinCut;
+//  double _Dphi2MaxCut;
+  bool _DoSUSYDiscrByDphiMhtJet;
+  double _DphiMhtJet1;
+  double _DphiMhtJet2;
 
   //-----do matching to gen?
   bool _MatchTauToGen;
@@ -652,7 +660,9 @@ private:
   std::map<unsigned int, TH1*> _hR1;
   std::map<unsigned int, TH1*> _hR2;
   std::map<unsigned int, TH1*> _hDphi1;
+  std::map<unsigned int, TH1*> _hDphiMhtJet1;
   std::map<unsigned int, TH1*> _hDphi2;
+  std::map<unsigned int, TH1*> _hDphiMhtJet2;
   std::map<unsigned int, TH1*> _hAlpha;
 
 /* 
