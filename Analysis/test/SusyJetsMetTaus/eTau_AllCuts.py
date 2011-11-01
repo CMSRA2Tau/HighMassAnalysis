@@ -14,84 +14,8 @@ process.maxEvents = cms.untracked.PSet(
 process.source = cms.Source("PoolSource",
     skipEvents = cms.untracked.uint32(0),
     fileNames = cms.untracked.vstring(
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_9_1_eDP.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_8_1_XW1.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_7_1_YAl.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_6_1_IrK.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_5_1_qSm.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_4_1_88I.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_3_1_PN6.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_39_1_BpV.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_38_1_MkR.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_37_1_Z52.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_36_1_mua.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_35_1_qFj.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_34_1_3PF.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_33_1_TiI.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_32_1_2Pm.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_31_1_bnP.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_30_1_U1x.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_2_1_0IS.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_29_1_GTQ.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_28_1_5vH.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_27_1_s2v.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_26_1_Oew.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_25_1_5wi.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_24_1_pEC.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_23_1_kuT.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_22_1_guM.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_21_1_x9z.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_20_1_QMf.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_1_1_xdO.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_19_1_ZsA.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_18_1_O53.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_17_1_LcG.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_16_1_JT9.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_15_1_gnK.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_14_1_3BD.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_13_1_UWg.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_12_1_qmf.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_11_1_P5n.root',
-        
-'/store/user/lpctau/HighMassTau/florez/METBTag/METBTag_TauTauSkim_04022011/9910cb9884da89566e73709073699236/skimPat_10_1_RjW.root'
+'/store/user/amarotta/amarotta/TTJets_TuneZ2_7TeV-madgraph-tauola/TTJets_mutauSkim_06222011/d2196243fc6117c733eff4717010f8b7/skimPat_9_1_RLi.root',
+'/store/user/amarotta/amarotta/TTJets_TuneZ2_7TeV-madgraph-tauola/TTJets_mutauSkim_06222011/d2196243fc6117c733eff4717010f8b7/skimPat_99_1_IZ8.root',
 ) 
 )
 
@@ -102,12 +26,12 @@ process.TFileService = cms.Service("TFileService",
 process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
 
     #-----Generator level Inputs
-    GenParticleSource = cms.untracked.InputTag(''),				# gen particle collection
+    GenParticleSource = cms.untracked.InputTag('genParticles'),				# gen particle collection
 
     #-----Inputs to determine which channel to analyze
-    AnalyzeTauForLeg1		= cms.bool(True),					# if true, taus will be used for leg1
+    AnalyzeTauForLeg1		= cms.bool(False),					# if true, taus will be used for leg1
     AnalyzeMuonForLeg1		= cms.bool(False),					# if true, muons will be used for leg1
-    AnalyzeElectronForLeg1	= cms.bool(False),					# if true, electrons will be used for leg1
+    AnalyzeElectronForLeg1	= cms.bool(True),					# if true, electrons will be used for leg1
     AnalyzeTauForLeg2		= cms.bool(True),					# if true, taus will be used for leg2
     AnalyzeMuonForLeg2		= cms.bool(False),					# if true, muons will be used for leg2
     AnalyzeElectronForLeg2	= cms.bool(False),					# if true, electrons will be used for leg2
@@ -129,13 +53,13 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     DoRecoTauDiscrByH3x3OverP = cms.bool(False),					# if true, tau will be required
 											# to pass H(3x3)/P(lead) cut
     RecoTauH3x3OverP = cms.double(0.03),						# H(3x3)/P(lead) > X
-    DoRecoTauDiscrByIsolation = cms.bool(False), 					# if true, isolation will be applied
+    DoRecoTauDiscrByIsolation = cms.bool(True), 					# if true, isolation will be applied
     UseRecoTauDiscrByIsolationFlag = cms.bool(True), 					# if true, the default isolation discriminator is used
                                                       					# if false, isolation is recalculated using the parameters below
-    RecoTauDiscrByIsolation = cms.untracked.string('byIsolation'),			# name of the isolation discriminator flag
-    UseRecoTauIsoSumPtInsteadOfNiso = cms.bool(True),					# if true, sum pt is used for tau isolation instead
+    RecoTauDiscrByIsolation = cms.untracked.string('byVLooseIsolation'),		# name of the isolation discriminator flag
+    UseRecoTauIsoSumPtInsteadOfNiso = cms.bool(False),					# if true, sum pt is used for tau isolation instead
 											# of the number of isolation candidates
-    UseRecoTauEllipseForEcalIso = cms.bool(True),					# if true, an ellipse in eta-phi space will be used to define
+    UseRecoTauEllipseForEcalIso = cms.bool(False),					# if true, an ellipse in eta-phi space will be used to define
 											# the signal to isolation annulus for ECAL isolation
     RecoTauEcalIsoRphiForEllipse = cms.double(0.15),					# a:  dphi^2 / a^2 + deta^2 / b^2  (ECAL ellipse)
     RecoTauEcalIsoRetaForEllipse = cms.double(0.07),					# b:  dphi^2 / a^2 + deta^2 / b^2  (ECAL ellipse)
@@ -143,9 +67,9 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     RecoTauEcalNisoMax = cms.int32(0),							# number of isolation candidates <=X
     RecoTauTrackIsoSumPtMaxCutValue = cms.double(1.0),					# sum pt of tracks & gammas < X
     RecoTauTrackIsoSumPtMinCutValue = cms.double(0.0),					# sum pt of tracks & gammas >= X
-    RecoTauEcalIsoSumPtMaxCutValue = cms.double(10000.0),					# sum pt of tracks & gammas < X
+    RecoTauEcalIsoSumPtMaxCutValue = cms.double(1.0),					# sum pt of tracks & gammas < X
     RecoTauEcalIsoSumPtMinCutValue = cms.double(0.0),					# sum pt of tracks & gammas >= X
-    RecoTauDiscrByProngType = cms.string('NONE'),  		 			# if '1or3', taus will be required to have 1 || 3 prongs
+    RecoTauDiscrByProngType = cms.string('1or3hps'),  		 			# if '1or3', taus will be required to have 1 || 3 prongs
 											# if '1', taus will be required to have 1 prongs
 											# if '3', taus will be required to have 3 prongs
 											# if anything else is used, no prong cuts are applied
@@ -154,22 +78,24 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
 											# is NOT used
     RecoTauSigGamThreshold = cms.double(1.0),						# signal gammas pt > X
     RecoTauIsoDeltaRCone = cms.double(0.3),	 					# tau outer isolation conesize
-    RecoTauTrackIsoTrkThreshold = cms.double(1.0), 					# min pt requirement for isolation tracks
-    RecoTauGammaIsoGamThreshold = cms.double(1.0), 					# min pt requirement for isolation gammas
+    RecoTauTrackIsoTrkThreshold = cms.double(1.5), 					# min pt requirement for isolation tracks
+    RecoTauGammaIsoGamThreshold = cms.double(2.0), 					# min pt requirement for isolation gammas
     DoRecoTauDiscrAgainstElectron = cms.bool(True),					# if true, default tau POG electron
 											# discriminator veto will be applied
     RecoTauDiscrAgainstElectron = cms.untracked.string('againstTightElectron'),		# name of electron veto discriminator flag
     DoRecoTauDiscrByCrackCut = cms.bool(False),						# if true, taus that fall on the cracks will not be considered
     DoRecoTauDiscrAgainstMuon = cms.bool(True), 					# if true, muon veto will be applied
     RecoTauDiscrAgainstMuon = cms.untracked.string('againstTightMuon'),			# name of muon veto discriminator flag
+    SelectTausThatAreMuons = cms.bool(False),
+    SelectTausThatAreElectrons = cms.bool(False),
 
     #-----Reco Muon Inputs
     RecoMuonSource = cms.InputTag('selectedPatMuons'),				        # muon collection
-    RecoMuonEtaCut = cms.double(999.1),							# require muon |eta|<=X
-    RecoMuonPtMinCut = cms.double(0.),							# require muon pt>=X
+    RecoMuonEtaCut = cms.double(2.1),							# require muon |eta|<=X
+    RecoMuonPtMinCut = cms.double(10.),							# require muon pt>=X
     RecoMuonPtMaxCut = cms.double(9999.),						# require muon pt<=X
-    DoRecoMuonDiscrByGlobal = cms.bool(False),						# if true, muon will be required to be a 'global muon
-    DoRecoMuonDiscrByIsolation = cms.bool(False),					# if true, muon isolation will be applied
+    DoRecoMuonDiscrByGlobal = cms.bool(True),						# if true, muon will be required to be a 'global muon
+    DoRecoMuonDiscrByIsolation = cms.bool(True),					# if true, muon isolation will be applied
     RecoMuonTrackIsoSumPtMaxCutValue = cms.double(1.0),					# sum pt of isolation tracks & ecal rechits < X
     RecoMuonTrackIsoSumPtMinCutValue = cms.double(0.0),					# sum pt of isolation tracks & ecal rechits >= X
     RecoMuonEcalIsoSumPtMaxCutValue = cms.double(1.0),					# sum pt of isolation tracks & ecal rechits < X
@@ -177,7 +103,7 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     RecoMuonIsoDeltaRCone = cms.double(0.3),						# outer conesize used for isolation
     RecoMuonTrackIsoTrkThreshold = cms.double(1.0),					# isolation tracks are required to have pt>X
     RecoMuonEcalIsoRecHitThreshold = cms.double(1.0),					# isolation rechits are required to have pt>X
-    DoRecoMuonDiscrByIp = cms.bool(False),						# if true, muon will be required to have |d0|<X
+    DoRecoMuonDiscrByIp = cms.bool(True),						# if true, muon will be required to have |d0|<X
     RecoMuonIpCut = cms.double(0.2),							# |d0|<X
     DoRecoMuonDiscrByPionVeto = cms.bool(False),                                        # if true, muon will be required to pass pion veto cut
     RecoMuonCaloCompCoefficient = cms.double(0.8),                                      # a -> pion veto: a*caloComp + b*segmComp
@@ -188,42 +114,42 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     RecoElectronSource = cms.InputTag('heepPatElectrons'),			        # electron collection
     UseHeepInfo = cms.bool(True),							# if true, heep discriminators and
 											# variables will be used instead of pat defaults
-    RecoElectronEtaCut = cms.double(999.1),						# require electron |eta|<=X
-    RecoElectronPtMinCut = cms.double(0.),						# require electron pt>=X
+    RecoElectronEtaCut = cms.double(2.1),						# require electron |eta|<=X
+    RecoElectronPtMinCut = cms.double(10.),						# require electron pt>=X
     RecoElectronPtMaxCut = cms.double(9999.),						# require electron pt<=X
-    DoRecoElectronDiscrByTrackIsolation = cms.bool(False), 				# if true, electrons will be required to pass track isolation
+    DoRecoElectronDiscrByTrackIsolation = cms.bool(True), 				# if true, electrons will be required to pass track isolation
     RecoElectronTrackIsoSumPtMaxCutValue = cms.double(1.0), 				# sum pt of tracks < X
     RecoElectronTrackIsoSumPtMinCutValue = cms.double(0.0), 				# sum pt of tracks >= X
     RecoElectronTrackIsoDeltaRCone = cms.double(0.4), 					# isolation conesize used to calculate sum pt of tracks
     RecoElectronTrackIsoTrkThreshold = cms.double(1.0), 				# min pt requirement for isolation tracks
-    DoRecoElectronDiscrByEcalIsolation = cms.bool(False), 				# if true, electrons will be required to pass ecal isolation
+    DoRecoElectronDiscrByEcalIsolation = cms.bool(True), 				# if true, electrons will be required to pass ecal isolation
     RecoElectronEcalIsoSumPtMaxCutValue = cms.double(1.0), 				# sum pt of ecal rechits < X
     RecoElectronEcalIsoSumPtMinCutValue = cms.double(0.0), 				# sum pt of ecal rechits >= X
-    RecoElectronEcalIsoDeltaRCone = cms.double(0.6), 					# isolation conesize used to calculate sum pt of ecal rechits
+    RecoElectronEcalIsoDeltaRCone = cms.double(0.4), 					# isolation conesize used to calculate sum pt of ecal rechits
     RecoElectronEcalIsoRecHitThreshold = cms.double(1.0),				# min pt requirement for isolation rechits
-    DoRecoElectronDiscrByIp = cms.bool(False), 						# if true, electron will be required to have |d0|<X
-    RecoElectronIpCut = cms.double(999.), 						# |d0(impact parameter)| < X
+    DoRecoElectronDiscrByIp = cms.bool(True), 						# if true, electron will be required to have |d0|<X
+#    RecoElectronIpCut = cms.double(999.), 						# |d0(impact parameter)| < X
     DoRecoElectronDiscrByEoverP = cms.bool(False), 					# if true, require the electron to have X < E/p < Y
-    RecoElectronEoverPMax = cms.double(1.3), 						# E/p < Y
-    RecoElectronEoverPMin = cms.double(0.7), 						# E/p > X
+#    RecoElectronEoverPMax = cms.double(1.3), 						# E/p < Y
+#    RecoElectronEoverPMin = cms.double(0.7), 						# E/p > X
     DoRecoElectronDiscrByHoverEm = cms.bool(False), 					# if true, require the electron to have H/Em < X
-    RecoElectronHoverEmCut = cms.double(0.05),	 					# H/Em < X
+#    RecoElectronHoverEmCut = cms.double(0.05),	 					# H/Em < X
     DoRecoElectronDiscrBySigmaIEtaIEta = cms.bool(False),				# if true, apply sigmaIEtaIEta cut
-    RecoElectronSigmaIEtaIEta = cms.double(0.03),					# sigmaIEtaIEta <= X (will be used
+#    RecoElectronSigmaIEtaIEta = cms.double(0.03),					# sigmaIEtaIEta <= X (will be used
 											# ONLY if heep info is NOT used
     DoRecoElectronDiscrByDEtaIn = cms.bool(False),					# if true, apply 
-    RecoElectronEEDEtaIn = cms.double(0.007),
-    RecoElectronEBDEtaIn = cms.double(0.005),
+#    RecoElectronEEDEtaIn = cms.double(0.007),
+#    RecoElectronEBDEtaIn = cms.double(0.005),
     DoRecoElectronDiscrByDPhiIn = cms.bool(False),
-    RecoElectronEEDPhiIn = cms.double(0.09),
-    RecoElectronEBDPhiIn = cms.double(0.09),
-    DoRecoElectronDiscrBySCE2by5Over5by5 = cms.bool(False),			
-    RecoElectronEBscE1by5Over5by5 = cms.double(0.83),					
-    RecoElectronEBscE2by5Over5by5 = cms.double(0.94),					
-    DoRecoElectronDiscrByMissingHits = cms.bool(False),
-    RecoElectronMissingHits = cms.int32(1),
-    DoRecoElectronDiscrByEcalDrivenSeed = cms.bool(False),				# if true, require electron to be ecal driven
-    DoRecoElectronDiscrByTrackerDrivenSeed = cms.bool(False),				# if true, require electron to be tracker driven
+#    RecoElectronEEDPhiIn = cms.double(0.09),
+#    RecoElectronEBDPhiIn = cms.double(0.09),
+    DoRecoElectronDiscrBySCE2by5Over5by5 = cms.bool(True),			
+#    RecoElectronEBscE1by5Over5by5 = cms.double(0.83),					
+#    RecoElectronEBscE2by5Over5by5 = cms.double(0.94),					
+    DoRecoElectronDiscrByMissingHits = cms.bool(True),
+#    RecoElectronMissingHits = cms.int32(1),
+#    DoRecoElectronDiscrByEcalDrivenSeed = cms.bool(False),				# if true, require electron to be ecal driven
+#    DoRecoElectronDiscrByTrackerDrivenSeed = cms.bool(False),				# if true, require electron to be tracker driven
 
     #-----Reco Jet Inputs
     RecoJetSource                       = cms.InputTag('patJetsPF'),              # jet collection
@@ -237,8 +163,6 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     JetElectronMatchingDeltaR           = cms.double(0.5),                              # dR(electron,jet)<X used for removing jets from the "good jet" list
     RemoveJetOverlapWithTaus            = cms.bool(False),                               # if true, jets w/ dR(tau,jet)<X will not be considered
     JetTauMatchingDeltaR                = cms.double(0.25),                             # dR(tau,jet)<X used for removing jets from the "good jet" list
-    ApplyJetBTagging                    = cms.bool(False),                              # if true, apply track counting high$
-    JetBTaggingTCHEcut                  = cms.double(3.0),                              # tagged as b-jet if TCHE > X
     DoDiscrByFirstLeadingJet		= cms.bool(True),
     RecoFirstLeadingJetPt		= cms.double(100.0),
     RecoFirstLeadingJetEtaMinCut	= cms.double(0.0),
@@ -249,21 +173,34 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     RecoSecondLeadingJetEtaMaxCut	= cms.double(3.0),
     RemoveFirstLeadingJetOverlapWithMuons           = cms.bool(False),
     FirstLeadingJetMuonMatchingDeltaR               = cms.double(0.3),
-    RemoveFirstLeadingJetOverlapWithElectrons       = cms.bool(False),
+    RemoveFirstLeadingJetOverlapWithElectrons       = cms.bool(True),
     FirstLeadingJetElectronMatchingDeltaR           = cms.double(0.3),
-    RemoveFirstLeadingJetOverlapWithTaus            = cms.bool(False),
+    RemoveFirstLeadingJetOverlapWithTaus            = cms.bool(True),
     FirstLeadingJetTauMatchingDeltaR                = cms.double(0.3),
     RemoveSecondLeadingJetOverlapWithMuons           = cms.bool(False),
     SecondLeadingJetMuonMatchingDeltaR               = cms.double(0.3),
-    RemoveSecondLeadingJetOverlapWithElectrons       = cms.bool(False),
+    RemoveSecondLeadingJetOverlapWithElectrons       = cms.bool(True),
     SecondLeadingJetElectronMatchingDeltaR           = cms.double(0.3),
-    RemoveSecondLeadingJetOverlapWithTaus            = cms.bool(False),
+    RemoveSecondLeadingJetOverlapWithTaus            = cms.bool(True),
     SecondLeadingJetTauMatchingDeltaR                = cms.double(0.3),
+
+    #-----Reco b-Jet Inputs
+    RecoBJetEtaMinCut                    = cms.double(0.0),                              # require jet |eta|>=X
+    RecoBJetEtaMaxCut                    = cms.double(2.4),                            # require jet |eta|<=X
+    RecoBJetPtCut                        = cms.double(20.0),                             # require jet pt>=X
+    RemoveBJetOverlapWithMuons           = cms.bool(False),                              # if true, jets w/ dR(muon,jet)<X will not be considered
+    BJetMuonMatchingDeltaR               = cms.double(0.3),                              # dR(muon,jet)<X used for removing jets from the "good jet" list
+    RemoveBJetOverlapWithElectrons       = cms.bool(True),                              # if true, jets w/ dR(electron,jet)<X will not be considered
+    BJetElectronMatchingDeltaR           = cms.double(0.3),                              # dR(electron,jet)<X used for removing jets from the "good jet" list
+    RemoveBJetOverlapWithTaus            = cms.bool(True),                               # if true, jets w/ dR(tau,jet)<X will not be considered
+    BJetTauMatchingDeltaR                = cms.double(0.3),                             # dR(tau,jet)<X used for removing jets from the "good jet" list
+    ApplyJetBTagging                    = cms.bool(True),                              # if true, apply track counting high$
+    JetBTaggingTCHEcut                  = cms.double(3.3),                              # tagged as b-jet if TCHE > X
 
     #-----Vertex Inputs
     RecoVertexSource = cms.InputTag('offlinePrimaryVertices'), 				# vertex collection
-    RecoVertexMaxZposition = cms.double(999.0),						# vertex |z| < X
-    RecoVertexMinTracks = cms.int32(-1),						# vertex must have >= 2 "good" tracks used to reconstruct it
+    RecoVertexMaxZposition = cms.double(20.0),						# vertex |z| < X
+    RecoVertexMinTracks = cms.int32(2),						# vertex must have >= 2 "good" tracks used to reconstruct it
     RecoVertexTrackWeight = cms.double(0.5),						# weight used to define "good" tracks used to reconstruct vertex
 
     #-----Trigger Inputs
@@ -285,9 +222,9 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     DoSUSYDiscrByDphi1 = cms.bool(False),
     Dphi1MinCut = cms.double(0.9),
     Dphi1MaxCut = cms.double(999.9),
-    DoSUSYDiscrByDphi2 = cms.bool(False),
-    Dphi2MinCut = cms.double(0.85),
-    Dphi2MaxCut = cms.double(999.9),
+    DoSUSYDiscrByDphi2 = cms.bool(True),
+    Dphi2MinCut = cms.double(-0.5),
+    Dphi2MaxCut = cms.double(0.5),
 
     #-----Topology Inputs
     RecoMetSource = cms.InputTag('patMETsPFL1L2L3Cor'),				         	# met collection
@@ -297,8 +234,8 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     DoDiscrByMet = cms.bool(False), 							# if true, met will be required to be > X
     CalculateMetUsingOnlyLeg1AndLeg2 = cms.bool(False),					# if true, recalculate met using leg1 and leg2 momenta
     RecoMetCut = cms.double(30.0), 							# met > X
-    DoDiTauDiscrByDeltaR = cms.bool(False), 						# if true, ditau pairs must have dR(leg1,leg2) > X
-    DiTauDeltaRCut = cms.double(0.7),	 						# dR(leg1,leg2) > X
+    DoDiTauDiscrByDeltaR = cms.bool(True), 						# if true, ditau pairs must have dR(leg1,leg2) > X
+    DiTauDeltaRCut = cms.double(0.3),	 						# dR(leg1,leg2) > X
     DiTauDiscrByOSLSType = cms.string('NONE'),		 				# if 'OS', product of leg1 charge and leg2 charge < 0
 											# if 'LS', product of leg1 charge and leg2 charge > 0
 											# if anything else is used, no OSLS requirement is applied
@@ -339,7 +276,7 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
                                                                                         # 'mother' particle
     UseLeptonGrandMotherId = cms.bool(False),                                           # if true, require the matched lepton to come from a certain
                                                                                         # 'grandmother' particle
-    LeptonMotherId = cms.int32(15),                                                     # pdgId of the 'mother' particle
+    LeptonMotherId = cms.int32(24),                                                     # pdgId of the 'mother' particle
     LeptonGrandMotherId = cms.int32(32),                                                # pdgId of the 'grandmother' particle
     MatchTauToGen = cms.bool(False),                                                    # if true, match reco tau to a gen had tau
     UseTauMotherId = cms.bool(False),                                                   # if true, require the matched tau to come from a certain
@@ -352,39 +289,29 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     TauGrandMotherId = cms.int32(1),                                                    # pdgId of the 'grandmother' particle
     TauToGenMatchingDeltaR = cms.double(0.25),                                          # matching dR:  dR(vis gen tau,reco tau)<X
 
-    #-----ntuple Inputs
-#    DoProduceNtuple = cms.bool(False),							# if true, Ntuple will be filled
-#    NtupleTreeName = cms.untracked.string('HMTTree'),					# name of the Ntuple tree
-
-    #-----Fill Histograms? Histograms are filled for events passing the specified cuts
-#    FillRecoVertexHists = cms.bool(True),						# if true, fill histograms for vertices
-    FillGenTauHists = cms.bool(True),							# if true, fill histograms for gen had taus
-    FillRecoTauHists = cms.bool(True),							# if true, fill histograms for reco taus
-    FillRecoMuonHists = cms.bool(False),							# if true, fill histograms for reco muons
-    FillRecoElectronHists = cms.bool(False),						# if true, fill histograms for reco electrons
-    FillRecoJetHists = cms.bool(True),							# if true, fill histograms for reco jets
-    FillTopologyHists = cms.bool(True),							# if true, fill topology histograms (e.g. met, mass, ...)
-
     #-----Event Sequence inputs
     RecoTriggersNmin = cms.int32(0),							# require event to pass >=X trigger paths defined above
-    RecoVertexNmin = cms.int32(0),							# require event to have >=X vertices passing specified cuts
+    RecoVertexNmin = cms.int32(1),							# require event to have >=X vertices passing specified cuts
     RecoVertexNmax = cms.int32(1000),							# require event to have <=X vertices passing specified cuts
-    RecoLeg1Nmin = cms.int32(2),							# require event to have >=X leg1 objects passing specified cuts
+    RecoLeg1Nmin = cms.int32(1),							# require event to have >=X leg1 objects passing specified cuts
     RecoLeg1Nmax = cms.int32(1000),							# require event to have <=X leg1 objects passing specified cuts
-    RecoLeg2Nmin = cms.int32(2),							# require event to have >=X leg2 objects passing specified cuts
+    RecoLeg2Nmin = cms.int32(1),							# require event to have >=X leg2 objects passing specified cuts
     RecoLeg2Nmax = cms.int32(1000),							# require event to have <=X leg2 objects passing specified cuts
     RecoJetNmin = cms.int32(1),								# require event to have >=X "jets" passing specified cuts
     RecoJetNmax = cms.int32(1000),						        # require event to have <=X "jets" passing specified cuts
     RecoFirstLeadingJetNmin = cms.int32(1),
     RecoSecondLeadingJetNmin = cms.int32(1),
+    RecoBJetNmin = cms.int32(0),							# require event to have >=X "jets" passing specified cuts
+    RecoBJetNmax = cms.int32(1000),						        # require event to have <=X "jets" passing specified cuts
     SusyCombinationsNmin = cms.int32(1),
-    CombinationsNmin = cms.int32(0),							# require event to have >=X leg1+leg2+met combinations 
+    CombinationsNmin = cms.int32(1),							# require event to have >=X leg1+leg2+met combinations 
 											# passing specified cuts
     CombinationsNmax = cms.int32(10000),							# require event to have <=X leg1+leg2+met combinations
 											# passing specified cuts
 
-    EventSelectionSequence = cms.vstring('RecoTriggersNmin','RecoVertexNmin','RecoVertexNmax','RecoLeg1Nmin','RecoLeg1Nmax','RecoLeg2Nmin','RecoLeg2Nmax',
-                                         'RecoJetNmin','RecoJetNmax','RecoFirstLeadingJetNmin','RecoSecondLeadingJetNmin','SusyCombinationsNmin','CombinationsNmin','CombinationsNmax'),
+    EventSelectionSequence = cms.vstring('RecoTriggersNmin','RecoVertexNmin','RecoVertexNmax','RecoLeg1Nmin','RecoLeg1Nmax','RecoLeg2Nmin',
+                                         'RecoLeg2Nmax','RecoJetNmin','RecoJetNmax','RecoFirstLeadingJetNmin','RecoSecondLeadingJetNmin',
+                                         'RecoBJetNmin','RecoBJetNmax','SusyCombinationsNmin','CombinationsNmin','CombinationsNmax'),
 
     #-----Inputs for systematic uncertainties
     CalculatePdfSystematicUncertanties = cms.bool(False),				# if true, pdf systematic uncertanties will be calculated
@@ -418,7 +345,9 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     SmearThePt = cms.bool(False),
     SmearTheEta = cms.bool(False),
     SmearThePhi = cms.bool(False),
-    CalculatePUSystematics = cms.bool(False),
+    CalculatePUSystematics = cms.bool(True),
+    DataHistos = cms.string("AllData_NoCuts.root"),
+    MCHistos = cms.string("TTJets_NoCuts.root"),
 #    BosonPtBinEdges = cms.untracked.vdouble(
 #               0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9.
 #            , 10., 11., 12., 13., 14., 15., 16., 17., 18., 19.
@@ -457,5 +386,5 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
 )
 
 process.p = cms.Path(
-  process.HBHENoiseFilter * process.analyzeHiMassTau
+  process.analyzeHiMassTau
 )

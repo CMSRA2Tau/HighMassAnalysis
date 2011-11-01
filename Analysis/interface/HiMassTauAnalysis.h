@@ -73,6 +73,8 @@ public:
   explicit HiMassTauAnalysis(const ParameterSet&);
   ~HiMassTauAnalysis();
 
+      typedef std::vector<std::string>::const_iterator
+      comments_const_iterator;
 
 private:
   virtual void beginJob() ;
@@ -91,6 +93,7 @@ private:
   bool passRecoMuonCuts(const pat::Muon&,int);
   bool passRecoElectronCuts(const pat::Electron&,int);
   bool passRecoJetCuts(const pat::Jet&,int);
+  bool passRecoBJetCuts(const pat::Jet&,int);
   bool passRecoFirstLeadingJetCuts(const pat::Jet&,int);
   bool passRecoSecondLeadingJetCuts(const pat::Jet&,int);
   bool passTopologyCuts(const pat::Tau&, int, const pat::Muon&, int);
@@ -199,6 +202,8 @@ private:
   bool _DoRecoTauDiscrByCrackCut;
   bool _DoRecoTauDiscrBySignalTracksAndGammasMass;
   bool _SetTANC;
+  bool _SelectTausThatAreMuons;
+  bool _SelectTausThatAreElectrons;
   string _RecoTauDiscrByIsolation;
   string _RecoTauDiscrByLeadTrack;
   string _RecoTauDiscrAgainstElectron;
@@ -286,7 +291,7 @@ private:
   double _FirstLeadingJetMuonMatchingDeltaR;
   double _FirstLeadingJetElectronMatchingDeltaR;
   double _FirstLeadingJetTauMatchingDeltaR;
-  double _JetBTaggingTCHEcut;
+//  double _JetBTaggingTCHEcut;
   double _RecoFirstLeadingJetPt;
   double _RecoFirstLeadingJetEtaMinCut;
   double _RecoFirstLeadingJetEtaMaxCut;
@@ -303,13 +308,25 @@ private:
   bool _RemoveFirstLeadingJetOverlapWithMuons;
   bool _RemoveFirstLeadingJetOverlapWithElectrons;
   bool _RemoveFirstLeadingJetOverlapWithTaus;
-  bool _ApplyJetBTagging;
+//  bool _ApplyJetBTagging;
   bool _DoDiscrByFirstLeadingJet;
   bool _DoDiscrBySecondLeadingJet;
 
+  //-----Reco b-Jet Inputs
+  double _RecoBJetPtCut;
+  double _RecoBJetEtaMinCut;
+  double _RecoBJetEtaMaxCut;
+  double _BJetMuonMatchingDeltaR;
+  double _BJetElectronMatchingDeltaR;
+  double _BJetTauMatchingDeltaR;
+  double _JetBTaggingTCHEcut;
+  bool _RemoveBJetOverlapWithMuons;
+  bool _RemoveBJetOverlapWithElectrons;
+  bool _RemoveBJetOverlapWithTaus;
+  bool _ApplyJetBTagging;
+
   double sumpxForMht;
   double sumpyForMht;
-  double phiForMht;
   double sumptForHt;
   double leadingjetpt;
   double secondleadingjetpt;
@@ -321,10 +338,9 @@ private:
   double _RecoVertexMaxZposition;
   double _RecoVertexTrackWeight;
   int _RecoVertexMinTracks;
-  bool _DoPUrewieghting;
+
   string _DataHistos;
   string  _MCHistos;
-
 
   //-----Trigger Inputs
   InputTag _RecoTriggerSource;
@@ -378,15 +394,12 @@ private:
   bool _DoSUSYDiscrByAlpha;
   double _AlphaMinCut;
   double _AlphaMaxCut;
-//  bool _DoSUSYDiscrByDphi1;
-//  double _Dphi1MinCut;
-//  double _Dphi1MaxCut;
-//  bool _DoSUSYDiscrByDphi2;
-//  double _Dphi2MinCut;
-//  double _Dphi2MaxCut;
-  bool _DoSUSYDiscrByDphiMhtJet;
-  double _DphiMhtJet1;
-  double _DphiMhtJet2;
+  bool _DoSUSYDiscrByDphi1;
+  double _Dphi1MinCut;
+  double _Dphi1MaxCut;
+  bool _DoSUSYDiscrByDphi2;
+  double _Dphi2MinCut;
+  double _Dphi2MaxCut;
 
   //-----do matching to gen?
   bool _MatchTauToGen;
@@ -561,6 +574,7 @@ private:
 
   //-----reconstruction level jet histograms  
   std::map<unsigned int, TH1*> _hNJet;
+  std::map<unsigned int, TH1*> _hNBJet;
   std::map<unsigned int, TH1*> _hJetEnergy;
   std::map<unsigned int, TH1*> _hJetPt;
   std::map<unsigned int, TH1*> _hJetEta;
@@ -660,10 +674,9 @@ private:
   std::map<unsigned int, TH1*> _hR1;
   std::map<unsigned int, TH1*> _hR2;
   std::map<unsigned int, TH1*> _hDphi1;
-  std::map<unsigned int, TH1*> _hDphiMhtJet1;
   std::map<unsigned int, TH1*> _hDphi2;
-  std::map<unsigned int, TH1*> _hDphiMhtJet2;
   std::map<unsigned int, TH1*> _hAlpha;
+  std::map<unsigned int, TH2*> _hDphi1VsDphi2;
 
 /* 
   std::map<unsigned int, TH1*> _hTauJetSumPtIso_JetOS;
@@ -709,10 +722,15 @@ private:
   int _RecoJetNmax;
   int _RecoFirstLeadingJetNmin;
   int _RecoSecondLeadingJetNmin;
+  int _RecoBJetNmin;
+  int _RecoBJetNmax;
   int _SusyCombinationsNmin;
   int _CombinationsNmin;
   int _CombinationsNmax;
   vector<string> _EventSelectionSequence;
+
+  //-----boolean to determine if the sample is real data or simulation
+  bool isData;
 
   //-----Event flags
   vector<bool> _EventFlag;
