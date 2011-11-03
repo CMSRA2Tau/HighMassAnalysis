@@ -224,8 +224,8 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis',
     Dphi1MinCut = cms.double(0.9),
     Dphi1MaxCut = cms.double(999.9),
     DoSUSYDiscrByDphi2 = cms.bool(True),
-    Dphi2MinCut = cms.double(-0.5),
-    Dphi2MaxCut = cms.double(0.5),
+    Dphi2MinCut = cms.double(0.5),                                                      # |dphi2| >= X
+    Dphi2MaxCut = cms.double(9999.5),                                                   # |dphi2| <= X
 
     #-----Topology Inputs
     RecoMetSource = cms.InputTag('patMETsPFL1L2L3Cor'),				         	# met collection
