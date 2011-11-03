@@ -2350,10 +2350,11 @@ bool HiMassTauAnalysis::passSusyTopologyCuts(int nobj1, int nobj2) {
   if(_DoSUSYDiscrByDphi2) {
     dphi2 = normalizedPhi(smearedJetPtEtaPhiMVector.at(nobj2).phi() - theMETVector.phi());
 //    if(abs(dphi2) > _Dphi2MinCut) {return false;}
-//    if(abs(dphi2) < _Dphi2MinCut) {return false;}
+    if(abs(dphi2) < _Dphi2MinCut) {return false;}
+    if(abs(dphi2) > _Dphi2MaxCut) {return false;}
 //    if(dphi2 > _Dphi2MaxCut) {return false;}
-    if(dphi2 < _Dphi2MinCut) {return false;}
-    if(dphi2 > _Dphi2MaxCut) {return false;}
+//    if(dphi2 < _Dphi2MinCut) {return false;}
+//    if(dphi2 > _Dphi2MaxCut) {return false;}
   }
 
   return true;
