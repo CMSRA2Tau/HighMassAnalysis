@@ -805,22 +805,16 @@ void HiMassTauAnalysis::analyze(const Event& iEvent, const EventSetup& iSetup) {
     cstr2 = new char [_DataHistos.size()+1];
     strcpy (cstr2, _DataHistos.c_str());
 
-    //Set hist to MC NVertices_0 histogram
-    TFile *file1 = new TFile (cstr1);
-    TH1 *hist = dynamic_cast<TH1*>(file1->Get("analyzeHiMassTau/NVertices_0"));
-    if (!hist) {throw std::runtime_error("failed to extract histogram");}
+    //As you can see above cstr1 corresponds to MC and cstr2 corresponds to data.
+    //Probability that file has N vertices is value / integral
+    //The ratio of data probability to MC probability gives us our PU weight
+    bin = getBin(cstr1,nVertices);
+    MCvalue = getvalue(cstr1,bin);
+    MCintegral = getintegral(cstr1,bin);
 
-    bin = hist->GetBin(nVertices+1);
-    MCvalue = hist->GetBinContent(bin);
-    MCintegral = hist->Integral();
+    Datavalue = getvalue(cstr2,bin);
+    Dataintegral = getintegral(cstr2,bin);
 
-    //Set hist to Data NVertices_0 histogram
-    TFile *file2 = new TFile (cstr2);
-    TH1 *hist2 = dynamic_cast<TH1*>(file2->Get("analyzeHiMassTau/NVertices_0"));
-    if (!hist2) {throw std::runtime_error("failed to extract histogram");}
-
-    Datavalue = hist2->GetBinContent(bin);
-    Dataintegral = hist2->Integral();
     //Ratio of normalized histograms in given bin
     if((MCvalue * Dataintegral) != 0) {pu_weight = (Datavalue * MCintegral) / (MCvalue * Dataintegral);}
     else {pu_weight = 1.0;}
@@ -4877,6 +4871,47 @@ void HiMassTauAnalysis::endJob() {
     }
     std::cout << "End of PDF weight systematics summary (Numerator)" << std::endl;
   }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+// The following three functions are for PU reweighting
+// The PU histograms are NVertices_0 in our current framework 11/23/11
+// getBin retrieves the correct bin for our N_vertex value
+// getValue determines the number of events with that N_vertex
+// getintegral determines the total number of events in the N_vertex histogram
+// so that we can normalize to obtain the probability that each file has
+// X vertices... Will 11/23/11
+//////////////////////////////////////////////////////////////////////////////
+
+int HiMassTauAnalysis::getBin(char * cstr, int nVertices) {
+    TFile *file1 = new TFile (cstr);
+    TH1 *hist = dynamic_cast<TH1*>(file1->Get("analyzeHiMassTau/NVertices_0"));
+    if (!hist) {throw std::runtime_error("failed to extract histogram");}
+
+    int result = hist->GetBin(nVertices+1);
+    file1->Close();
+    return result;
+}
+
+double HiMassTauAnalysis::getvalue(char * cstr, int bin) {
+    TFile *file1 = new TFile (cstr);
+    TH1 *hist = dynamic_cast<TH1*>(file1->Get("analyzeHiMassTau/NVertices_0"));
+    if (!hist) {throw std::runtime_error("failed to extract histogram");}
+
+    double result = hist->GetBinContent(bin);
+    file1->Close();
+    return result;
+    
+}
+
+double HiMassTauAnalysis::getintegral(char * cstr, int bin) {
+    TFile *file1 = new TFile (cstr);
+    TH1 *hist = dynamic_cast<TH1*>(file1->Get("analyzeHiMassTau/NVertices_0"));
+    if (!hist) {throw std::runtime_error("failed to extract histogram");}
+
+    double result = hist->Integral();
+    file1->Close();
+    return result;
 }
 
 HiMassTauAnalysis::~HiMassTauAnalysis() { }

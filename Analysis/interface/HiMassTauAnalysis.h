@@ -151,6 +151,9 @@ private:
   std::pair<unsigned int, unsigned int> getMatchedPdgId(float, float, float, int);
   void clearVectors();
   void initializeVectors();
+  int getBin(char * cstr, int nVertices);
+  double getvalue(char * cstr, int bin);
+  double getintegral(char * cstr, int bin);
 
   // ----------member data ---------------------------
 
