@@ -322,11 +322,12 @@ private:
   double _BJetMuonMatchingDeltaR;
   double _BJetElectronMatchingDeltaR;
   double _BJetTauMatchingDeltaR;
-  double _JetBTaggingTCHEcut;
+  double _JetBTaggingCut;
   bool _RemoveBJetOverlapWithMuons;
   bool _RemoveBJetOverlapWithElectrons;
   bool _RemoveBJetOverlapWithTaus;
   bool _ApplyJetBTagging;
+  string _bTagger;
 
   double sumpxForMht;
   double sumpyForMht;

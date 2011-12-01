@@ -193,7 +193,8 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
   _RemoveBJetOverlapWithTaus = iConfig.getParameter<bool>("RemoveBJetOverlapWithTaus");
   _BJetTauMatchingDeltaR = iConfig.getParameter<double>("BJetTauMatchingDeltaR");
   _ApplyJetBTagging = iConfig.getParameter<bool>("ApplyJetBTagging");
-  _JetBTaggingTCHEcut = iConfig.getParameter<double>("JetBTaggingTCHEcut");
+  _bTagger = iConfig.getUntrackedParameter<string>("bTagger");
+  _JetBTaggingCut = iConfig.getParameter<double>("JetBTaggingCut");
 
   //-----Vertex Inputs
   _RecoVertexSource = iConfig.getParameter<InputTag>("RecoVertexSource");
@@ -1865,7 +1866,7 @@ bool HiMassTauAnalysis::passRecoJetCuts(const pat::Jet& patJet,int nobj) {
       }
     }
   }
-//  if (_ApplyJetBTagging) {if(patJet.bDiscriminator("trackCountingHighEffBJetTags") <= _JetBTaggingTCHEcut) {return false;}}
+//  if (_ApplyJetBTagging) {if(patJet.bDiscriminator("trackCountingHighEffBJetTags") <= _JetBTaggingCut) {return false;}}
   return true;
 }
 
@@ -1903,7 +1904,8 @@ bool HiMassTauAnalysis::passRecoBJetCuts(const pat::Jet& patJet,int nobj) {
       }
     }
   }
-  if (_ApplyJetBTagging) {if(patJet.bDiscriminator("trackCountingHighEffBJetTags") <= _JetBTaggingTCHEcut) {return false;}}
+//  if (_ApplyJetBTagging) {if(patJet.bDiscriminator("trackCountingHighEffBJetTags") <= _JetBTaggingCut) {return false;}}
+  if (_ApplyJetBTagging) {if(patJet.bDiscriminator(_bTagger.data()) <= _JetBTaggingCut) {return false;}}
   return true;
 }
 

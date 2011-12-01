@@ -195,7 +195,8 @@ process.analyzeHiMassTau.BJetElectronMatchingDeltaR           = cms.double(0.3) 
 process.analyzeHiMassTau.RemoveBJetOverlapWithTaus            = cms.bool(True)                               # if true, jets w/ dR(tau,jet)<X will not be considered
 process.analyzeHiMassTau.BJetTauMatchingDeltaR                = cms.double(0.3)                             # dR(tau,jet)<X used for removing jets from the "good jet" list
 process.analyzeHiMassTau.ApplyJetBTagging                    = cms.bool(True)                              # if true, apply track counting high$
-process.analyzeHiMassTau.JetBTaggingTCHEcut                  = cms.double(3.3)                              # tagged as b-jet if TCHE > X
+process.analyzeHiMassTau.bTagger = cms.untracked.string('trackCountingHighEffBJetTagsPF')
+process.analyzeHiMassTau.JetBTaggingCut                  = cms.double(3.3)
 
     #-----Vertex Inputs
 process.analyzeHiMassTau.RecoVertexSource = cms.InputTag('offlinePrimaryVertices') 				# vertex collection
