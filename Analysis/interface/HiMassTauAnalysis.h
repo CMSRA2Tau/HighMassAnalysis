@@ -235,6 +235,7 @@ private:
   bool _DoRecoMuonDiscrByIsolation;
   bool _DoRecoMuonDiscrByIp;
   bool _DoRecoMuonDiscrByPionVeto;
+  bool _TreatMuonsAsNeutrinos;
 
   //-----Reco Electron Inputs
   InputTag _RecoElectronSource;

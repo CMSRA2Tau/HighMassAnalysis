@@ -107,6 +107,7 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) {
   _RecoMuonCaloCompCoefficient = iConfig.getParameter<double>("RecoMuonCaloCompCoefficient");
   _RecoMuonSegmCompCoefficient = iConfig.getParameter<double>("RecoMuonSegmCompCoefficient");
   _RecoMuonAntiPionCut = iConfig.getParameter<double>("RecoMuonAntiPionCut");
+  _TreatMuonsAsNeutrinos = iConfig.getParameter<bool>("TreatMuonsAsNeutrinos");
 
   //-----Reco Electron Inputs
   _RecoElectronSource = iConfig.getParameter<InputTag>("RecoElectronSource");
@@ -1035,6 +1036,10 @@ void HiMassTauAnalysis::getEventFlags(const Event& iEvent) {
   if (nGoodVertices>=_RecoVertexNmin) _EventFlag[_mapSelectionAlgoID["RecoVertexNmin"]] = true;
   if (nGoodVertices<=_RecoVertexNmax) _EventFlag[_mapSelectionAlgoID["RecoVertexNmax"]] = true;
 
+  sumpxForMht = 0.0;
+  sumpyForMht = 0.0;
+  sumptForHt  = 0.0;
+
   //------Used only if attempting to recalculate MET using only leg1 and leg2 momenta
   double temppx = 0;
   double temppy = 0;
@@ -1173,7 +1178,12 @@ void HiMassTauAnalysis::getEventFlags(const Event& iEvent) {
   	  patMuon != _patMuons->end(); ++patMuon ) {
       theNumberOfMuons++;
       if (!passRecoMuonCuts((*patMuon),theNumberOfMuons-1)) continue;
-      if(_CalculateMetUsingOnlyLeg1AndLeg2) {
+      if(_TreatMuonsAsNeutrinos) {
+        sumpxForMht = sumpxForMht + smearedMuonMomentumVector.at(theNumberOfMuons-1).px();
+        sumpyForMht = sumpyForMht + smearedMuonMomentumVector.at(theNumberOfMuons-1).py();
+        sumptForHt  = sumptForHt  - smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt();
+      }
+      if((_CalculateMetUsingOnlyLeg1AndLeg2) && (!_TreatMuonsAsNeutrinos)) {
         temppx += -smearedMuonMomentumVector.at(theNumberOfMuons-1).px();
         temppy += -smearedMuonMomentumVector.at(theNumberOfMuons-1).py();
         usedMuons[theNumberOfMuons-1] = 1;
@@ -1262,9 +1272,6 @@ void HiMassTauAnalysis::getEventFlags(const Event& iEvent) {
   }
 
   // ------Number of Good Jets   
-  sumpxForMht = 0.0;
-  sumpyForMht = 0.0;
-  sumptForHt  = 0.0;
   int nGoodJets = 0;
   int theNumberOfJets = 0;
   for ( pat::JetCollection::const_iterator patJet = _patJets->begin(); 

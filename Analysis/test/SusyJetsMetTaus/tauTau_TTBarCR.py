@@ -110,6 +110,7 @@ process.analyzeHiMassTau.DoRecoMuonDiscrByPionVeto = cms.bool(False)            
 process.analyzeHiMassTau.RecoMuonCaloCompCoefficient = cms.double(0.8)                                      # a -> pion veto: a*caloComp + b*segmComp
 process.analyzeHiMassTau.RecoMuonSegmCompCoefficient = cms.double(1.2)                                      # b -> pion veto: a*caloComp + b*segmComp
 process.analyzeHiMassTau.RecoMuonAntiPionCut = cms.double(1.0)                                              # pion veto > X
+process.analyzeHiMassTau.TreatMuonsAsNeutrinos = cms.bool(False)
 
     #-----Reco Electron Inputs
 process.analyzeHiMassTau.RecoElectronSource = cms.InputTag('heepPatElectrons')			        # electron collection
