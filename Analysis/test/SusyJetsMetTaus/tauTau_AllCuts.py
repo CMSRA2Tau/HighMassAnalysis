@@ -212,7 +212,7 @@ process.analyzeHiMassTau.TriggerRequirements = cms.vstring('HLT_PFMHT150','HLT_P
 
     #-----Susy Topology Inputs
 process.analyzeHiMassTau.DoSUSYDiscrByMHT = cms.bool(True)
-process.analyzeHiMassTau.MhtCut = cms.double(200.0)
+process.analyzeHiMassTau.MhtCut = cms.double(250.0)
 process.analyzeHiMassTau.DoSUSYDiscrByR1 = cms.bool(False)
 process.analyzeHiMassTau.R1MinCut = cms.double(0.85)
 process.analyzeHiMassTau.R1MaxCut = cms.double(999.0)

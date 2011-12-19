@@ -29,13 +29,12 @@ process.analyzeHiMassTau = cms.EDAnalyzer('HiMassTauAnalysis')
 process.analyzeHiMassTau.GenParticleSource = cms.untracked.InputTag('genParticles')				# gen particle collection
 
     #-----Inputs to determine which channel to analyze
-process.analyzeHiMassTau.AnalyzeTauForLeg1		= cms.bool(True)					# if true, taus will be used for leg1
-process.analyzeHiMassTau.AnalyzeMuonForLeg1		= cms.bool(False)					# if true, muons will be used for leg1
+process.analyzeHiMassTau.AnalyzeTauForLeg1		= cms.bool(False)					# if true, taus will be used for leg1
+process.analyzeHiMassTau.AnalyzeMuonForLeg1		= cms.bool(True)					# if true, muons will be used for leg1
 process.analyzeHiMassTau.AnalyzeElectronForLeg1	= cms.bool(False)					# if true, electrons will be used for leg1
 process.analyzeHiMassTau.AnalyzeTauForLeg2		= cms.bool(True)					# if true, taus will be used for leg2
 process.analyzeHiMassTau.AnalyzeMuonForLeg2		= cms.bool(False)					# if true, muons will be used for leg2
 process.analyzeHiMassTau.AnalyzeElectronForLeg2	= cms.bool(False)					# if true, electrons will be used for leg2
-
     #-----Reco Tau Inputs
 process.analyzeHiMassTau.RecoTauSource = cms.InputTag('selectedLayer1HPSPFTaus')		# choices include:
 											# selectedLayer1FixedConeHighEffPFTaus
@@ -54,11 +53,11 @@ process.analyzeHiMassTau.RecoTauLeadTrackMinHits = cms.int32(12)						# tau lead
 process.analyzeHiMassTau.DoRecoTauDiscrByH3x3OverP = cms.bool(False)					# if true, tau will be required
 											# to pass H(3x3)/P(lead) cut
 process.analyzeHiMassTau.RecoTauH3x3OverP = cms.double(0.03)						# H(3x3)/P(lead) > X
-process.analyzeHiMassTau.DoRecoTauDiscrByIsolation = cms.bool(False) 					# if true, isolation will be applied
+process.analyzeHiMassTau.DoRecoTauDiscrByIsolation = cms.bool(True) 					# if true, isolation will be applied
 process.analyzeHiMassTau.UseRecoTauDiscrByIsolationFlag = cms.bool(True) 					# if true, the default isolation discriminator is used
                                                       					# if false, isolation is recalculated using the parameters below
 process.analyzeHiMassTau.RecoTauDiscrByIsolation = cms.untracked.string('byVLooseIsolation')		# name of the isolation discriminator flag
-process.analyzeHiMassTau.UseRecoTauIsoSumPtInsteadOfNiso = cms.bool(False)					# if true, sum pt is used for tau isolation instead
+process.analyzeHiMassTau.UseRecoTauIsoSumPtInsteadOfNiso = cms.bool(True)					# if true, sum pt is used for tau isolation instead
 											# of the number of isolation candidates
 process.analyzeHiMassTau.UseRecoTauEllipseForEcalIso = cms.bool(False)					# if true, an ellipse in eta-phi space will be used to define
 											# the signal to isolation annulus for ECAL isolation
@@ -93,7 +92,7 @@ process.analyzeHiMassTau.SelectTausThatAreElectrons = cms.bool(False)
     #-----Reco Muon Inputs
 process.analyzeHiMassTau.RecoMuonSource = cms.InputTag('selectedPatMuons')				        # muon collection
 process.analyzeHiMassTau.RecoMuonEtaCut = cms.double(2.1)							# require muon |eta|<=X
-process.analyzeHiMassTau.RecoMuonPtMinCut = cms.double(10.)							# require muon pt>=X
+process.analyzeHiMassTau.RecoMuonPtMinCut = cms.double(20.)							# require muon pt>=X
 process.analyzeHiMassTau.RecoMuonPtMaxCut = cms.double(9999.)						# require muon pt<=X
 process.analyzeHiMassTau.DoRecoMuonDiscrByGlobal = cms.bool(True)						# if true, muon will be required to be a 'global muon
 process.analyzeHiMassTau.DoRecoMuonDiscrByIsolation = cms.bool(True)					# if true, muon isolation will be applied
@@ -101,7 +100,7 @@ process.analyzeHiMassTau.RecoMuonTrackIsoSumPtMaxCutValue = cms.double(1.0)					
 process.analyzeHiMassTau.RecoMuonTrackIsoSumPtMinCutValue = cms.double(0.0)					# sum pt of isolation tracks & ecal rechits >= X
 process.analyzeHiMassTau.RecoMuonEcalIsoSumPtMaxCutValue = cms.double(1.0)					# sum pt of isolation tracks & ecal rechits < X
 process.analyzeHiMassTau.RecoMuonEcalIsoSumPtMinCutValue = cms.double(0.0)					# sum pt of isolation tracks & ecal rechits >= X
-process.analyzeHiMassTau.RecoMuonIsoDeltaRCone = cms.double(0.3)						# outer conesize used for isolation
+process.analyzeHiMassTau.RecoMuonIsoDeltaRCone = cms.double(0.5)						# outer conesize used for isolation
 process.analyzeHiMassTau.RecoMuonTrackIsoTrkThreshold = cms.double(1.0)					# isolation tracks are required to have pt>X
 process.analyzeHiMassTau.RecoMuonEcalIsoRecHitThreshold = cms.double(1.0)					# isolation rechits are required to have pt>X
 process.analyzeHiMassTau.DoRecoMuonDiscrByIp = cms.bool(True)						# if true, muon will be required to have |d0|<X
@@ -110,7 +109,7 @@ process.analyzeHiMassTau.DoRecoMuonDiscrByPionVeto = cms.bool(False)            
 process.analyzeHiMassTau.RecoMuonCaloCompCoefficient = cms.double(0.8)                                      # a -> pion veto: a*caloComp + b*segmComp
 process.analyzeHiMassTau.RecoMuonSegmCompCoefficient = cms.double(1.2)                                      # b -> pion veto: a*caloComp + b*segmComp
 process.analyzeHiMassTau.RecoMuonAntiPionCut = cms.double(1.0)                                              # pion veto > X
-process.analyzeHiMassTau.TreatMuonsAsNeutrinos = cms.bool(False)
+process.analyzeHiMassTau.TreatMuonsAsNeutrinos = cms.bool(True)
 
     #-----Reco Electron Inputs
 process.analyzeHiMassTau.RecoElectronSource = cms.InputTag('heepPatElectrons')			        # electron collection
@@ -173,13 +172,13 @@ process.analyzeHiMassTau.DoDiscrBySecondLeadingJet		= cms.bool(True)
 process.analyzeHiMassTau.RecoSecondLeadingJetPt		= cms.double(100.0)
 process.analyzeHiMassTau.RecoSecondLeadingJetEtaMinCut	= cms.double(0.0)
 process.analyzeHiMassTau.RecoSecondLeadingJetEtaMaxCut	= cms.double(3.0)
-process.analyzeHiMassTau.RemoveFirstLeadingJetOverlapWithMuons           = cms.bool(False)
+process.analyzeHiMassTau.RemoveFirstLeadingJetOverlapWithMuons           = cms.bool(True)
 process.analyzeHiMassTau.FirstLeadingJetMuonMatchingDeltaR               = cms.double(0.3)
 process.analyzeHiMassTau.RemoveFirstLeadingJetOverlapWithElectrons       = cms.bool(False)
 process.analyzeHiMassTau.FirstLeadingJetElectronMatchingDeltaR           = cms.double(0.3)
 process.analyzeHiMassTau.RemoveFirstLeadingJetOverlapWithTaus            = cms.bool(False)
 process.analyzeHiMassTau.FirstLeadingJetTauMatchingDeltaR                = cms.double(0.3)
-process.analyzeHiMassTau.RemoveSecondLeadingJetOverlapWithMuons           = cms.bool(False)
+process.analyzeHiMassTau.RemoveSecondLeadingJetOverlapWithMuons           = cms.bool(True)
 process.analyzeHiMassTau.SecondLeadingJetMuonMatchingDeltaR               = cms.double(0.3)
 process.analyzeHiMassTau.RemoveSecondLeadingJetOverlapWithElectrons       = cms.bool(False)
 process.analyzeHiMassTau.SecondLeadingJetElectronMatchingDeltaR           = cms.double(0.3)
@@ -190,7 +189,7 @@ process.analyzeHiMassTau.SecondLeadingJetTauMatchingDeltaR                = cms.
 process.analyzeHiMassTau.RecoBJetEtaMinCut                    = cms.double(0.0)                              # require jet |eta|>=X
 process.analyzeHiMassTau.RecoBJetEtaMaxCut                    = cms.double(2.4)                            # require jet |eta|<=X
 process.analyzeHiMassTau.RecoBJetPtCut                        = cms.double(20.0)                             # require jet pt>=X
-process.analyzeHiMassTau.RemoveBJetOverlapWithMuons           = cms.bool(False)                              # if true, jets w/ dR(muon,jet)<X will not be considered
+process.analyzeHiMassTau.RemoveBJetOverlapWithMuons           = cms.bool(True)                              # if true, jets w/ dR(muon,jet)<X will not be considered
 process.analyzeHiMassTau.BJetMuonMatchingDeltaR               = cms.double(0.3)                              # dR(muon,jet)<X used for removing jets from the "good jet" list
 process.analyzeHiMassTau.RemoveBJetOverlapWithElectrons       = cms.bool(False)                              # if true, jets w/ dR(electron,jet)<X will not be considered
 process.analyzeHiMassTau.BJetElectronMatchingDeltaR           = cms.double(0.3)                              # dR(electron,jet)<X used for removing jets from the "good jet" list
@@ -212,7 +211,7 @@ process.analyzeHiMassTau.TriggerRequirements = cms.vstring('HLT_PFMHT150','HLT_P
 
     #-----Susy Topology Inputs
 process.analyzeHiMassTau.DoSUSYDiscrByMHT = cms.bool(True)
-process.analyzeHiMassTau.MhtCut = cms.double(250.0)
+process.analyzeHiMassTau.MhtCut = cms.double(0.0)
 process.analyzeHiMassTau.DoSUSYDiscrByR1 = cms.bool(False)
 process.analyzeHiMassTau.R1MinCut = cms.double(0.85)
 process.analyzeHiMassTau.R1MaxCut = cms.double(999.0)
@@ -237,7 +236,7 @@ process.analyzeHiMassTau.RecoMetSource = cms.InputTag('patMETsPFL1L2L3Cor')				 
 process.analyzeHiMassTau.DoDiscrByMet = cms.bool(False) 							# if true, met will be required to be > X
 process.analyzeHiMassTau.CalculateMetUsingOnlyLeg1AndLeg2 = cms.bool(False)					# if true, recalculate met using leg1 and leg2 momenta
 process.analyzeHiMassTau.RecoMetCut = cms.double(30.0) 							# met > X
-process.analyzeHiMassTau.DoDiTauDiscrByDeltaR = cms.bool(True) 						# if true, ditau pairs must have dR(leg1,leg2) > X
+process.analyzeHiMassTau.DoDiTauDiscrByDeltaR = cms.bool(False) 						# if true, ditau pairs must have dR(leg1,leg2) > X
 process.analyzeHiMassTau.DiTauDeltaRCut = cms.double(0.3)	 						# dR(leg1,leg2) > X
 process.analyzeHiMassTau.DiTauDiscrByOSLSType = cms.string('NONE')		 				# if 'OS', product of leg1 charge and leg2 charge < 0
 											# if 'LS', product of leg1 charge and leg2 charge > 0
@@ -296,18 +295,18 @@ process.analyzeHiMassTau.TauToGenMatchingDeltaR = cms.double(0.25)              
 process.analyzeHiMassTau.RecoTriggersNmin = cms.int32(0)							# require event to pass >=X trigger paths defined above
 process.analyzeHiMassTau.RecoVertexNmin = cms.int32(1)							# require event to have >=X vertices passing specified cuts
 process.analyzeHiMassTau.RecoVertexNmax = cms.int32(1000)							# require event to have <=X vertices passing specified cuts
-process.analyzeHiMassTau.RecoLeg1Nmin = cms.int32(1)							# require event to have >=X leg1 objects passing specified cuts
+process.analyzeHiMassTau.RecoLeg1Nmin = cms.int32(2)							# require event to have >=X leg1 objects passing specified cuts
 process.analyzeHiMassTau.RecoLeg1Nmax = cms.int32(1000)							# require event to have <=X leg1 objects passing specified cuts
-process.analyzeHiMassTau.RecoLeg2Nmin = cms.int32(1)							# require event to have >=X leg2 objects passing specified cuts
+process.analyzeHiMassTau.RecoLeg2Nmin = cms.int32(0)							# require event to have >=X leg2 objects passing specified cuts
 process.analyzeHiMassTau.RecoLeg2Nmax = cms.int32(1000)							# require event to have <=X leg2 objects passing specified cuts
 process.analyzeHiMassTau.RecoJetNmin = cms.int32(1)								# require event to have >=X "jets" passing specified cuts
 process.analyzeHiMassTau.RecoJetNmax = cms.int32(1000)						        # require event to have <=X "jets" passing specified cuts
 process.analyzeHiMassTau.RecoFirstLeadingJetNmin = cms.int32(1)
 process.analyzeHiMassTau.RecoSecondLeadingJetNmin = cms.int32(1)
-process.analyzeHiMassTau.RecoBJetNmin = cms.int32(2)							# require event to have >=X "jets" passing specified cuts
-process.analyzeHiMassTau.RecoBJetNmax = cms.int32(1000)						        # require event to have <=X "jets" passing specified cuts
+process.analyzeHiMassTau.RecoBJetNmin = cms.int32(0)							# require event to have >=X "jets" passing specified cuts
+process.analyzeHiMassTau.RecoBJetNmax = cms.int32(0)						        # require event to have <=X "jets" passing specified cuts
 process.analyzeHiMassTau.SusyCombinationsNmin = cms.int32(1)
-process.analyzeHiMassTau.CombinationsNmin = cms.int32(1)							# require event to have >=X leg1+leg2+met combinations 
+process.analyzeHiMassTau.CombinationsNmin = cms.int32(0)							# require event to have >=X leg1+leg2+met combinations 
 											# passing specified cuts
 process.analyzeHiMassTau.CombinationsNmax = cms.int32(10000)							# require event to have <=X leg1+leg2+met combinations
 											# passing specified cuts
