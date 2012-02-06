@@ -20,6 +20,9 @@
 <use name=DataFormats/VertexReco>
 <use name=SHarper/HEEPAnalyzer>
 <use name=DataFormats/HLTReco>
+<use name=SimDataFormats/GeneratorProducts>
+<use name=CondFormats/JetMETObjects>
+<use name=JetMETCorrections/Objects>
 <use name=root>
 <use name=rootmath>
 <use name=clhep>
@@ -49,6 +52,9 @@
    <use name=DataFormats/VertexReco>
    <use name=SHarper/HEEPAnalyzer>
    <use name=DataFormats/HLTReco>
+   <use name=SimDataFormats/GeneratorProducts>
+   <use name=CondFormats/JetMETObjects>
+   <use name=JetMETCorrections/Objects>
    <use name=root>
    <use name=rootmath>
    <use name=clhep>
