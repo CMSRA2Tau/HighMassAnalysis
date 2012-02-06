@@ -1085,9 +1085,9 @@ if(_DoSMpoint){
    
   }
 
-  std::cout << "mGL: " << mGL << " mLSP: " << mLSP << std::endl;
-  std::cout << "_mGL: " << _mGL << " _mLSP: " << _mLSP << std::endl;
-  if(_mLSP == mLSP && _mGL == mGL)std::cout << "Victory!" << std::endl;
+//  std::cout << "mGL: " << mGL << " mLSP: " << mLSP << std::endl;
+//  std::cout << "_mGL: " << _mGL << " _mLSP: " << _mLSP << std::endl;
+//  if(_mLSP == mLSP && _mGL == mGL)std::cout << "Victory!" << std::endl;
   if(_mLSP != mLSP || _mGL != mGL){return;}
 
 }
