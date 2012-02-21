@@ -3904,19 +3904,44 @@ bool HiMassTauAnalysis::passSusyTopologyCuts(int nobj1, int nobj2) {
     if(alpha < _AlphaMinCut) {return false;}
     if(alpha > _AlphaMaxCut) {return false;}
   }
-  if(_DoSUSYDiscrByDphi1) {
-    dphi1 = normalizedPhi(smearedJetPtEtaPhiMVector.at(nobj1).phi() - theMETVector.phi());
-    if(dphi1 < _Dphi1MinCut) {return false;}
-    if(dphi1 > _Dphi1MaxCut) {return false;}
-  }
-  if(_DoSUSYDiscrByDphi2) {
-    dphi2 = normalizedPhi(smearedJetPtEtaPhiMVector.at(nobj2).phi() - theMETVector.phi());
-//    if(abs(dphi2) > _Dphi2MinCut) {return false;}
-    if(abs(dphi2) < _Dphi2MinCut) {return false;}
-    if(abs(dphi2) > _Dphi2MaxCut) {return false;}
-//    if(dphi2 > _Dphi2MaxCut) {return false;}
-//    if(dphi2 < _Dphi2MinCut) {return false;}
-//    if(dphi2 > _Dphi2MaxCut) {return false;}
+  int numberJets1 = 0;
+  for ( pat::JetCollection::const_iterator patJet1 = _patJets->begin();patJet1 != _patJets->end(); ++patJet1 ) {
+    numberJets1++;
+    if( (numberJets1 == theLeadingJetIndex) && (passRecoFirstLeadingJetCuts((*patJet1),numberJets1 - 1)) ) {
+      int numberJets2 = 0;
+      for ( pat::JetCollection::const_iterator patJet2 = _patJets->begin();patJet2 != _patJets->end(); ++patJet2 ) {
+        numberJets2++;
+        if( (numberJets2 == theSecondLeadingJetIndex) && (passRecoSecondLeadingJetCuts((*patJet2),numberJets2 - 1)) ) {
+          int theNumberOfJets = 0;
+          double sumpxForMht = 0.0;
+          double sumpyForMht = 0.0;
+          double phiForMht = 0.0;
+          for ( pat::JetCollection::const_iterator patJet = _patJets->begin();
+            patJet != _patJets->end(); ++patJet ) {
+            theNumberOfJets++;
+            if (!passRecoJetCuts((*patJet),theNumberOfJets-1)) continue;
+            sumpxForMht = sumpxForMht - smearedJetMomentumVector.at(theNumberOfJets-1).px();
+            sumpyForMht = sumpyForMht - smearedJetMomentumVector.at(theNumberOfJets-1).py();
+          }
+          if (sumpxForMht >= 0)
+            phiForMht = atan(sumpyForMht/sumpxForMht);
+          if (sumpxForMht < 0 && sumpyForMht >= 0)
+            phiForMht = atan(sumpyForMht/sumpxForMht) + 3.1415;
+          if (sumpxForMht < 0 && sumpyForMht < 0)
+            phiForMht = atan(sumpyForMht/sumpxForMht) - 3.1415;
+          double dphi1MHT = normalizedPhi(smearedJetPtEtaPhiMVector.at(numberJets1 - 1).phi() - phiForMht);
+          double dphi2MHT = normalizedPhi(smearedJetPtEtaPhiMVector.at(numberJets2 - 1).phi() - phiForMht);
+          if(_DoSUSYDiscrByDphi1) {
+            if(dphi1MHT < _Dphi1MinCut) {return false;}              
+            if(dphi1MHT > _Dphi1MaxCut) {return false;}
+          }
+          if(_DoSUSYDiscrByDphi2) {
+            if(abs(dphi2MHT) < _Dphi2MinCut) {return false;}
+            if(abs(dphi2MHT) > _Dphi2MaxCut) {return false;}
+          }
+        }
+      }
+    }
   }
 
   return true;
@@ -5183,6 +5208,25 @@ void HiMassTauAnalysis::fillHistograms() {
             if(passSusyTopologyCuts(numberJets1 - 1,numberJets2 - 1)) {
               double dphi1;
               double dphi2;
+              int theNumberOfJets = 0;
+              double sumpxForMht = 0.0;
+              double sumpyForMht = 0.0;
+              double phiForMht = 0.0;
+              for ( pat::JetCollection::const_iterator patJet = _patJets->begin();
+                patJet != _patJets->end(); ++patJet ) {
+                theNumberOfJets++;
+                if (!passRecoJetCuts((*patJet),theNumberOfJets-1)) continue;
+                sumpxForMht = sumpxForMht - smearedJetMomentumVector.at(theNumberOfJets-1).px();
+                sumpyForMht = sumpyForMht - smearedJetMomentumVector.at(theNumberOfJets-1).py();
+              }
+              if (sumpxForMht >= 0)
+                phiForMht = atan(sumpyForMht/sumpxForMht);
+              if (sumpxForMht < 0 && sumpyForMht >= 0)
+                phiForMht = atan(sumpyForMht/sumpxForMht) + 3.1415;
+              if (sumpxForMht < 0 && sumpyForMht < 0)
+                phiForMht = atan(sumpyForMht/sumpxForMht) - 3.1415;
+              double dphi1MHT = normalizedPhi(smearedJetPtEtaPhiMVector.at(numberJets1 - 1).phi() - phiForMht);
+              double dphi2MHT = normalizedPhi(smearedJetPtEtaPhiMVector.at(numberJets2 - 1).phi() - phiForMht);
               double r1;
               double r2;
               double alpha;
@@ -5199,6 +5243,8 @@ void HiMassTauAnalysis::fillHistograms() {
               else {alpha = 999999999.0;}
               _hR1[NpdfID]->Fill(r1,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
               _hR2[NpdfID]->Fill(r2,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+              _hDphi1MHT[NpdfID]->Fill(dphi1MHT,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+              _hDphi2MHT[NpdfID]->Fill(dphi2MHT,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
               _hDphi1[NpdfID]->Fill(dphi1,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
               _hDphi2[NpdfID]->Fill(dphi2,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
               _hDphi1VsDphi2[NpdfID]->Fill(dphi1,dphi2,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
@@ -6888,7 +6934,9 @@ void HiMassTauAnalysis::bookHistograms() {
       _hMetResolution[NpdfCounter]          = fs->make<TH1F>(("MetResolution_"+j.str()).c_str(),                    ("MetResolution_"+j.str()).c_str(), 500, -5, 5);
       _hR1[NpdfCounter] 		    = fs->make<TH1F>(("R1_"+j.str()).c_str(), ("R1_"+j.str()).c_str(), 60, 0, 6);
       _hR2[NpdfCounter] = fs->make<TH1F>(("R2_"+j.str()).c_str(), ("R2_"+j.str()).c_str(), 60, 0, 6);
-      _hDphi1[NpdfCounter] = fs->make<TH1F>(("Dphi1_"+j.str()).c_str(), ("Dphi1_"+j.str()).c_str(), 72, -2.0 * TMath::Pi(), +2.0 * TMath::Pi());
+      _hDphi1MHT[NpdfCounter] = fs->make<TH1F>(("Dphi1_"+j.str()).c_str(), ("Dphi1_"+j.str()).c_str(), 72, -2.0 * TMath::Pi(), +2.0 * TMath::Pi());
+      _hDphi2MHT[NpdfCounter] = fs->make<TH1F>(("Dphi2MHT_"+j.str()).c_str(), ("Dphi2MHT_"+j.str()).c_str(), 72, -2.0 * TMath::Pi(), +2.0 * TMath::Pi());
+      _hDphi1[NpdfCounter] = fs->make<TH1F>(("Dphi1MHT_"+j.str()).c_str(), ("Dphi1MHT_"+j.str()).c_str(), 72, -2.0 * TMath::Pi(), +2.0 * TMath::Pi());
       _hDphi2[NpdfCounter] = fs->make<TH1F>(("Dphi2_"+j.str()).c_str(), ("Dphi2_"+j.str()).c_str(), 72, -2.0 * TMath::Pi(), +2.0 * TMath::Pi());
       _hDphi1VsDphi2[NpdfCounter] = fs->make<TH2F>(("Dphi1VsDphi2_"+j.str()).c_str(), ("Dphi1VsDphi2_"+j.str()).c_str(), 72, -2.0 * TMath::Pi(), +2.0 * TMath::Pi(), 72, -2.0 * TMath::Pi(), +2.0 * TMath::Pi());
       _hAlpha[NpdfCounter] = fs->make<TH1F>(("Alpha_"+j.str()).c_str(), ("Alpha_"+j.str()).c_str(), 50, 0, 2);

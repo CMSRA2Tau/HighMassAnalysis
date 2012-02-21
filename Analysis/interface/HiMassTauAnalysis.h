@@ -1373,6 +1373,8 @@ private:
   std::map<unsigned int, TH1*> _hR2;
   std::map<unsigned int, TH1*> _hDphi1;
   std::map<unsigned int, TH1*> _hDphi2;
+  std::map<unsigned int, TH1*> _hDphi1MHT;
+  std::map<unsigned int, TH1*> _hDphi2MHT;
   std::map<unsigned int, TH1*> _hAlpha;
   std::map<unsigned int, TH2*> _hDphi1VsDphi2;
 
