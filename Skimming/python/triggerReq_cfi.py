@@ -22,8 +22,9 @@ emuHLTFilter = hlt.triggerResultsFilter.clone(
 etauHLTFilter = hlt.triggerResultsFilter.clone(
     hltResults = cms.InputTag('TriggerResults::HLT'),
     triggerConditions = (
-      'HLT_Ele15_CaloIdVT_CaloIsoT_TrkIdT_TrkIsoT_LooseIsoPFTau15',
       'HLT_Ele15_CaloIdVT_CaloIsoT_TrkIdT_TrkIsoT_LooseIsoPFTau15*',
+      'HLT_Ele15_CaloIdVT_CaloIsoT_TrkIdT_TrkIsoT_LooseIsoPFTau20*',
+      'HLT_Ele18_CaloIdVT_CaloIsoT_TrkIdT_TrkIsoT_LooseIsoPFTau20*'
     ),
     l1tResults = '',
     throw = False
@@ -54,6 +55,8 @@ tautauHLTFilter = hlt.triggerResultsFilter.clone(
     triggerConditions = (
       'HLT_DoubleIsoPFTau20_Trk5',
       'HLT_DoubleIsoPFTau20_Trk5*',
+      'HLT_DoubleIsoPFTau*',
+      'HLT_IsoPFTau*_IsoPFTau*',
     ),
     l1tResults = '',
     throw = False
@@ -64,6 +67,8 @@ SusyHLTFilter = hlt.triggerResultsFilter.clone(
     triggerConditions = (
       'HLT_PFMHT150',
       'HLT_PFMHT150*',
+      'HLT_PFMET150',
+      'HLT_PFMET150*',
       'HLT_HT300_MHT75',
       'HLT_HT300_MHT75*',
     ),
