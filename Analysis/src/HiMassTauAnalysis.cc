@@ -12,6 +12,7 @@
 #include <TMath.h>
 #include <iostream>
 #include <iomanip>
+#include <utility>
 
 using namespace std;
 using namespace edm;
@@ -725,6 +726,20 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) :
   _DoProduceNtuple = false;
 
   //-----Event Sequence inputs
+  _GenTauNmin = iConfig.getParameter<int>("GenTauNmin");
+  _GenTauNmax = iConfig.getParameter<int>("GenTauNmax");
+  _GenTopNmin = iConfig.getParameter<int>("GenTopNmin");
+  _GenTopNmax = iConfig.getParameter<int>("GenTopNmax");
+  _GenElectronNmin = iConfig.getParameter<int>("GenElectronNmin");
+  _GenElectronNmax = iConfig.getParameter<int>("GenElectronNmax");
+  _GenMuonNmin = iConfig.getParameter<int>("GenMuonNmin");
+  _GenMuonNmax = iConfig.getParameter<int>("GenMuonNmax");
+  _GenZNmin = iConfig.getParameter<int>("GenZNmin");
+  _GenZNmax = iConfig.getParameter<int>("GenZNmax");
+  _GenWNmin = iConfig.getParameter<int>("GenWNmin");
+  _GenWNmax = iConfig.getParameter<int>("GenWNmax");
+  _GenSMHiggsNmin = iConfig.getParameter<int>("GenSMHiggsNmin");
+  _GenSMHiggsNmax = iConfig.getParameter<int>("GenSMHiggsNmax");
   _RecoTriggersNmin = iConfig.getParameter<int>("RecoTriggersNmin");
   _RecoVertexNmin = iConfig.getParameter<int>("RecoVertexNmin");
   _RecoVertexNmax = iConfig.getParameter<int>("RecoVertexNmax");
@@ -1014,17 +1029,16 @@ if(_DoMSUGRApoint)
     BOOST_FOREACH(const std::string& comment, comments)
       if (boost::regex_match(comment, matches, scanFormat)) break;
   }
-
 /*
+  if(_GenParticleSource.label() != "") { iEvent.getByLabel(_GenParticleSource, _genParticles); }
   float lspmass=0;
   float staumass=0;
   for(GenParticleCollection::const_iterator genParticle = _genParticles->begin();genParticle != _genParticles->end();++genParticle) {
-    if((abs(genParticle->pdgId()) == 1000022)) {lspmass = genParticle->mass();}
-    if((abs(genParticle->pdgId()) == 1000015)) {staumass = genParticle->mass();}
+    if((abs(genParticle->pdgId()) == 1000022) && (genParticle->status()==1)) {lspmass = genParticle->mass();}
+    if((abs(genParticle->pdgId()) == 1000015) && (genParticle->status()==2)) {staumass = genParticle->mass();}
   }
-//  if( ((staumass-lspmass) < 10.0) || ((staumass-lspmass) > 25.0) ) {return;}
+  if( ((staumass-lspmass) < 0.0) ) {return;}
 */
-
   double m0 = 0;
   double m12 = 0;
   for(unsigned i=0; i<scanPars.size(); ++i) {
@@ -1127,48 +1141,6 @@ if(_DoSMpoint){
 
   //------Grab the handle to the relevant collections
   getCollections(iEvent,iSetup);
-
-/*
-   Handle<LHEEventProduct> product;
-   iEvent.getByLabel("source", product);
-
-   comments_const_iterator c_begin = product->comments_begin();
-   comments_const_iterator c_end = product->comments_end();
-
-   double m0, m12, tanb, A0, mu=1.0;
-   double signMu;
-   for( comments_const_iterator cit=c_begin; cit!=c_end; ++cit) {
-      size_t found = (*cit).find("model");
-      if( found != std::string::npos)   {    
-//         std::cout << *cit << std::endl;  
-         size_t foundLength = (*cit).size();
-         found = (*cit).find("=");
-         std::string smaller = (*cit).substr(found+1,foundLength);
-         found = smaller.find("_");
-         smaller = smaller.substr(found+1,smaller.size());
-//
-         std::istringstream iss(smaller);
-         iss >> m0;
-         iss.clear();
-//
-         found = smaller.find("_");
-         smaller = smaller.substr(found+1,smaller.size());
-         iss.str(smaller);
-         iss >> m12;
-         iss.clear();
-//
-         found = smaller.find("_");
-         smaller = smaller.substr(found+1,smaller.size());
-         iss.str(smaller);
-         iss >> tanb;
-         iss.clear();
-      }
-   }
-
-   std::cout << "m0 = " << m0 << std::endl;
-   std::cout << "m12 = " << m12 << std::endl;
-   std::cout << "tanb = " << tanb << std::endl;
-*/
 
   //------Calculate event weight for isr systematic uncertanties
   if(_CalculateISRGluonSystematics) {
@@ -1404,7 +1376,7 @@ if(_DoSMpoint){
 
     //cout << "pu_weight: " << pu_weight << " nVertices: " << nVertices << std::endl;
     //cout << "MCvalue: " << MCvalue << " MCintegral: " << MCintegral << " Datavalue: " << Datavalue << " Dataintegral: " << Dataintegral << std::endl;
-    if (isinf(pu_weight) || isnan(pu_weight)) {throw std::runtime_error("PU weight INF or NAN");}
+//    if (isinf(pu_weight) || isnan(pu_weight)) {throw std::runtime_error("PU weight INF or NAN");}
   } else {pu_weight = 1.0;}
 
   //-----Smearing momentum and position for systematic uncertanties and calculation of MET deltas
@@ -1581,6 +1553,80 @@ void HiMassTauAnalysis::getEventFlags(const Event& iEvent) {
   //-----init event flags
   _EventFlag.clear();
   for (unsigned int i=0;i<_EventSelectionSequence.size();i++) { _EventFlag.push_back(false); }
+
+  // ------Gen level requirements
+  int nGenTaus = 0;
+  if(_GenParticleSource.label() != "") {
+    for(GenParticleCollection::const_iterator genParticle = _genParticles->begin();genParticle != _genParticles->end();++genParticle) {
+      if((abs(genParticle->pdgId()) == 15) && (genParticle->status() != 3)) {
+        int neutrinos = 0;
+        for(int ii=0; ii<(int)(genParticle->numberOfDaughters()); ii++) {
+          daughterCand = genParticle->daughter(ii);
+          if( (abs(daughterCand->pdgId()) == 12) || (abs(daughterCand->pdgId()) == 14) || (abs(daughterCand->pdgId()) == 16) ) {
+            neutrinos++;
+            MChadtau = MChadtau - daughterCand->p4();
+          }
+        }
+        if(neutrinos == 1) {nGenTaus++;}
+      }
+    }
+  }
+  if (nGenTaus>=_GenTauNmin) _EventFlag[_mapSelectionAlgoID["GenTauNmin"]] = true;
+  if (nGenTaus<=_GenTauNmax) _EventFlag[_mapSelectionAlgoID["GenTauNmax"]] = true;
+
+  int nGenTop = 0;
+  if(_GenParticleSource.label() != "") {
+    for(GenParticleCollection::const_iterator genParticle = _genParticles->begin();genParticle != _genParticles->end();++genParticle) {
+      if((abs(genParticle->pdgId()) == 6) && (genParticle->status() == 3)) {nGenTop++;}
+    }
+  }
+  if (nGenTop>=_GenTopNmin) _EventFlag[_mapSelectionAlgoID["GenTopNmin"]] = true;
+  if (nGenTop<=_GenTopNmax) _EventFlag[_mapSelectionAlgoID["GenTopNmax"]] = true;
+
+  int nGenElectrons = 0;
+  if(_GenParticleSource.label() != "") {
+    for(GenParticleCollection::const_iterator genParticle = _genParticles->begin();genParticle != _genParticles->end();++genParticle) {
+      if((abs(genParticle->pdgId()) == 11) && (genParticle->status() == 1)) {nGenElectrons++;}
+    }
+  }
+  if (nGenElectrons>=_GenElectronNmin) _EventFlag[_mapSelectionAlgoID["GenElectronNmin"]] = true;
+  if (nGenElectrons<=_GenElectronNmax) _EventFlag[_mapSelectionAlgoID["GenElectronNmax"]] = true;
+
+  int nGenMuons = 0;
+  if(_GenParticleSource.label() != "") {
+    for(GenParticleCollection::const_iterator genParticle = _genParticles->begin();genParticle != _genParticles->end();++genParticle) {
+      if((abs(genParticle->pdgId()) == 13) && (genParticle->status() == 1)) {nGenMuons++;}
+    }
+  }
+  if (nGenMuons>=_GenMuonNmin) _EventFlag[_mapSelectionAlgoID["GenMuonNmin"]] = true;
+  if (nGenMuons<=_GenMuonNmax) _EventFlag[_mapSelectionAlgoID["GenMuonNmax"]] = true;
+
+  int nGenZ = 0;
+  if(_GenParticleSource.label() != "") {
+    for(GenParticleCollection::const_iterator genParticle = _genParticles->begin();genParticle != _genParticles->end();++genParticle) {
+      if((abs(genParticle->pdgId()) == 23) && (genParticle->status() == 3)) {nGenZ++;}
+    }
+  }
+  if (nGenZ>=_GenZNmin) _EventFlag[_mapSelectionAlgoID["GenZNmin"]] = true;
+  if (nGenZ<=_GenZNmax) _EventFlag[_mapSelectionAlgoID["GenZNmax"]] = true;
+
+  int nGenW = 0;
+  if(_GenParticleSource.label() != "") {
+    for(GenParticleCollection::const_iterator genParticle = _genParticles->begin();genParticle != _genParticles->end();++genParticle) {
+      if((abs(genParticle->pdgId()) == 24) && (genParticle->status() == 3)) {nGenW++;}
+    }
+  }
+  if (nGenW>=_GenWNmin) _EventFlag[_mapSelectionAlgoID["GenWNmin"]] = true;
+  if (nGenW<=_GenWNmax) _EventFlag[_mapSelectionAlgoID["GenWNmax"]] = true;
+
+  int nGenSMHiggs = 0;
+  if(_GenParticleSource.label() != "") {
+    for(GenParticleCollection::const_iterator genParticle = _genParticles->begin();genParticle != _genParticles->end();++genParticle) {
+      if((abs(genParticle->pdgId()) == 25) && (genParticle->status() == 3)) {nGenSMHiggs++;}
+    }
+  }
+  if (nGenSMHiggs>=_GenSMHiggsNmin) _EventFlag[_mapSelectionAlgoID["GenSMHiggsNmin"]] = true;
+  if (nGenSMHiggs<=_GenSMHiggsNmax) _EventFlag[_mapSelectionAlgoID["GenSMHiggsNmax"]] = true;
 
   // ------Does the event pass trigger requirements?
   int nTriggersSatisfied = 0;
@@ -2258,13 +2304,15 @@ bool HiMassTauAnalysis::passRecoTau1Cuts(const pat::Tau& patTau,int nobj) {
       else {return false;}
     }
   } else if (_RecoTau1DiscrByProngType == "1or3hps") {
-    if ( (patTau.tauID("byDecayModeFinding") < 0.5) ) {return false;}
+//    if ( (patTau.tauID("byDecayModeFinding") < 0.5) ) {return false;}
+    if ( (patTau.tauID("decayModeFinding") < 0.5) ) {return false;}
   } else if (_RecoTau1DiscrByProngType == "1hps") {
     if (patTau.isCaloTau()) {
       if(patTau.signalTracks().size() == 1) {}
       else {return false;}
     } else {
-      if( (patTau.signalPFChargedHadrCands().size() == 1) && (patTau.tauID("byDecayModeFinding") > 0.5) ) {}
+//      if( (patTau.signalPFChargedHadrCands().size() == 1) && (patTau.tauID("byDecayModeFinding") > 0.5) ) {}
+      if( (patTau.signalPFChargedHadrCands().size() == 1) && (patTau.tauID("decayModeFinding") > 0.5) ) {}
       else {return false;}
     }
   } else {}
@@ -2366,13 +2414,15 @@ bool HiMassTauAnalysis::passRecoTau2Cuts(const pat::Tau& patTau,int nobj) {
       else {return false;}
     }
   } else if (_RecoTau2DiscrByProngType == "1or3hps") {
-    if ( (patTau.tauID("byDecayModeFinding") < 0.5) ) {return false;}
+//    if ( (patTau.tauID("byDecayModeFinding") < 0.5) ) {return false;}
+    if ( (patTau.tauID("decayModeFinding") < 0.5) ) {return false;}
   } else if (_RecoTau2DiscrByProngType == "1hps") {
     if (patTau.isCaloTau()) {
       if(patTau.signalTracks().size() == 1) {}
       else {return false;}
     } else {
-      if( (patTau.signalPFChargedHadrCands().size() == 1) && (patTau.tauID("byDecayModeFinding") > 0.5) ) {}
+//      if( (patTau.signalPFChargedHadrCands().size() == 1) && (patTau.tauID("byDecayModeFinding") > 0.5) ) {}
+      if( (patTau.signalPFChargedHadrCands().size() == 1) && (patTau.tauID("decayModeFinding") > 0.5) ) {}
       else {return false;}
     }
   } else {}
@@ -2403,13 +2453,17 @@ bool HiMassTauAnalysis::passRecoMuon1Cuts(const pat::Muon& patMuon,int nobj) {
   if (smearedMuonPtEtaPhiMVector.at(nobj).pt()>_RecoMuon1PtMaxCut) {return false;}
   // ----Isolation requirement
   if (_DoRecoMuon1DiscrByIsolation) {
-    if( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1TrackIsoTrkThreshold).first) 
+//    if( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1TrackIsoTrkThreshold).first) 
+    if( (patMuon.trackIso()) 
          >= _RecoMuon1TrackIsoSumPtMaxCutValue) {return false;}
-    if( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1TrackIsoTrkThreshold).first) 
+//    if( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1TrackIsoTrkThreshold).first) 
+    if( (patMuon.trackIso()) 
          < _RecoMuon1TrackIsoSumPtMinCutValue) {return false;}
-    if( (patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1EcalIsoRecHitThreshold).first) 
+//    if( (patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1EcalIsoRecHitThreshold).first) 
+    if( (patMuon.ecalIso()) 
          >= _RecoMuon1EcalIsoSumPtMaxCutValue) {return false;}
-    if( (patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1EcalIsoRecHitThreshold).first) 
+//    if( (patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1EcalIsoRecHitThreshold).first) 
+    if( (patMuon.ecalIso()) 
          < _RecoMuon1EcalIsoSumPtMinCutValue) {return false;}
   }
   // ----Impact parameter requirement
@@ -2469,13 +2523,17 @@ bool HiMassTauAnalysis::passRecoMuon2Cuts(const pat::Muon& patMuon,int nobj) {
   if (smearedMuonPtEtaPhiMVector.at(nobj).pt()>_RecoMuon2PtMaxCut) {return false;}
   // ----Isolation requirement
   if (_DoRecoMuon2DiscrByIsolation) {
-    if( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2TrackIsoTrkThreshold).first) 
-         >= _RecoMuon2TrackIsoSumPtMaxCutValue) {return false;}
-    if( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2TrackIsoTrkThreshold).first) 
+//    if( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2TrackIsoTrkThreshold).first) 
+    if( (patMuon.trackIso()) 
+        >= _RecoMuon2TrackIsoSumPtMaxCutValue) {return false;}
+//    if( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2TrackIsoTrkThreshold).first) 
+    if( (patMuon.trackIso()) 
          < _RecoMuon2TrackIsoSumPtMinCutValue) {return false;}
-    if( (patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2EcalIsoRecHitThreshold).first) 
+//    if( (patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2EcalIsoRecHitThreshold).first) 
+    if( (patMuon.ecalIso()) 
          >= _RecoMuon2EcalIsoSumPtMaxCutValue) {return false;}
-    if( (patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2EcalIsoRecHitThreshold).first) 
+//    if( (patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2EcalIsoRecHitThreshold).first) 
+    if( (patMuon.ecalIso()) 
          < _RecoMuon2EcalIsoSumPtMinCutValue) {return false;}
   }
   // ----Impact parameter requirement
@@ -4032,7 +4090,11 @@ void HiMassTauAnalysis::fillHistograms() {
       reco::Candidate::LorentzVector theGenMotherObject(0,0,0,0);
       reco::Candidate::LorentzVector theGenGrandMotherObject(0,0,0,0);
       int nGenTaus = 0;
+      double lspmass = 0;
+      double staumass = 0;
       for(GenParticleCollection::const_iterator genParticle = _genParticles->begin();genParticle != _genParticles->end();++genParticle) {
+        if((abs(genParticle->pdgId()) == 1000022) && (genParticle->status()==1)) {lspmass = genParticle->mass();}
+        if((abs(genParticle->pdgId()) == 1000015) && (genParticle->status()==2)) {staumass = genParticle->mass();}
 	if((abs(genParticle->pdgId()) == 15) && (genParticle->status() != 3)) {
 	  int neutrinos = 0;
 	  MChadtau = genParticle->p4();
@@ -4108,6 +4170,8 @@ void HiMassTauAnalysis::fillHistograms() {
 	}
       }
       _hNGenTau[NpdfID]->Fill(nGenTaus,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+      _hLSPMass[NpdfID]->Fill(staumass,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+      _hStauMass[NpdfID]->Fill(lspmass,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
     }
 
     // ------Reco Tau Histograms
@@ -4325,10 +4389,13 @@ void HiMassTauAnalysis::fillHistograms() {
 	    _hMuon1GenMuonDeltaPt[NpdfID]->Fill((smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt() - matchToGen(*patMuon).second.pt()) / matchToGen(*patMuon).second.pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  }
 	}
-	_hMuon1TrackIso[NpdfID]->Fill(patMuon->trackIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1TrackIsoTrkThreshold).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	_hMuon1EcalIso[NpdfID]->Fill(patMuon->ecalIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1EcalIsoRecHitThreshold).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	_hMuon1Iso[NpdfID]->Fill(patMuon->trackIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1TrackIsoTrkThreshold).first +
-				 patMuon->ecalIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1EcalIsoRecHitThreshold).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+//	_hMuon1TrackIso[NpdfID]->Fill(patMuon->trackIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1TrackIsoTrkThreshold).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hMuon1TrackIso[NpdfID]->Fill(patMuon->trackIso(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+//	_hMuon1EcalIso[NpdfID]->Fill(patMuon->ecalIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1EcalIsoRecHitThreshold).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hMuon1EcalIso[NpdfID]->Fill(patMuon->ecalIso(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+//	_hMuon1Iso[NpdfID]->Fill(patMuon->trackIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1TrackIsoTrkThreshold).first +
+//				 patMuon->ecalIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1EcalIsoRecHitThreshold).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hMuon1Iso[NpdfID]->Fill(patMuon->trackIso() + patMuon->ecalIso(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hMuon1CaloCompatibility[NpdfID]->Fill(muon::caloCompatibility(*patMuon),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hMuon1SegmentCompatibility[NpdfID]->Fill(muon::segmentCompatibility(*patMuon),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hMuon1CaloCompatibilityVsSegmentCompatibility[NpdfID]->Fill(muon::caloCompatibility(*patMuon),muon::segmentCompatibility(*patMuon),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
@@ -4360,10 +4427,13 @@ void HiMassTauAnalysis::fillHistograms() {
 	    _hMuon2GenMuonDeltaPt[NpdfID]->Fill((smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt() - matchToGen(*patMuon).second.pt()) / matchToGen(*patMuon).second.pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  }
 	}
-	_hMuon2TrackIso[NpdfID]->Fill(patMuon->trackIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2TrackIsoTrkThreshold).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	_hMuon2EcalIso[NpdfID]->Fill(patMuon->ecalIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2EcalIsoRecHitThreshold).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	_hMuon2Iso[NpdfID]->Fill(patMuon->trackIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2TrackIsoTrkThreshold).first +
-				 patMuon->ecalIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2EcalIsoRecHitThreshold).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+//	_hMuon2TrackIso[NpdfID]->Fill(patMuon->trackIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2TrackIsoTrkThreshold).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hMuon2TrackIso[NpdfID]->Fill(patMuon->trackIso(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+//	_hMuon2EcalIso[NpdfID]->Fill(patMuon->ecalIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2EcalIsoRecHitThreshold).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hMuon2EcalIso[NpdfID]->Fill(patMuon->ecalIso(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+//	_hMuon2Iso[NpdfID]->Fill(patMuon->trackIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2TrackIsoTrkThreshold).first +
+//				 patMuon->ecalIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2EcalIsoRecHitThreshold).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	_hMuon2Iso[NpdfID]->Fill(patMuon->trackIso() + patMuon->ecalIso(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hMuon2CaloCompatibility[NpdfID]->Fill(muon::caloCompatibility(*patMuon),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hMuon2SegmentCompatibility[NpdfID]->Fill(muon::segmentCompatibility(*patMuon),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hMuon2CaloCompatibilityVsSegmentCompatibility[NpdfID]->Fill(muon::caloCompatibility(*patMuon),muon::segmentCompatibility(*patMuon),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
@@ -4538,6 +4608,7 @@ void HiMassTauAnalysis::fillHistograms() {
       _hNJet[NpdfID]->Fill(nJets,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
       _hMHT[NpdfID]->Fill(sqrt((sumpxForMht * sumpxForMht) + (sumpyForMht * sumpyForMht)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
       _hHT[NpdfID]->Fill(sumptForHt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+      _hMeff[NpdfID]->Fill(sumptForHt + sqrt((sumpxForMht * sumpxForMht) + (sumpyForMht * sumpyForMht)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
       _hFirstLeadingJetPt[NpdfID]->Fill(leadingjetpt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
       _hSecondLeadingJetPt[NpdfID]->Fill(secondleadingjetpt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
     }
@@ -4546,9 +4617,9 @@ void HiMassTauAnalysis::fillHistograms() {
     if (_FillTopologyHists) {
       _hMet[NpdfID]->Fill(theMETVector.pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
       if(!isData) {
-        const GenMETCollection *genmetcol = genTrue.product();
-        const GenMET *genMetTrue = &(genmetcol->front());
-        _hMetResolution[NpdfID]->Fill((theMETVector.pt() - genMetTrue->pt()) / genMetTrue->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+//        const GenMETCollection *genmetcol = genTrue.product();
+//        const GenMET *genMetTrue = &(genmetcol->front());
+//        _hMetResolution[NpdfID]->Fill((theMETVector.pt() - genMetTrue->pt()) / genMetTrue->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
       }
       int theNumberOfMuons = 0;
       for ( pat::MuonCollection::const_iterator patMuon = _patMuons->begin();patMuon != _patMuons->end(); ++patMuon ) {
@@ -5289,7 +5360,7 @@ pair<bool, pair<float, float> > HiMassTauAnalysis::isZee(reco::Candidate::Lorent
     if(theObject == smearedElectronMomentumVector.at(i - 1))continue;
     reco::Candidate::LorentzVector The_LorentzVect = theObject + smearedElectronMomentumVector.at(i - 1);
     zeePtAsymmetry = (theObject.pt() - smearedElectronPtEtaPhiMVector.at(i - 1).pt())/(theObject.pt() + smearedElectronPtEtaPhiMVector.at(i - 1).pt());
-    theMassPtAsymmPair = make_pair<float, float>(The_LorentzVect.M(), zeePtAsymmetry);
+    theMassPtAsymmPair = std::make_pair<float, float>(The_LorentzVect.M(), float(zeePtAsymmetry));
     
     if(The_LorentzVect.M() < (zeeMass + 3.*zeeWidht) && The_LorentzVect.M() > (zeeMass - 3.*zeeWidht))massWindow = true;
     if(fabs(zeePtAsymmetry) < 0.20) ptAsymmWindow = true;
@@ -5298,7 +5369,7 @@ pair<bool, pair<float, float> > HiMassTauAnalysis::isZee(reco::Candidate::Lorent
       break;
     }
   }
-  theOutPutPair = make_pair<bool, pair<float, float> >(eventIsZee, theMassPtAsymmPair);
+  theOutPutPair = std::make_pair<bool, pair<float, float> >(bool(eventIsZee), pair<float, float>(theMassPtAsymmPair));
   return theOutPutPair;
 }
 
@@ -5319,7 +5390,7 @@ pair<bool, pair<float, float> > HiMassTauAnalysis::isZmm(reco::Candidate::Lorent
     if(theObject == smearedMuonMomentumVector.at(i - 1))continue;
     reco::Candidate::LorentzVector The_LorentzVect = theObject + smearedMuonMomentumVector.at(i - 1);
     zmmPtAsymmetry = (theObject.pt() - smearedMuonPtEtaPhiMVector.at(i - 1).pt())/(theObject.pt() + smearedMuonPtEtaPhiMVector.at(i - 1).pt());
-    theMassPtAsymmPair = make_pair<float, float>(The_LorentzVect.M(), zmmPtAsymmetry);
+    theMassPtAsymmPair = std::make_pair<float, float>(The_LorentzVect.M(), float(zmmPtAsymmetry));
     
     if(The_LorentzVect.M() < (zmmMass + 3.*zmmWidht) && The_LorentzVect.M() > (zmmMass - 3.*zmmWidht))massWindow = true;
     if(fabs(zmmPtAsymmetry) < 0.20) ptAsymmWindow = true;
@@ -5328,7 +5399,7 @@ pair<bool, pair<float, float> > HiMassTauAnalysis::isZmm(reco::Candidate::Lorent
       break;
     }
   }
-  theOutPutPair = make_pair<bool, pair<float, float> >(eventIsZmm, theMassPtAsymmPair);
+  theOutPutPair = std::make_pair<bool, pair<float, float> >(bool(eventIsZmm), pair<float, float>(theMassPtAsymmPair));
   return theOutPutPair;
 }
 
@@ -5350,7 +5421,7 @@ pair<unsigned int, unsigned int> HiMassTauAnalysis::getMatchedPdgId(float pt, fl
       theMotherPdgId = abs(genParticle->mother()->pdgId());
     }
   }
-  theTrackAndMotherPdgId = make_pair<unsigned int, unsigned int>(thePdgId, theMotherPdgId);
+  theTrackAndMotherPdgId = std::make_pair<unsigned int, unsigned int>(int(thePdgId), int(theMotherPdgId));
   return theTrackAndMotherPdgId;
 }
 
@@ -5428,6 +5499,13 @@ pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::matchToGen(const p
     if((abs(genParticle->pdgId()) == 15) && (genParticle->status() != 3)) {
       int neutrinos = 0;
       MChadtau = genParticle->p4();
+
+      motherCand = genParticle->mother(0);
+      while(motherCand->pdgId() == genParticle->pdgId()) {motherCand = motherCand->mother(0);}
+      grandMotherCand = motherCand->mother(0);
+      while(grandMotherCand->pdgId() == motherCand->pdgId()) {grandMotherCand = grandMotherCand->mother(0);}
+
+/*
       if(genParticle->mother(0)->pdgId() == genParticle->pdgId()) {
         motherCand = genParticle->mother(0)->mother(0);
         if(motherCand->mother(0)->pdgId() == motherCand->pdgId()) {grandMotherCand = motherCand->mother(0)->mother(0);}
@@ -5437,6 +5515,8 @@ pair<bool, reco::Candidate::LorentzVector> HiMassTauAnalysis::matchToGen(const p
         if(motherCand->mother(0)->pdgId() == motherCand->pdgId()) {grandMotherCand = motherCand->mother(0)->mother(0);}
         else {grandMotherCand = motherCand->mother(0);}
       }
+*/
+
       for(int ii=0; ii<(int)(genParticle->numberOfDaughters()); ii++) {
         daughterCand = genParticle->daughter(ii);
         if( (abs(daughterCand->pdgId()) == 12) || (abs(daughterCand->pdgId()) == 14) || (abs(daughterCand->pdgId()) == 16) ) {
@@ -6207,20 +6287,20 @@ pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> HiMassTauAnaly
       math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(smearedPt, smearedEta, smearedPhi, unsmearedMomentum.mass());
       reco::Candidate::LorentzVector smearedMomentum(smearedPtEtaPhiMVector.px(), smearedPtEtaPhiMVector.py(), smearedPtEtaPhiMVector.pz(), patMuon.energy());
       pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
-      theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+      theSmearedMomentumPair = std::make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(reco::Candidate::LorentzVector(smearedMomentum), math::PtEtaPhiMLorentzVector(smearedPtEtaPhiMVector));
       return theSmearedMomentumPair;
     } else {
       math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(patMuon.pt(), patMuon.eta(), patMuon.phi(), patMuon.mass());
       reco::Candidate::LorentzVector smearedMomentum = patMuon.p4();
       pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
-      theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+      theSmearedMomentumPair = std::make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(reco::Candidate::LorentzVector(smearedMomentum), math::PtEtaPhiMLorentzVector(smearedPtEtaPhiMVector));
       return theSmearedMomentumPair;
     }
   } else {
     math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(patMuon.pt(), patMuon.eta(), patMuon.phi(), patMuon.mass());
     reco::Candidate::LorentzVector smearedMomentum = patMuon.p4();
     pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
-    theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+    theSmearedMomentumPair = std::make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(reco::Candidate::LorentzVector(smearedMomentum), math::PtEtaPhiMLorentzVector(smearedPtEtaPhiMVector));
     return theSmearedMomentumPair;
   }
 }
@@ -6252,7 +6332,7 @@ pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> HiMassTauAnaly
 	math::PtEtaPhiMLorentzVector smearedEtEtaPhiMVector(smearedEt, smearedScEta, smearedPhi, unsmearedMomentum.mass());
 	reco::Candidate::LorentzVector smearedMomentum(smearedPtEtaPhiMVector.px(), smearedPtEtaPhiMVector.py(), smearedPtEtaPhiMVector.pz(), patElectron.energy());
 	pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
-	theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedEtEtaPhiMVector);
+	theSmearedMomentumPair = std::make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(reco::Candidate::LorentzVector(smearedMomentum), math::PtEtaPhiMLorentzVector(smearedEtEtaPhiMVector));
 	return theSmearedMomentumPair;
       } else {
         heep::Ele theHeepElec(patElectron);
@@ -6270,21 +6350,21 @@ pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> HiMassTauAnaly
 	math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(smearedPt, smearedEta, smearedPhi, unsmearedMomentum.mass());
 	reco::Candidate::LorentzVector smearedMomentum(smearedPtEtaPhiMVector.px(), smearedPtEtaPhiMVector.py(), smearedPtEtaPhiMVector.pz(), patElectron.energy());
 	pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
-	theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+	theSmearedMomentumPair = std::make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(reco::Candidate::LorentzVector(smearedMomentum), math::PtEtaPhiMLorentzVector(smearedPtEtaPhiMVector));
 	return theSmearedMomentumPair;
       }
     } else {
       math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(patElectron.pt(), patElectron.eta(), patElectron.phi(), patElectron.mass());
       reco::Candidate::LorentzVector smearedMomentum = patElectron.p4();
       pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
-      theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+      theSmearedMomentumPair = std::make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(reco::Candidate::LorentzVector(smearedMomentum), math::PtEtaPhiMLorentzVector(smearedPtEtaPhiMVector));
       return theSmearedMomentumPair;
     }
   } else {
     math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(patElectron.pt(), patElectron.eta(), patElectron.phi(), patElectron.mass());
     reco::Candidate::LorentzVector smearedMomentum = patElectron.p4();
     pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
-    theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+    theSmearedMomentumPair = std::make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(reco::Candidate::LorentzVector(smearedMomentum), math::PtEtaPhiMLorentzVector(smearedPtEtaPhiMVector));
     return theSmearedMomentumPair;
   }
 }
@@ -6307,20 +6387,20 @@ pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> HiMassTauAnaly
       math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(smearedPt, smearedEta, smearedPhi, unsmearedMomentum.mass());
       reco::Candidate::LorentzVector smearedMomentum(smearedPtEtaPhiMVector.px(), smearedPtEtaPhiMVector.py(), smearedPtEtaPhiMVector.pz(), patTau.energy());
       pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
-      theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+      theSmearedMomentumPair = std::make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(reco::Candidate::LorentzVector(smearedMomentum), math::PtEtaPhiMLorentzVector(smearedPtEtaPhiMVector));
       return theSmearedMomentumPair;
     } else {
       math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(patTau.pt(), patTau.eta(), patTau.phi(), patTau.mass());
       reco::Candidate::LorentzVector smearedMomentum = patTau.p4();
       pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
-      theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+      theSmearedMomentumPair = std::make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(reco::Candidate::LorentzVector(smearedMomentum), math::PtEtaPhiMLorentzVector(smearedPtEtaPhiMVector));
       return theSmearedMomentumPair;
     }
   } else {
     math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(patTau.pt(), patTau.eta(), patTau.phi(), patTau.mass());
     reco::Candidate::LorentzVector smearedMomentum = patTau.p4();
     pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
-    theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+    theSmearedMomentumPair = std::make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(reco::Candidate::LorentzVector(smearedMomentum), math::PtEtaPhiMLorentzVector(smearedPtEtaPhiMVector));
     return theSmearedMomentumPair;
   }
 }
@@ -6360,27 +6440,27 @@ pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> HiMassTauAnaly
         reco::Candidate::LorentzVector smearedMomentum = _JetEnergyScaleOffset * tempJetVector;
         math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(smearedMomentum.pt(), smearedMomentum.eta(), smearedMomentum.phi(), smearedMomentum.mass());
         pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
-        theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+        theSmearedMomentumPair = std::make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(reco::Candidate::LorentzVector(smearedMomentum), math::PtEtaPhiMLorentzVector(smearedPtEtaPhiMVector));
         return theSmearedMomentumPair;
       } else {
         reco::Candidate::LorentzVector smearedMomentum = _JetEnergyScaleOffset * tempJetVector;
         math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector(smearedMomentum.pt(), smearedMomentum.eta(), smearedMomentum.phi(), smearedMomentum.mass());
         pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
-        theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+        theSmearedMomentumPair = std::make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(reco::Candidate::LorentzVector(smearedMomentum), math::PtEtaPhiMLorentzVector(smearedPtEtaPhiMVector));
         return theSmearedMomentumPair;
       }
     } else {
       reco::Candidate::LorentzVector smearedMomentum = tempJetVector;
       math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector = tempPtEtaPhiMVector;
       pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
-      theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+      theSmearedMomentumPair = std::make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(reco::Candidate::LorentzVector(smearedMomentum), math::PtEtaPhiMLorentzVector(smearedPtEtaPhiMVector));
       return theSmearedMomentumPair;
     }
   } else {
     reco::Candidate::LorentzVector smearedMomentum = tempJetVector;
     math::PtEtaPhiMLorentzVector smearedPtEtaPhiMVector = tempPtEtaPhiMVector;
     pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector> theSmearedMomentumPair;
-    theSmearedMomentumPair = make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(smearedMomentum, smearedPtEtaPhiMVector);
+    theSmearedMomentumPair = std::make_pair<reco::Candidate::LorentzVector,math::PtEtaPhiMLorentzVector>(reco::Candidate::LorentzVector(smearedMomentum), math::PtEtaPhiMLorentzVector(smearedPtEtaPhiMVector));
     return theSmearedMomentumPair;
   }
 }
@@ -6471,6 +6551,8 @@ void HiMassTauAnalysis::bookHistograms() {
     //--- book generator level histograms
     if (_FillGenTauHists) {
       _hNGenTau[NpdfCounter]                 = fs->make<TH1F>(("NGenTau_"+j.str()).c_str(),           ("NGenTau_"+j.str()).c_str(),      21, 0., 20.);
+      _hLSPMass[NpdfCounter]                 = fs->make<TH1F>(("LSPMass_"+j.str()).c_str(),           ("LSPMass_"+j.str()).c_str(),      500, 0., 1000.);
+      _hStauMass[NpdfCounter]                 = fs->make<TH1F>(("StauMass_"+j.str()).c_str(),           ("StauMass_"+j.str()).c_str(),      500, 0., 1000.);
       _hGenTauEnergy[NpdfCounter]            = fs->make<TH1F>(("GenTauEnergy_"+j.str()).c_str(),      ("GenTauEnergy_"+j.str()).c_str(), 200, 0., 500.);
       _hGenTauPt[NpdfCounter]                = fs->make<TH1F>(("GenTauPt_"+j.str()).c_str(),          ("GenTauPt_"+j.str()).c_str(),     200, 0., 500.);
       _hGenTauEta[NpdfCounter]               = fs->make<TH1F>(("GenTauEta_"+j.str()).c_str(),         ("GenTauEta_"+j.str()).c_str(), 72, -3.6, +3.6);
@@ -6671,8 +6753,9 @@ void HiMassTauAnalysis::bookHistograms() {
       _hBJetDiscrByCombinedSecondaryV[NpdfCounter] = fs->make<TH1F>(("BJetDiscrByCombinedSecondaryV_"+j.str()).c_str(), ("BJetDiscrByCombinedSecondaryV_"+j.str()).c_str(), 400, -20, 20);
       _hFirstLeadingJetPt[NpdfCounter]       = fs->make<TH1F>(("FirstLeadingJetPt_"+j.str()).c_str(),     ("FirstLeadingJetPt_"+j.str()).c_str(), 200, 0., 1000.);
       _hSecondLeadingJetPt[NpdfCounter]       = fs->make<TH1F>(("SecondLeadingJetPt_"+j.str()).c_str(),     ("SecondLeadingJetPt_"+j.str()).c_str(), 200, 0., 1000.);
-      _hMHT[NpdfCounter]                    = fs->make<TH1F>(("MHT_"+j.str()).c_str(),                    ("MHT_"+j.str()).c_str(), 100, 0, 1000);
-      _hHT[NpdfCounter]                    = fs->make<TH1F>(("HT_"+j.str()).c_str(),                    ("HT_"+j.str()).c_str(), 100, 0, 1000);
+      _hMHT[NpdfCounter]                    = fs->make<TH1F>(("MHT_"+j.str()).c_str(),                    ("MHT_"+j.str()).c_str(), 500, 0, 5000);
+      _hHT[NpdfCounter]                    = fs->make<TH1F>(("HT_"+j.str()).c_str(),                    ("HT_"+j.str()).c_str(), 500, 0, 5000);
+      _hMeff[NpdfCounter]                    = fs->make<TH1F>(("Meff_"+j.str()).c_str(),                    ("Meff_"+j.str()).c_str(), 500, 0, 5000);
     }
     
     if (_FillTopologyHists) {

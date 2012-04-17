@@ -926,6 +926,8 @@ private:
 
   //-----generator level histograms
   std::map<unsigned int, TH1*> _hNGenTau;
+  std::map<unsigned int, TH1*> _hLSPMass;
+  std::map<unsigned int, TH1*> _hStauMass;
   std::map<unsigned int, TH1*> _hGenTauEnergy;
   std::map<unsigned int, TH1*> _hGenTauPt;
   std::map<unsigned int, TH1*> _hGenTauEta;
@@ -1119,6 +1121,7 @@ private:
   std::map<unsigned int, TH1*> _hSecondLeadingJetPt;
   std::map<unsigned int, TH1*> _hMHT;
   std::map<unsigned int, TH1*> _hHT;
+  std::map<unsigned int, TH1*> _hMeff;
 
   //-----reconstruction level topology histograms
   std::map<unsigned int, TH2*> _hMuon1PtVsTau1Pt;
@@ -1402,6 +1405,20 @@ private:
   Handle< reco::GenMETCollection > genTrue;
 
   //-----Event Sequence inputTags
+  int _GenTauNmin;
+  int _GenTauNmax;
+  int _GenTopNmin;
+  int _GenTopNmax;
+  int _GenElectronNmin;
+  int _GenElectronNmax;
+  int _GenMuonNmin;
+  int _GenMuonNmax;
+  int _GenZNmin;
+  int _GenZNmax;
+  int _GenWNmin;
+  int _GenWNmax;
+  int _GenSMHiggsNmin;
+  int _GenSMHiggsNmax;
   int _RecoTriggersNmin;
   int _RecoVertexNmin;
   int _RecoVertexNmax;
