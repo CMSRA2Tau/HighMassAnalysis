@@ -62,6 +62,147 @@ patTupleEventContent = [
     'keep *_*IsoDeposit*_*_*',
     'keep *_*IsoValue*_*_*',
     'keep *_addPileupInfo_*_*',
+ 'keep edmMergeableCounter_*Counter_*_*',
+   'keep recoPFRecHits_particleFlow*_Cleaned_*',
+   'keep recoPFCandidates_particleFlow_*_*',
+   'keep recoMuons_muons_*_*',
+   'keep recoGsfTracks_electronGsfTracks_*_*',
+   'keep recoGsfElectrons_gsfElectrons_*_*',
+   'drop recoElectronSeeds_*_*_*',
+   'keep *_gsfElectronCores_*_*',
+   'keep *_photonCore_*_*',
+   'keep recoConversions_conversions_*_*',
+   ########'drop recoTracks_*onversions_*_*',
+   'keep *_reducedEcalRecHits*_*_*',
+   'drop *_badEcalRecHits_*_*',
+   'drop *_badHcalRecHits_*_*',
+   'keep *_badTowers_*_*',
+   'keep *_badMET_*_*',
+   'keep *_badPFMET_*_*',
+   'drop *_kt*_*_*',
+   'drop *_ak7*_*_*',
+   'drop *_iterativeCone5*_*_*',
+   'drop recoTrackJets_ak5TrackJets__*',
+   ########'drop recoRecoChargedRefCandidates_trackRefsForJets__*',
+   'drop patMHTs_*_*_*',
+   'keep HcalNoiseSummary_*_*_*',
+   'drop edmTriggerResults_TriggerResults__*',
+   'keep edmTriggerResults_TriggerResults__HLT',
+   'keep edmTriggerResults_TriggerResults__REDIGI*',
+   'keep *_patPhotons_*_*',
+   'keep *_patElectrons*_*_*',
+   'keep *_patMuons*_*_*',
+   'keep *_muonPFCandidateProducer_*_*',
+   ########'drop *_patTaus_*_*',
+   'keep *_selectedPatTausPF*_*_*', #####
+   'keep recoPFMETs_pfMet__*',
+   'keep *_patMETs*_*_*',
+   ########'keep *_patJetsAK5*_*_*',
+   'keep *_patJetsPF_*_*',          #####
+   'drop *_cleanPatJets*_*_*',
+   #'keep *_patJetsIC5*_*_*',
+   'drop *_patJetsIC5*_*_*',
+   'drop recoBaseTagInfosOwned_*_tagInfos_*',
+   'drop CaloTowers_*_caloTowers_*',
+   ########'drop recoPFCandidates_*_pfCandidates_*',
+   ########'drop recoGenJets_*_genJets_*',
+   'drop recoVertexs_offlinePrimaryVerticesWithBS_*_*',
+   'keep recoVertexs_goodVertices_*_*',
+   'keep recoVertexs_goodVerticesRA2_*_*',
+   ########'keep *_*htCalo_*_*',
+   'keep *_*ht_*_*',
+   'keep *_maskedECALProducer_*_*',
+   'keep *_ecalTPSkim_*_*',
+   'keep recoTracks_globalMuons_*_*',
+   'keep recoTracks_standAloneMuons_*_*',
+   'keep *_ecalAnomalousFilter_*_*',
+   'keep *_addPileupInfo_*_*',
+   ##'keep *_hpsPFTauDiscriminationByTightChargedIsolation_*_*' #########################
+   'keep patTriggerObjectStandAlones_patTrigger_*_*',
+   'keep patTriggerObjectStandAlonesedmAssociation_*_*_*',
+       #'keep *_triggerMatched*_*_*',
+       # Keep PF2PAT output
+       'keep *_selectedPatMuonsPF_*_*',
+       'keep *_selectedPatElectronsPF_*_*',
+       'keep *_selectedPatTausPF_*_*',
+       'keep *_selectedPatJetsPF_*_*',
+       #L1 trigger info
+       'keep L1GlobalTriggerObjectMapRecord_*_*_*',
+       'keep L1GlobalTriggerReadoutRecord_*_*_*',
+       # Generator information
+       'keep recoGenJets_*GenJets*_*_*',
+       'keep recoGenMETs_*_*_*',
+       #Number of processed events
+       'keep edmMergeableCounter_eventCountProducer_*_*',
+       'keep recoRecoChargedRefCandidates_trackRefsForJets_*_*',
+       #'keep recoTrackJets_ak5TrackJets_*_*',
+       'keep *_electronMergedSeeds_*_*',
+       'keep *_Conversions_*_*',
+       'keep recoPFCandidates_particleFlow_*_*',
+       #'keep recoSuperClusters_corrected*_*_*',
+       #'keep recoSuperClusters_pfElectronTranslator_*_*',
+       #'keep *_gsfElectronCores_*_*',    #Keep electron core
+       #'keep *_photonCore_*_*',        #Keep electron core
+       'keep recoConversions_conversions_*_*',
+       'keep recoTracks_*onversions_*_*',
+       'keep HcalNoiseSummary_*_*_*', #Keep the one in RECO
+       'keep *BeamHaloSummary_*_*_*',
+       # Keep Gap Vertices for comparison
+       'keep *_offlinePrimaryVerticesGap_*_*',
+       'keep *_offlinePrimaryVerticesGapWithBS_*_*',
+       #DQM
+       'keep *_MEtoEDMConverter_*_PAT',
+       ########'drop recoTracks_generalTracks*_*_*',
+       'drop *_towerMaker_*_*',
+       'keep recoTracks_generalTracks*_*_*', ########## change 03.03.2012
+   'keep *_selectedPatJets*_*_*',           ## keep refactorized pat jet elements
+   'drop patJets_selectedPatJets*_*_*',     ## drop the actual selected pat jets, they're redundant
+
+   'drop *_selectedPatJets_pfCandidates_*', ## drop for default patJets which are CaloJets
+   'drop *_*PF_caloTowers_*',               ## drop collections not needed for the corresponding jet types
+   'drop *_*JPT_pfCandidates_*',            ## drop collections not needed for the corresponding jet types
+   'drop *_*Calo_pfCandidates_*',           ## drop collections not needed for the corresponding jet types
+   'keep *_cleanPatPhotons*_*_*',
+   'keep *_cleanPatElectrons*_*_*',
+   'keep *_cleanPatMuons*_*_*',
+   'keep *_cleanPatTaus*_*_*',
+   'keep *_cleanPatJets*_*_*',
+   'keep *_patMETs*_*_*',
+   'keep *_cleanPatHemispheres*_*_*',
+   'keep *_cleanPatPFParticles*_*_*',
+   'keep *_cleanPatTrackCands*_*_*',
+   # GEN
+
+   'keep recoGenParticles_genParticles*_*_*',
+   'keep GenEventInfoProduct_*_*_*',
+   'keep GenRunInfoProduct_*_*_*',
+   # RECO
+
+   'keep recoTracks_generalTracks*_*_*',
+   'keep *_towerMaker_*_*',
+   'keep *_offlineBeamSpot_*_*',
+   'keep *_offlinePrimaryVertices*_*_*',
+   # TRIGGER
+
+   'keep edmTriggerResults_TriggerResults*_*_*',
+   'keep *_hltTriggerSummaryAOD_*_*',
+   'keep L1GlobalTriggerReadoutRecord_gtDigis_*_*',
+   # COND
+   'keep edmConditionsIn*Block_conditionsInEdm_*_*',
+
+   'keep patTriggerAlgorithms_patTrigger_*_*',
+   'keep patTriggerConditions_patTrigger_*_*',
+   'keep patTriggerObjects_patTrigger_*_*',
+   'keep patTriggerFilters_patTrigger_*_*',
+   'keep patTriggerPaths_patTrigger_*_*',
+   'keep *_patTriggerEvent_*_*',
+   'keep *_*PatPhotons*TriggerMatch_*_*',
+   'keep *_*PatElectrons*TriggerMatch_*_*',
+   'keep *_*PatMuons*TriggerMatch_*_*',
+   'keep *_*PatTaus*TriggerMatch_*_*',
+   'keep *_*PatJets*TriggerMatch_*_*',
+   'keep *_patMETs*TriggerMatch_*_*',
+
     'drop *_selectedPatJets_pfCandidates_*', ## drop for default patJets which are CaloJets
     'drop *_*PF_caloTowers_*',
     'drop *_*JPT_pfCandidates_*',
