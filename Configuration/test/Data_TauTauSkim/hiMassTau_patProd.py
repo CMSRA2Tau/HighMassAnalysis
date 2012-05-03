@@ -1,8 +1,31 @@
 import FWCore.ParameterSet.Config as cms
 
-data = False
-signal = False
-channel = "mutau"
+from FWCore.ParameterSet.VarParsing import VarParsing
+options = VarParsing ('python')
+                  
+options.register ('data',
+                  False,
+                  VarParsing.multiplicity.singleton,
+                  VarParsing.varType.int,
+                  "Run this on real data")
+    
+options.register ('signal',
+                  False,
+                  VarParsing.multiplicity.singleton,
+                  VarParsing.varType.int,
+                  "Is this the signal?")
+    
+options.register ('channel',
+                  'mutau',
+                  VarParsing.multiplicity.singleton,
+                  VarParsing.varType.string,
+                  "Release to use: 42x or 52x")
+
+options.parseArguments()
+
+data    = options.data
+signal  = options.signal
+channel = options.channel
 
 process = cms.Process("PATTuple")
 
