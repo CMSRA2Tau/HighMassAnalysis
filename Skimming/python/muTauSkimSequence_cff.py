@@ -4,7 +4,7 @@ from HighMassAnalysis.Skimming.tauSelector_cfi import *
 from HighMassAnalysis.Skimming.muonSelector_cfi import *
 
 muTauPairs = cms.EDProducer("DeltaRMinCandCombiner",
-  decay = cms.string('selectedLooseHPSPatTau@+ selectedMuons@-'),
+  decay = cms.string('selectedVeryLooseHPSPatTau@+ selectedMuons@-'),
   checkCharge = cms.bool(False),
   cut = cms.string( ''),
   name = cms.string('muTauCandidates'),
@@ -17,7 +17,7 @@ selectedMuTauPairs = cms.EDFilter("CandViewCountFilter",
 )
 
 muTauSkimSequence = cms.Sequence(
-  ( selectedLooseHPSPatTau + selectedMuons )
+  ( selectedVeryLooseHPSPatTau + selectedMuons )
   * muTauPairs
   * selectedMuTauPairs
 )
