@@ -1,9 +1,31 @@
 import FWCore.ParameterSet.Config as cms
 
-data = False
-signal = False
-channel = "mutau"
+from FWCore.ParameterSet.VarParsing import VarParsing
+options = VarParsing ('python')
+                  
+options.register ('data',
+                  False,
+                  VarParsing.multiplicity.singleton,
+                  VarParsing.varType.int,
+                  "Run this on real data")
+    
+options.register ('signal',
+                  False,
+                  VarParsing.multiplicity.singleton,
+                  VarParsing.varType.int,
+                  "Is this the signal?")
+    
+options.register ('channel',
+                  'mutau',
+                  VarParsing.multiplicity.singleton,
+                  VarParsing.varType.string,
+                  "Desired channel")
 
+options.parseArguments()
+
+data    = options.data
+signal  = options.signal
+channel = options.channel
 process = cms.Process("PATTuple")
 
 ## MessageLogger
@@ -17,18 +39,20 @@ from Configuration.AlCa.autoCond import autoCond
 process.GlobalTag.globaltag = cms.string( autoCond[ 'startup' ] )
 process.load("Configuration.StandardSequences.MagneticField_cff")
 
-#if(data):
-#  process.GlobalTag.globaltag = 'GR_R_42_V12::All'
-#else:
-#  process.GlobalTag.globaltag = 'START42_V12::All'
-
 ## Options and Output Report
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
-process.source = cms.Source("PoolSource", 
-     fileNames = cms.untracked.vstring(
-        '/store/relval/CMSSW_5_2_3_patch3/RelValZTT/GEN-SIM-RECO/START52_V9_special_120410-v1/0122/6E6C7970-0283-E111-A6CB-003048FFD728.root'
-      )
-)
+if data:
+    process.source = cms.Source("PoolSource", 
+         fileNames = cms.untracked.vstring(
+            '/store/relval/CMSSW_5_2_2/Jet/RECO/GR_R_52_V4_RelVal_jet2011B-v2/0252/96518387-A174-E111-95A6-001A928116E8.root'
+          )
+    )
+else:
+    process.source = cms.Source("PoolSource", 
+         fileNames = cms.untracked.vstring(
+            '/store/relval/CMSSW_5_2_3_patch3/RelValZTT/GEN-SIM-RECO/START52_V9_special_120410-v1/0122/6E6C7970-0283-E111-A6CB-003048FFD728.root'
+          )
+    )
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(500) )
 
@@ -191,8 +215,9 @@ process.heepPatElectrons = cms.EDProducer("HEEPAttStatusToPAT",
 
 # --------------------Modifications for jets--------------------
 
-process.ak5PFJetsForPatJets = copy.deepcopy(process.ak5PFJets)
-process.ak5PFJetsForPatJets.doAreaFastjet = cms.bool(False)
+process.ak5PFJetsForPatJets = process.ak5PFJets.clone( 
+                                doAreaFastjet = cms.bool(False)
+                              )
     
 from PhysicsTools.PatAlgos.tools.jetTools import *
 switchJetCollection(process,cms.InputTag('ak5PFJetsForPatJets'),
@@ -216,28 +241,32 @@ if(data):
   process.ak5PFJets.doAreaFastjet = cms.bool(True)
   process.pfJetMETcorr.jetCorrLabel = cms.string("ak5PFL1FastL2L3Residual")
   process.metAnalysisSequence=cms.Sequence(process.producePFMETCorrections)
-  process.patPFType1Type0METs = copy.deepcopy(process.patMETs)
-  process.patPFType1Type0METs.metSource = cms.InputTag('pfType1CorrectedMet')
-  process.patPFType1Type0METs.addMuonCorrections = cms.bool(False)
-  process.patPFType1Type0METs.addGenMET    = cms.bool(False)
-  process.patPFType1Type2Type0METs = copy.deepcopy(process.patMETs)
-  process.patPFType1Type2Type0METs.metSource = cms.InputTag('pfType1p2CorrectedMet')
-  process.patPFType1Type2Type0METs.addMuonCorrections = cms.bool(False)
-  process.patPFType1Type2Type0METs.addGenMET    = cms.bool(False)
+  process.patPFType1Type0METs = process.patMETs.clone(
+                                      metSource = cms.InputTag('pfType1CorrectedMet'),
+                                      addMuonCorrections = cms.bool(False),
+                                      addGenMET    = cms.bool(False),
+                                )
+  process.patPFType1Type2Type0METs = process.patMETs.clone(
+                                      metSource = cms.InputTag('pfType1p2CorrectedMet'),
+                                      addMuonCorrections = cms.bool(False),
+                                      addGenMET    = cms.bool(False)
+                                )
 else:
   process.ak5PFJets.doAreaFastjet = cms.bool(True)
   process.pfJetMETcorr.jetCorrLabel = cms.string("ak5PFL1FastL2L3")
   process.metAnalysisSequence=cms.Sequence(process.producePFMETCorrections)
-  process.patPFType1Type0METs = copy.deepcopy(process.patMETs)
-  process.patPFType1Type0METs.metSource = cms.InputTag('pfType1CorrectedMet')
-  process.patPFType1Type0METs.addMuonCorrections = cms.bool(False)
-  process.patPFType1Type0METs.addGenMET    = cms.bool(True)
-  process.patPFType1Type2Type0METs = copy.deepcopy(process.patMETs)
-  process.patPFType1Type2Type0METs.metSource = cms.InputTag('pfType1p2CorrectedMet')
-  process.patPFType1Type2Type0METs.addMuonCorrections = cms.bool(False)
-  process.patPFType1Type2Type0METs.addGenMET    = cms.bool(True)
-  process.patPFType1Type2Type0METs.addResolutions = cms.bool(True)
-  process.patPFType1Type2Type0METs.resolutions = cms.PSet( default = cms.string("metResolutionPF") )
+  process.patPFType1Type0METs = process.patMETs.clone(
+                                      metSource = cms.InputTag('pfType1CorrectedMet'),
+                                      addMuonCorrections = cms.bool(False),
+                                      addGenMET    = cms.bool(True),
+                                )
+  process.patPFType1Type2Type0METs = process.patMETs.clone(
+                                      metSource = cms.InputTag('pfType1p2CorrectedMet'),
+                                      addMuonCorrections = cms.bool(False),
+                                      addGenMET    = cms.bool(True),
+                                      addResolutions = cms.bool(True),
+                                      resolutions = cms.PSet( default = cms.string("metResolutionPF") )
+                                )
 
 
 # Let it run
