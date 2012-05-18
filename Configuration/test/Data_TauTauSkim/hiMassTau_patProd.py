@@ -214,8 +214,9 @@ process.heepPatElectrons = cms.EDProducer("HEEPAttStatusToPAT",
 
 # --------------------Modifications for jets--------------------
 
-process.ak5PFJetsForPatJets = copy.deepcopy(process.ak5PFJets)
-process.ak5PFJetsForPatJets.doAreaFastjet = cms.bool(False)
+process.ak5PFJetsForPatJets = process.ak5PFJets.clone( 
+                                doAreaFastjet = cms.bool(False)
+                              )
     
 from PhysicsTools.PatAlgos.tools.jetTools import *
 switchJetCollection(process,cms.InputTag('ak5PFJetsForPatJets'),
@@ -239,28 +240,32 @@ if(data):
   process.ak5PFJets.doAreaFastjet = cms.bool(True)
   process.pfJetMETcorr.jetCorrLabel = cms.string("ak5PFL1FastL2L3Residual")
   process.metAnalysisSequence=cms.Sequence(process.producePFMETCorrections)
-  process.patPFType1Type0METs = copy.deepcopy(process.patMETs)
-  process.patPFType1Type0METs.metSource = cms.InputTag('pfType1CorrectedMet')
-  process.patPFType1Type0METs.addMuonCorrections = cms.bool(False)
-  process.patPFType1Type0METs.addGenMET    = cms.bool(False)
-  process.patPFType1Type2Type0METs = copy.deepcopy(process.patMETs)
-  process.patPFType1Type2Type0METs.metSource = cms.InputTag('pfType1p2CorrectedMet')
-  process.patPFType1Type2Type0METs.addMuonCorrections = cms.bool(False)
-  process.patPFType1Type2Type0METs.addGenMET    = cms.bool(False)
+  process.patPFType1Type0METs = process.patMETs.clone(
+                                      metSource = cms.InputTag('pfType1CorrectedMet')
+                                      addMuonCorrections = cms.bool(False)
+                                      addGenMET    = cms.bool(False)
+                                )
+  process.patPFType1Type2Type0METs = process.patMETs.clone(
+                                      metSource = cms.InputTag('pfType1p2CorrectedMet')
+                                      addMuonCorrections = cms.bool(False)
+                                      addGenMET    = cms.bool(False)
+                                )
 else:
   process.ak5PFJets.doAreaFastjet = cms.bool(True)
   process.pfJetMETcorr.jetCorrLabel = cms.string("ak5PFL1FastL2L3")
   process.metAnalysisSequence=cms.Sequence(process.producePFMETCorrections)
-  process.patPFType1Type0METs = copy.deepcopy(process.patMETs)
-  process.patPFType1Type0METs.metSource = cms.InputTag('pfType1CorrectedMet')
-  process.patPFType1Type0METs.addMuonCorrections = cms.bool(False)
-  process.patPFType1Type0METs.addGenMET    = cms.bool(True)
-  process.patPFType1Type2Type0METs = copy.deepcopy(process.patMETs)
-  process.patPFType1Type2Type0METs.metSource = cms.InputTag('pfType1p2CorrectedMet')
-  process.patPFType1Type2Type0METs.addMuonCorrections = cms.bool(False)
-  process.patPFType1Type2Type0METs.addGenMET    = cms.bool(True)
-  process.patPFType1Type2Type0METs.addResolutions = cms.bool(True)
-  process.patPFType1Type2Type0METs.resolutions = cms.PSet( default = cms.string("metResolutionPF") )
+  process.patPFType1Type0METs = process.patMETs.clone(
+                                      metSource = cms.InputTag('pfType1CorrectedMet')
+                                      addMuonCorrections = cms.bool(False)
+                                      addGenMET    = cms.bool(True)
+                                )
+  process.patPFType1Type2Type0METs = process.patMETs.clone(
+                                      metSource = cms.InputTag('pfType1p2CorrectedMet')
+                                      addMuonCorrections = cms.bool(False)
+                                      addGenMET    = cms.bool(True)
+                                      addResolutions = cms.bool(True)
+                                      resolutions = cms.PSet( default = cms.string("metResolutionPF") )
+                                )
 
 
 # Let it run
