@@ -918,6 +918,7 @@ private:
   //-----histogram that keeps track of the number of analyzed events & the number of
   //-----events passing the user defined cuts
   std::map<unsigned int, TH1*> _hEvents;
+  std::map<unsigned int, TH1*> _hEventsRW;
 
   //-----vertex histograms
   std::map<unsigned int, TH1*> _hVertexZposition;

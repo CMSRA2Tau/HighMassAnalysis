@@ -1471,9 +1471,12 @@ if(_DoSMpoint){
     }
   }
 
+  isrgluon_weight = isrgluon_weight * trig_weight * pu_weight;
+
   //------Number of events analyzed (denominator)
   for(unsigned int NpdfID = 0; NpdfID < pdfWeightVector.size();  NpdfID++){ 
     _hEvents[NpdfID]->Fill(0.0);
+    _hEventsRW[NpdfID]->Fill(0.0,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
   }
 
   //------Get the event flags (did the event pass the cuts?)
@@ -1481,12 +1484,11 @@ if(_DoSMpoint){
 
   if (!passEventSelectionSequence()) return;  
 
-  isrgluon_weight = isrgluon_weight * trig_weight * pu_weight;
-
   //------Number of events passing cuts (numerator)
   _totalEventsPassingCuts++;
   for(unsigned int NpdfID = 0; NpdfID < pdfWeightVector.size();  NpdfID++){   
-    _hEvents[NpdfID]->Fill(1.0,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+    _hEvents[NpdfID]->Fill(1.0);
+    _hEventsRW[NpdfID]->Fill(1.0,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
   }
 
   //-----Get weights for the calculation of pdf systematic uncertainties for the numerator
@@ -6540,6 +6542,8 @@ void HiMassTauAnalysis::bookHistograms() {
 
     //--- histogram containing the number of events analyzed and number passing specificied cuts
     _hEvents[NpdfCounter] = fs->make<TH1F>(("Events_"+j.str()).c_str(), ("Events_"+j.str()).c_str(), 2, 0., 2.);
+    _hEventsRW[NpdfCounter] = fs->make<TH1F>(("EventsRW_"+j.str()).c_str(), ("EventsRW_"+j.str()).c_str(), 2, 0., 2.);
+    _hEventsRW[NpdfCounter]->Sumw2();
 
     //--- book vertex histograms
     if (_FillRecoVertexHists) {
