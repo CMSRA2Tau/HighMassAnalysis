@@ -4,6 +4,7 @@ from PhysicsTools.PatAlgos.patEventContent_cff import *
 from Configuration.EventContent.EventContent_cff import *
 
 patTupleEventContent = [
+    'drop *',
     'keep source_*_*_*',
     'keep *_source_*_*',
     'keep *_*_source_*',
@@ -21,8 +22,9 @@ patTupleEventContent = [
     'keep recoTracks_generalTracks*_*_*',
     'keep *_towerMaker_*_*',
     'keep *_offlineBeamSpot_*_*',
-    'keep *_offlinePrimaryVertices*_*_*',
+    'keep *_goodOfflinePrimaryVertices*_*_*',
     'keep edmTriggerResults_TriggerResults*_*_*',
+#    'drop *_hlt*_*_*',
     'keep *_hltTriggerSummaryAOD_*_*',
     'keep L1GlobalTriggerReadoutRecord_gtDigis_*_*',
     'keep edmConditionsIn*Block_conditionsInEdm_*_*',
@@ -207,7 +209,6 @@ patTupleEventContent = [
     'drop *_*PF_caloTowers_*',
     'drop *_*JPT_pfCandidates_*',
     'drop *_*Calo_pfCandidates_*',
-    'drop *_hlt*_*_*',
     'drop CaloTowers*_*_*_*',
     'drop patPhotons_*_*_*',
 ]
