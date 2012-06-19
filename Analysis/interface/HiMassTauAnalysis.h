@@ -50,6 +50,10 @@
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include "JetMETCorrections/Objects/interface/JetCorrectionsRecord.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
+#include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
+#include "DataFormats/ParticleFlowCandidate/interface/PFCandidateFwd.h"
+#include "DataFormats/Common/interface/ValueMap.h"
+#include "CommonTools/ParticleFlow/test/PFIsoReaderDemo.h"
 #include "FWCore/Utilities/interface/Exception.h"
 #include "FWCore/Framework/interface/ESHandle.h"
 #include "boost/regex.hpp"
@@ -176,6 +180,8 @@ private:
   //-----Generator level Inputs 
   bool _DoMSUGRApoint;
   InputTag _GenParticleSource;
+  double _GenTauPtMinCut;
+  double _GenTauEtaMaxCut;
   bool _SelectSusyScanPoint;
   double _M0;
   double _M12;
@@ -300,6 +306,16 @@ private:
   bool _DoRecoMuon1DiscrByIsolation;
   bool _DoRecoMuon1DiscrByIp;
   bool _DoRecoMuon1DiscrByPionVeto;
+  bool _DoRecoMuon1DiscrByNormalizedChi2;
+  int _RecoMuon1NormalizedChi2MaxCut;
+  bool _DoRecoMuon1DiscrByChamberHits;
+  int _RecoMuon1ChamberHitsMinCut;
+  bool _DoRecoMuon1DiscrByMatchedStations;
+  int _RecoMuon1MatchedStationsMinCut;
+  bool _DoRecoMuon1DiscrByPixelHits;
+  int _RecoMuon1PixelHitsMinCut;
+  bool _DoRecoMuon1DiscrByTrackerLayerWithHits;
+  int _RecoMuon1TrackerLayerWithHitsMinCut;
   double _RecoMuon2PtMinCut;
   double _RecoMuon2PtMaxCut;
   double _RecoMuon2EtaCut;
@@ -318,6 +334,16 @@ private:
   bool _DoRecoMuon2DiscrByIsolation;
   bool _DoRecoMuon2DiscrByIp;
   bool _DoRecoMuon2DiscrByPionVeto;
+  bool _DoRecoMuon2DiscrByNormalizedChi2;
+  int _RecoMuon2NormalizedChi2MaxCut;
+  bool _DoRecoMuon2DiscrByChamberHits;
+  int _RecoMuon2ChamberHitsMinCut;
+  bool _DoRecoMuon2DiscrByMatchedStations;
+  int _RecoMuon2MatchedStationsMinCut;
+  bool _DoRecoMuon2DiscrByPixelHits;
+  int _RecoMuon2PixelHitsMinCut;
+  bool _DoRecoMuon2DiscrByTrackerLayerWithHits;
+  int _RecoMuon2TrackerLayerWithHitsMinCut;
 
   //-----Reco Electron Inputs
   InputTag _RecoElectronSource;
@@ -867,6 +893,8 @@ private:
   //-----SUSY Specific Topology Inputs
   bool _DoSUSYDiscrByMHT;
   double _MhtCut;
+  bool _DoSUSYDiscrByHT;
+  double _HtCut;
   bool _DoSUSYDiscrByR1;
   double _R1MinCut;
   double _R1MaxCut;
@@ -918,7 +946,6 @@ private:
   //-----histogram that keeps track of the number of analyzed events & the number of
   //-----events passing the user defined cuts
   std::map<unsigned int, TH1*> _hEvents;
-  std::map<unsigned int, TH1*> _hEventsRW;
 
   //-----vertex histograms
   std::map<unsigned int, TH1*> _hVertexZposition;
@@ -1031,6 +1058,10 @@ private:
   std::map<unsigned int, TH1*> _hMuon1Ip;
   std::map<unsigned int, TH1*> _hMuon1IpSignificance;
   std::map<unsigned int, TH1*> _hMuon1Iso;
+  std::map<unsigned int, TH1*> _hMuon1PfIso;
+  std::map<unsigned int, TH1*> _hMuon1PfIsoOverPt;
+  std::map<unsigned int, TH1*> _hMuon1PfTrackIso;
+  std::map<unsigned int, TH1*> _hMuon1PfNeutralIso;
   std::map<unsigned int, TH1*> _hMuon1GenMuonDeltaPhi;
   std::map<unsigned int, TH1*> _hMuon1GenMuonDeltaEta;
   std::map<unsigned int, TH1*> _hMuon1GenMuonDeltaPt;
@@ -1048,6 +1079,10 @@ private:
   std::map<unsigned int, TH1*> _hMuon2Ip;
   std::map<unsigned int, TH1*> _hMuon2IpSignificance;
   std::map<unsigned int, TH1*> _hMuon2Iso;
+  std::map<unsigned int, TH1*> _hMuon2PfIso;
+  std::map<unsigned int, TH1*> _hMuon2PfIsoOverPt;
+  std::map<unsigned int, TH1*> _hMuon2PfTrackIso;
+  std::map<unsigned int, TH1*> _hMuon2PfNeutralIso;
   std::map<unsigned int, TH1*> _hMuon2GenMuonDeltaPhi;
   std::map<unsigned int, TH1*> _hMuon2GenMuonDeltaEta;
   std::map<unsigned int, TH1*> _hMuon2GenMuonDeltaPt;
@@ -1595,5 +1630,8 @@ private:
   const std::string Prefix,Suffix;
   const boost::regex scanFormat;
   const std::vector<std::string> scanPars;
+
+  typedef std::vector< edm::Handle< edm::ValueMap<double> > > IsoDepositVals;
+  std::vector<edm::InputTag> inputTagIsoValMuonsPFId_;   
 
 };

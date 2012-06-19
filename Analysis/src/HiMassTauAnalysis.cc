@@ -31,6 +31,10 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) :
   //-----Generator level Inputs 
   _DoMSUGRApoint = iConfig.getParameter<bool>("DoMSUGRApoint");
   _GenParticleSource = iConfig.getUntrackedParameter<InputTag>("GenParticleSource");
+
+  _GenTauPtMinCut  = iConfig.getParameter<double>("GenTauPtMinCut");
+  _GenTauEtaMaxCut = iConfig.getParameter<double>("GenTauEtaMaxCut");
+
   _SelectSusyScanPoint = iConfig.getParameter<bool>("SelectSusyScanPoint");
   _M0 = iConfig.getParameter<double>("M0");
   _M12 = iConfig.getParameter<double>("M12");
@@ -126,6 +130,7 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) :
 
   //-----Reco Muon Inputs
   _RecoMuonSource = iConfig.getParameter<InputTag>("RecoMuonSource");
+  inputTagIsoValMuonsPFId_   = iConfig.getParameter< std::vector<edm::InputTag> >("IsoValMuonPF");
   _RecoMuon1EtaCut = iConfig.getParameter<double>("RecoMuon1EtaCut");
   _RecoMuon1PtMinCut = iConfig.getParameter<double>("RecoMuon1PtMinCut");
   _RecoMuon1PtMaxCut = iConfig.getParameter<double>("RecoMuon1PtMaxCut");
@@ -144,6 +149,17 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) :
   _RecoMuon1CaloCompCoefficient = iConfig.getParameter<double>("RecoMuon1CaloCompCoefficient");
   _RecoMuon1SegmCompCoefficient = iConfig.getParameter<double>("RecoMuon1SegmCompCoefficient");
   _RecoMuon1AntiPionCut = iConfig.getParameter<double>("RecoMuon1AntiPionCut");
+  _DoRecoMuon1DiscrByNormalizedChi2 = iConfig.getParameter<bool>("DoRecoMuon1DiscrByNormalizedChi2");
+  _RecoMuon1NormalizedChi2MaxCut = iConfig.getParameter<int>("RecoMuon1NormalizedChi2MaxCut");
+  _DoRecoMuon1DiscrByChamberHits = iConfig.getParameter<bool>("DoRecoMuon1DiscrByChamberHits");
+  _RecoMuon1ChamberHitsMinCut = iConfig.getParameter<int>("RecoMuon1ChamberHitsMinCut");
+  _DoRecoMuon1DiscrByMatchedStations = iConfig.getParameter<bool>("DoRecoMuon1DiscrByMatchedStations");
+  _RecoMuon1MatchedStationsMinCut = iConfig.getParameter<int>("RecoMuon1MatchedStationsMinCut");
+  _DoRecoMuon1DiscrByPixelHits = iConfig.getParameter<bool>("DoRecoMuon1DiscrByPixelHits");
+  _RecoMuon1PixelHitsMinCut = iConfig.getParameter<int>("RecoMuon1PixelHitsMinCut");
+  _DoRecoMuon1DiscrByTrackerLayerWithHits = iConfig.getParameter<bool>("DoRecoMuon1DiscrByTrackerLayerWithHits");
+  _RecoMuon1TrackerLayerWithHitsMinCut = iConfig.getParameter<int>("RecoMuon1TrackerLayerWithHitsMinCut");
+
   _RecoMuon2EtaCut = iConfig.getParameter<double>("RecoMuon2EtaCut");
   _RecoMuon2PtMinCut = iConfig.getParameter<double>("RecoMuon2PtMinCut");
   _RecoMuon2PtMaxCut = iConfig.getParameter<double>("RecoMuon2PtMaxCut");
@@ -162,6 +178,16 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) :
   _RecoMuon2CaloCompCoefficient = iConfig.getParameter<double>("RecoMuon2CaloCompCoefficient");
   _RecoMuon2SegmCompCoefficient = iConfig.getParameter<double>("RecoMuon2SegmCompCoefficient");
   _RecoMuon2AntiPionCut = iConfig.getParameter<double>("RecoMuon2AntiPionCut");
+  _DoRecoMuon2DiscrByNormalizedChi2 = iConfig.getParameter<bool>("DoRecoMuon2DiscrByNormalizedChi2");
+  _RecoMuon2NormalizedChi2MaxCut = iConfig.getParameter<int>("RecoMuon2NormalizedChi2MaxCut");
+  _DoRecoMuon2DiscrByChamberHits = iConfig.getParameter<bool>("DoRecoMuon2DiscrByChamberHits");
+  _RecoMuon2ChamberHitsMinCut = iConfig.getParameter<int>("RecoMuon2ChamberHitsMinCut");
+  _DoRecoMuon2DiscrByMatchedStations = iConfig.getParameter<bool>("DoRecoMuon2DiscrByMatchedStations");
+  _RecoMuon2MatchedStationsMinCut = iConfig.getParameter<int>("RecoMuon2MatchedStationsMinCut");
+  _DoRecoMuon2DiscrByPixelHits = iConfig.getParameter<bool>("DoRecoMuon2DiscrByPixelHits");
+  _RecoMuon2PixelHitsMinCut = iConfig.getParameter<int>("RecoMuon2PixelHitsMinCut");
+  _DoRecoMuon2DiscrByTrackerLayerWithHits = iConfig.getParameter<bool>("DoRecoMuon2DiscrByTrackerLayerWithHits");
+  _RecoMuon2TrackerLayerWithHitsMinCut = iConfig.getParameter<int>("RecoMuon2TrackerLayerWithHitsMinCut");
 
   //-----Reco Electron Inputs
   _RecoElectronSource = iConfig.getParameter<InputTag>("RecoElectronSource");
@@ -691,6 +717,8 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) :
   //-----SUSY Specific Topology Inputs
   _DoSUSYDiscrByMHT = iConfig.getParameter<bool>("DoSUSYDiscrByMHT");
   _MhtCut = iConfig.getParameter<double>("MhtCut");
+  _DoSUSYDiscrByHT = iConfig.getParameter<bool>("DoSUSYDiscrByHT");
+  _HtCut = iConfig.getParameter<double>("HtCut");
   _DoSUSYDiscrByR1 = iConfig.getParameter<bool>("DoSUSYDiscrByR1");
   _R1MinCut = iConfig.getParameter<double>("R1MinCut");
   _R1MaxCut = iConfig.getParameter<double>("R1MaxCut");
@@ -1379,6 +1407,25 @@ if(_DoSMpoint){
 //    if (isinf(pu_weight) || isnan(pu_weight)) {throw std::runtime_error("PU weight INF or NAN");}
   } else {pu_weight = 1.0;}
 
+  IsoDepositVals muonIsoValPFId((int)(inputTagIsoValMuonsPFId_.size()));
+  for (size_t isoj = 0; isoj<inputTagIsoValMuonsPFId_.size(); ++isoj) {
+    iEvent.getByLabel(inputTagIsoValMuonsPFId_[isoj], muonIsoValPFId[isoj]);
+  }
+  int theNumberOfMuons=0;
+  for(pat::MuonCollection::const_iterator patMuon = _patMuons->begin();patMuon != _patMuons->end();++patMuon) {
+    pat::MuonRef myMuonRef(_patMuons,theNumberOfMuons);
+    const IsoDepositVals * muonIsoVals = &muonIsoValPFId;
+    double isocharged =  (*(*muonIsoVals)[0])[myMuonRef];
+    double isophoton = (*(*muonIsoVals)[1])[myMuonRef];
+    double isoneutral = (*(*muonIsoVals)[2])[myMuonRef];
+//    std::cout << " Pt " << patMuon->pt() ;
+//    std::cout << " Eta " << patMuon->eta() ;
+//    std::cout << " ChargedIso " << isocharged ;
+//    std::cout << " PhotonIso " <<  isophoton ;
+//    std::cout << " NeutralHadron Iso " << isoneutral << std::endl;
+    theNumberOfMuons++;
+  }
+
   //-----Smearing momentum and position for systematic uncertanties and calculation of MET deltas
   smearedMuonMomentumVector.clear();
   smearedMuonPtEtaPhiMVector.clear();
@@ -1471,12 +1518,9 @@ if(_DoSMpoint){
     }
   }
 
-  isrgluon_weight = isrgluon_weight * trig_weight * pu_weight;
-
   //------Number of events analyzed (denominator)
   for(unsigned int NpdfID = 0; NpdfID < pdfWeightVector.size();  NpdfID++){ 
     _hEvents[NpdfID]->Fill(0.0);
-    _hEventsRW[NpdfID]->Fill(0.0,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
   }
 
   //------Get the event flags (did the event pass the cuts?)
@@ -1484,11 +1528,12 @@ if(_DoSMpoint){
 
   if (!passEventSelectionSequence()) return;  
 
+  isrgluon_weight = isrgluon_weight * trig_weight * pu_weight;
+
   //------Number of events passing cuts (numerator)
   _totalEventsPassingCuts++;
   for(unsigned int NpdfID = 0; NpdfID < pdfWeightVector.size();  NpdfID++){   
-    _hEvents[NpdfID]->Fill(1.0);
-    _hEventsRW[NpdfID]->Fill(1.0,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+    _hEvents[NpdfID]->Fill(1.0,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
   }
 
   //-----Get weights for the calculation of pdf systematic uncertainties for the numerator
@@ -1562,6 +1607,7 @@ void HiMassTauAnalysis::getEventFlags(const Event& iEvent) {
     for(GenParticleCollection::const_iterator genParticle = _genParticles->begin();genParticle != _genParticles->end();++genParticle) {
       if((abs(genParticle->pdgId()) == 15) && (genParticle->status() != 3)) {
         int neutrinos = 0;
+        MChadtau = genParticle->p4();
         for(int ii=0; ii<(int)(genParticle->numberOfDaughters()); ii++) {
           daughterCand = genParticle->daughter(ii);
           if( (abs(daughterCand->pdgId()) == 12) || (abs(daughterCand->pdgId()) == 14) || (abs(daughterCand->pdgId()) == 16) ) {
@@ -1569,7 +1615,11 @@ void HiMassTauAnalysis::getEventFlags(const Event& iEvent) {
             MChadtau = MChadtau - daughterCand->p4();
           }
         }
-        if(neutrinos == 1) {nGenTaus++;}
+        if(neutrinos == 1) {
+          if( (MChadtau.pt() >= _GenTauPtMinCut) && (abs(MChadtau.eta()) <= _GenTauEtaMaxCut) ) {
+            nGenTaus++;
+          }
+        }
       }
     }
   }
@@ -2131,6 +2181,21 @@ void HiMassTauAnalysis::getEventFlags(const Event& iEvent) {
       }
     }
   }
+  if(nGoodDiMuonCombinations > 1000) {nGoodDiMuonCombinations = 999;}
+  if(nGoodDiElectronCombinations > 1000) {nGoodDiElectronCombinations = 999;}
+  if(nGoodDiTauCombinations > 1000) {nGoodDiTauCombinations = 999;}
+  if(nGoodMuon1Tau1Combinations > 1000) {nGoodMuon1Tau1Combinations = 999;}
+  if(nGoodMuon1Tau2Combinations > 1000) {nGoodMuon1Tau2Combinations = 999;}
+  if(nGoodMuon2Tau2Combinations > 1000) {nGoodMuon2Tau2Combinations = 999;}
+  if(nGoodMuon2Tau1Combinations > 1000) {nGoodMuon2Tau1Combinations = 999;}
+  if(nGoodElectron2Tau2Combinations > 1000) {nGoodElectron2Tau2Combinations = 999;}
+  if(nGoodElectron2Tau1Combinations > 1000) {nGoodElectron2Tau1Combinations = 999;}
+  if(nGoodElectron1Tau2Combinations > 1000) {nGoodElectron1Tau2Combinations = 999;}
+  if(nGoodElectron1Tau1Combinations > 1000) {nGoodElectron1Tau1Combinations = 999;}
+  if(nGoodElectron1Muon1Combinations > 1000) {nGoodElectron1Muon1Combinations = 999;}
+  if(nGoodElectron1Muon2Combinations > 1000) {nGoodElectron1Muon2Combinations = 999;}
+  if(nGoodElectron2Muon1Combinations > 1000) {nGoodElectron2Muon1Combinations = 999;}
+  if(nGoodElectron2Muon2Combinations > 1000) {nGoodElectron2Muon2Combinations = 999;}
   if (nGoodDiMuonCombinations>=_DiMuonCombinationsNmin) _EventFlag[_mapSelectionAlgoID["DiMuonCombinationsNmin"]] = true;
   if (nGoodDiMuonCombinations<=_DiMuonCombinationsNmax) _EventFlag[_mapSelectionAlgoID["DiMuonCombinationsNmax"]] = true;
   if (nGoodDiElectronCombinations>=_DiElectronCombinationsNmin) _EventFlag[_mapSelectionAlgoID["DiElectronCombinationsNmin"]] = true;
@@ -2449,6 +2514,16 @@ bool HiMassTauAnalysis::passRecoMuon1Cuts(const pat::Muon& patMuon,int nobj) {
   }
   // ----Require maching tracks in silicon tracker and muon chamber
   if (_DoRecoMuon1DiscrByGlobal) {if (!patMuon.isGlobalMuon()) {return false;}}
+
+  if (_DoRecoMuon1DiscrByNormalizedChi2) {if (patMuon.globalTrack()->normalizedChi2() >= _RecoMuon1NormalizedChi2MaxCut) {return false;}}
+  if (_DoRecoMuon1DiscrByChamberHits) {if (patMuon.globalTrack()->hitPattern().numberOfValidMuonHits() <= _RecoMuon1ChamberHitsMinCut) {return false;}}
+  if (_DoRecoMuon1DiscrByMatchedStations) {if (patMuon.numberOfMatchedStations() <= _RecoMuon1MatchedStationsMinCut) {return false;}}
+  if (_DoRecoMuon1DiscrByPixelHits) {if (patMuon.innerTrack()->hitPattern().numberOfValidPixelHits()  <= _RecoMuon1PixelHitsMinCut) {return false;}}
+  if (_DoRecoMuon1DiscrByTrackerLayerWithHits) {
+    if ( !(patMuon.track().isNonnull()) ) {return false;}
+    if (patMuon.track()->hitPattern().trackerLayersWithMeasurement()  <= _RecoMuon1TrackerLayerWithHitsMinCut) {return false;}
+  }
+
   // ----Acceptance cuts
   if (fabs(smearedMuonPtEtaPhiMVector.at(nobj).eta())>_RecoMuon1EtaCut) {return false;}
   if (smearedMuonPtEtaPhiMVector.at(nobj).pt()<_RecoMuon1PtMinCut) {return false;}
@@ -2456,18 +2531,29 @@ bool HiMassTauAnalysis::passRecoMuon1Cuts(const pat::Muon& patMuon,int nobj) {
   // ----Isolation requirement
   if (_DoRecoMuon1DiscrByIsolation) {
 //    if( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1TrackIsoTrkThreshold).first) 
+//    if( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1TrackIsoTrkThreshold).first) 
+//    if( (patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1EcalIsoRecHitThreshold).first) 
+//    if( (patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1EcalIsoRecHitThreshold).first) 
+/*
     if( (patMuon.trackIso()) 
          >= _RecoMuon1TrackIsoSumPtMaxCutValue) {return false;}
-//    if( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1TrackIsoTrkThreshold).first) 
     if( (patMuon.trackIso()) 
          < _RecoMuon1TrackIsoSumPtMinCutValue) {return false;}
-//    if( (patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1EcalIsoRecHitThreshold).first) 
     if( (patMuon.ecalIso()) 
          >= _RecoMuon1EcalIsoSumPtMaxCutValue) {return false;}
-//    if( (patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1EcalIsoRecHitThreshold).first) 
     if( (patMuon.ecalIso()) 
          < _RecoMuon1EcalIsoSumPtMinCutValue) {return false;}
+*/
+/*
+    if( (patMuon.pfIsolationR04().sumChargedHadronPt) >= _RecoMuon1TrackIsoSumPtMaxCutValue  ) {return false;}
+    if( (patMuon.pfIsolationR04().sumChargedHadronPt) < _RecoMuon1TrackIsoSumPtMinCutValue  ) {return false;}
+    if( (max(0.,patMuon.pfIsolationR04().sumNeutralHadronEt + patMuon.pfIsolationR04().sumPhotonEt - (0.5 * patMuon.pfIsolationR04().sumPUPt))) >= _RecoMuon1EcalIsoSumPtMaxCutValue  ) {return false;}
+    if( (max(0.,patMuon.pfIsolationR04().sumNeutralHadronEt + patMuon.pfIsolationR04().sumPhotonEt - (0.5 * patMuon.pfIsolationR04().sumPUPt))) < _RecoMuon1EcalIsoSumPtMinCutValue  ) {return false;}
+*/
+    if( ((patMuon.pfIsolationR04().sumChargedHadronPt + max(0.,patMuon.pfIsolationR04().sumNeutralHadronEt + patMuon.pfIsolationR04().sumPhotonEt - (0.5 * patMuon.pfIsolationR04().sumPUPt))) / smearedMuonPtEtaPhiMVector.at(nobj).pt()) >= _RecoMuon1TrackIsoSumPtMaxCutValue  ) {return false;}
+    if( ((patMuon.pfIsolationR04().sumChargedHadronPt + max(0.,patMuon.pfIsolationR04().sumNeutralHadronEt + patMuon.pfIsolationR04().sumPhotonEt - (0.5 * patMuon.pfIsolationR04().sumPUPt))) / smearedMuonPtEtaPhiMVector.at(nobj).pt()) <  _RecoMuon1TrackIsoSumPtMinCutValue  ) {return false;}
   }
+
   // ----Impact parameter requirement
   if (_DoRecoMuon1DiscrByIp) {
     const reco::Vertex& thePrimaryEventVertex = (*(_primaryEventVertexCollection)->begin());
@@ -2519,6 +2605,16 @@ bool HiMassTauAnalysis::passRecoMuon2Cuts(const pat::Muon& patMuon,int nobj) {
   }
   // ----Require maching tracks in silicon tracker and muon chamber
   if (_DoRecoMuon2DiscrByGlobal) {if (!patMuon.isGlobalMuon()) {return false;}}
+
+  if (_DoRecoMuon2DiscrByNormalizedChi2) {if (patMuon.globalTrack()->normalizedChi2() >= _RecoMuon2NormalizedChi2MaxCut) {return false;}}
+  if (_DoRecoMuon2DiscrByChamberHits) {if (patMuon.globalTrack()->hitPattern().numberOfValidMuonHits() <= _RecoMuon2ChamberHitsMinCut) {return false;}}
+  if (_DoRecoMuon2DiscrByMatchedStations) {if (patMuon.numberOfMatchedStations() <= _RecoMuon2MatchedStationsMinCut) {return false;}}
+  if (_DoRecoMuon2DiscrByPixelHits) {if (patMuon.innerTrack()->hitPattern().numberOfValidPixelHits()  <= _RecoMuon2PixelHitsMinCut) {return false;}}
+  if (_DoRecoMuon2DiscrByTrackerLayerWithHits) {
+    if ( !(patMuon.track().isNonnull()) ) {return false;}
+    if (patMuon.track()->hitPattern().trackerLayersWithMeasurement()  <= _RecoMuon2TrackerLayerWithHitsMinCut) {return false;}
+  }
+
   // ----Acceptance cuts
   if (fabs(smearedMuonPtEtaPhiMVector.at(nobj).eta())>_RecoMuon2EtaCut) {return false;}
   if (smearedMuonPtEtaPhiMVector.at(nobj).pt()<_RecoMuon2PtMinCut) {return false;}
@@ -2526,17 +2622,27 @@ bool HiMassTauAnalysis::passRecoMuon2Cuts(const pat::Muon& patMuon,int nobj) {
   // ----Isolation requirement
   if (_DoRecoMuon2DiscrByIsolation) {
 //    if( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2TrackIsoTrkThreshold).first) 
+//    if( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2TrackIsoTrkThreshold).first) 
+//    if( (patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2EcalIsoRecHitThreshold).first) 
+//    if( (patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2EcalIsoRecHitThreshold).first) 
+/*
     if( (patMuon.trackIso()) 
         >= _RecoMuon2TrackIsoSumPtMaxCutValue) {return false;}
-//    if( (patMuon.trackIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2TrackIsoTrkThreshold).first) 
     if( (patMuon.trackIso()) 
          < _RecoMuon2TrackIsoSumPtMinCutValue) {return false;}
-//    if( (patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2EcalIsoRecHitThreshold).first) 
     if( (patMuon.ecalIso()) 
          >= _RecoMuon2EcalIsoSumPtMaxCutValue) {return false;}
-//    if( (patMuon.ecalIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2EcalIsoRecHitThreshold).first) 
     if( (patMuon.ecalIso()) 
          < _RecoMuon2EcalIsoSumPtMinCutValue) {return false;}
+*/
+/*
+    if( (patMuon.pfIsolationR04().sumChargedHadronPt) >= _RecoMuon2TrackIsoSumPtMaxCutValue  ) {return false;}
+    if( (patMuon.pfIsolationR04().sumChargedHadronPt) < _RecoMuon2TrackIsoSumPtMinCutValue  ) {return false;}
+    if( (max(0.,patMuon.pfIsolationR04().sumNeutralHadronEt + patMuon.pfIsolationR04().sumPhotonEt - (0.5 * patMuon.pfIsolationR04().sumPUPt))) >= _RecoMuon2EcalIsoSumPtMaxCutValue  ) {return false;}
+    if( (max(0.,patMuon.pfIsolationR04().sumNeutralHadronEt + patMuon.pfIsolationR04().sumPhotonEt - (0.5 * patMuon.pfIsolationR04().sumPUPt))) < _RecoMuon2EcalIsoSumPtMinCutValue  ) {return false;}
+*/
+    if( ((patMuon.pfIsolationR04().sumChargedHadronPt + max(0.,patMuon.pfIsolationR04().sumNeutralHadronEt + patMuon.pfIsolationR04().sumPhotonEt - (0.5 * patMuon.pfIsolationR04().sumPUPt))) / smearedMuonPtEtaPhiMVector.at(nobj).pt()) >= _RecoMuon2TrackIsoSumPtMaxCutValue  ) {return false;}
+    if( ((patMuon.pfIsolationR04().sumChargedHadronPt + max(0.,patMuon.pfIsolationR04().sumNeutralHadronEt + patMuon.pfIsolationR04().sumPhotonEt - (0.5 * patMuon.pfIsolationR04().sumPUPt))) / smearedMuonPtEtaPhiMVector.at(nobj).pt()) <  _RecoMuon2TrackIsoSumPtMinCutValue  ) {return false;}
   }
   // ----Impact parameter requirement
   if (_DoRecoMuon2DiscrByIp) {
@@ -3934,6 +4040,7 @@ bool HiMassTauAnalysis::passDiTauTopologyCuts(const pat::Tau& patTau1, int nobj1
 }
 bool HiMassTauAnalysis::passSusyTopologyCuts(int nobj1, int nobj2) {
   if(_DoSUSYDiscrByMHT) { if(sqrt((sumpxForMht * sumpxForMht) + (sumpyForMht * sumpyForMht)) < _MhtCut) {return false;} }
+  if(_DoSUSYDiscrByHT) { if(sumptForHt < _HtCut) {return false;} }
   double dphi1;
   double dphi2;
   double r1;
@@ -4398,6 +4505,10 @@ void HiMassTauAnalysis::fillHistograms() {
 //	_hMuon1Iso[NpdfID]->Fill(patMuon->trackIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1TrackIsoTrkThreshold).first +
 //				 patMuon->ecalIsoDeposit()->depositAndCountWithin(_RecoMuon1IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon1EcalIsoRecHitThreshold).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hMuon1Iso[NpdfID]->Fill(patMuon->trackIso() + patMuon->ecalIso(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _hMuon1PfIsoOverPt[NpdfID]->Fill((patMuon->pfIsolationR04().sumChargedHadronPt + max(0.,patMuon->pfIsolationR04().sumNeutralHadronEt + patMuon->pfIsolationR04().sumPhotonEt - (0.5 * patMuon->pfIsolationR04().sumPUPt))) / smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _hMuon1PfIso[NpdfID]->Fill(patMuon->pfIsolationR04().sumChargedHadronPt + max(0.,patMuon->pfIsolationR04().sumNeutralHadronEt + patMuon->pfIsolationR04().sumPhotonEt - (0.5 * patMuon->pfIsolationR04().sumPUPt)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _hMuon1PfTrackIso[NpdfID]->Fill(patMuon->pfIsolationR04().sumChargedHadronPt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _hMuon1PfNeutralIso[NpdfID]->Fill(max(0.,patMuon->pfIsolationR04().sumNeutralHadronEt + patMuon->pfIsolationR04().sumPhotonEt - (0.5 * patMuon->pfIsolationR04().sumPUPt)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hMuon1CaloCompatibility[NpdfID]->Fill(muon::caloCompatibility(*patMuon),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hMuon1SegmentCompatibility[NpdfID]->Fill(muon::segmentCompatibility(*patMuon),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hMuon1CaloCompatibilityVsSegmentCompatibility[NpdfID]->Fill(muon::caloCompatibility(*patMuon),muon::segmentCompatibility(*patMuon),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
@@ -4436,6 +4547,10 @@ void HiMassTauAnalysis::fillHistograms() {
 //	_hMuon2Iso[NpdfID]->Fill(patMuon->trackIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2TrackIsoTrkThreshold).first +
 //				 patMuon->ecalIsoDeposit()->depositAndCountWithin(_RecoMuon2IsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuon2EcalIsoRecHitThreshold).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hMuon2Iso[NpdfID]->Fill(patMuon->trackIso() + patMuon->ecalIso(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _hMuon2PfIsoOverPt[NpdfID]->Fill((patMuon->pfIsolationR04().sumChargedHadronPt + max(0.,patMuon->pfIsolationR04().sumNeutralHadronEt + patMuon->pfIsolationR04().sumPhotonEt - (0.5 * patMuon->pfIsolationR04().sumPUPt))) / smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _hMuon2PfIso[NpdfID]->Fill(patMuon->pfIsolationR04().sumChargedHadronPt + max(0.,patMuon->pfIsolationR04().sumNeutralHadronEt + patMuon->pfIsolationR04().sumPhotonEt - (0.5 * patMuon->pfIsolationR04().sumPUPt)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _hMuon2PfTrackIso[NpdfID]->Fill(patMuon->pfIsolationR04().sumChargedHadronPt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _hMuon2PfNeutralIso[NpdfID]->Fill(max(0.,patMuon->pfIsolationR04().sumNeutralHadronEt + patMuon->pfIsolationR04().sumPhotonEt - (0.5 * patMuon->pfIsolationR04().sumPUPt)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hMuon2CaloCompatibility[NpdfID]->Fill(muon::caloCompatibility(*patMuon),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hMuon2SegmentCompatibility[NpdfID]->Fill(muon::segmentCompatibility(*patMuon),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hMuon2CaloCompatibilityVsSegmentCompatibility[NpdfID]->Fill(muon::caloCompatibility(*patMuon),muon::segmentCompatibility(*patMuon),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
@@ -6542,14 +6657,12 @@ void HiMassTauAnalysis::bookHistograms() {
 
     //--- histogram containing the number of events analyzed and number passing specificied cuts
     _hEvents[NpdfCounter] = fs->make<TH1F>(("Events_"+j.str()).c_str(), ("Events_"+j.str()).c_str(), 2, 0., 2.);
-    _hEventsRW[NpdfCounter] = fs->make<TH1F>(("EventsRW_"+j.str()).c_str(), ("EventsRW_"+j.str()).c_str(), 2, 0., 2.);
-    _hEventsRW[NpdfCounter]->Sumw2();
 
     //--- book vertex histograms
     if (_FillRecoVertexHists) {
       _hVertexZposition[NpdfCounter] = fs->make<TH1F>(("VertexZposition_"+j.str()).c_str(), ("VertexZposition_"+j.str()).c_str(), 50, -50., 50.);
       _hVertexNTracks[NpdfCounter]   = fs->make<TH1F>(("VertexNTracks_"+j.str()).c_str(),   ("VertexNTracks_"+j.str()).c_str(),   100, 0., 100.);
-      _hNVertices[NpdfCounter]       = fs->make<TH1F>(("NVertices_"+j.str()).c_str(),       ("NVertices_"+j.str()).c_str(),       100, 0., 100.);
+      _hNVertices[NpdfCounter]       = fs->make<TH1F>(("NVertices_"+j.str()).c_str(),       ("NVertices_"+j.str()).c_str(),       40, 0., 40.);
     }
     
     //--- book generator level histograms
@@ -6661,6 +6774,10 @@ void HiMassTauAnalysis::bookHistograms() {
       _hMuon1TrackIso[NpdfCounter]                = fs->make<TH1F>(("Muon1TrackIso_"+j.str()).c_str(),            ("Muon1TrackIso_"+j.str()).c_str(), 100, 0, 50);
       _hMuon1EcalIso[NpdfCounter]                 = fs->make<TH1F>(("Muon1EcalIso_"+j.str()).c_str(),             ("Muon1EcalIso_"+j.str()).c_str(), 100, 0, 50);
       _hMuon1Iso[NpdfCounter]                     = fs->make<TH1F>(("Muon1Iso_"+j.str()).c_str(),                 ("Muon1Iso_"+j.str()).c_str(), 100, 0, 50);
+      _hMuon1PfIso[NpdfCounter]                   = fs->make<TH1F>(("Muon1PfIso_"+j.str()).c_str(),               ("Muon1PfIso_"+j.str()).c_str(), 100, 0, 50);
+      _hMuon1PfIsoOverPt[NpdfCounter]             = fs->make<TH1F>(("Muon1PfIsoOverPt_"+j.str()).c_str(),         ("Muon1PfIsoOverPt_"+j.str()).c_str(), 200, 0, 2);
+      _hMuon1PfTrackIso[NpdfCounter]              = fs->make<TH1F>(("Muon1PfTrackIso_"+j.str()).c_str(),          ("Muon1PfTrackIso_"+j.str()).c_str(), 100, 0, 50);
+      _hMuon1PfNeutralIso[NpdfCounter]            = fs->make<TH1F>(("Muon1PfNeutralIso_"+j.str()).c_str(),        ("Muon1PfNeutralIso_"+j.str()).c_str(), 100, 0, 50);
       _hMuon1Ip[NpdfCounter]                      = fs->make<TH1F>(("Muon1Ip_"+j.str()).c_str(),                  ("Muon1Ip_"+j.str()).c_str(), 500, -1, +1);
       _hMuon1IpSignificance[NpdfCounter]          = fs->make<TH1F>(("Muon1IpSignificance_"+j.str()).c_str(),      ("Muon1IpSignificance_"+j.str()).c_str(), 100, 0., 100.);
       _hMuon1GenMuonDeltaPhi[NpdfCounter]         = fs->make<TH1F>(("Muon1GenMuonDeltaPhi_"+j.str()).c_str(),     ("Muon1GenMuonDeltaPhi_"+j.str()).c_str(), 800, -0.2, 0.2);
@@ -6678,6 +6795,10 @@ void HiMassTauAnalysis::bookHistograms() {
       _hMuon2TrackIso[NpdfCounter]                = fs->make<TH1F>(("Muon2TrackIso_"+j.str()).c_str(),            ("Muon2TrackIso_"+j.str()).c_str(), 100, 0, 50);
       _hMuon2EcalIso[NpdfCounter]                 = fs->make<TH1F>(("Muon2EcalIso_"+j.str()).c_str(),             ("Muon2EcalIso_"+j.str()).c_str(), 100, 0, 50);
       _hMuon2Iso[NpdfCounter]                     = fs->make<TH1F>(("Muon2Iso_"+j.str()).c_str(),                 ("Muon2Iso_"+j.str()).c_str(), 100, 0, 50);
+      _hMuon2PfIso[NpdfCounter]                   = fs->make<TH1F>(("Muon2PfIso_"+j.str()).c_str(),               ("Muon2PfIso_"+j.str()).c_str(), 100, 0, 50);
+      _hMuon2PfIsoOverPt[NpdfCounter]             = fs->make<TH1F>(("Muon2PfIsoOverPt_"+j.str()).c_str(),         ("Muon2PfIsoOverPt_"+j.str()).c_str(), 200, 0, 2);
+      _hMuon2PfTrackIso[NpdfCounter]              = fs->make<TH1F>(("Muon2PfTrackIso_"+j.str()).c_str(),          ("Muon2PfTrackIso_"+j.str()).c_str(), 100, 0, 50);
+      _hMuon2PfNeutralIso[NpdfCounter]            = fs->make<TH1F>(("Muon2PfNeutralIso_"+j.str()).c_str(),        ("Muon2PfNeutralIso_"+j.str()).c_str(), 100, 0, 50);
       _hMuon2Ip[NpdfCounter]                      = fs->make<TH1F>(("Muon2Ip_"+j.str()).c_str(),                  ("Muon2Ip_"+j.str()).c_str(), 500, -1, +1);
       _hMuon2IpSignificance[NpdfCounter]          = fs->make<TH1F>(("Muon2IpSignificance_"+j.str()).c_str(),      ("Muon2IpSignificance_"+j.str()).c_str(), 100, 0., 100.);
       _hMuon2GenMuonDeltaPhi[NpdfCounter]         = fs->make<TH1F>(("Muon2GenMuonDeltaPhi_"+j.str()).c_str(),     ("Muon2GenMuonDeltaPhi_"+j.str()).c_str(), 800, -0.2, 0.2);
