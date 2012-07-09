@@ -143,6 +143,8 @@ private:
   std::pair<bool, reco::Candidate::LorentzVector> CalculateThe4Momentum(const pat::Tau&, int, const pat::Tau&, int);
   std::pair<bool, reco::Candidate::LorentzVector> CalculateThe4Momentum(const pat::Muon&, int, const pat::Muon&, int);
   std::pair<bool, reco::Candidate::LorentzVector> CalculateThe4Momentum(const pat::Electron&, int, const pat::Electron&, int);
+  std::pair<bool, reco::Candidate::LorentzVector> CalculateThe4Momentum(const pat::Jet&, int, const pat::Jet&, int);
+  double CalculateDiJetMt(const pat::Jet&, int, const pat::Jet&, int);
   double CalculateLeptonMetMt(const pat::Muon&, int);
   double CalculateLeptonMetMt(const pat::Electron&, int);
   double CalculateLeptonMetMt(const pat::Tau&, int);
@@ -450,6 +452,7 @@ private:
   double _RecoSecondLeadingJetEtaMinCut;
   double _RecoSecondLeadingJetEtaMaxCut;
   bool _UseCorrectedJet;
+  bool _ApplyJetLooseID;
   bool _RemoveJetOverlapWithMuon1s;
   bool _RemoveJetOverlapWithElectron1s;
   bool _RemoveJetOverlapWithTau1s;
@@ -974,6 +977,8 @@ private:
   std::map<unsigned int, TH1*> _hTauJet1Energy;
   std::map<unsigned int, TH1*> _hTauJet1Pt;
   std::map<unsigned int, TH1*> _hTauJet1Eta;
+  std::map<unsigned int, TH1*> _hFirstLeadingTauJet1Pt;
+  std::map<unsigned int, TH1*> _hFirstLeadingTauJet1Eta;
   std::map<unsigned int, TH1*> _hTauJet1Phi;
   std::map<unsigned int, TH1*> _hTauJet1NumSignalTracks;
   std::map<unsigned int, TH1*> _hTauJet1NumSignalGammas;
@@ -1003,6 +1008,7 @@ private:
   std::map<unsigned int, TH1*> _hTauJet1SumPtIsoTracks;
   std::map<unsigned int, TH1*> _hTauJet1SumPtIsoGammas;
   std::map<unsigned int, TH1*> _hTauJet1SumPtIso;
+  std::map<unsigned int, TH1*> _hTauJet1IsoMVAraw;
   std::map<unsigned int, TH1*> _hTauJet1NumberDensity;
   std::map<unsigned int, TH1*> _hTauJet1GenTauDeltaPhi;
   std::map<unsigned int, TH1*> _hTauJet1GenTauDeltaEta;
@@ -1011,6 +1017,8 @@ private:
   std::map<unsigned int, TH1*> _hNTau2;
   std::map<unsigned int, TH1*> _hTauJet2Energy;
   std::map<unsigned int, TH1*> _hTauJet2Pt;
+  std::map<unsigned int, TH1*> _hFirstLeadingTauJet2Pt;
+  std::map<unsigned int, TH1*> _hFirstLeadingTauJet2Eta;
   std::map<unsigned int, TH1*> _hTauJet2Eta;
   std::map<unsigned int, TH1*> _hTauJet2Phi;
   std::map<unsigned int, TH1*> _hTauJet2NumSignalTracks;
@@ -1041,6 +1049,7 @@ private:
   std::map<unsigned int, TH1*> _hTauJet2SumPtIsoTracks;
   std::map<unsigned int, TH1*> _hTauJet2SumPtIsoGammas;
   std::map<unsigned int, TH1*> _hTauJet2SumPtIso;
+  std::map<unsigned int, TH1*> _hTauJet2IsoMVAraw;
   std::map<unsigned int, TH1*> _hTauJet2NumberDensity;
   std::map<unsigned int, TH1*> _hTauJet2GenTauDeltaPhi;
   std::map<unsigned int, TH1*> _hTauJet2GenTauDeltaEta;
@@ -1052,6 +1061,8 @@ private:
   std::map<unsigned int, TH1*> _hMuon1Energy;
   std::map<unsigned int, TH1*> _hMuon1Pt;
   std::map<unsigned int, TH1*> _hMuon1Eta;
+  std::map<unsigned int, TH1*> _hFirstLeadingMuon1Pt;
+  std::map<unsigned int, TH1*> _hFirstLeadingMuon1Eta;
   std::map<unsigned int, TH1*> _hMuon1Phi;
   std::map<unsigned int, TH1*> _hMuon1TrackIso;
   std::map<unsigned int, TH1*> _hMuon1EcalIso;
@@ -1073,6 +1084,8 @@ private:
   std::map<unsigned int, TH1*> _hMuon2Energy;
   std::map<unsigned int, TH1*> _hMuon2Pt;
   std::map<unsigned int, TH1*> _hMuon2Eta;
+  std::map<unsigned int, TH1*> _hFirstLeadingMuon2Pt;
+  std::map<unsigned int, TH1*> _hFirstLeadingMuon2Eta;
   std::map<unsigned int, TH1*> _hMuon2Phi;
   std::map<unsigned int, TH1*> _hMuon2TrackIso;
   std::map<unsigned int, TH1*> _hMuon2EcalIso;
@@ -1096,6 +1109,8 @@ private:
   std::map<unsigned int, TH1*> _hElectron1Energy;
   std::map<unsigned int, TH1*> _hElectron1Pt;
   std::map<unsigned int, TH1*> _hElectron1Eta;
+  std::map<unsigned int, TH1*> _hFirstLeadingElectron1Pt;
+  std::map<unsigned int, TH1*> _hFirstLeadingElectron1Eta;
   std::map<unsigned int, TH1*> _hElectron1Phi;
   std::map<unsigned int, TH1*> _hElectron1TrackIso;
   std::map<unsigned int, TH1*> _hElectron1EcalIso;
@@ -1121,6 +1136,8 @@ private:
   std::map<unsigned int, TH1*> _hElectron2Energy;
   std::map<unsigned int, TH1*> _hElectron2Pt;
   std::map<unsigned int, TH1*> _hElectron2Eta;
+  std::map<unsigned int, TH1*> _hFirstLeadingElectron2Pt;
+  std::map<unsigned int, TH1*> _hFirstLeadingElectron2Eta;
   std::map<unsigned int, TH1*> _hElectron2Phi;
   std::map<unsigned int, TH1*> _hElectron2TrackIso;
   std::map<unsigned int, TH1*> _hElectron2EcalIso;
@@ -1146,18 +1163,70 @@ private:
   //-----reconstruction level jet histograms  
   std::map<unsigned int, TH1*> _hNJet;
   std::map<unsigned int, TH1*> _hNBJet;
+  std::map<unsigned int, TH1*> _hNBJet_PassTCHP;
+  std::map<unsigned int, TH1*> _hNBJet_PassCSVL;
+  std::map<unsigned int, TH1*> _hNBJet_PassCSVM;
+  std::map<unsigned int, TH1*> _hNBJet_PassCSVT;
+  std::map<unsigned int, TH1*> _hBJetPt_PassTCHP;
+  std::map<unsigned int, TH1*> _hBJetEta_PassTCHP;
+  std::map<unsigned int, TH1*> _hBJetPt_PassCSVL;
+  std::map<unsigned int, TH1*> _hBJetEta_PassCSVL;
+  std::map<unsigned int, TH1*> _hBJetPt_PassCSVM;
+  std::map<unsigned int, TH1*> _hBJetEta_PassCSVM;
+  std::map<unsigned int, TH1*> _hBJetPt_PassCSVT;
+  std::map<unsigned int, TH1*> _hBJetEta_PassCSVT;
+  std::map<unsigned int, TH1*> _hBJetEnergy;
+  std::map<unsigned int, TH1*> _hBJetPt;
+  std::map<unsigned int, TH1*> _hBJetEta;
+  std::map<unsigned int, TH1*> _hBJetPhi;
   std::map<unsigned int, TH1*> _hJetEnergy;
   std::map<unsigned int, TH1*> _hJetPt;
   std::map<unsigned int, TH1*> _hJetEta;
   std::map<unsigned int, TH1*> _hJetPhi;
-  std::map<unsigned int, TH1*> _hBJetDiscrByTrackCounting;
-  std::map<unsigned int, TH1*> _hBJetDiscrBySimpleSecondaryV;
-  std::map<unsigned int, TH1*> _hBJetDiscrByCombinedSecondaryV;
+  std::map<unsigned int, TH1*> _hBJetDiscrByTrackCountingHighEff;
+  std::map<unsigned int, TH1*> _hBJetDiscrByTrackCountingHighPur;
+  std::map<unsigned int, TH1*> _hBJetDiscrBySimpleSecondaryVertexHighEff;
+  std::map<unsigned int, TH1*> _hBJetDiscrByCombinedSecondaryVertexHighEff;
+  std::map<unsigned int, TH1*> _hBJetDiscrByCombinedSecondaryVertexMVA;
+
   std::map<unsigned int, TH1*> _hFirstLeadingJetPt;
   std::map<unsigned int, TH1*> _hSecondLeadingJetPt;
   std::map<unsigned int, TH1*> _hMHT;
   std::map<unsigned int, TH1*> _hHT;
   std::map<unsigned int, TH1*> _hMeff;
+  std::map<unsigned int, TH1*> _hLeadDiJetMass;
+  std::map<unsigned int, TH1*> _hLeadDiJetMt;
+  std::map<unsigned int, TH1*> _hLeadDiJetPt1;
+  std::map<unsigned int, TH1*> _hLeadDiJetPt2;
+  std::map<unsigned int, TH1*> _hDiJetMass;
+  std::map<unsigned int, TH1*> _hDiJetMt;
+  std::map<unsigned int, TH1*> _hDiJetPt1;
+  std::map<unsigned int, TH1*> _hDiJetPt2;
+  std::map<unsigned int, TH1*> _hMuon1Tau1_Tau1DiJetDeltaPhi;
+  std::map<unsigned int, TH1*> _hMuon1Tau2_Tau2DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hMuon2Tau1_Tau1DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hMuon2Tau2_Tau2DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hMuon1Tau1_Muon1DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hMuon1Tau2_Muon1DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hMuon2Tau1_Muon2DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hMuon2Tau2_Muon2DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hElectron1Tau1_Tau1DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hElectron1Tau2_Tau2DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hElectron2Tau1_Tau1DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hElectron2Tau2_Tau2DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hElectron1Tau1_Electron1DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hElectron1Tau2_Electron1DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hElectron2Tau1_Electron2DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hElectron2Tau2_Electron2DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hMuon1Muon2_Muon1DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hMuon1Muon2_Muon2DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hElectron1Electron2_Electron1DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hElectron1Electron2_Electron2DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hTau1Tau2_Tau1DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hTau1Tau2_Tau2DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hMetDiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hLeadDiJetDeltaR; 
+  std::map<unsigned int, TH1*> _hLeadDiJetDeltaEta;          
 
   //-----reconstruction level topology histograms
   std::map<unsigned int, TH2*> _hMuon1PtVsTau1Pt;
@@ -1580,6 +1649,8 @@ private:
   bool _ApplyElectronTriggerScaleFactors;
   bool _ApplyTauTriggerScaleFactors;
 
+  reco::Candidate::LorentzVector TheLeadDiJetVect;
+
   std::vector<reco::Candidate::LorentzVector> smearedMuonMomentumVector;
   std::vector<math::PtEtaPhiMLorentzVector> smearedMuonPtEtaPhiMVector;
   std::vector<reco::Candidate::LorentzVector> smearedElectronMomentumVector;
@@ -1631,7 +1702,7 @@ private:
   const boost::regex scanFormat;
   const std::vector<std::string> scanPars;
 
-  typedef std::vector< edm::Handle< edm::ValueMap<double> > > IsoDepositVals;
-  std::vector<edm::InputTag> inputTagIsoValMuonsPFId_;   
+//  typedef std::vector< edm::Handle< edm::ValueMap<double> > > IsoDepositVals;
+//  std::vector<edm::InputTag> inputTagIsoValMuonsPFId_;   
 
 };
