@@ -4371,16 +4371,17 @@ void HiMassTauAnalysis::fillHistograms() {
         _RecoTauEcalIsoRetaForEllipse = _RecoTau1EcalIsoRetaForEllipse;
         _RecoTauSigGamThreshold = _RecoTau1SigGamThreshold;
         _hTauJet1NumSignalTracks[NpdfID]->Fill(patTau->signalPFChargedHadrCands().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	_hTauJet1NumSignalGammas[NpdfID]->Fill(CalculateNumberSignalTauGammas(*patTau),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+//	_hTauJet1NumSignalGammas[NpdfID]->Fill(CalculateNumberSignalTauGammas(*patTau),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hTauJet1Charge[NpdfID]->Fill(fabs(patTau->charge()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	_hTauJet1SignalTracksMass[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	_hTauJet1SignalTracksAndGammasMass[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	_hTauJet1SignalTracksChargeFraction[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).pt() / smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+//	_hTauJet1SignalTracksMass[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+//	_hTauJet1SignalTracksAndGammasMass[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+//	_hTauJet1SignalTracksChargeFraction[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).pt() / smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	if(patTau->signalPFChargedHadrCands().size() == 1) {
           _UseRecoTauEllipseForEcalIso = _UseRecoTau1EllipseForEcalIso;
           _RecoTauEcalIsoRphiForEllipse = _RecoTau1EcalIsoRphiForEllipse;
           _RecoTauEcalIsoRetaForEllipse = _RecoTau1EcalIsoRetaForEllipse;
           _RecoTauSigGamThreshold = _RecoTau1SigGamThreshold;
+/*
 	  _hTauJet1SignalTracksMass1prong[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  _hTauJet1SignalTracksAndGammasMass1prong[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  _hTauJet1SignalTracksAndPiZerosMass1prong[NpdfID]->Fill(CalculateTauSignalTracksAndPiZerosMass(*patTau).first.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
@@ -4388,25 +4389,30 @@ void HiMassTauAnalysis::fillHistograms() {
 	  if(CalculateNumberSignalTauGammas(*patTau) == 0) {_hTauJet1Mass1Prong0Gamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
 	  if(CalculateNumberSignalTauGammas(*patTau) == 1) {_hTauJet1Mass1Prong1Gamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
 	  if(CalculateNumberSignalTauGammas(*patTau) >= 2) {_hTauJet1Mass1Prong2orMoreGamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+*/
 	}
 	if(patTau->signalPFChargedHadrCands().size() == 3) {
           _UseRecoTauEllipseForEcalIso = _UseRecoTau1EllipseForEcalIso;
           _RecoTauEcalIsoRphiForEllipse = _RecoTau1EcalIsoRphiForEllipse;
           _RecoTauEcalIsoRetaForEllipse = _RecoTau1EcalIsoRetaForEllipse;
           _RecoTauSigGamThreshold = _RecoTau1SigGamThreshold;
+/*
 	  _hTauJet1SignalTracksMass3prong[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  _hTauJet1SignalTracksAndGammasMass3prong[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  if(CalculateNumberSignalTauGammas(*patTau) == 0) {_hTauJet1Mass3Prong0Gamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
 	  if(CalculateNumberSignalTauGammas(*patTau) == 1) {_hTauJet1Mass3Prong1Gamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
 	  if(CalculateNumberSignalTauGammas(*patTau) >= 2) {_hTauJet1Mass3Prong2orMoreGamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+*/
 	}
 	if( (patTau->leadPFChargedHadrCand().isNonnull()) ) {
-	  _hTauJet1SeedTrackPt[NpdfID]->Fill(patTau->leadPFChargedHadrCand()->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+//	  _hTauJet1SeedTrackPt[NpdfID]->Fill(patTau->leadPFChargedHadrCand()->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  _hTauJet1SeedTrackIpSignificance[NpdfID]->Fill(patTau->leadPFChargedHadrCandsignedSipt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+/*
 	  if( (patTau->leadPFChargedHadrCand()->trackRef().isNonnull()) ) {
 	    _hTauJet1SeedTrackNhits[NpdfID]->Fill(patTau->leadPFChargedHadrCand()->trackRef()->numberOfValidHits(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hTauJet1SeedTrackChi2[NpdfID]->Fill(patTau->leadPFChargedHadrCand()->trackRef()->chi2(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
           }
+*/
 	  _hTauJet1H3x3OverP[NpdfID]->Fill(patTau->hcal3x3OverPLead(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	}
         if (_UseRecoTau1DiscrByIsolationFlag) {
@@ -4423,6 +4429,7 @@ void HiMassTauAnalysis::fillHistograms() {
           _UseRecoTauEllipseForEcalIso = _UseRecoTau1EllipseForEcalIso;
           _RecoTauEcalIsoRphiForEllipse = _RecoTau1EcalIsoRphiForEllipse;
           _RecoTauEcalIsoRetaForEllipse = _RecoTau1EcalIsoRetaForEllipse;
+/*
 	  _hTauJet1NumIsoTracks[NpdfID]->Fill(CalculateTauTrackIsolation(*patTau).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  _hTauJet1NumIsoGammas[NpdfID]->Fill(CalculateTauEcalIsolation(*patTau).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  _hTauJet1NumIsoCands[NpdfID]->Fill(CalculateTauTrackIsolation(*patTau).first + CalculateTauEcalIsolation(*patTau).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
@@ -4442,6 +4449,7 @@ void HiMassTauAnalysis::fillHistograms() {
               }
             }
           }
+*/
         }
 	if((_GenParticleSource.label() != "") && (!isData)) {
 	  if(matchToGen(*patTau).first) {
@@ -4475,17 +4483,18 @@ void HiMassTauAnalysis::fillHistograms() {
         _RecoTauEcalIsoRphiForEllipse = _RecoTau2EcalIsoRphiForEllipse;
         _RecoTauEcalIsoRetaForEllipse = _RecoTau2EcalIsoRetaForEllipse;
         _RecoTauSigGamThreshold = _RecoTau2SigGamThreshold;
-        _hTauJet2NumSignalTracks[NpdfID]->Fill(patTau->signalPFChargedHadrCands().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	_hTauJet2NumSignalGammas[NpdfID]->Fill(CalculateNumberSignalTauGammas(*patTau),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+//        _hTauJet2NumSignalTracks[NpdfID]->Fill(patTau->signalPFChargedHadrCands().size(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+//	_hTauJet2NumSignalGammas[NpdfID]->Fill(CalculateNumberSignalTauGammas(*patTau),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hTauJet2Charge[NpdfID]->Fill(fabs(patTau->charge()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	_hTauJet2SignalTracksMass[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	_hTauJet2SignalTracksAndGammasMass[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
-	_hTauJet2SignalTracksChargeFraction[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).pt() / smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+//	_hTauJet2SignalTracksMass[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+//	_hTauJet2SignalTracksAndGammasMass[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+//	_hTauJet2SignalTracksChargeFraction[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).pt() / smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	if(patTau->signalPFChargedHadrCands().size() == 1) {
           _UseRecoTauEllipseForEcalIso = _UseRecoTau2EllipseForEcalIso;
           _RecoTauEcalIsoRphiForEllipse = _RecoTau2EcalIsoRphiForEllipse;
           _RecoTauEcalIsoRetaForEllipse = _RecoTau2EcalIsoRetaForEllipse;
           _RecoTauSigGamThreshold = _RecoTau2SigGamThreshold;
+/*
 	  _hTauJet2SignalTracksMass1prong[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  _hTauJet2SignalTracksAndGammasMass1prong[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  _hTauJet2SignalTracksAndPiZerosMass1prong[NpdfID]->Fill(CalculateTauSignalTracksAndPiZerosMass(*patTau).first.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
@@ -4493,25 +4502,30 @@ void HiMassTauAnalysis::fillHistograms() {
 	  if(CalculateNumberSignalTauGammas(*patTau) == 0) {_hTauJet2Mass1Prong0Gamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
 	  if(CalculateNumberSignalTauGammas(*patTau) == 1) {_hTauJet2Mass1Prong1Gamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
 	  if(CalculateNumberSignalTauGammas(*patTau) >= 2) {_hTauJet2Mass1Prong2orMoreGamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+*/
 	}
 	if(patTau->signalPFChargedHadrCands().size() == 3) {
           _UseRecoTauEllipseForEcalIso = _UseRecoTau2EllipseForEcalIso;
           _RecoTauEcalIsoRphiForEllipse = _RecoTau2EcalIsoRphiForEllipse;
           _RecoTauEcalIsoRetaForEllipse = _RecoTau2EcalIsoRetaForEllipse;
           _RecoTauSigGamThreshold = _RecoTau2SigGamThreshold;
+/*
 	  _hTauJet2SignalTracksMass3prong[NpdfID]->Fill(CalculateTauSignalTracksMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  _hTauJet2SignalTracksAndGammasMass3prong[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  if(CalculateNumberSignalTauGammas(*patTau) == 0) {_hTauJet2Mass3Prong0Gamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
 	  if(CalculateNumberSignalTauGammas(*patTau) == 1) {_hTauJet2Mass3Prong1Gamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
 	  if(CalculateNumberSignalTauGammas(*patTau) >= 2) {_hTauJet2Mass3Prong2orMoreGamma[NpdfID]->Fill(CalculateTauSignalTracksAndGammasMass(*patTau).M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
+*/
 	}
 	if( (patTau->leadPFChargedHadrCand().isNonnull()) ) {
-	  _hTauJet2SeedTrackPt[NpdfID]->Fill(patTau->leadPFChargedHadrCand()->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+//	  _hTauJet2SeedTrackPt[NpdfID]->Fill(patTau->leadPFChargedHadrCand()->pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  _hTauJet2SeedTrackIpSignificance[NpdfID]->Fill(patTau->leadPFChargedHadrCandsignedSipt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+/*
 	  if( (patTau->leadPFChargedHadrCand()->trackRef().isNonnull()) ) {
 	    _hTauJet2SeedTrackNhits[NpdfID]->Fill(patTau->leadPFChargedHadrCand()->trackRef()->numberOfValidHits(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hTauJet2SeedTrackChi2[NpdfID]->Fill(patTau->leadPFChargedHadrCand()->trackRef()->chi2(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
           }
+*/
 	  _hTauJet2H3x3OverP[NpdfID]->Fill(patTau->hcal3x3OverPLead(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	}
         if (_UseRecoTau2DiscrByIsolationFlag) {
@@ -4528,6 +4542,7 @@ void HiMassTauAnalysis::fillHistograms() {
           _UseRecoTauEllipseForEcalIso = _UseRecoTau2EllipseForEcalIso;
           _RecoTauEcalIsoRphiForEllipse = _RecoTau2EcalIsoRphiForEllipse;
           _RecoTauEcalIsoRetaForEllipse = _RecoTau2EcalIsoRetaForEllipse;
+/*
 	  _hTauJet2NumIsoTracks[NpdfID]->Fill(CalculateTauTrackIsolation(*patTau).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  _hTauJet2NumIsoGammas[NpdfID]->Fill(CalculateTauEcalIsolation(*patTau).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  _hTauJet2NumIsoCands[NpdfID]->Fill(CalculateTauTrackIsolation(*patTau).first + CalculateTauEcalIsolation(*patTau).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
@@ -4547,6 +4562,7 @@ void HiMassTauAnalysis::fillHistograms() {
               }
             }
           }
+*/
         }
 	if((_GenParticleSource.label() != "") && (!isData)) {
 	  if(matchToGen(*patTau).first) {
