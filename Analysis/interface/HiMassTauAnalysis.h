@@ -57,6 +57,7 @@
 #include "FWCore/Utilities/interface/Exception.h"
 #include "FWCore/Framework/interface/ESHandle.h"
 #include "boost/regex.hpp"
+#include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 
 #include <TH1.h>
 #include <TH2.h>
@@ -913,6 +914,15 @@ private:
   bool _DoSUSYDiscrByDphi2;
   double _Dphi2MinCut;
   double _Dphi2MaxCut;
+  bool _DoSUSYDiscrByLeadDiJetMass;
+  double _LeadDiJetMinMassCut;
+  double _LeadDiJetMaxMassCut;
+  bool _DoSUSYDiscrByLeadDiJetPt;
+  double _LeadDiJetMinPtCut;
+  double _LeadDiJetMaxPtCut;
+  bool _DoSUSYDiscrByLeadDiJetDeltaEta;
+  double _LeadDiJetMinDeltaEtaCut;
+  double _LeadDiJetMaxDeltaEtaCut;
 
   //-----do matching to gen?
   bool _MatchTauToGen;
@@ -1202,6 +1212,10 @@ private:
   std::map<unsigned int, TH1*> _hDiJetMt;
   std::map<unsigned int, TH1*> _hDiJetPt1;
   std::map<unsigned int, TH1*> _hDiJetPt2;
+  std::map<unsigned int, TH1*> _hMuon1Tau1_Muon1IsZmm;
+  std::map<unsigned int, TH1*> _hMuon1Tau2_Muon1IsZmm;
+  std::map<unsigned int, TH1*> _hMuon2Tau1_Muon2IsZmm;
+  std::map<unsigned int, TH1*> _hMuon2Tau2_Muon2IsZmm;
   std::map<unsigned int, TH1*> _hMuon1Tau1_Tau1DiJetDeltaPhi;
   std::map<unsigned int, TH1*> _hMuon1Tau2_Tau2DiJetDeltaPhi; 
   std::map<unsigned int, TH1*> _hMuon2Tau1_Tau1DiJetDeltaPhi; 
@@ -1504,6 +1518,7 @@ private:
   Handle< reco::VertexCollection > _primaryEventVertexCollection;
   edm::Handle< edm::TriggerResults > _triggerResults;
   edm::Handle< trigger::TriggerEvent > handleTriggerEvent;
+  edm::Handle<std::vector< PileupSummaryInfo > > PupInfo;
   Handle< reco::PFCandidateCollection > _pflow;
 
   Handle< reco::PFTauCollection > _hpsTau;
@@ -1682,6 +1697,7 @@ private:
   
   //-----For Ntuple
   vector<double> pdfWeightVector;
+/*
   vector<float> *_jetPt;
   vector<float> *_jetEt;
   vector<float> *_jetEta;
@@ -1697,6 +1713,18 @@ private:
   vector<float> *_muTauMetMass;
   vector<float> *_muMetMass;
   vector<float> *_OSLS;
+*/
+
+  float *_var1;
+  float *_var2;
+  float *_var3;
+  float *_var4;
+  float *_var5;
+  float *_var6;
+  float *_var7;
+  float *_var8;
+  float *_var9;
+  float *_var10;
 
   const std::string Prefix,Suffix;
   const boost::regex scanFormat;
