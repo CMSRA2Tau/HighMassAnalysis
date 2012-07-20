@@ -19,7 +19,6 @@ process.maxEvents = cms.untracked.PSet(
 process.source = cms.Source("PoolSource",
     skipEvents = cms.untracked.uint32(0),
     fileNames = cms.untracked.vstring(
-'file:/uscms_data/d2/lpcjm/willhf/forFreddy/StauSnu_StauMass100_SnuMass250_LSPMass25_skimPat.root'
 )
 )
 
@@ -263,8 +262,8 @@ process.analyzeHiMassTau.DoRecoElectron2DiscrByMissingHits = cms.bool(False)
 
     #-----Reco Jet Inputs
 process.analyzeHiMassTau.RecoJetSource                       = cms.InputTag('patJets')              
-process.analyzeHiMassTau.RecoJetEtaMinCut                    = cms.double(0.0)                        
-process.analyzeHiMassTau.RecoJetEtaMaxCut                    = cms.double(2.5)                      
+process.analyzeHiMassTau.RecoJetEtaMinCut                    = cms.double(2.1)                        
+process.analyzeHiMassTau.RecoJetEtaMaxCut                    = cms.double(5.0)                      
 process.analyzeHiMassTau.RecoJetPtCut                        = cms.double(15.0)                       
 process.analyzeHiMassTau.UseCorrectedJet                     = cms.bool(True)                         
 process.analyzeHiMassTau.ApplyJetLooseID                     = cms.bool(True)
@@ -282,12 +281,12 @@ process.analyzeHiMassTau.RemoveJetOverlapWithTau2s            = cms.bool(False)
 process.analyzeHiMassTau.JetTau2MatchingDeltaR                = cms.double(0.25)
 process.analyzeHiMassTau.DoDiscrByFirstLeadingJet		= cms.bool(True)
 process.analyzeHiMassTau.RecoFirstLeadingJetPt		= cms.double(15.0)
-process.analyzeHiMassTau.RecoFirstLeadingJetEtaMinCut	= cms.double(0.0)
-process.analyzeHiMassTau.RecoFirstLeadingJetEtaMaxCut	= cms.double(2.5)
+process.analyzeHiMassTau.RecoFirstLeadingJetEtaMinCut	= cms.double(2.1)
+process.analyzeHiMassTau.RecoFirstLeadingJetEtaMaxCut	= cms.double(5.0)
 process.analyzeHiMassTau.DoDiscrBySecondLeadingJet		= cms.bool(True)
 process.analyzeHiMassTau.RecoSecondLeadingJetPt		= cms.double(15.0)
-process.analyzeHiMassTau.RecoSecondLeadingJetEtaMinCut	= cms.double(0.0)
-process.analyzeHiMassTau.RecoSecondLeadingJetEtaMaxCut	= cms.double(2.5)
+process.analyzeHiMassTau.RecoSecondLeadingJetEtaMinCut	= cms.double(2.1)
+process.analyzeHiMassTau.RecoSecondLeadingJetEtaMaxCut	= cms.double(5.0)
 process.analyzeHiMassTau.RemoveFirstLeadingJetOverlapWithMuon1s           = cms.bool(False)
 process.analyzeHiMassTau.FirstLeadingJetMuon1MatchingDeltaR               = cms.double(0.3)
 process.analyzeHiMassTau.RemoveFirstLeadingJetOverlapWithElectron1s       = cms.bool(False)
@@ -329,7 +328,7 @@ process.analyzeHiMassTau.RemoveBJetOverlapWithElectron2s       = cms.bool(False)
 process.analyzeHiMassTau.BJetElectron2MatchingDeltaR           = cms.double(0.3)
 process.analyzeHiMassTau.RemoveBJetOverlapWithTau2s            = cms.bool(False)
 process.analyzeHiMassTau.BJetTau2MatchingDeltaR                = cms.double(0.3)                            
-process.analyzeHiMassTau.ApplyJetBTagging                    = cms.bool(True)                              
+process.analyzeHiMassTau.ApplyJetBTagging                    = cms.bool(False)                              
 process.analyzeHiMassTau.bTagger = cms.untracked.string('combinedSecondaryVertexBJetTags')
 process.analyzeHiMassTau.JetBTaggingCut                  = cms.double(0.679)
 
@@ -363,6 +362,15 @@ process.analyzeHiMassTau.Dphi1MaxCut = cms.double(999.9)
 process.analyzeHiMassTau.DoSUSYDiscrByDphi2 = cms.bool(False)
 process.analyzeHiMassTau.Dphi2MinCut = cms.double(0.5)                                                     
 process.analyzeHiMassTau.Dphi2MaxCut = cms.double(9999.5)                                               
+process.analyzeHiMassTau.DoSUSYDiscrByLeadDiJetMass = cms.bool(False)
+process.analyzeHiMassTau.LeadDiJetMinMassCut = cms.double(650.0)
+process.analyzeHiMassTau.LeadDiJetMaxMassCut = cms.double(9999.0)
+process.analyzeHiMassTau.DoSUSYDiscrByLeadDiJetPt = cms.bool(False)
+process.analyzeHiMassTau.LeadDiJetMinPtCut = cms.double(0.5)
+process.analyzeHiMassTau.LeadDiJetMaxPtCut = cms.double(0.5)
+process.analyzeHiMassTau.DoSUSYDiscrByLeadDiJetDeltaEta = cms.bool(False)
+process.analyzeHiMassTau.LeadDiJetMinDeltaEtaCut = cms.double(4.2)
+process.analyzeHiMassTau.LeadDiJetMaxDeltaEtaCut = cms.double(9999.0)
 
     #-----Topology Inputs
 process.analyzeHiMassTau.RecoMetSource = cms.InputTag('patPFType1Type2Type0METs')		
@@ -734,14 +742,14 @@ process.analyzeHiMassTau.DoElectron1DiscrByIsZllCut = cms.bool(False)
 process.analyzeHiMassTau.DoElectron2DiscrByIsZllCut = cms.bool(False)
 
     #-----do matching to gen?
-process.analyzeHiMassTau.MatchLeptonToGen = cms.bool(True)                                                 # if true, match reco lepton to a gen lepton
+process.analyzeHiMassTau.MatchLeptonToGen = cms.bool(False)                                                 # if true, match reco lepton to a gen lepton
 process.analyzeHiMassTau.UseLeptonMotherId = cms.bool(False)                                                # if true, require the matched lepton to come from a certain
                                                                                         # 'mother' particle
 process.analyzeHiMassTau.UseLeptonGrandMotherId = cms.bool(False)                                           # if true, require the matched lepton to come from a certain
                                                                                         # 'grandmother' particle
 process.analyzeHiMassTau.LeptonMotherId = cms.int32(24)                                                     # pdgId of the 'mother' particle
 process.analyzeHiMassTau.LeptonGrandMotherId = cms.int32(32)                                                # pdgId of the 'grandmother' particle
-process.analyzeHiMassTau.MatchTauToGen = cms.bool(True)                                                    # if true, match reco tau to a gen had tau
+process.analyzeHiMassTau.MatchTauToGen = cms.bool(False)                                                    # if true, match reco tau to a gen had tau
 process.analyzeHiMassTau.UseTauMotherId = cms.bool(False)                                                   # if true, require the matched tau to come from a certain
                                                                                         # 'mother' particle ('mother' here is NOT 15!!!!! Matching
                                                                                         # for the had tau leg already requires the vis had tau to come
