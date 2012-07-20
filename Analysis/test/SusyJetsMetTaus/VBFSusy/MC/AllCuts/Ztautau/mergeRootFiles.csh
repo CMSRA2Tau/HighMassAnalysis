@@ -1,0 +1,17 @@
+hadd NoCuts.root Dir1/MultiCondor/Output/*root
+hadd MatchMuonFromTau.root Dir2/MultiCondor/Output/*root
+hadd MatchTauHadFromTau.root Dir3/MultiCondor/Output/*root
+hadd MuonEta.root Dir4/MultiCondor/Output/*root
+hadd MuonPt.root Dir5/MultiCondor/Output/*root
+hadd TauEta.root Dir6/MultiCondor/Output/*root
+hadd TauPt.root Dir7/MultiCondor/Output/*root
+hadd MuonTauDeltaR.root Dir8/MultiCondor/Output/*root
+hadd MuonID.root Dir9/MultiCondor/Output/*root
+hadd MuonIso.root Dir10/MultiCondor/Output/*root
+hadd TauID.root Dir11/MultiCondor/Output/*root
+hadd TauIso.root Dir12/MultiCondor/Output/*root
+hadd NoBJets.root Dir13/MultiCondor/Output/*root
+hadd TwoForwardJetsPt.root Dir14/MultiCondor/Output/*root
+hadd LeadingTwoJetsPt30.root Dir15/MultiCondor/Output/*root
+hadd LeadDiJetDeltaEta.root Dir16/MultiCondor/Output/*root
+hadd LeadDiJetMass.root Dir17/MultiCondor/Output/*root
