@@ -264,7 +264,7 @@ process.analyzeHiMassTau.DoRecoElectron2DiscrByMissingHits = cms.bool(False)
 process.analyzeHiMassTau.RecoJetSource                       = cms.InputTag('patJets')              
 process.analyzeHiMassTau.RecoJetEtaMinCut                    = cms.double(2.1)                        
 process.analyzeHiMassTau.RecoJetEtaMaxCut                    = cms.double(5.0)                      
-process.analyzeHiMassTau.RecoJetPtCut                        = cms.double(30.0)                       
+process.analyzeHiMassTau.RecoJetPtCut                        = cms.double(15.0)                       
 process.analyzeHiMassTau.UseCorrectedJet                     = cms.bool(True)                         
 process.analyzeHiMassTau.ApplyJetLooseID                     = cms.bool(True)
 process.analyzeHiMassTau.RemoveJetOverlapWithMuon1s           = cms.bool(True)                        
@@ -790,7 +790,7 @@ process.analyzeHiMassTau.RecoTau1Nmin = cms.int32(0)
 process.analyzeHiMassTau.RecoTau1Nmax = cms.int32(1000)							
 process.analyzeHiMassTau.RecoTau2Nmin = cms.int32(0)							
 process.analyzeHiMassTau.RecoTau2Nmax = cms.int32(1000)							
-process.analyzeHiMassTau.RecoJetNmin = cms.int32(0)								# require event to have >=X "jets" passing specified cuts
+process.analyzeHiMassTau.RecoJetNmin = cms.int32(2)								# require event to have >=X "jets" passing specified cuts
 process.analyzeHiMassTau.RecoJetNmax = cms.int32(1000)						        # require event to have <=X "jets" passing specified cuts
 process.analyzeHiMassTau.RecoFirstLeadingJetNmin = cms.int32(1)
 process.analyzeHiMassTau.RecoSecondLeadingJetNmin = cms.int32(1)
