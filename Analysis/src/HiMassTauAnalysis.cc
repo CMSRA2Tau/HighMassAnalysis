@@ -761,7 +761,7 @@ HiMassTauAnalysis::HiMassTauAnalysis(const ParameterSet& iConfig) :
   //-----ntuple Inputs
 //  _DoProduceNtuple = iConfig.getParameter<bool>("DoProduceNtuple");
 //  _NtupleTreeName = (iConfig.getUntrackedParameter<std::string>("NtupleTreeName"));
-  _DoProduceNtuple = false;
+  _DoProduceNtuple = true;
 
   //-----Event Sequence inputs
   _GenTauNmin = iConfig.getParameter<int>("GenTauNmin");
@@ -992,7 +992,7 @@ void  HiMassTauAnalysis::beginJob() {
 // Set branches for the ntuple
 void  HiMassTauAnalysis::setupBranches() {
 
-  _HMTTree = new TTree(_NtupleTreeName.c_str(), "HiMassDiTau Tree");
+  _HMTTree = new TTree("SusyTree", "SusyTree");
   _HMTTree->Branch("var1", &_var1);
   _HMTTree->Branch("var2", &_var2);
   _HMTTree->Branch("var3", &_var3);
@@ -1003,80 +1003,40 @@ void  HiMassTauAnalysis::setupBranches() {
   _HMTTree->Branch("var8", &_var8);
   _HMTTree->Branch("var9", &_var9);
   _HMTTree->Branch("var10", &_var10);
+  _HMTTree->Branch("var11", &_var11);
+  _HMTTree->Branch("var12", &_var12);
+  _HMTTree->Branch("var13", &_var13);
+  _HMTTree->Branch("var14", &_var14);
+  _HMTTree->Branch("var15", &_var15);
+  _HMTTree->Branch("var16", &_var16);
+  _HMTTree->Branch("var17", &_var17);
+  _HMTTree->Branch("var18", &_var18);
+  _HMTTree->Branch("var19", &_var19);
+  _HMTTree->Branch("var20", &_var20);
+  _HMTTree->Branch("var21", &_var21);
+  _HMTTree->Branch("var22", &_var22);
+  _HMTTree->Branch("var23", &_var23);
+  _HMTTree->Branch("var24", &_var24);
+  _HMTTree->Branch("var25", &_var25);
+  _HMTTree->Branch("var26", &_var26);
+  _HMTTree->Branch("var27", &_var27);
+  _HMTTree->Branch("var28", &_var28);
+  _HMTTree->Branch("var29", &_var29);
+  _HMTTree->Branch("var30", &_var30);
+  _HMTTree->Branch("var31", &_var31);
+  _HMTTree->Branch("var32", &_var32);
+  _HMTTree->Branch("var33", &_var33);
+  _HMTTree->Branch("var34", &_var34);
 
-/*
-  _HMTTree = new TTree(_NtupleTreeName.c_str(), "HiMassDiTau Tree");
-  _HMTTree->Branch("tauTrkIsoPat",&_tauTrkIsoPat);
-  _HMTTree->Branch("muTrkIsoPat", &_muTrkIsoPat);
-  _HMTTree->Branch("mEt", &_mEt);
-  _HMTTree->Branch("zeta", &_zeta);
-  _HMTTree->Branch("muTauMetMass",&_muTauMetMass);
-  _HMTTree->Branch("muMetMass",&_muMetMass);
-  _HMTTree->Branch("OSLS",  &_OSLS);
-  _HMTTree->Branch("jetPt",  &_jetPt);
-  _HMTTree->Branch("jetEt",  &_jetEt);
-  _HMTTree->Branch("jetEta", &_jetEta); 
-  _HMTTree->Branch("jetPhi", &_jetPhi);
-  _HMTTree->Branch("jetEmFraction", &_jetEmFraction);
-  _HMTTree->Branch("bJetDiscrByTrackCounting",&_bJetDiscrByTrackCounting);
-  _HMTTree->Branch("bJetDiscrBySimpleSecondaryV",&_bJetDiscrBySimpleSecondaryV);
-  _HMTTree->Branch("bJetDiscrByCombinedSecondaryV",&_bJetDiscrByCombinedSecondaryV);
-*/
 }
 
 // Initialize the vectors for the ntuple
 void HiMassTauAnalysis::initializeVectors(){
 
-  _var1  = NULL;
-  _var2  = NULL;
-  _var3  = NULL;
-  _var4  = NULL;
-  _var5  = NULL;
-  _var6  = NULL;
-  _var7  = NULL;
-  _var8  = NULL;
-  _var9  = NULL;
-  _var10  = NULL;
-
-/*
-  _jetPt  = NULL;
-  _jetEt  = NULL;
-  _jetPhi = NULL;
-  _jetEta = NULL;
-  _jetEmFraction = NULL;
-  _bJetDiscrByTrackCounting = NULL;	  
-  _bJetDiscrBySimpleSecondaryV = NULL;   
-  _bJetDiscrByCombinedSecondaryV = NULL; 
-  _tauTrkIsoPat  = NULL;
-  _muTrkIsoPat  = NULL;
-  _mEt  = NULL;
-  _zeta  = NULL;
-  _muTauMetMass  = NULL;
-  _muMetMass  = NULL;
-  _OSLS  = NULL;
-*/
 }
 
 // clear the vectors vefore each event
-void HiMassTauAnalysis::clearVectors(){
-/*
-  _jetPt->clear();
-  _jetEt->clear();
-  _jetPhi->clear();
-  _jetEta->clear();
-  _jetEmFraction->clear();
-  _bJetDiscrByTrackCounting->clear();
-  _bJetDiscrBySimpleSecondaryV->clear();
-  _bJetDiscrByCombinedSecondaryV->clear();
-  _tauTrkIsoPat->clear();
-  _muTrkIsoPat->clear();
-  _mEt->clear();
-  _zeta->clear();
-  _muTauMetMass->clear();
-  _muMetMass->clear();
-  _OSLS->clear();
-*/
-}
+void HiMassTauAnalysis::clearVectors(){ }
 
 // ------------ method called to for each event  ------------
 void HiMassTauAnalysis::analyze(const Event& iEvent, const EventSetup& iSetup) {
@@ -4283,72 +4243,7 @@ bool HiMassTauAnalysis::passSusyTopologyCuts(int nobj1, int nobj2) {
 }
 
 // ---------------Fill Ntuple
-void HiMassTauAnalysis::fillNtuple() {
-
-  _var1 = 0;
-  _var2 = 0;
-  _var3 = 0;
-  _var4 = 0;
-  _var5 = 0;
-  _var6 = 0;
-  _var7 = 0;
-  _var8 = 0;
-  _var9 = 0;
-  _var10 = 0;
-
-/*
-  // fill jet information used for jet based cuts (e.g. jet veto)
-  int theNumberOfJets = 0;
-  for ( pat::JetCollection::const_iterator patJet = _patJets->begin(); patJet != _patJets->end(); ++patJet ) {
-    _bJetDiscrByTrackCounting->push_back(patJet->bDiscriminator("trackCountingHighEffBJetTags"));	     
-    _bJetDiscrBySimpleSecondaryV->push_back(patJet->bDiscriminator("simpleSecondaryVertexBJetTags"));	   
-    _bJetDiscrByCombinedSecondaryV->push_back(patJet->bDiscriminator("combinedSecondaryVertexBJetTags")); 
-    _jetPt->push_back(smearedJetPtEtaPhiMVector.at(theNumberOfJets).pt());
-    _jetEt->push_back(smearedJetMomentumVector.at(theNumberOfJets).energy() * sin(smearedJetMomentumVector.at(theNumberOfJets).theta()));
-    _jetEta->push_back(smearedJetPtEtaPhiMVector.at(theNumberOfJets).eta()); 
-    _jetPhi->push_back(smearedJetPtEtaPhiMVector.at(theNumberOfJets).phi());
-    _jetEmFraction->push_back(patJet->correctedJet("raw", "").emEnergyFraction());
-    theNumberOfJets++;
-  }
-
-  int theNumberOfMuons = 0;
-  for ( pat::MuonCollection::const_iterator patMuon = _patMuons->begin();patMuon != _patMuons->end(); ++patMuon ) {
-    theNumberOfMuons++;
-    int theNumberOfTaus = 0;
-    for ( pat::TauCollection::const_iterator patTau = _patTaus->begin();patTau != _patTaus->end(); ++patTau ) {
-      theNumberOfTaus++;
-      if ((passRecoTauCuts((*patTau),theNumberOfTaus-1)) &&
-	  (passRecoMuonCuts((*patMuon),theNumberOfMuons-1)) &&
-	  (passTopologyCuts((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1))) {
-        _mEt->push_back(theMETVector.pt());
-        _muTauMetMass->push_back( CalculateThe4Momentum((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1).second.M() );      
-        _muMetMass->push_back(CalculateLeptonMetMt((*patMuon),theNumberOfMuons-1));
-        _zeta->push_back( (_PZetaCutCoefficient * CalculatePZeta((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1)) +
-                          (_PZetaVisCutCoefficient * CalculatePZetaVis((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1)) );  
-        _muTrkIsoPat->push_back(patMuon->trackIsoDeposit()->depositAndCountWithin(_RecoMuonIsoDeltaRCone,reco::IsoDeposit::Vetos(),_RecoMuonTrackIsoTrkThreshold).first);
-        if (patTau->isCaloTau()) {
-          if (_UseRecoTauDiscrByIsolationFlag) {_tauTrkIsoPat->push_back(patTau->isolationTracksPtSum());}
-          else {_tauTrkIsoPat->push_back(CalculateTauTrackIsolation(*patTau).second);}
-        } else {
-          if (_UseRecoTauDiscrByIsolationFlag) {_tauTrkIsoPat->push_back(patTau->isolationPFChargedHadrCandsPtSum());}
-          else {_tauTrkIsoPat->push_back(CalculateTauTrackIsolation(*patTau).second);}
-        }
-	if(_UseTauSeedTrackForDiTauDiscrByOSLS) {
-	  if (patTau->isCaloTau()) {
-	    if( (patTau->leadTrack().isNonnull()) ) {_OSLS->push_back(patMuon->charge() * patTau->leadTrack()->charge());}
-	  } else {
-            if( (patTau->leadPFChargedHadrCand().isNonnull()) ) {_OSLS->push_back(patMuon->charge() * patTau->leadPFChargedHadrCand()->charge());}
-	  }
-	} else {_OSLS->push_back(patMuon->charge() * patTau->charge());}
-      }
-    }
-  }
-
-*/
-
-  _HMTTree->Fill();
-
-}
+void HiMassTauAnalysis::fillNtuple() { }
 
 // ---------------Fill Histograms
 void HiMassTauAnalysis::fillHistograms() {
@@ -4373,16 +4268,18 @@ void HiMassTauAnalysis::fillHistograms() {
 //      _hNVertices[NpdfID]->Fill(nVertices,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
     }
 
-    std::vector<PileupSummaryInfo>::const_iterator PVI;
-    float ntruePUInt = -1;
-    for (PVI = PupInfo->begin(); PVI != PupInfo->end(); ++PVI) {
-      int BX = PVI->getBunchCrossing();
-      if(BX == 0) {
-        ntruePUInt = (PVI->getTrueNumInteractions());
-        continue;
+    if(!isData) {
+      std::vector<PileupSummaryInfo>::const_iterator PVI;
+      float ntruePUInt = -1;
+      for (PVI = PupInfo->begin(); PVI != PupInfo->end(); ++PVI) {
+        int BX = PVI->getBunchCrossing();
+        if(BX == 0) {
+          ntruePUInt = (PVI->getTrueNumInteractions());
+          continue;
+        }
       }
+      _hNVertices[NpdfID]->Fill(ntruePUInt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
     }
-    _hNVertices[NpdfID]->Fill(ntruePUInt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 
     // ------Generated Taus
     if ( (_FillGenTauHists) && (_GenParticleSource.label() != "") ) {
@@ -4576,6 +4473,7 @@ void HiMassTauAnalysis::fillHistograms() {
         nTaus++;
       }
       _hNTau1[NpdfID]->Fill(nTaus,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+      _var1 = leadingtaupt;
       if(nTaus > 0) {
         _hFirstLeadingTauJet1Pt[NpdfID]->Fill(leadingtaupt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
         _hFirstLeadingTauJet1Eta[NpdfID]->Fill(leadingtaueta,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
@@ -4735,6 +4633,7 @@ void HiMassTauAnalysis::fillHistograms() {
 	nMuons++;
       }
       _hNMuon1[NpdfID]->Fill(nMuons,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+      _var2 = leadingmuonpt;
       if(nMuons > 0) {
         _hFirstLeadingMuon1Pt[NpdfID]->Fill(leadingmuonpt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
         _hFirstLeadingMuon1Eta[NpdfID]->Fill(leadingmuoneta,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
@@ -4985,10 +4884,72 @@ void HiMassTauAnalysis::fillHistograms() {
       _hNBJet_PassCSVT[NpdfID]->Fill(NbJets_CSVT,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 
       int nJets = 0;
+      int nCJets = 0;
       theNumberOfJets = 0;
       for ( pat::JetCollection::const_iterator patJet = _patJets->begin(); 
 	    patJet != _patJets->end(); ++patJet ) {
 	theNumberOfJets++;
+        if (_ApplyJetLooseID) {
+          if( (((patJet->neutralHadronEnergy() + patJet->HFHadronEnergy()) / patJet->energy()) < 0.99) && 
+              (patJet->neutralEmEnergyFraction() < 0.99) && 
+              (patJet->numberOfDaughters() > 1) && 
+              (fabs(smearedJetPtEtaPhiMVector.at(theNumberOfJets-1).eta()) < 2.1) && 
+              (smearedJetPtEtaPhiMVector.at(theNumberOfJets-1).pt() >= 30.0) && 
+              (patJet->chargedHadronEnergyFraction() > 0.0) && 
+              (patJet->chargedMultiplicity() > 0.0) && 
+              (patJet->chargedEmEnergyFraction() < 0.99) ) {
+            bool goodCentralJet = true;
+            if (_RemoveJetOverlapWithMuon1s) {
+              int theNumberOfMuons = 0;
+              for ( pat::MuonCollection::const_iterator patMuon = _patMuons->begin(); patMuon != _patMuons->end(); ++patMuon ) {
+                theNumberOfMuons++;
+                if( (passRecoMuon1Cuts((*patMuon),theNumberOfMuons-1)) ) {
+                  if(reco::deltaR(smearedJetMomentumVector.at(theNumberOfJets-1), smearedMuonMomentumVector.at(theNumberOfMuons-1)) < _JetMuon1MatchingDeltaR) {goodCentralJet = false;}
+                }
+              }
+            }
+            if (_RemoveJetOverlapWithTau1s) {
+              int theNumberOfTaus = 0;
+              for ( pat::TauCollection::const_iterator patTau = _patTaus->begin(); patTau != _patTaus->end(); ++patTau ) {
+                theNumberOfTaus++;
+                if( (passRecoTau1Cuts((*patTau),theNumberOfTaus-1)) ) {
+                  if(reco::deltaR(smearedJetMomentumVector.at(theNumberOfJets-1), smearedTauMomentumVector.at(theNumberOfTaus-1)) < _JetTau1MatchingDeltaR) {goodCentralJet = false;}
+                }
+              }
+            }
+            if(goodCentralJet) {
+              _hCentralJetPt[NpdfID]->Fill(smearedJetPtEtaPhiMVector.at(theNumberOfJets-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      nCJets++;
+            }
+          }
+        } else {
+          if( (fabs(smearedJetPtEtaPhiMVector.at(theNumberOfJets-1).eta()) < 2.1) && 
+              (smearedJetPtEtaPhiMVector.at(theNumberOfJets-1).pt() >= 30.0) ) {
+            bool goodCentralJet = true;
+            if (_RemoveJetOverlapWithMuon1s) {
+              int theNumberOfMuons = 0;
+              for ( pat::MuonCollection::const_iterator patMuon = _patMuons->begin(); patMuon != _patMuons->end(); ++patMuon ) {
+                theNumberOfMuons++;
+                if( (passRecoMuon1Cuts((*patMuon),theNumberOfMuons-1)) ) {
+                  if(reco::deltaR(smearedJetMomentumVector.at(theNumberOfJets-1), smearedMuonMomentumVector.at(theNumberOfMuons-1)) < _JetMuon1MatchingDeltaR) {goodCentralJet = false;}
+                }
+              }
+            }
+            if (_RemoveJetOverlapWithTau1s) {
+              int theNumberOfTaus = 0;
+              for ( pat::TauCollection::const_iterator patTau = _patTaus->begin(); patTau != _patTaus->end(); ++patTau ) {
+                theNumberOfTaus++;
+                if( (passRecoTau1Cuts((*patTau),theNumberOfTaus-1)) ) {
+                  if(reco::deltaR(smearedJetMomentumVector.at(theNumberOfJets-1), smearedTauMomentumVector.at(theNumberOfTaus-1)) < _JetTau1MatchingDeltaR) {goodCentralJet = false;}
+                }
+              }
+            }
+            if(goodCentralJet) {
+              _hCentralJetPt[NpdfID]->Fill(smearedJetPtEtaPhiMVector.at(theNumberOfJets-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	      nCJets++;
+            }
+          }
+        }
 	if (!passRecoJetCuts((*patJet),theNumberOfJets-1)) continue;
         _hJetEnergy[NpdfID]->Fill(smearedJetMomentumVector.at(theNumberOfJets-1).energy(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	_hJetPt[NpdfID]->Fill(smearedJetPtEtaPhiMVector.at(theNumberOfJets-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
@@ -4997,11 +4958,86 @@ void HiMassTauAnalysis::fillHistograms() {
 	nJets++;
       }
       int theNumberOfJets1 = 0;
+      double leadcentraldijetmass = 0;
+      double Wcentraldijetmass = 999.9;
       for ( pat::JetCollection::const_iterator patJet1 = _patJets->begin();patJet1 != _patJets->end(); ++patJet1 ) {
         theNumberOfJets1++;
         int theNumberOfJets2 = 0;
         for ( pat::JetCollection::const_iterator patJet2 = _patJets->begin();patJet2 != _patJets->end(); ++patJet2 ) {
           theNumberOfJets2++;
+          if (_ApplyJetLooseID) {
+            if( (((patJet1->neutralHadronEnergy() + patJet1->HFHadronEnergy()) / patJet1->energy()) < 0.99) && 
+                (patJet1->neutralEmEnergyFraction() < 0.99) && 
+                (patJet1->numberOfDaughters() > 1) && 
+                (fabs(smearedJetPtEtaPhiMVector.at(theNumberOfJets1 - 1).eta()) < 2.1) && 
+                (smearedJetPtEtaPhiMVector.at(theNumberOfJets1 - 1).pt() >= 30.0) && 
+                (patJet1->chargedHadronEnergyFraction() > 0.0) && 
+                (patJet1->chargedMultiplicity() > 0.0) && 
+                (patJet1->chargedEmEnergyFraction() < 0.99) && 
+                (((patJet2->neutralHadronEnergy() + patJet2->HFHadronEnergy()) / patJet2->energy()) < 0.99) && 
+                (patJet2->neutralEmEnergyFraction() < 0.99) && 
+                (patJet2->numberOfDaughters() > 1) && 
+                (fabs(smearedJetPtEtaPhiMVector.at(theNumberOfJets2 - 1).eta()) < 2.1) && 
+                (smearedJetPtEtaPhiMVector.at(theNumberOfJets2 - 1).pt() >= 30.0) && 
+                (patJet2->chargedHadronEnergyFraction() > 0.0) && 
+                (patJet2->chargedMultiplicity() > 0.0) && 
+                (patJet2->chargedEmEnergyFraction() < 0.99) && 
+                (theNumberOfJets2 > theNumberOfJets1) ) {
+              bool goodCentralJet = true;
+              if (_RemoveJetOverlapWithMuon1s) {
+                int theNumberOfMuons = 0;
+                for ( pat::MuonCollection::const_iterator patMuon = _patMuons->begin(); patMuon != _patMuons->end(); ++patMuon ) {
+                  theNumberOfMuons++;
+                  if( (passRecoMuon1Cuts((*patMuon),theNumberOfMuons-1)) ) {
+                    if(reco::deltaR(smearedJetMomentumVector.at(theNumberOfJets-1), smearedMuonMomentumVector.at(theNumberOfMuons-1)) < _JetMuon1MatchingDeltaR) {goodCentralJet = false;}
+                  }
+                }
+              }
+              if (_RemoveJetOverlapWithTau1s) {
+                int theNumberOfTaus = 0;
+                for ( pat::TauCollection::const_iterator patTau = _patTaus->begin(); patTau != _patTaus->end(); ++patTau ) {
+                  theNumberOfTaus++;
+                  if( (passRecoTau1Cuts((*patTau),theNumberOfTaus-1)) ) {
+                    if(reco::deltaR(smearedJetMomentumVector.at(theNumberOfJets-1), smearedTauMomentumVector.at(theNumberOfTaus-1)) < _JetTau1MatchingDeltaR) {goodCentralJet = false;}
+                  }
+                }
+              }
+              if(goodCentralJet) {
+                if(CalculateThe4Momentum((*patJet1),theNumberOfJets1-1,(*patJet2),theNumberOfJets2-1).second.M() > leadcentraldijetmass) {leadcentraldijetmass = CalculateThe4Momentum((*patJet1),theNumberOfJets1-1,(*patJet2),theNumberOfJets2-1).second.M();}
+                if( (fabs(CalculateThe4Momentum((*patJet1),theNumberOfJets1-1,(*patJet2),theNumberOfJets2-1).second.M() - 80.0) / 80.0) < Wcentraldijetmass) {Wcentraldijetmass = CalculateThe4Momentum((*patJet1),theNumberOfJets1-1,(*patJet2),theNumberOfJets2-1).second.M();}
+              }
+            }
+          } else {
+            if( (fabs(smearedJetPtEtaPhiMVector.at(theNumberOfJets1 - 1).eta()) < 2.1) && 
+                (smearedJetPtEtaPhiMVector.at(theNumberOfJets1 - 1).pt() >= 30.0) && 
+                (fabs(smearedJetPtEtaPhiMVector.at(theNumberOfJets2 - 1).eta()) < 2.1) && 
+                (smearedJetPtEtaPhiMVector.at(theNumberOfJets2 - 1).pt() >= 30.0) && 
+                (theNumberOfJets2 > theNumberOfJets1) ) {
+              bool goodCentralJet = true;
+              if (_RemoveJetOverlapWithMuon1s) {
+                int theNumberOfMuons = 0;
+                for ( pat::MuonCollection::const_iterator patMuon = _patMuons->begin(); patMuon != _patMuons->end(); ++patMuon ) {
+                  theNumberOfMuons++;
+                  if( (passRecoMuon1Cuts((*patMuon),theNumberOfMuons-1)) ) {
+                    if(reco::deltaR(smearedJetMomentumVector.at(theNumberOfJets-1), smearedMuonMomentumVector.at(theNumberOfMuons-1)) < _JetMuon1MatchingDeltaR) {goodCentralJet = false;}
+                  }
+                }
+              }
+              if (_RemoveJetOverlapWithTau1s) {
+                int theNumberOfTaus = 0;
+                for ( pat::TauCollection::const_iterator patTau = _patTaus->begin(); patTau != _patTaus->end(); ++patTau ) {
+                  theNumberOfTaus++;
+                  if( (passRecoTau1Cuts((*patTau),theNumberOfTaus-1)) ) {
+                    if(reco::deltaR(smearedJetMomentumVector.at(theNumberOfJets-1), smearedTauMomentumVector.at(theNumberOfTaus-1)) < _JetTau1MatchingDeltaR) {goodCentralJet = false;}
+                  }
+                }
+              }
+              if(goodCentralJet) {
+                if(CalculateThe4Momentum((*patJet1),theNumberOfJets1-1,(*patJet2),theNumberOfJets2-1).second.M() > leadcentraldijetmass) {leadcentraldijetmass = CalculateThe4Momentum((*patJet1),theNumberOfJets1-1,(*patJet2),theNumberOfJets2-1).second.M();}
+                if( (fabs(CalculateThe4Momentum((*patJet1),theNumberOfJets1-1,(*patJet2),theNumberOfJets2-1).second.M() - 80.0) / 80.0) < Wcentraldijetmass) {Wcentraldijetmass = CalculateThe4Momentum((*patJet1),theNumberOfJets1-1,(*patJet2),theNumberOfJets2-1).second.M();}
+              }
+            }
+          }
           if ((passRecoJetCuts((*patJet1),theNumberOfJets1-1)) && 
               (passRecoJetCuts((*patJet2),theNumberOfJets2-1)) && 
               (theNumberOfJets2 > theNumberOfJets1)) {
@@ -5012,6 +5048,9 @@ void HiMassTauAnalysis::fillHistograms() {
           }
         }
       }
+      _var3 = nCJets;
+      _var4 = leadcentraldijetmass;
+      _var5 = Wcentraldijetmass;
 
       theNumberOfJets1 = 0;
       for ( pat::JetCollection::const_iterator patJet1 = _patJets->begin();patJet1 != _patJets->end(); ++patJet1 ) {
@@ -5030,11 +5069,17 @@ void HiMassTauAnalysis::fillHistograms() {
               _hLeadDiJetDeltaR[NpdfID]->Fill(reco::deltaR(smearedJetMomentumVector.at(theNumberOfJets1-1), smearedJetMomentumVector.at(theNumberOfJets2-1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
               _hFirstLeadingJetPt[NpdfID]->Fill(leadingjetpt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
               _hSecondLeadingJetPt[NpdfID]->Fill(secondleadingjetpt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+              _var6 = TheLeadDiJetVect.M();
+              _var7 = TheLeadDiJetVect.pt();
+              _var8 = fabs(patJet1->eta() - patJet2->eta());
+              _var9 = leadingjetpt;
+              _var10 = secondleadingjetpt;
             }
           }
         }
       }
       _hNJet[NpdfID]->Fill(nJets,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+      _hNCentralJet[NpdfID]->Fill(nCJets,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
       _hMHT[NpdfID]->Fill(sqrt((sumpxForMht * sumpxForMht) + (sumpyForMht * sumpyForMht)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
       _hHT[NpdfID]->Fill(sumptForHt,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
       _hMeff[NpdfID]->Fill(sumptForHt + sqrt((sumpxForMht * sumpxForMht) + (sumpyForMht * sumpyForMht)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
@@ -5043,8 +5088,12 @@ void HiMassTauAnalysis::fillHistograms() {
     // ------Topology Histograms
     if (_FillTopologyHists) {
       _hMet[NpdfID]->Fill(theMETVector.pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+      _var11 = theMETVector.pt();
       if ((theLeadingJetIndex >= 0) && (theSecondLeadingJetIndex >= 0)) {
         _hMetDiJetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(theMETVector.phi() - TheLeadDiJetVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+        _var12 = TMath::Abs(normalizedPhi(theMETVector.phi() - TheLeadDiJetVect.phi()));
+      } else {
+        _var12 = 0;
       }
       if(!isData) {
 //        const GenMETCollection *genmetcol = genTrue.product();
@@ -5063,22 +5112,34 @@ void HiMassTauAnalysis::fillHistograms() {
             if ((theLeadingJetIndex >= 0) && (theSecondLeadingJetIndex >= 0)) {
 	      _hMuon1Tau1_Tau1DiJetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).phi() - TheLeadDiJetVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	      _hMuon1Tau1_Muon1DiJetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).phi() - TheLeadDiJetVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+              _var13 = TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).phi() - TheLeadDiJetVect.phi()));
+              _var14 = TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).phi() - TheLeadDiJetVect.phi()));
+            } else {
+              _var13 = 0;
+              _var14 = 0;
             }
             _hMuon1Tau1_Muon1IsZmm[NpdfID]->Fill(isZmm(smearedMuonMomentumVector.at(theNumberOfMuons-1)).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hMuon1PtVsTau1Pt[NpdfID]->Fill(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt(),smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hMuon1Tau1DeltaR[NpdfID]->Fill(reco::deltaR(smearedTauMomentumVector.at(theNumberOfTaus-1), smearedMuonMomentumVector.at(theNumberOfMuons-1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hMuon1Tau1DeltaPtDivSumPt[NpdfID]->Fill((smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt() - smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt()) / (smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt() + smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _var15 = (smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt() - smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt()) / (smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt() + smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt());
 	    _hMuon1Tau1DeltaPt[NpdfID]->Fill((smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).pt() - smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hMuon1Tau1CosDphi[NpdfID]->Fill(cos(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).phi() - smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _var16 = cos(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).phi() - smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).phi())));
 	    _hMuon1Tau1_Muon1MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).phi() - theMETVector.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _var17 = TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).phi() - theMETVector.phi()));
 	    _hMuon1MetDeltaPhiVsMuon1Tau1CosDphi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).phi() - theMETVector.phi())), cos(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons-1).phi() - smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hMuon1Tau1_Tau1MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).phi() - theMETVector.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _var18 = TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus-1).phi() - theMETVector.phi()));
             _UseVectorSumOfVisProductsAndMetMassReco = _UseVectorSumOfMuon1Tau1ProductsAndMetMassReco;
             _UseCollinerApproxMassReco = _UseCollinerApproxMuon1Tau1MassReco;
+            _var19 = CalculateThe4Momentum((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1).second.M();
 	    if(CalculateThe4Momentum((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1).first) {_hMuon1Tau1ReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
 	    else {_hMuon1Tau1NotReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
 	    _hMuon1Tau1_Muon1MetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patMuon),theNumberOfMuons-1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hMuon1Tau1_Tau1MetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patTau),theNumberOfTaus-1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+            _var20 = CalculateLeptonMetMt((*patMuon),theNumberOfMuons-1);
+            _var21 = CalculateLeptonMetMt((*patTau),theNumberOfTaus-1);
 	    if(_UseTauSeedTrackForMuon1Tau1DiscrByOSLS) {
 	      if (patTau->isCaloTau()) {
 		if( (patTau->leadTrack().isNonnull()) ) {
@@ -5119,6 +5180,8 @@ void HiMassTauAnalysis::fillHistograms() {
 	    _hMuon1Tau1Zeta2D[NpdfID]->Fill(CalculatePZetaVis((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1),CalculatePZeta((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hMuon1Tau1Zeta1D[NpdfID]->Fill((_Muon1Tau1PZetaCutCoefficient * CalculatePZeta((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1)) + 
 				     (_Muon1Tau1PZetaVisCutCoefficient * CalculatePZetaVis((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _var22 = CalculatePZeta((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1);
+	    _var23 = CalculatePZetaVis((*patTau),theNumberOfTaus-1,(*patMuon),theNumberOfMuons-1);
 	  }
 	}
       }
@@ -5637,6 +5700,8 @@ void HiMassTauAnalysis::fillHistograms() {
 	      _hMuon1Muon2_Muon1DiJetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons1 - 1).phi() - TheLeadDiJetVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	      _hMuon1Muon2_Muon2DiJetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons2 - 1).phi() - TheLeadDiJetVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
             }
+            _hMuon1Muon2_Muon1IsZmm[NpdfID]->Fill(isZmm(smearedMuonMomentumVector.at(theNumberOfMuons1 - 1)).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+            _hMuon1Muon2_Muon2IsZmm[NpdfID]->Fill(isZmm(smearedMuonMomentumVector.at(theNumberOfMuons2 - 1)).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
             _hMuon1PtVsMuon2Pt[NpdfID]->Fill(smearedMuonPtEtaPhiMVector.at(theNumberOfMuons1 - 1).pt(),smearedMuonPtEtaPhiMVector.at(theNumberOfMuons2 - 1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hMuon1Muon2DeltaR[NpdfID]->Fill(reco::deltaR(smearedMuonMomentumVector.at(theNumberOfMuons1 - 1), smearedMuonMomentumVector.at(theNumberOfMuons2 - 1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hMuon1Muon2DeltaPtDivSumPt[NpdfID]->Fill((smearedMuonPtEtaPhiMVector.at(theNumberOfMuons1 - 1).pt() - smearedMuonPtEtaPhiMVector.at(theNumberOfMuons2 - 1).pt()) / (smearedMuonPtEtaPhiMVector.at(theNumberOfMuons1 - 1).pt() + smearedMuonPtEtaPhiMVector.at(theNumberOfMuons2 - 1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
@@ -5674,6 +5739,8 @@ void HiMassTauAnalysis::fillHistograms() {
 	      _hElectron1Electron2_Electron1DiJetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons1 - 1).phi() - TheLeadDiJetVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	      _hElectron1Electron2_Electron2DiJetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons2 - 1).phi() - TheLeadDiJetVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
             }
+            _hElectron1Electron2_Electron1IsZee[NpdfID]->Fill(isZee(smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1)).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+            _hElectron1Electron2_Electron2IsZee[NpdfID]->Fill(isZee(smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1)).first,isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hElectron1PtVsElectron2Pt[NpdfID]->Fill(smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons1 - 1).pt(),smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons2 - 1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hElectron1Electron2DeltaR[NpdfID]->Fill(reco::deltaR(smearedElectronMomentumVector.at(theNumberOfElectrons1 - 1), smearedElectronMomentumVector.at(theNumberOfElectrons2 - 1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hElectron1Electron2DeltaPtDivSumPt[NpdfID]->Fill((smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons1 - 1).pt() - smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons2 - 1).pt()) / (smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons1 - 1).pt() + smearedElectronPtEtaPhiMVector.at(theNumberOfElectrons2 - 1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
@@ -5710,10 +5777,13 @@ void HiMassTauAnalysis::fillHistograms() {
             if ((theLeadingJetIndex >= 0) && (theSecondLeadingJetIndex >= 0)) {
 	      _hTau1Tau2_Tau1DiJetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).phi() - TheLeadDiJetVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	      _hTau1Tau2_Tau2DiJetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus2 - 1).phi() - TheLeadDiJetVect.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+              _var24 = TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).phi() - TheLeadDiJetVect.phi()));
+              _var25 = TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus2 - 1).phi() - TheLeadDiJetVect.phi()));
             }
 	    _hTau1PtVsTau2Pt[NpdfID]->Fill(smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).pt(),smearedTauPtEtaPhiMVector.at(theNumberOfTaus2 - 1).pt(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hTau1Tau2DeltaR[NpdfID]->Fill(reco::deltaR(smearedTauMomentumVector.at(theNumberOfTaus1 - 1), smearedTauMomentumVector.at(theNumberOfTaus2 - 1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hTau1Tau2DeltaPtDivSumPt[NpdfID]->Fill((smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).pt() - smearedTauPtEtaPhiMVector.at(theNumberOfTaus2 - 1).pt()) / (smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).pt() + smearedTauPtEtaPhiMVector.at(theNumberOfTaus2 - 1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+            _var26 = (smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).pt() - smearedTauPtEtaPhiMVector.at(theNumberOfTaus2 - 1).pt()) / (smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).pt() + smearedTauPtEtaPhiMVector.at(theNumberOfTaus2 - 1).pt());
 	    _hTau1Tau2DeltaPt[NpdfID]->Fill((smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).pt() - smearedTauPtEtaPhiMVector.at(theNumberOfTaus2 - 1).pt()),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    if(_UseTauSeedTrackForDiTauDiscrByOSLS) {
 	      if (patTau1->isCaloTau()) {
@@ -5738,17 +5808,25 @@ void HiMassTauAnalysis::fillHistograms() {
               }
 	    } else {_hTau1Tau2OSLS[NpdfID]->Fill(patTau1->charge() * patTau2->charge(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
 	    _hTau1Tau2CosDphi[NpdfID]->Fill(cos(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).phi() - smearedTauPtEtaPhiMVector.at(theNumberOfTaus2 - 1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+            _var27 = cos(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).phi() - smearedTauPtEtaPhiMVector.at(theNumberOfTaus2 - 1).phi())));
 	    _hDiTau_Tau1MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).phi() -  theMETVector.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+            _var28 = TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).phi() -  theMETVector.phi()));
 	    _hDiTau_Tau2MetDeltaPhi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus2 - 1).phi() -  theMETVector.phi())),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+            _var29 = TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus2 - 1).phi() -  theMETVector.phi()));
 	    _hTau1MetDeltaPhiVsTau1Tau2CosDphi[NpdfID]->Fill(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).phi() -  theMETVector.phi())), cos(TMath::Abs(normalizedPhi(smearedTauPtEtaPhiMVector.at(theNumberOfTaus1 - 1).phi() - smearedTauPtEtaPhiMVector.at(theNumberOfTaus2 - 1).phi()))),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
             _UseVectorSumOfVisProductsAndMetMassReco = _UseVectorSumOfDiTauProductsAndMetMassReco;
             _UseCollinerApproxMassReco = _UseCollinerApproxDiTauMassReco;
+            _var30 = CalculateThe4Momentum((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1).second.M();
 	    if(CalculateThe4Momentum((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1).first) {_hDiTauReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
 	    else {_hDiTauNotReconstructableMass[NpdfID]->Fill(CalculateThe4Momentum((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1).second.M(),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));}
 	    _hDiTau_Tau1MetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patTau1),theNumberOfTaus1 - 1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+            _var31 = CalculateLeptonMetMt((*patTau1),theNumberOfTaus1 - 1);
 	    _hDiTau_Tau2MetMt[NpdfID]->Fill(CalculateLeptonMetMt((*patTau2),theNumberOfTaus2 - 1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+            _var32 = CalculateLeptonMetMt((*patTau2),theNumberOfTaus2 - 1);
 	    _hDiTauPZeta[NpdfID]->Fill(CalculatePZeta((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hDiTauPZetaVis[NpdfID]->Fill(CalculatePZetaVis((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
+	    _var33 = CalculatePZeta((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1);
+	    _var34 = CalculatePZetaVis((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1);
 	    _hDiTauZeta2D[NpdfID]->Fill(CalculatePZetaVis((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1),CalculatePZeta((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	    _hDiTauZeta1D[NpdfID]->Fill((_DiTauPZetaCutCoefficient * CalculatePZeta((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1)) + (_DiTauPZetaVisCutCoefficient * CalculatePZetaVis((*patTau1),theNumberOfTaus1 - 1,(*patTau2),theNumberOfTaus2 - 1)),isrgluon_weight * isrgamma_weight * fsr_weight * pdfWeightVector.at(NpdfID));
 	  }
@@ -5814,6 +5892,9 @@ void HiMassTauAnalysis::fillHistograms() {
       }
     }
   }
+
+  if (_DoProduceNtuple){_HMTTree->Fill();}
+
 }
 
 void HiMassTauAnalysis::getCollections(const Event& iEvent, const EventSetup& iSetup) {
@@ -7049,7 +7130,7 @@ void HiMassTauAnalysis::bookHistograms() {
     if (_FillRecoVertexHists) {
       _hVertexZposition[NpdfCounter] = fs->make<TH1F>(("VertexZposition_"+j.str()).c_str(), ("VertexZposition_"+j.str()).c_str(), 50, -50., 50.);
       _hVertexNTracks[NpdfCounter]   = fs->make<TH1F>(("VertexNTracks_"+j.str()).c_str(),   ("VertexNTracks_"+j.str()).c_str(),   100, 0., 100.);
-      _hNVertices[NpdfCounter]       = fs->make<TH1F>(("NVertices_"+j.str()).c_str(),       ("NVertices_"+j.str()).c_str(),       40, 0., 40.);
+      _hNVertices[NpdfCounter]       = fs->make<TH1F>(("NVertices_"+j.str()).c_str(),       ("NVertices_"+j.str()).c_str(),       100, 0., 100.);
     }
     
     //--- book generator level histograms
@@ -7269,6 +7350,7 @@ void HiMassTauAnalysis::bookHistograms() {
     
     if (_FillRecoJetHists) {
       _hNJet[NpdfCounter]        = fs->make<TH1F>(("NJet_"+j.str()).c_str(),      ("NJet_"+j.str()).c_str(), 20, 0., 20.);
+      _hNCentralJet[NpdfCounter]        = fs->make<TH1F>(("NCentralJet_"+j.str()).c_str(),      ("NCentralJet_"+j.str()).c_str(), 20, 0., 20.);
       _hNBJet[NpdfCounter]        = fs->make<TH1F>(("NBJet_"+j.str()).c_str(),      ("NBJet_"+j.str()).c_str(), 20, 0., 20.);
       _hNBJet_PassTCHP[NpdfCounter]        = fs->make<TH1F>(("NBJet_PassTCHP_"+j.str()).c_str(),      ("NBJet_PassTCHP_"+j.str()).c_str(), 20, 0., 20.);
       _hNBJet_PassCSVL[NpdfCounter]        = fs->make<TH1F>(("NBJet_PassCSVL_"+j.str()).c_str(),      ("NBJet_PassCSVL_"+j.str()).c_str(), 20, 0., 20.);
@@ -7276,6 +7358,7 @@ void HiMassTauAnalysis::bookHistograms() {
       _hNBJet_PassCSVT[NpdfCounter]        = fs->make<TH1F>(("NBJet_PassCSVT_"+j.str()).c_str(),      ("NBJet_PassCSVT_"+j.str()).c_str(), 20, 0., 20.);
       _hJetEnergy[NpdfCounter]   = fs->make<TH1F>(("JetEnergy_"+j.str()).c_str(), ("JetEnergy_"+j.str()).c_str(), 200, 0., 500.);
       _hJetPt[NpdfCounter]       = fs->make<TH1F>(("JetPt_"+j.str()).c_str(),     ("JetPt_"+j.str()).c_str(), 200, 0., 500.);
+      _hCentralJetPt[NpdfCounter]       = fs->make<TH1F>(("CentralJetPt_"+j.str()).c_str(),     ("CentralJetPt_"+j.str()).c_str(), 200, 0., 500.);
       _hJetEta[NpdfCounter]      = fs->make<TH1F>(("JetEta_"+j.str()).c_str(),    ("JetEta_"+j.str()).c_str(), 72, -3.6, +3.6);
       _hJetPhi[NpdfCounter]      = fs->make<TH1F>(("JetPhi_"+j.str()).c_str(),    ("JetPhi_"+j.str()).c_str(), 144, -2. * TMath::Pi(), +2. * TMath::Pi());
       _hBJetEnergy[NpdfCounter]   = fs->make<TH1F>(("BJetEnergy_"+j.str()).c_str(), ("BJetEnergy_"+j.str()).c_str(), 200, 0., 500.);
@@ -7457,6 +7540,8 @@ void HiMassTauAnalysis::bookHistograms() {
 	_hDiTau_Tau2MetDeltaPhi[NpdfCounter]         = fs->make<TH1F>(("DiTau_Tau2MetDeltaPhi_"+j.str()).c_str(),         ("DiTau_Tau2MetDeltaPhi_"+j.str()).c_str(), 72, 0, +TMath::Pi());
 	_hTau1MetDeltaPhiVsTau1Tau2CosDphi[NpdfCounter] = fs->make<TH2F>(("Tau1MetDeltaPhiVsTau1Tau2CosDphi_"+j.str()).c_str(), ("Tau1MetDeltaPhiVsTau1Tau2CosDphi_"+j.str()).c_str(), 72, 0, +TMath::Pi(), 220, -1.1, 1.1);
 	_hMuon1PtVsMuon2Pt[NpdfCounter]          = fs->make<TH2F>(("Muon1PtVsMuon2Pt_"+j.str()).c_str(),          ("Muon1PtVsMuon2Pt_"+j.str()).c_str(), 100, 0, 500, 100, 0, 500);
+        _hMuon1Muon2_Muon1IsZmm[NpdfCounter]         = fs->make<TH1F>(("Muon1Muon2_Muon1IsZmm_"+j.str()).c_str(),         ("Muon1Muon2_Muon1IsZmm_"+j.str()).c_str(), 2, 0, 2);
+        _hMuon1Muon2_Muon2IsZmm[NpdfCounter]         = fs->make<TH1F>(("Muon1Muon2_Muon2IsZmm_"+j.str()).c_str(),         ("Muon1Muon2_Muon2IsZmm_"+j.str()).c_str(), 2, 0, 2);
 	_hMuon1Muon2DeltaR[NpdfCounter]          = fs->make<TH1F>(("Muon1Muon2DeltaR_"+j.str()).c_str(),          ("Muon1Muon2DeltaR_"+j.str()).c_str(), 100, 0, 5.);
 	_hMuon1Muon2DeltaPtDivSumPt[NpdfCounter] = fs->make<TH1F>(("Muon1Muon2DeltaPtDivSumPt_"+j.str()).c_str(), ("Muon1Muon2DeltaPtDivSumPt_"+j.str()).c_str(), 100, -5, 5.);
 	_hMuon1Muon2DeltaPt[NpdfCounter]         = fs->make<TH1F>(("Muon1Muon2DeltaPt_"+j.str()).c_str(), ("Muon1Muon2DeltaPt_"+j.str()).c_str(), 100, 0, 1000);
@@ -7467,6 +7552,8 @@ void HiMassTauAnalysis::bookHistograms() {
 	_hDiMuon_Muon1MetDeltaPhi[NpdfCounter]          = fs->make<TH1F>(("DiMuon_Muon1MetDeltaPhi_"+j.str()).c_str(),          ("DiMuon_Muon1MetDeltaPhi_"+j.str()).c_str(), 72, 0, +TMath::Pi());
 	_hDiMuon_Muon2MetDeltaPhi[NpdfCounter]          = fs->make<TH1F>(("DiMuon_Muon2MetDeltaPhi_"+j.str()).c_str(),          ("DiMuon_Muon2MetDeltaPhi_"+j.str()).c_str(), 72, 0, +TMath::Pi());
 	_hMuon1MetDeltaPhiVsMuon1Muon2CosDphi[NpdfCounter] = fs->make<TH2F>(("Muon1MetDeltaPhiVsMuon1Muon2CosDphi_"+j.str()).c_str(), ("Muon1MetDeltaPhiVsMuon1Muon2CosDphi_"+j.str()).c_str(), 72, 0, +TMath::Pi(), 220, -1.1, 1.1);
+        _hElectron1Electron2_Electron1IsZee[NpdfCounter]         = fs->make<TH1F>(("Electron1Electron2_Electron1IsZee_"+j.str()).c_str(),         ("Electron1Electron2_Electron1IsZee_"+j.str()).c_str(), 2, 0, 2);
+        _hElectron1Electron2_Electron2IsZee[NpdfCounter]         = fs->make<TH1F>(("Electron1Electron2_Electron2IsZee_"+j.str()).c_str(),         ("Electron1Electron2_Electron2IsZee_"+j.str()).c_str(), 2, 0, 2);
 	_hElectron1PtVsElectron2Pt[NpdfCounter]          = fs->make<TH2F>(("Electron1PtVsElectron2Pt_"+j.str()).c_str(), ("Electron1PtVsElectron2Pt_"+j.str()).c_str(), 100, 0, 500, 100, 0, 500);
 	_hElectron1Electron2DeltaR[NpdfCounter]          = fs->make<TH1F>(("Electron1Electron2DeltaR_"+j.str()).c_str(), ("Electron1Electron2DeltaR_"+j.str()).c_str(), 100, 0, 5.);
 	_hElectron1Electron2DeltaPtDivSumPt[NpdfCounter] = fs->make<TH1F>(("Electron1Electron2DeltaPtDivSumPt_"+j.str()).c_str(), ("Electron1Electron2DeltaPtDivSumPt_"+j.str()).c_str(), 100, -5, 5.);

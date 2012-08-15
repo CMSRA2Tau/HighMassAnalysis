@@ -1172,6 +1172,7 @@ private:
 
   //-----reconstruction level jet histograms  
   std::map<unsigned int, TH1*> _hNJet;
+  std::map<unsigned int, TH1*> _hNCentralJet;
   std::map<unsigned int, TH1*> _hNBJet;
   std::map<unsigned int, TH1*> _hNBJet_PassTCHP;
   std::map<unsigned int, TH1*> _hNBJet_PassCSVL;
@@ -1191,6 +1192,7 @@ private:
   std::map<unsigned int, TH1*> _hBJetPhi;
   std::map<unsigned int, TH1*> _hJetEnergy;
   std::map<unsigned int, TH1*> _hJetPt;
+  std::map<unsigned int, TH1*> _hCentralJetPt;
   std::map<unsigned int, TH1*> _hJetEta;
   std::map<unsigned int, TH1*> _hJetPhi;
   std::map<unsigned int, TH1*> _hBJetDiscrByTrackCountingHighEff;
@@ -1234,6 +1236,10 @@ private:
   std::map<unsigned int, TH1*> _hElectron2Tau2_Electron2DiJetDeltaPhi; 
   std::map<unsigned int, TH1*> _hMuon1Muon2_Muon1DiJetDeltaPhi; 
   std::map<unsigned int, TH1*> _hMuon1Muon2_Muon2DiJetDeltaPhi; 
+  std::map<unsigned int, TH1*> _hElectron1Electron2_Electron1IsZee;
+  std::map<unsigned int, TH1*> _hElectron1Electron2_Electron2IsZee;
+  std::map<unsigned int, TH1*> _hMuon1Muon2_Muon1IsZmm;
+  std::map<unsigned int, TH1*> _hMuon1Muon2_Muon2IsZmm;
   std::map<unsigned int, TH1*> _hElectron1Electron2_Electron1DiJetDeltaPhi; 
   std::map<unsigned int, TH1*> _hElectron1Electron2_Electron2DiJetDeltaPhi; 
   std::map<unsigned int, TH1*> _hTau1Tau2_Tau1DiJetDeltaPhi; 
@@ -1715,16 +1721,40 @@ private:
   vector<float> *_OSLS;
 */
 
-  float *_var1;
-  float *_var2;
-  float *_var3;
-  float *_var4;
-  float *_var5;
-  float *_var6;
-  float *_var7;
-  float *_var8;
-  float *_var9;
-  float *_var10;
+  double _var1;
+  double _var2;
+  double _var3;
+  double _var4;
+  double _var5;
+  double _var6;
+  double _var7;
+  double _var8;
+  double _var9;
+  double _var10;
+  double _var11;
+  double _var12;
+  double _var13;
+  double _var14;
+  double _var15;
+  double _var16;
+  double _var17;
+  double _var18;
+  double _var19;
+  double _var20;
+  double _var21;
+  double _var22;
+  double _var23;
+  double _var24;
+  double _var25;
+  double _var26;
+  double _var27;
+  double _var28;
+  double _var29;
+  double _var30;
+  double _var31;
+  double _var32;
+  double _var33;
+  double _var34;
 
   const std::string Prefix,Suffix;
   const boost::regex scanFormat;
