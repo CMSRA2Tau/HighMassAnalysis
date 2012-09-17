@@ -3,7 +3,7 @@ import FWCore.ParameterSet.Config as cms
 from HighMassAnalysis.Skimming.tauSelector_cfi import *
 
 TauTauPairs = cms.EDProducer("DeltaRMinCandCombiner",
-  decay = cms.string('selectedVeryLooseHPSPatTau@+ selectedVeryLooseHPSPatTau@-'),
+  decay = cms.string('selectedLooseHPSPatTau@+ selectedLooseHPSPatTau@-'),
   checkCharge = cms.bool(False),
   cut = cms.string( ''),
   name = cms.string('TauTauCandidates'),
@@ -16,25 +16,20 @@ selectedTauTauPairs = cms.EDFilter("CandViewCountFilter",
 )
 
 TauTauSkimSequence = cms.Sequence(
-    selectedVeryLooseHPSPatTau
-#  * selectedLooseHPSTaus
+    selectedLooseHPSPatTau
   * TauTauPairs
   * selectedTauTauPairs
 )
 
 MuTauTauSkimSequence = cms.Sequence(
-#   selectedLooseHPSPatTau
-#  * selectedHPSPatTau
-   selectedVeryLooseHPSPatTau
+   selectedLooseHPSPatTau
   * TauTauPairs
   * selectedTauTauPairs
   * selectedMuons 
 )
 
 ElecTauTauSkimSequence = cms.Sequence(
-#   selectedLooseHPSPatTau
-#  * selectedHPSPatTau
-   selectedVeryLooseHPSPatTau
+   selectedLooseHPSPatTau
   * TauTauPairs
   * selectedTauTauPairs
   * selectedElectrons 

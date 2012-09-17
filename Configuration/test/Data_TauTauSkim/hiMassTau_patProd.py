@@ -33,28 +33,38 @@ process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
 
 ## Geometry and Detector Conditions (needed for a few patTuple production steps)
-process.load("Configuration.StandardSequences.Geometry_cff")
-process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
-from Configuration.AlCa.autoCond import autoCond
-process.GlobalTag.globaltag = cms.string( autoCond[ 'startup' ] )
-process.load("Configuration.StandardSequences.MagneticField_cff")
+#process.load("Configuration.StandardSequences.Geometry_cff")
+#process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
+#from Configuration.AlCa.autoCond import autoCond
+#process.GlobalTag.globaltag = cms.string( autoCond[ 'startup' ] )
 
 ## Options and Output Report
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 if data:
-    process.source = cms.Source("PoolSource", 
-         fileNames = cms.untracked.vstring(
-            '/store/relval/CMSSW_5_2_2/Jet/RECO/GR_R_52_V4_RelVal_jet2011B-v2/0252/96518387-A174-E111-95A6-001A928116E8.root'
-          )
-    )
+  process.load("Configuration.StandardSequences.Geometry_cff")
+  process.load('Configuration.StandardSequences.Services_cff')
+  process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
+  process.GlobalTag.globaltag = 'GR_P_V41_AN2::All'
+  process.load("Configuration.StandardSequences.MagneticField_cff")
+  process.source = cms.Source("PoolSource", 
+       fileNames = cms.untracked.vstring(
+          '/store/relval/CMSSW_5_2_2/Jet/RECO/GR_R_52_V4_RelVal_jet2011B-v2/0252/96518387-A174-E111-95A6-001A928116E8.root'
+        )
+  )
 else:
-    process.source = cms.Source("PoolSource", 
-         fileNames = cms.untracked.vstring(
-            '/store/relval/CMSSW_5_2_3_patch3/RelValZTT/GEN-SIM-RECO/START52_V9_special_120410-v1/0122/6E6C7970-0283-E111-A6CB-003048FFD728.root'
-          )
-    )
+  process.load("Configuration.StandardSequences.Geometry_cff")
+  process.load('Configuration.StandardSequences.Services_cff')
+  process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
+  process.GlobalTag.globaltag = 'START53_V7F::All'
+  process.load("Configuration.StandardSequences.MagneticField_cff")
+  process.source = cms.Source("PoolSource", 
+       fileNames = cms.untracked.vstring(
+#          '/store/relval/CMSSW_5_2_3_patch3/RelValZTT/GEN-SIM-RECO/START52_V9_special_120410-v1/0122/6E6C7970-0283-E111-A6CB-003048FFD728.root'
+          'file:/uscms_data/d2/lpcjm/willhf/forFreddy/VBF_C1pC1p_SPS1a_AODSIM.root'
+        )
+  )
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(500) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 ## Output Module Configuration (expects a path 'p')
 from HighMassAnalysis.Configuration.patTupleEventContentForHiMassTau_cff import *
@@ -86,9 +96,25 @@ if(channel == "emu"):
   process.hltFilter = cms.Sequence(
     process.emuHLTFilter
   )
-  process.genLevelSelection = cms.Sequence(
-    process.genLevelElecMuSequence
+  process.genLevelSelection = cms.Sequence( )
+if(channel == "mumu"):
+  process.load("HighMassAnalysis.Skimming.leptonLeptonSkimSequence_cff")
+  process.theSkim = cms.Sequence(
+    process.muMuSkimSequence
   )
+  process.hltFilter = cms.Sequence(
+    process.mumuHLTFilter
+  )
+  process.genLevelSelection = cms.Sequence( )
+if(channel == "ee"):
+  process.load("HighMassAnalysis.Skimming.leptonLeptonSkimSequence_cff")
+  process.theSkim = cms.Sequence(
+    process.elecElecSkimSequence
+  )
+  process.hltFilter = cms.Sequence(
+    process.eeHLTFilter
+  )
+  process.genLevelSelection = cms.Sequence( )
 if(channel == "etau"):
   process.load("HighMassAnalysis.Skimming.elecTauSkimSequence_cff")
   process.theSkim = cms.Sequence(
@@ -97,9 +123,7 @@ if(channel == "etau"):
   process.hltFilter = cms.Sequence(
      process.etauHLTFilter
   )
-  process.genLevelSelection = cms.Sequence(
-    process.genLevelElecTauSequence
-  )
+  process.genLevelSelection = cms.Sequence( )
 if(channel == "mutau"):
   process.load("HighMassAnalysis.Skimming.muTauSkimSequence_cff")
   process.theSkim = cms.Sequence(
@@ -108,9 +132,7 @@ if(channel == "mutau"):
   process.hltFilter = cms.Sequence(
      process.mutauHLTFilter
   )
-  process.genLevelSelection = cms.Sequence(
-    process.genLevelMuTauSequence
-  )
+  process.genLevelSelection = cms.Sequence( )
 if(channel == "tautau"):
   process.load("HighMassAnalysis.Skimming.TauTauSkimSequence_cff")
   process.theSkim = cms.Sequence(
@@ -119,9 +141,7 @@ if(channel == "tautau"):
   process.hltFilter = cms.Sequence(
      process.tautauHLTFilter
   )
-  process.genLevelSelection = cms.Sequence(
-    process.genLevelTauTauSequence
-  )
+  process.genLevelSelection = cms.Sequence( )
 if(channel == "mutautau"):
   process.load("HighMassAnalysis.Skimming.TauTauSkimSequence_cff")
   process.load("HighMassAnalysis.Skimming.WHTauTauGenLevel_cfi")
@@ -131,10 +151,7 @@ if(channel == "mutautau"):
   process.hltFilter = cms.Sequence(
      process.mutauHLTFilter
   )
-  process.genLevelSelection = cms.Sequence(
-    process.WHToMuTauTauFilter +
-    process.genLevelTauTauSequence
-  )
+  process.genLevelSelection = cms.Sequence( )
 if(channel == "electautau"):
   process.load("HighMassAnalysis.Skimming.TauTauSkimSequence_cff")
   process.load("HighMassAnalysis.Skimming.WHTauTauGenLevel_cfi")
@@ -144,16 +161,13 @@ if(channel == "electautau"):
   process.hltFilter = cms.Sequence(
      process.etauHLTFilter
   )
-  process.genLevelSelection = cms.Sequence(
-    process.WHToElecTauTauFilter +
-    process.genLevelTauTauSequence
-  )
+  process.genLevelSelection = cms.Sequence( )
 if(channel == "susy"):
   process.theSkim = cms.Sequence(  )
   process.hltFilter = cms.Sequence(
      process.SusyHLTFilter
   )
-  process.genLevelSelection = cms.Sequence(  )
+  process.genLevelSelection = cms.Sequence( )
 
 # Standard pat sequences
 process.load("PhysicsTools.PatAlgos.patSequences_cff")
@@ -163,6 +177,7 @@ process.load("TopQuarkAnalysis.TopObjectResolutions.stringResolutions_etEtaPhi_S
 
 # PF Met Corrections
 process.load("JetMETCorrections.Type1MET.pfMETCorrections_cff")
+process.load("JetMETCorrections.Type1MET.pfMETCorrectionType0_cfi")
 
 if(data):
   from PhysicsTools.PatAlgos.tools.coreTools import *
@@ -201,7 +216,7 @@ process.heepPatElectrons = cms.EDProducer("HEEPAttStatusToPAT",
                                           eleLabel = cms.InputTag("selectedPatElectrons"),
                                           barrelCuts = cms.PSet(heepBarrelCuts),
                                           endcapCuts = cms.PSet(heepEndcapCuts),
-                                          applyRhoCorrToEleIsol = cms.bool(False), 
+                                          applyRhoCorrToEleIsol = cms.bool(True), 
                                           eleIsolEffectiveAreas = cms.PSet (
                                               trackerBarrel = cms.double(0.),
                                               trackerEndcap = cms.double(0.),
@@ -215,101 +230,86 @@ process.heepPatElectrons = cms.EDProducer("HEEPAttStatusToPAT",
 
 # --------------------Modifications for jets--------------------
 
-process.ak5PFJetsForPatJets = process.ak5PFJets.clone( 
-                                doAreaFastjet = cms.bool(False)
-                              )
-    
 from PhysicsTools.PatAlgos.tools.jetTools import *
-switchJetCollection(process,cms.InputTag('ak5PFJetsForPatJets'),
+addJetCollection(process,cms.InputTag('ak5PFJets'),
+                 'AK5', 'PF',
                  doJTA        = True,
                  doBTagging   = True,
                  jetCorrLabel = ('AK5PF', cms.vstring(['L1Offset', 'L2Relative', 'L3Absolute'])),
                  doType1MET   = False,
+                 doL1Cleaning = False,
+                 doL1Counters = False,
                  genJetCollection=cms.InputTag("ak5GenJets"),
-                 doJetID      = True 
+                 doJetID      = True
                  )
 
 if(data):
   process.patJets.addResolutions = cms.bool(False)
+  process.patJetsAK5PF.addResolutions = cms.bool(False)
 else:
   process.patJets.addResolutions = cms.bool(True)
   process.patJets.resolutions = cms.PSet( default = cms.string("udscResolutionPF") )
+  process.patJetsAK5PF.addResolutions = cms.bool(True)
+  process.patJetsAK5PF.resolutions = cms.PSet( default = cms.string("udscResolutionPF") )
+
+process.selectedPatJetsAK5PF.cut = cms.string("pt > 15 && abs(eta) < 5")
+process.selectedPatJets.cut = cms.string("pt > 15 && abs(eta) < 5")
   
 # --------------------Modifications for MET--------------------
 
 if(data):
-  process.ak5PFJets.doAreaFastjet = cms.bool(True)
   process.pfJetMETcorr.jetCorrLabel = cms.string("ak5PFL1FastL2L3Residual")
-  process.metAnalysisSequence=cms.Sequence(process.producePFMETCorrections)
-  process.patPFType1Type0METs = process.patMETs.clone(
-                                      metSource = cms.InputTag('pfType1CorrectedMet'),
-                                      addMuonCorrections = cms.bool(False),
-                                      addGenMET    = cms.bool(False),
-                                )
-  process.patPFType1Type2Type0METs = process.patMETs.clone(
-                                      metSource = cms.InputTag('pfType1p2CorrectedMet'),
-                                      addMuonCorrections = cms.bool(False),
-                                      addGenMET    = cms.bool(False)
-                                )
+  process.pfType1CorrectedMet.applyType0Corrections = cms.bool(False)
+  process.pfType1CorrectedMet.srcType1Corrections = cms.VInputTag(
+      cms.InputTag('pfMETcorrType0'),
+      cms.InputTag('pfJetMETcorr', 'type1')        
+  )
 else:
-  process.ak5PFJets.doAreaFastjet = cms.bool(True)
   process.pfJetMETcorr.jetCorrLabel = cms.string("ak5PFL1FastL2L3")
-  process.metAnalysisSequence=cms.Sequence(process.producePFMETCorrections)
-  process.patPFType1Type0METs = process.patMETs.clone(
-                                      metSource = cms.InputTag('pfType1CorrectedMet'),
-                                      addMuonCorrections = cms.bool(False),
-                                      addGenMET    = cms.bool(True),
-                                )
-  process.patPFType1Type2Type0METs = process.patMETs.clone(
-                                      metSource = cms.InputTag('pfType1p2CorrectedMet'),
-                                      addMuonCorrections = cms.bool(False),
-                                      addGenMET    = cms.bool(True),
-                                      addResolutions = cms.bool(True),
-                                      resolutions = cms.PSet( default = cms.string("metResolutionPF") )
-                                )
+  process.pfType1CorrectedMet.applyType0Corrections = cms.bool(False)
+  process.pfType1CorrectedMet.srcType1Corrections = cms.VInputTag(
+      cms.InputTag('pfMETcorrType0'),
+      cms.InputTag('pfJetMETcorr', 'type1')        
+  )
 
+process.patMETs.metSource  = cms.InputTag("pfType1CorrectedMet")
 
 # Let it run
 if(data):
   process.p = cms.Path(
     process.scrapingVeto + 
+    process.type0PFMEtCorrection +
+    process.producePFMETCorrections +
     process.PFTau +
-    process.ak5PFJetsForPatJets +
-    process.metAnalysisSequence +
     process.patDefaultSequence + 
     process.eleIsoSequence +
     process.muIsoSequence +
     process.heepPatElectrons +
-    process.patPFType1Type0METs +
-    process.patPFType1Type2Type0METs +
     process.hltFilter +       
-    process.theSkim	       
+    process.theSkim
   )
 else:
   if(signal):
     process.p = cms.Path(
       process.genLevelSelection +
+      process.type0PFMEtCorrection +
+      process.producePFMETCorrections +
       process.PFTau +
-      process.ak5PFJetsForPatJets +
-      process.metAnalysisSequence + 
       process.patDefaultSequence + 
       process.eleIsoSequence +
       process.muIsoSequence +
-      process.heepPatElectrons +
-      process.patPFType1Type0METs +
-      process.patPFType1Type2Type0METs
+      process.heepPatElectrons + 
+      process.theSkim
     )
   else:
     process.p = cms.Path(
+      process.type0PFMEtCorrection +
+      process.producePFMETCorrections +
       process.PFTau +
-      process.ak5PFJetsForPatJets +
-      process.metAnalysisSequence +
       process.patDefaultSequence + 
       process.eleIsoSequence +
       process.muIsoSequence +
       process.heepPatElectrons +
-      process.patPFType1Type0METs +
-      process.patPFType1Type2Type0METs +
-      process.theSkim	       
+      process.theSkim
     )
 

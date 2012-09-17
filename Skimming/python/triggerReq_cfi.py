@@ -4,16 +4,29 @@ import HLTrigger.HLTfilters.triggerResultsFilter_cfi as hlt
 emuHLTFilter = hlt.triggerResultsFilter.clone(
     hltResults = cms.InputTag('TriggerResults::HLT'),
     triggerConditions = (
-      'HLT_Mu17_Ele8_CaloIdL',
       'HLT_Mu17_Ele8_CaloIdL*',
-      'HLT_Mu8_Ele17_CaloIdL',
+      'HLT_Mu17_Ele8*',
+      'HLT_Mu8_Ele17*',
       'HLT_Mu8_Ele17_CaloIdL*',
-      'HLT_Mu10_Ele10_CaloIdL',
-      'HLT_Mu10_Ele10_CaloIdL*',
-      'HLT_Mu24',
-      'HLT_Mu24*',
-      'HLT_IsoMu17',
-      'HLT_IsoMu17*',
+      'HLT_IsoMu24_eta2p1*',
+    ),
+    l1tResults = '',
+    throw = False
+)
+
+eeHLTFilter = hlt.triggerResultsFilter.clone(
+    hltResults = cms.InputTag('TriggerResults::HLT'),
+    triggerConditions = (
+      'HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL*',
+    ),
+    l1tResults = '',
+    throw = False
+)
+
+mumuHLTFilter = hlt.triggerResultsFilter.clone(
+    hltResults = cms.InputTag('TriggerResults::HLT'),
+    triggerConditions = (
+      'HLT_Mu17_Mu8*',
     ),
     l1tResults = '',
     throw = False
@@ -22,9 +35,10 @@ emuHLTFilter = hlt.triggerResultsFilter.clone(
 etauHLTFilter = hlt.triggerResultsFilter.clone(
     hltResults = cms.InputTag('TriggerResults::HLT'),
     triggerConditions = (
-      'HLT_Ele15_CaloIdVT_CaloIsoT_TrkIdT_TrkIsoT_LooseIsoPFTau15*',
-      'HLT_Ele15_CaloIdVT_CaloIsoT_TrkIdT_TrkIsoT_LooseIsoPFTau20*',
-      'HLT_Ele18_CaloIdVT_CaloIsoT_TrkIdT_TrkIsoT_LooseIsoPFTau20*'
+      'HLT_Ele20_CaloIdVT_CaloIsoRhoT_TrkIdT_TrkIsoT_LooseIsoPFTau20*',
+      'HLT_Ele20_CaloIdVT_TrkIdT_LooseIsoPFTau20*',
+      'HLT_Ele22_eta2p1_WP90Rho_LooseIsoPFTau20*',
+      'HLT_Ele22_eta2p1_WP90NoIso_LooseIsoPFTau20*',
     ),
     l1tResults = '',
     throw = False
@@ -33,18 +47,7 @@ etauHLTFilter = hlt.triggerResultsFilter.clone(
 mutauHLTFilter = hlt.triggerResultsFilter.clone(
     hltResults = cms.InputTag('TriggerResults::HLT'),
     triggerConditions = (
-      'HLT_Mu24',
-      'HLT_Mu24*',
-      'HLT_IsoMu17',
-      'HLT_IsoMu17*',
-      'HLT_IsoMu12_LooseIsoPFTau10',
-      'HLT_IsoMu12_LooseIsoPFTau10*',
-      'HLT_Mu15_LooseIsoPFTau20',
-      'HLT_Mu15_LooseIsoPFTau20*',
-      'HLT_IsoMu15_LooseIsoPFTau15',
-      'HLT_IsoMu15_LooseIsoPFTau15*',
-      'HLT_IsoMu15_LooseIsoPFTau20',
-      'HLT_IsoMu15_LooseIsoPFTau20*',
+      'HLT_IsoMu24_eta2p1*',
     ),
     l1tResults = '',
     throw = False
@@ -53,10 +56,9 @@ mutauHLTFilter = hlt.triggerResultsFilter.clone(
 tautauHLTFilter = hlt.triggerResultsFilter.clone(
     hltResults = cms.InputTag('TriggerResults::HLT'),
     triggerConditions = (
-      'HLT_DoubleIsoPFTau20_Trk5',
-      'HLT_DoubleIsoPFTau20_Trk5*',
-      'HLT_DoubleIsoPFTau*',
-      'HLT_IsoPFTau*_IsoPFTau*',
+      'HLT_DoubleMediumIsoPFTau35_Trk5_eta2p1_Prong1*',
+      'HLT_DoubleMediumIsoPFTau*_Trk*_eta2p1_Prong1_*',
+      'HLT_DoubleMediumIsoPFTau*_Trk*_eta2p1_*',
     ),
     l1tResults = '',
     throw = False
@@ -69,8 +71,6 @@ SusyHLTFilter = hlt.triggerResultsFilter.clone(
       'HLT_PFMHT150*',
       'HLT_PFMET150',
       'HLT_PFMET150*',
-      'HLT_HT300_MHT75',
-      'HLT_HT300_MHT75*',
     ),
     l1tResults = '',
     throw = False

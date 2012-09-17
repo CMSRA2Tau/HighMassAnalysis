@@ -4,7 +4,7 @@ from HighMassAnalysis.Skimming.tauSelector_cfi import *
 from HighMassAnalysis.Skimming.elecSelector_cfi import *
 
 elecTauPairs = cms.EDProducer("DeltaRMinCandCombiner",
-  decay = cms.string('selectedVeryLooseHPSPatTau@+ selectedElectrons@-'),
+  decay = cms.string('selectedLooseHPSPatTau@+ selectedElectrons@-'),
   checkCharge = cms.bool(False),
   cut = cms.string( ''),
   name = cms.string('etauCandidates'),
@@ -17,7 +17,7 @@ selectedElecTauPairs = cms.EDFilter("CandViewCountFilter",
 )
 
 elecTauSkimSequence = cms.Sequence(
-  ( selectedVeryLooseHPSPatTau + selectedElectrons )
+  ( selectedLooseHPSPatTau + selectedElectrons )
   * elecTauPairs
   * selectedElecTauPairs
 )
