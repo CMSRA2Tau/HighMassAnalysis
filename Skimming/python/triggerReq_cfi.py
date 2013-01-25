@@ -47,7 +47,8 @@ etauHLTFilter = hlt.triggerResultsFilter.clone(
 mutauHLTFilter = hlt.triggerResultsFilter.clone(
     hltResults = cms.InputTag('TriggerResults::HLT'),
     triggerConditions = (
-      'HLT_IsoMu24_eta2p1*',
+      'HLT_IsoMu24*',
+      'HLT_Mu24*',
     ),
     l1tResults = '',
     throw = False
@@ -59,6 +60,7 @@ tautauHLTFilter = hlt.triggerResultsFilter.clone(
       'HLT_DoubleMediumIsoPFTau35_Trk5_eta2p1_Prong1*',
       'HLT_DoubleMediumIsoPFTau*_Trk*_eta2p1_Prong1_*',
       'HLT_DoubleMediumIsoPFTau*_Trk*_eta2p1_*',
+      'HLT_Double*PFTau*_Trk*_eta2p1_*',
     ),
     l1tResults = '',
     throw = False

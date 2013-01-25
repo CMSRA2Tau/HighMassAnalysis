@@ -9,6 +9,7 @@ selectedHPSPatTau = cms.EDFilter("PATTauSelector",
 
 selectedLooseHPSPatTau = cms.EDFilter("PATTauSelector",
   src = cms.InputTag('selectedPatTaus'),
+#  cut = cms.string('pt > 15 & abs(eta) < 2.1 & tauID("decayModeFinding") > 0.5 & tauID("againstMuonLoose") > 0.5 & tauID("againstElectronLoose") > 0.5'),
   cut = cms.string('pt > 15 & abs(eta) < 2.1 & tauID("decayModeFinding") > 0.5'),
   filter = cms.bool(True)
 )
