@@ -16,7 +16,7 @@ options.register ('signal',
                   "Is this the signal?")
     
 options.register ('channel',
-                  'mutau',
+                  'inclusiveTau',
                   VarParsing.multiplicity.singleton,
                   VarParsing.varType.string,
                   "Desired channel")
@@ -178,6 +178,13 @@ if(channel == "susy"):
 if(channel == "vbf"):
   process.theVBFSkim = cms.EDFilter("VBFSkim")
   process.theSkim = cms.Sequence( process.theVBFSkim )
+  process.hltFilter = cms.Sequence( )
+  process.genLevelSelection = cms.Sequence(  )
+if(channel == "inclusiveTau"):
+  process.load("HighMassAnalysis.Skimming.InclusiveTauSkimSequence_cff")
+  process.theSkim = cms.Sequence(
+    process.InclusiveTauSkimSequence
+  )
   process.hltFilter = cms.Sequence( )
   process.genLevelSelection = cms.Sequence(  )
 
