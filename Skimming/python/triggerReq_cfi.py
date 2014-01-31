@@ -69,10 +69,8 @@ tautauHLTFilter = hlt.triggerResultsFilter.clone(
 SusyHLTFilter = hlt.triggerResultsFilter.clone(
     hltResults = cms.InputTag('TriggerResults::HLT'),
     triggerConditions = (
-      'HLT_PFMHT150',
-      'HLT_PFMHT150*',
-      'HLT_PFMET150',
-      'HLT_PFMET150*',
+      'HLT_IsoMu24_eta2p1_v*',
+      'HLT_IsoMu24_eta2p1*',
     ),
     l1tResults = '',
     throw = False
